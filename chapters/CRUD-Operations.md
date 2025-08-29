@@ -831,10 +831,10 @@ The steps are as follows:
    `cryptosuite`, and the set of `proofOptions`.
 1. Return `btc1Update`.
 
-#### Announce DID Update
+#### Announce BTC1 Update
 
-The Announce DID Update algorithm retrieves `beaconServices` from the `sourceDocument`
-and calls the [Broadcast DID Update] algorithm corresponding to the type of
+The Announce BTC1 Update algorithm retrieves `beaconServices` from the `sourceDocument`
+and calls the `Broadcast _ Update` algorithm corresponding to the type of
 the ::BTC1 Beacon::.
 
 It takes the following inputs:
