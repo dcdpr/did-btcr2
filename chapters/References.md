@@ -16,13 +16,13 @@
 : "Decentralized Identifier Resolution (DID Resolution) v0.3." URL: <https://www.w3.org/TR/did-resolution/>
 
 [RFC2119]
-"Key words for use in RFCs to Indicate Requirement Levels." URL: https://www.rfc-editor.org/rfc/rfc2119
+"Key words for use in RFCs to Indicate Requirement Levels." URL: <https://www.rfc-editor.org/rfc/rfc2119>
 
 [RFC6902]
-....
+"JavaScript Object Notation (JSON) Patch" URL: <https://www.rfc-editor.org/rfc/rfc6902>
 
 [RFC8174]
-"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words". URL: https://www.rfc-editor.org/rfc/rfc8174
+"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words". URL: <https://www.rfc-editor.org/rfc/rfc8174>
 
 [RFC9457]
 : "Problem Details for HTTP APIs." URL: <https://www.rfc-editor.org/rfc/rfc9457>

@@ -331,7 +331,7 @@ It takes the following inputs:
   * `genesisBytes` - the originating ::Intermediate DID Document::; REQUIRED; bytes.
 * `initialDocument` - the ::Initial DID Document:: for the given identifier.
 
-It returns the following outputs or throws an error:
+It returns the following outputs or raises an error:
 
 * `initialDocument` - a valid ::Initial DID Document:: for the given identifier.
 
@@ -399,19 +399,20 @@ It takes the following inputs:
     ::SMT:: proofs; OPTIONAL; object.
   * `network` - the Bitcoin network used for resolution; OPTIONAL; string; default=`"bitcoin"`.
 
-It returns the following output or throws an error:
+It returns the following output or raises an error:
 
 * `targetDocument` - a DID Core conformant DID document after all updates have
    been found, validated and applied; object.
 
 The steps are as follows:
 
-1. If `resolutionOptions.versionId` is not null, set `targetVersionId` to
+1. If both `resolutionOptions.versionId` and `resolutionOptions.versionTime` are
+   not null then MUST raise an ::https://www.w3.org/ns/did#INVALID_DID:: error.
+1. Else if `resolutionOptions.versionId` is not null, set `targetVersionId` to
    `resolutionOptions.versionId`.
 1. Else if `resolutionOptions.versionTime` is not null, set `targetTime` to
    `resolutionOptions.versionTime`.
 1. Else set `targetTime` to the UNIX timestamp for now at the moment of execution.
-2. // todo: make statement about if both are set, that is an error
 1. Set `signalsMetadata` to `resolutionOptions.sidecarData.signalsMetadata`.
 1. Set `currentVersionId` to 1.
 1. If `currentVersionId` equals `targetVersionId` return `initialDocument`.
@@ -631,7 +632,7 @@ It takes the following inputs:
 * `btc1Update` - the ::Unsecured BTC1 Update:: to confirm as a duplicate or not; REQUIRED; object.
 * `btc1UpdateHashHistory` - an array of hashes corresponding to each ::BTC1 Update::; REQUIRED; array.
 
-It returns successfully if the `update` is a duplicate else it throws an error.
+It returns successfully if the `update` is a duplicate else it raises an error.
 
 The steps are as follows:
 
@@ -666,7 +667,7 @@ It returns the following output:
 
 The steps are as follows:
 
-1. Set `capabilityId` to `update.proof.capability`. // todo: MUST raise an ::INVALID_UPDATE_PROOF:: exception?
+1. Set `capabilityId` to `update.proof.capability`.
 1. Set `rootCapability` to the result of passing `capabilityId` to the [Dereference Root Capability Identifier] algorithm.
 1. If `rootCapability.invocationTarget` does not equal `contemporaryDIDDocument.id` and `rootCapability.controller` 
    does not equal  `contemporaryDIDDocument.id`, MUST raise an ::INVALID_DID_UPDATE:: error.
