@@ -358,7 +358,7 @@ Contemporary Blockheight
 
 Intermediate DID Document
 
-: A representation of a DID document that it not yet fully conformant with the DID Core
+: A representation of a DID document that it not yet fully conformant with the ::[DID-CORE]::
   specification. Intermediate DID documents for the **did:btc1** DID method are DID documents
   whose identifier values have been replaced with a placeholder value.
 

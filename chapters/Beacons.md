@@ -90,9 +90,9 @@ Given:
 
 Construct a Bitcoin transaction that spends from the Beacon address on the selected network:
 
-1. If `network` is not a valid value per above, raise InvalidParameter error.
-1. if `network` is a number and is outside the range of 1-4, raise InvalidParameter error.
-1. If `cas` is defined and is not a valid value per above, raise InvalidParameter error.
+1. If `network` is not a valid value per above, raise ::INVALID_PARAMETER:: error.
+1. if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
+1. If `cas` is defined and is not a valid value per above, raise ::INVALID_PARAMETER:: error.
 1. Set `bitcoinAddress` to the decoding of `serviceEndpoint` following BIP21.
 1. Ensure `bitcoinAddress` is funded; if not, fund this address.
 1. If `btc1UpdateAnnouncement` is not defined, set `btc1UpdateAnnouncement` to the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm.
@@ -222,7 +222,7 @@ Given:
 
 Create a ::Beacon Announcement Map:: as follows:
 
-1. If `unnormalizedBeaconAnnouncementMap` contains a duplicate `did`, raise InvalidParameter error.
+1. If `unnormalizedBeaconAnnouncementMap` contains a duplicate `did`, raise ::INVALID_PARAMETER:: error.
 1. Create empty `beaconAnnouncementMap`.
 1. For each `did` in `unnormalizedBeaconAnnouncementMap`:
    1. If the value is a ::BTC1 Update:::
@@ -249,8 +249,8 @@ Given:
 
 Construct a Bitcoin transaction that spends from the Beacon address on the selected network:
 
-1. If `network` is not a valid value per above, raise InvalidParameter error.
-1. if `network` is a number and is outside the range of 1-4, raise InvalidParameter error.
+1. If `network` is not a valid value per above, raise ::INVALID_PARAMETER:: error.
+1. if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
 1. Set `bitcoinAddress` to the decoding of `serviceEndpoint` following BIP21.
 1. Ensure `bitcoinAddress` is funded; if not, fund this address.
 1. Set `hashBytes` to the result of passing the JSON representation of `beaconAnnouncementMap` to the [JSON Canonicalization and Hash] algorithm.
@@ -282,7 +282,7 @@ Given:
 
 Spend the transaction and publish to ::CAS:::
 
-1. If `cas` is defined and is not a valid value per above, raise InvalidParameter error.
+1. If `cas` is defined and is not a valid value per above, raise ::INVALID_PARAMETER:: error.
 1. Set `spendTx` to the aggregation of the partially signed Bitcoin transactions `psbts` into a single transaction.
 1. Broadcast `spendTx` on the Bitcoin network.
 1. If `cas` is defined:
@@ -431,8 +431,8 @@ Given:
 
 Construct a Bitcoin transaction that spends from the Beacon address on the selected network:
 
-1. If `network` is not a valid value per above, raise InvalidParameter error.
-1. if `network` is a number and is outside the range of 1-4, raise InvalidParameter error.
+1. If `network` is not a valid value per above, raise ::INVALID_PARAMETER:: error.
+1. if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
 1. Set `bitcoinAddress` to the decoding of `serviceEndpoint` following BIP21.
 1. Ensure `bitcoinAddress` is funded; if not, fund this address.
 1. Initialize `unsignedSpendTx` to a Bitcoin transaction that spends a transaction controlled by the `bitcoinAddress` and contains at least one transaction output. This signal output MUST have the format `[OP_RETURN, OP_PUSHBYTES32, <hashBytes>]`. If the transaction contains multiple transaction outputs, the signal output MUST be the last transaction output.
@@ -467,17 +467,17 @@ Validate the proof paths map and the unsigned ::Beacon Signal:::
 1. For each `did` expected to be in the ::Beacon Signal:::
    1. Set `index` to `hash(did)`.
    1. Set `path` to the value at `index` and remove it from the map.
-   1. If `path` is undefined, raise InvalidParameter error.
+   1. If `path` is undefined, raise ::INVALID_PARAMETER:: error.
    1. Extract the current `nonce` and `btc1Update` for `did` from local storage.
    1. If `btc1Update` is defined, set `btc1UpdateAnnouncement` to the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm and set `hashBytes` to `hash(index + hash(nonce ^ btc1UpdateAnnouncement))`, otherwise set `hashBytes` to `hash(index + hash(nonce))`.
    1. For each `step` in `path`:
       1. Validate that `step` has a single key-value pair.
       1. Extract `key` and `value` from `step`.
-      1. If `key` is `"left"`, set `hashBytes` to `hash(value + hashBytes)`; otherwise, if `key` is `"right"`, set `hashBytes` to `hash(hashBytes + value)`; otherwise, raise InvalidParameter error.
+      1. If `key` is `"left"`, set `hashBytes` to `hash(value + hashBytes)`; otherwise, if `key` is `"right"`, set `hashBytes` to `hash(hashBytes + value)`; otherwise, raise ::INVALID_PARAMETER:: error.
    1. Validate that the last transaction output of `unsignedSpendTx` is `[OP_RETURN, OP_PUSHBYTES32, <hashBytes>]`.
    1. If `btc1UpdateAnnouncement` is defined, construct as `smtProof` the object `{id: <hashString>, nonce: <nonce>, updateId: <btc1UpdateHashString>, path: <path>}`, otherwise construct as `smtProof` the object `{id: <hashString>, nonce: <nonce>, path: <path>}`, where `hashString` is the hexadecimal string representation of `hashBytes` and `btc1UpdateHashString` is the hexadecimal string representation of `btc1UpdateAnnouncement`.
    1. Store `smtProof` for later presentation to verifiers.
-1. If `pathsMap` is not empty, raise InvalidParameter error.
+1. If `pathsMap` is not empty, raise ::INVALID_PARAMETER:: error.
 
 ##### Finalize
 
@@ -507,7 +507,7 @@ Given:
 
 Process the ::Beacon Signals:: to reconstruct the DID document:
 
-1. If `cas` is defined and is not a valid value per above, raise InvalidParameter error.
+1. If `cas` is defined and is not a valid value per above, raise ::INVALID_PARAMETER:: error.
 1. Set `sidecarDocumentsMap` to empty map.
 1. For each `sidecarDocument` in `sidecarDocuments`:
    1. Set `hashBytes` to the result of passing `sidecarDocument` to the [JSON Canonicalization and Hash] algorithm.
@@ -522,7 +522,7 @@ Process the ::Beacon Signals:: to reconstruct the DID document:
    1. Set `id` to the hexadecimal string representation of `genesisBytes`.
    1. Get `didDocument` from `sidecarDocumentsMap` by its `id` if available, or from ::CAS:: by its `id` if not and `cas` is defined.
    1. Update placeholder values in `didDocument` with `did` as required.
-   1. If `didDocument` is not a valid DID document, raise InvalidDidUpdate error.
+   1. If `didDocument` is not a valid DID document, raise ::INVALID_DID_UPDATE:: error.
 1. Until terminated:
    1. Set `btc1Update` to null.
    1. For each `service` in `didDocument.service` where `service.type` is "BTC1Beacon":
@@ -530,34 +530,34 @@ Process the ::Beacon Signals:: to reconstruct the DID document:
       1. If `targetVersionTime` is defined and is less than the transaction time, skip to next `service`.
       1. If the last output transaction is not of the form `[OP_RETURN, OP_PUSHBYTES32, <hashBytes>]`, skip to next `service`.
       1. Extract `hashBytes` from the last output transaction.
-      1. If `service.beaconType` is not "SingletonBeacon", "MapBeacon", or "SMTBeacon", raise InvalidParameter error.
+      1. If `service.beaconType` is not "SingletonBeacon", "MapBeacon", or "SMTBeacon", raise ::INVALID_PARAMETER:: error.
       1. If `service.beaconType` is "SingletonBeacon", set `tempBtc1Update` to the result of [Process Singleton Beacon Signal].
       1. If `service.beaconType` is "MapBeacon", set `tempBtc1Update` to the result of [Process Map Beacon Signal].
       1. If `service.beaconType` is "SMTBeacon", set `tempBtc1Update` to the result of [Process SMT Beacon Signal].
       1. If `tempBtc1Update` is null, skip to next `service`.
       1. Set `tempDidDocument` to transformation of `didDocument` with `tempBtc1Update`.
       1. If `tempDidDocument.versionId` ≠ `didDocument.versionId + 1`, skip to next `service`.
-      1. If `btc1Update` is not null and `tempBtc1Update` ≠ `btc1Update`, raise InvalidDidUpdate error.
+      1. If `btc1Update` is not null and `tempBtc1Update` ≠ `btc1Update`, raise ::INVALID_DID_UPDATE:: error.
       1. Set `btc1Update` to `tempBtc1Update`. 
    1. If `btc1Update` is null, terminate.
    1. Set `didDocument` to transformation of `didDocument` with `btc1Update`.
-   1. If `didDocument` is not a valid DID document, raise InvalidDidUpdate error.
-   1. If `didDocument.id` is not the same as the **did:btc1** identifier, raise InvalidDidUpdate error.
-   1. If `didDocument` has no ::BTC1 Beacon:: service types (i.e., no services where `service.type` is "BTC1Beacon"), raise InvalidDidUpdate error.
+   1. If `didDocument` is not a valid DID document, raise ::INVALID_DID_UPDATE:: error.
+   1. If `didDocument.id` is not the same as the **did:btc1** identifier, raise ::INVALID_DID_UPDATE:: error.
+   1. If `didDocument` has no ::BTC1 Beacon:: service types (i.e., no services where `service.type` is "BTC1Beacon"), raise ::INVALID_DID_UPDATE:: error.
    1. If `targetVersionId` is defined and `didDocument.versionId` = `targetVersionId`, terminate.
-1. If `targetVersionId` is defined and `didDocument.versionId` ≠ `targetVersionId`, raise InvalidDidUpdate error.
+1. If `targetVersionId` is defined and `didDocument.versionId` ≠ `targetVersionId`, raise ::INVALID_DID_UPDATE:: error.
 1. If `targetVersionId` is not defined:
        1. For each `service` in `didDocument.service` where `service.type` is "BTC1Beacon":
       1. Get the next transaction from the Bitcoin address at `service.serviceEndpoint`.
       1. If `targetVersionTime` is defined and is less than the transaction time, skip to next `service`.
-      1. If the last output transaction is of the form `[OP_RETURN, OP_PUSHBYTES32, <hashBytes>]`, raise InvalidDidUpdate error.
+      1. If the last output transaction is of the form `[OP_RETURN, OP_PUSHBYTES32, <hashBytes>]`, raise ::INVALID_DID_UPDATE:: error.
 1. Return `didDocument`.
 
 #### Process Singleton Beacon Signal
 
 1. Set `id` to the hexadecimal string representation of `hashBytes`.
 1. Get `btc1Update` from `sidecarDocumentsMap` by its `id` if available, or from ::CAS:: by its `id` if not and `cas` is defined.
-1. If `btc1Update` is undefined, raise InvalidDidUpdate error.
+1. If `btc1Update` is undefined, raise ::INVALID_DID_UPDATE:: error.
 1. Set `btc1Update`
 1. Return `btc1Update`.
 
@@ -567,11 +567,11 @@ Process the ::Beacon Signals:: to reconstruct the DID document:
 
 1. Set `id` to the hexadecimal string representation of `hashBytes`.
 1. Get `map` from `sidecarDocumentsMap` by its `id` if available, or from ::CAS:: by its `id` if not and `cas` is defined.
-1. If `map` is undefined, raise InvalidDidUpdate error.
+1. If `map` is undefined, raise ::INVALID_DID_UPDATE:: error.
 1. Set `updateId` to the value of `map.<did>`.
 1. If `updateId` is undefined, return null.
 1. Get `btc1Update` from `sidecarDocumentsMap` by its `updateId` if available, or from ::CAS:: by its `updateId` if not and `cas` is defined.
-1. If `btc1Update` is undefined, raise InvalidDidUpdate error.
+1. If `btc1Update` is undefined, raise ::INVALID_DID_UPDATE:: error.
 1. Return `btc1Update`.
 
 > **NOTE**: The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the document hash.
@@ -580,7 +580,7 @@ Process the ::Beacon Signals:: to reconstruct the DID document:
 
 1. Set `id` to the hexadecimal string representation of `hashBytes`.
 1. Get `smtProof` from `smtProofsMap` by its `id`.
-1. If `smtProof` is undefined, raise InvalidDidUpdate error.
+1. If `smtProof` is undefined, raise ::INVALID_DID_UPDATE:: error.
 1. Set `index` to `hash(did)`.
 1. Set `nonce` to the value of `smtProof.nonce`.
 1. Set `updateId` to the value of `smtProof.updateId`.
@@ -588,11 +588,11 @@ Process the ::Beacon Signals:: to reconstruct the DID document:
 1. For each `step` in `smtProof.path`:
    1. Validate that `step` has a single key-value pair.
    1. Extract `key` and `value` from `step`.
-   1. If `key` is `"left"`, set `verifyHashBytes` to `hash(value + verifyHashBytes)`; otherwise, if `key` is `"right"`, set `verifyHashBytes` to `hash(verifyHashBytes + value)`; otherwise, raise InvalidDidUpdate error.
-1. If `verifyHashBytes` ≠ `hashBytes`, raise InvalidDidUpdate error.
+   1. If `key` is `"left"`, set `verifyHashBytes` to `hash(value + verifyHashBytes)`; otherwise, if `key` is `"right"`, set `verifyHashBytes` to `hash(verifyHashBytes + value)`; otherwise, raise ::INVALID_DID_UPDATE:: error.
+1. If `verifyHashBytes` ≠ `hashBytes`, raise ::INVALID_DID_UPDATE:: error.
 1. If `updateId` is undefined, return null.
 1. Get `btc1Update` from `sidecarDocumentsMap` by its `updateId` if available, or from ::CAS:: by its `updateId` if not and `cas` is defined.
-1. If `btc1Update` is undefined, raise InvalidDidUpdate error.
+1. If `btc1Update` is undefined, raise ::INVALID_DID_UPDATE:: error.
 1. Return `btc1Update`.
 
 > **NOTE**: The act of retrieving from `sidecarDocumentsMap` validates the document hash.

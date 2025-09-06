@@ -2,7 +2,7 @@
 
 A **did:btc1** Decentralized Identifier (DID) consists of a `did:btc1` prefix, 
 followed by an `id-bech32` value, which is a
-[Bech32m](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki)
+[Bech32m](#bip0350)
 encoding of the following data:
 
 * `version` - the specification version the DID was created against;
@@ -118,12 +118,12 @@ Given:
 
 Encode the **did:btc1** identifier as follows:
 
-1. If `idType` is not a valid value per above, raise `invalidDid` error.
-1. If `version` is greater than `1`, raise `invalidDid` error.
-1. If `network` is not a valid value per above, raise `invalidDid` error.
-1. if `network` is a number and is outside the range of 1-4, raise `invalidDid` error.
+1. If `idType` is not a valid value per above, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
+1. If `version` is greater than `1`, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
+1. If `network` is not a valid value per above, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
+1. if `network` is a number and is outside the range of 1-4, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. If `idType` is "key" and `genesisBytes` is not a valid compressed secp256k1
-   public key, raise `invalidDid` error.
+   public key, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. Map `idType` to `hrp` from the following:
    1. "key" - "k"
    1. "external" - "x"
@@ -160,27 +160,27 @@ Given:
 Decode the **did:btc1** identifier as follows:
 
 1. Split `identifier` into an array of `components` at the colon `:` character.
-1. If the length of the `components` array is not `3`, raise `invalidDid` error.
-1. If `components[0]` is not "did", raise `invalidDid` error.
-1. If `components[1]` is not "btc1", raise `methodNotSupported` error.
+1. If the length of the `components` array is not `3`, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
+1. If `components[0]` is not "did", raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
+1. If `components[1]` is not "btc1", raise ::METHOD_NOT_SUPPORTED:: error.
 1. Set `encodedString` to `components[2]`.
 1. Pass `encodedString` to the [Bech32m Decoding] algorithm, retrieving `hrp`
    and `dataBytes`.
-1. If the [Bech32m Decoding] algorithm fails, raise `invalidDid` error.
+1. If the [Bech32m Decoding] algorithm fails, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. Map `hrp` to `idType` from the following:
    1. "k" - "key"
    1. "x" - "external"
-   1. other - raise `invalidDid` error
+   1. other - raise ::https://www.w3.org/ns/did#INVALID_DID:: error
 1. Set `version` to `1`.
 1. If at any point in the remaining steps there are not enough nibbles to
-   complete the process, raise `invalidDid` error.
+   complete the process, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. Start with the first nibble (the higher nibble of the first byte) of
    `dataBytes`.
 1. Add the value of the current nibble to `version`.
 1. If the value of the nibble is hexadecimal `F` (decimal `15`), advance to the
    next nibble (the lower nibble of the current byte or the higher nibble of the
    next byte) and return to the previous step.
-1. If `version` is greater than `1`, raise `invalidDid` error.
+1. If `version` is greater than `1`, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. Advance to the next nibble and set `networkValue` to its value.
 1. Map `networkValue` to `network` from the following:
    1. `0` - "bitcoin"
@@ -189,14 +189,14 @@ Decode the **did:btc1** identifier as follows:
    1. `3` - "testnet3"
    1. `4` - "testnet4"
    1. `5` - "mutinynet"
-   1. `6`-`B` - raise `invalidDid` error
+   1. `6`-`B` - raise ::https://www.w3.org/ns/did#INVALID_DID:: error
    1. `C`-`F` - `networkValue - 11`
 1. If the number of nibbles consumed is odd:
    1. Advance to the next nibble and set `fillerNibble` to its value.
-   1. If `fillerNibble` is not `0`, raise `invalidDid` error.
+   1. If `fillerNibble` is not `0`, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. Set `genesisBytes` to the remaining `dataBytes`.
 1. If `idType` is "key" and `genesisBytes` is not a valid compressed secp256k1
-   public key, raise `invalidDid` error.
+   public key, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. Return `idType`, `version`, `network`, and `genesisBytes`.
 
 ### Differentiating **did:btc1** Identifiers

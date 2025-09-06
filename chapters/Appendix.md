@@ -4,8 +4,8 @@
 
 **did:btc1** uses the Bech32m algorithm to encode and decode several data values.
 The original Bech32 algorithm is documented in
-[BIP-0173](https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki). The updated algorithm, Bech32m, is documented in
-[BIP-0350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki).
+::[BIP-0173]::. The updated algorithm, Bech32m, is documented in
+::[BIP-0350]::.
 
 #### Bech32m Encoding
 
@@ -16,7 +16,7 @@ Given:
 
 1. Initialize `encodedString` to the output of Bech32m encoding the `hrp` and
    the `dataBytes` as described in
-   [BIP-0350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki).
+   ::[BIP-0350]::.
 1. Return `encodedString`.
 
 #### Bech32m Decoding
@@ -28,7 +28,7 @@ Given:
 
 1. Initialize `hrp` and `dataBytes` to the result of Bech32m decoding the
    `encodedString` as described in
-   [BIP-0350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki).
+   ::[BIP-0350]::.
 1. Return `hrp` and `dataBytes`.
 
 ### JSON Canonicalization and Hash
