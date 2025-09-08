@@ -153,14 +153,40 @@ CIDs
 
 : ::Content Identifier::
 
+Contemporary Blockheight
 
+: The blockheight of consideration when walking the provenance of a series of DID
+  updates. A DID document's contemporary time is the Signal Time of the ::Beacon Signal::
+  that announced the last ::BTC1 Update:: applied to the DID document.
 
+Initial DID Document
+
+: The canonical, conformant version 1 of a DID document for a specific **did:btc1** identifier.
+
+Initial DID Documents
+
+: ::Initial DID Document::
+
+Intermediate DID Document
+
+: A representation of a DID document that it not yet fully conformant with the DID Core
+  specification. Intermediate DID documents for the **did:btc1** DID method are DID documents
+  whose identifier values have been replaced with a placeholder value.
+
+Intermediate DID Documents
+
+: ::Intermediate DID Document::
 
 Invocation
 
 : See [Authorization Capabilities for Linked Data v0.3](https://w3c-ccg.github.io/zcap-spec/#terminology)
 
+Late Publishing
 
+: Late Publishing is the ability for DID updates to be revealed at a later point
+  in time, which alters the history of a DID document such that a state, that
+  appeared valid before the reveal, appears after Late Publishing to never have
+  been valid. Late Publishing breaks ::Non-Repudiation::.
 
 Map Beacon
 
@@ -185,6 +211,26 @@ Merkle Trees
 
 : ::Merkle Tree::
 
+Non-Repudiation
+
+: Non-Repudiation is a feature of DID methods that can clearly state that all data
+  is available to present one canonical history for a DID.
+
+  If some data is needed but not available, the DID method MUST NOT allow DID
+  resolution to complete. Any changes to the history, such as may occur if a website
+  edits a file, MUST be detected and disallowed. The ::Late Publishing:: problem
+  breaks Non-Repudiation.
+
+Offline Creation
+
+: Offline Creation refers to when a **did:btc1** identifier and corresponding
+  initial DID document are created without requiring network interactions.
+
+**did:btc1** supports offline creation in two modes:
+
+* Key Pair Deterministic Creation; and
+* DID Document Initiated Creation.
+
 Pending BTC1 Update
 
 : A ::BTC1 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
@@ -193,6 +239,10 @@ Pending BTC1 Updates
 
 : ::Pending BTC1 Update::
 
+Resolution Time
+
+: A Coordinated Universal Time (UTC) timestamp of when the client makes a resolution 
+  request of the controller.
 
 Schnorr Signature
 
@@ -211,6 +261,26 @@ Schnorr
 
 : ::Schnorr Signature::
 
+Sidecar
+
+: A mechanism by which data necessary for resolving a DID is provided alongside
+  the **did:btc1** identifier being resolved, rather than being retrieved through
+  open and standardized means (e.g., by retrieving from IPFS).
+
+: To explain the metaphor, a sidecar on a motorcycle brings along a second passenger
+  in a transformed vehicle, the same way the DID controller MUST bring along the
+  DID document history to transform the situation into one that is verifiable.
+
+Sidecar Data
+
+: Data transmitted via ::Sidecar::.
+
+
+Signal Blockheight
+
+: The blockheight of the Bitcoin block that included a specific ::Beacon Signal::.
+  Blockheight is used as the internal time of the resolution algorithm.
+
 Singleton Beacon
 
 : A type of ::BTC1 Beacon:: whose ::Beacon Signals:: each contain a single ::BTC1 Update Announcement::.
@@ -218,10 +288,6 @@ Singleton Beacon
 Singleton Beacons
 
 : ::Singleton Beacon::
-
-
-
-
 
 SMT Beacon
 
@@ -258,6 +324,12 @@ Taproot
   This upgrade enabled Bitcoin transactions to be secured using ::Schnorr Signatures::
   through the introduction of a new address, a Taproot address.
 
+Target Time
+
+: A UTC timestamp that specifies a target time provided by a client in a resolution
+  request to the resolver. If none is provided the target time is set to the
+  ::Resolution Time::.
+
 Unsecured BTC1 Update
 
 : A ::BTC1 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btc1** DID document. 
@@ -290,113 +362,3 @@ Unspent Transaction Outputs
 UTXOs
 
 : ::Unspent Transaction Output::
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Non-Repudiation
-
-: Non-Repudiation is a feature of DID methods that can clearly state that all data
-  is available to present one canonical history for a DID.
-
-  If some data is needed but not available, the DID method MUST NOT allow DID
-  resolution to complete. Any changes to the history, such as may occur if a website
-  edits a file, MUST be detected and disallowed. The ::Late Publishing:: problem
-  breaks Non-Repudiation.
-
-Late Publishing
-
-: Late Publishing is the ability for DID updates to be revealed at a later point
-  in time, which alters the history of a DID document such that a state, that
-  appeared valid before the reveal, appears after Late Publishing to never have
-  been valid. Late Publishing breaks ::Non-Repudiation::.
-
-Offline Creation
-
-: Offline Creation refers to when a **did:btc1** identifier and corresponding
-  initial DID document are created without requiring network interactions.
-
-**did:btc1** supports offline creation in two modes:
-
-* Key Pair Deterministic Creation; and
-* DID Document Initiated Creation.
-
-Sidecar
-
-: A mechanism by which data necessary for resolving a DID is provided alongside
-  the **did:btc1** identifier being resolved, rather than being retrieved through
-  open and standardized means (e.g., by retrieving from IPFS).
-
-: To explain the metaphor, a sidecar on a motorcycle brings along a second passenger
-  in a transformed vehicle, the same way the DID controller MUST bring along the
-  DID document history to transform the situation into one that is verifiable.
-
-Sidecar Data
-
-: Data transmitted via ::Sidecar::.
-
-Signal Blockheight
-
-: The blockheight of the Bitcoin block that included a specific ::Beacon Signal::.
-  Blockheight is used as the internal time of the resolution algorithm.
-
-Resolution Time
-
-: A Coordinated Universal Time (UTC) timestamp of when the client makes a resolution 
-  request of the controller.
-
-Target Time
-
-: A UTC timestamp that specifies a target time provided by a client in a resolution
-  request to the resolver. If none is provided the target time is set to the
-  ::Resolution Time::.
-
-Contemporary Blockheight
-
-: The blockheight of consideration when walking the provenance of a series of DID
-  updates. A DID document's contemporary time is the Signal Time of the ::Beacon Signal::
-  that announced the last ::BTC1 Update:: applied to the DID document.
-
-Intermediate DID Document
-
-: A representation of a DID document that it not yet fully conformant with the DID Core
-  specification. Intermediate DID documents for the **did:btc1** DID method are DID documents
-  whose identifier values have been replaced with a placeholder value.
-
-Intermediate DID Documents
-
-: ::Intermediate DID Document::
-
-Initial DID Document
-
-: The canonical, conformant version 1 of a DID document for a specific **did:btc1** identifier.
-
-Initial DID Documents
-
-: ::Initial DID Document::
