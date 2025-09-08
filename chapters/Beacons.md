@@ -69,7 +69,7 @@ The `beaconType` of the `service` for a ::Singleton Beacon:: is "SingletonBeacon
 ```{.json include="json/Beacons/SingletonBeacon-service.json"}
 ```
 
-#### Construct and Send Beacon Signal
+#### Construct and Send Singleton Beacon Signal
 
 Given:
 
@@ -112,7 +112,7 @@ For a ::Map Beacon::, proof of non-inclusion of a **did:btc1** identifier is sim
 
 The `beaconType` of the `service` for a ::Map Beacon:: is "MapBeacon".
 
-#### Create Beacon Cohort
+#### Create Map Beacon Cohort
 
 Creating a ::Beacon Cohort:: requires that the ::Beacon Aggregator:: define the conditions for it, advertise it, and accept enrolment by ::Beacon Participants::. The process flow involves the exchange of data between the ::Beacon Aggregator:: and ::Beacon Participants::, most notably the DIDs involved and the public keys for creating the n-of-n MuSig2 Bitcoin address. A detailed specification is out of scope, but most implementations operate as shown below.
 
@@ -146,7 +146,7 @@ sequenceDiagram
     A ->> R: Share P2TR Bitcoin address<br/>and cohort public keys
 ```
 
-#### Construct and Send Beacon Signal
+#### Construct and Send Map Beacon Signal
 
 Constructing and sending a ::Map Beacon:: signal operates roughly as follows:
 
@@ -158,7 +158,7 @@ Constructing and sending a ::Map Beacon:: signal operates roughly as follows:
 ```mermaid
 sequenceDiagram
     autonumber
-    title Map Beacon - Construct and Send Beacon Signal
+    title Construct and Send Map Beacon Signal
 
     actor A as Beacon Aggregator
     actor R as Beacon Participant<br/>(multiple)
@@ -174,11 +174,11 @@ sequenceDiagram
     end
 
     A ->> A: Create Beacon<br/>Announcement Map (*)
-    A ->> A: Construct unsigned<br/>Beacon Signal (*)
+    A ->> A: Construct unsigned<br/>Map Beacon Signal (*)
 
     loop For each Beacon Participant...
-        A ->> R: Send Beacon announcement map<br/>and unsigned Beacon Signal
-        R ->> R: Validate Beacon announcement map<br/>and unsigned Beacon Signal (*)
+        A ->> R: Send Beacon announcement map<br/>and unsigned Map Beacon Signal
+        R ->> R: Validate Beacon announcement map<br/>and unsigned Map Beacon Signal (*)
         R ->> R: Generate *secnonce* and *pubnonce*
         R ->> A: Send *pubnonce*
     end
@@ -194,7 +194,7 @@ sequenceDiagram
         A ->> A: Validate PSBT
     end
 
-    note left of A: Finalize (*)
+    note left of A: Finalize Map Beacon<br/>Announcement (*)
 
     A ->> A: Aggregate PSBTs to create<br/>signed transaction
     A ->> A: Broadcast signed transaction
@@ -232,7 +232,7 @@ Create a ::Beacon Announcement Map:: as follows:
        1. Set `hashString` to the hexadecimal string representation of `btc1UpdateAnnouncement`.
    1. Add `did` (key) and `hashString` (value) to `beaconAnnouncementMap`.
 
-##### Construct Unsigned Beacon Signal
+##### Construct Unsigned Map Beacon Signal
 
 Given:
 
@@ -256,7 +256,7 @@ Construct a Bitcoin transaction that spends from the Beacon address on the selec
 1. Set `hashBytes` to the result of passing the JSON representation of `beaconAnnouncementMap` to the [JSON Canonicalization and Hash] algorithm.
 1. Initialize `unsignedSpendTx` to a Bitcoin transaction that spends a transaction controlled by the `bitcoinAddress` and contains at least one transaction output. This signal output MUST have the format `[OP_RETURN, OP_PUSHBYTES32, <hashBytes>]`. If the transaction contains multiple transaction outputs, the signal output MUST be the last transaction output.
 
-##### Validate Beacon Announcement Map and Unsigned Beacon Signal
+##### Validate Beacon Announcement Map and Unsigned Map Beacon Signal
 
 Given:
 
@@ -270,7 +270,7 @@ Validate the ::Beacon Announcement Map:: and the unsigned ::Beacon Signal:::
 1. Validate that `unsignedSpendTx` is spending from the correct Bitcoin address.
 1. Validate that the last transaction output of `unsignedSpendTx` is `[OP_RETURN, OP_PUSHBYTES32, <hashBytes>]`.
 
-##### Finalize
+##### Finalize Map Beacon Announcement
 
 Given:
 
@@ -297,7 +297,7 @@ An ::SMT Beacon:: provides maximum privacy for the DID controller, as the DID co
 
 The `beaconType` of the `service` for an ::SMT Beacon:: is "SMTBeacon".
 
-#### Create Beacon Cohort
+#### Create SMT Beacon Cohort
 
 Creating a ::Beacon Cohort:: requires that the ::Beacon Aggregator:: define the conditions for it, advertise it, and accept enrolment by ::Beacon Participants::. The process flow involves the exchange of data between the ::Beacon Aggregator:: and ::Beacon Participants::, most notably the DIDs or indexes (hashes of DIDs) involved and the public keys for creating the n-of-n MuSig2 Bitcoin address. A detailed specification is out of scope, but most implementations operate as shown below.
 
@@ -331,7 +331,7 @@ sequenceDiagram
     A ->> R: Share P2TR Bitcoin address<br/>and cohort public keys
 ```
 
-#### Construct and Send Beacon Signal
+#### Construct and Send SMT Beacon Signal
 
 Constructing and sending an ::SMT Beacon:: signal operates roughly as follows:
 
@@ -342,7 +342,7 @@ Constructing and sending an ::SMT Beacon:: signal operates roughly as follows:
 ```mermaid
 sequenceDiagram
     autonumber
-    title SMT Beacon - Construct and Send Beacon Signal
+    title Construct and Send SMT Beacon Signal
 
     actor A as Beacon Aggregator
     actor R as Beacon Participant<br/>(multiple)
@@ -381,7 +381,7 @@ sequenceDiagram
     end
 
     A ->> A: Fill optimized SMT
-    A ->> A: Construct unsigned<br/>Beacon Signal (*)
+    A ->> A: Construct unsigned<br/>SMT Beacon Signal (*)
 
     loop For each Beacon Participant...
         A ->> A: Initialize empty proof<br/>paths map (keyed by index)
@@ -392,7 +392,7 @@ sequenceDiagram
         end
         
         A ->> R: Send proof paths map and<br/>unsigned Beacon Signal
-        R ->> R: Validate proof paths map<br/>and unsigned Beacon Signal (*)
+        R ->> R: Validate proof paths map and<br/>unsigned SMT Beacon Signal (*)
         R ->> R: Generate *secnonce* and *pubnonce*
         R ->> A: Send *pubnonce*
     end
@@ -408,13 +408,13 @@ sequenceDiagram
         A ->> A: Validate PSBT
     end
 
-    note left of A: Finalize (*)
+    note left of A: Finalize SMT Beacon<br/>Announcement (*)
 
     A ->> A: Aggregate PSBTs to create<br/>signed transaction
     A ->> A: Broadcast signed transaction
 ```
 
-##### Construct Unsigned Beacon Signal
+##### Construct Unsigned SMT Beacon Signal
 
 Given:
 
@@ -454,7 +454,7 @@ Calculate the path to the root for the index:
    1. If `node` is right of `parentNode`, add `{left: <leftHashString>}` to `path`, where `leftHashString` is the hexadecimal string representation of the value at `parentNode.leftNode`.
 1. Return `path`. 
 
-##### Validate Proof Paths Map and Unsigned Beacon Signal
+##### Validate Proof Paths Map and Unsigned SMT Beacon Signal
 
 Given:
 
@@ -479,7 +479,7 @@ Validate the proof paths map and the unsigned ::Beacon Signal:::
    1. Store `smtProof` for later presentation to verifiers.
 1. If `pathsMap` is not empty, raise InvalidParameter error.
 
-##### Finalize
+##### Finalize Map Beacon Announcement
 
 Given:
 
