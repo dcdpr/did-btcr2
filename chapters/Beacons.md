@@ -119,7 +119,7 @@ Creating a ::Beacon Cohort:: requires that the ::Beacon Aggregator:: define the 
 ```mermaid
 sequenceDiagram
     autonumber
-    title Map Beacon - Create Beacon Cohort
+    title Create Map Beacon Cohort
 
     actor A as Beacon Aggregator
     participant P as Public
@@ -301,7 +301,7 @@ Creating a ::Beacon Cohort:: requires that the ::Beacon Aggregator:: define the 
 ```mermaid
 sequenceDiagram
     autonumber
-    title SMT Beacon - Create Beacon Cohort
+    title Create SMT Beacon Cohort
 
     actor A as Beacon Aggregator
     participant P as Public
