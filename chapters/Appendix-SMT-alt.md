@@ -109,7 +109,7 @@ flowchart TD
     Hash1111 --> DataBlock1111[("Data Block 1111")]:::dataBlock
 ```
 
-To use Merkle trees to signal commitments in ::Beacons:::
+To use Merkle trees to signal commitments in ::BTC1 Beacons:::
 
 * The index (the identification of the leaf node) is the hash of the DID with the hash byte stream converted to an integer using big-endian conversion, i.e., `index = int(hash(did))`.
     * Each DID is therefore associated with one and only one leaf node.
@@ -194,7 +194,7 @@ With the additional information from the aggregator, the DID controller can now 
 }
 ```
 
-The verifier has everything necessary to process the ::BTC1 Signal::. Assuming that the verifier can match the root hash in the ::BTC Signal:: to `proof.id` and the ::BTC1 Update:: to `proof.updateId`, the proof is verified as follows:
+The verifier has everything necessary to process the ::Beacon Signal::. Assuming that the verifier can match the root hash in the ::Beacon Signal:: to `proof.id` and the ::BTC1 Update:: to `proof.updateId`, the proof is verified as follows:
 
 ```javascript
 index = int(hash(did)) // 1101
