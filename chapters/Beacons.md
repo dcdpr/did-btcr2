@@ -349,10 +349,9 @@ sequenceDiagram
     loop Until signal conditions met...
         R ->> R: Calculate index = hash(DID)
         R ->> R: Generate nonce
-        R ->> R: Calculate update = hash(nonce ^<br/>hash(BTC1 Update))
-        R ->> A: Send index and update
+        R ->> R: Calculate value = hash(hash(nonce) +<br/>hash(BTC1 Update))
+        R ->> A: Send index and value
         A ->> A: Validate index against Beacon<br/>participant's authorized list
-        A ->> A: Calculate value = hash(index +<br/>update)
         A ->> A: Set optimized SMT leaf<br/>for index to value
         note right of A: Duplicate index replaces<br/>existing value
     end
@@ -364,16 +363,15 @@ sequenceDiagram
         loop For each missing index...
             R ->> R: Validate that index is the<br/>hash of a DID expected to<br/>be in the signal and that<br/>DID has no update
             R ->> R: Generate nonce
-            R ->> R: Calculate update = hash(nonce)
-            R ->> R: Add update to updates array
+            R ->> R: Calculate value = hash(nonce)
+            R ->> R: Add value to updates array
         end
         
         R ->> A: Send updates
         note left of R: Updates must be in the<br/>same order as missing indexes
         
         loop For each missing index...
-            A ->> A: Calculate value = hash(index +<br/>update)
-            A ->> A: Set optimized SMT leaf<br/>for index to value
+            A ->> A: Set optimized SMT leaf for<br/>index to value in updates array
         end
     end
 
@@ -381,15 +379,15 @@ sequenceDiagram
     A ->> A: Construct unsigned<br/>SMT Beacon Signal (*)
 
     loop For each Beacon Participant...
-        A ->> A: Initialize empty proof<br/>paths map (keyed by index)
+        A ->> A: Initialize empty proofs<br/>map (keyed by index)
 
         loop For each index...
-            A ->> A: Construct proof path (*)
-            A ->> A: Add index and proof path<br/>to proof paths map
+            A ->> A: Construct proof (*)
+            A ->> A: Add index and proof<br/>to proofs map
         end
         
-        A ->> R: Send proof paths map and<br/>unsigned Beacon Signal
-        R ->> R: Validate proof paths map and<br/>unsigned SMT Beacon Signal (*)
+        A ->> R: Send proofs map and<br/>unsigned Beacon Signal
+        R ->> R: Validate proofs map and<br/>unsigned SMT Beacon Signal (*)
         R ->> R: Generate *secnonce* and *pubnonce*
         R ->> A: Send *pubnonce*
     end
@@ -434,47 +432,60 @@ Construct a Bitcoin transaction that spends from the Beacon address on the selec
 1. Ensure `bitcoinAddress` is funded; if not, fund this address.
 1. Initialize `unsignedSpendTx` to a Bitcoin transaction that spends a transaction controlled by the `bitcoinAddress` and contains at least one transaction output. This signal output MUST have the format `[OP_RETURN, OP_PUSHBYTES32, <signalBytes>]`. If the transaction contains multiple transaction outputs, the signal output MUST be the last transaction output.
 
-##### Construct Proof Path
+##### Construct Proof
 
 Given:
 
 * `smt` - required, optimized ::SMT::
 * `index` - required, index provided by DID controller
 
-Calculate the path to the root for the index:
+Construct the proof by calculating the path to the root for the index:
 
-1. Set `path` to empty array.
+1. Set `collapsed` to `0` (zero).
+1. Set `hashes` to empty array.
 1. Set `node` to leaf node for `index`.
 1. While `node` is not root of `smt`:
+   1. Shift `collapsed` one bit right.
    1. Set `parentNode` to parent of `node`.
-   1. If `node` is left of `parentNode`, add `{right: <rightString>}`to `path`, where `rightString` is the hexadecimal string representation of the value at `parentNode.rightNode`.
-   1. If `node` is right of `parentNode`, add `{left: <leftString>}` to `path`, where `leftString` is the hexadecimal string representation of the value at `parentNode.leftNode`.
-1. Return `path`. 
+   1. If `parentNode` has only one child, set most significant bit (2^255) of `collapsed` to `1`.
+   1. If `parentNode` has two children:
+      1. If `node` is left of `parentNode`, add `{right: <rightString>}`to `hashes`, where `rightString` is the hexadecimal string representation of the value at `parentNode.rightNode`.
+      1. If `node` is right of `parentNode`, add `{left: <leftString>}` to `hashes`, where `leftString` is the hexadecimal string representation of the value at `parentNode.leftNode`.
+1. Return the object `{collapsed: <collapsed>, hashes: <hashes>}`.
 
-##### Validate Proof Paths Map and Unsigned SMT Beacon Signal
+##### Validate Proofs Map and Unsigned SMT Beacon Signal
 
 Given:
 
-* `pathsMap` - required, proof paths map constructed as above
+* `proofsMap` - required, proofs map constructed as above
 * `unsignedSpendTx` - required, unsigned Beacon signal constructed as above
 
-Validate the proof paths map and the unsigned ::Beacon Signal:::
+Validate the proofs map and the unsigned ::Beacon Signal:::
 
 1. Validate that `unsignedSpendTx` is spending from the correct Bitcoin address.
 1. For each `did` expected to be in the ::Beacon Signal:::
    1. Set `index` to `hash(did)`.
-   1. Set `path` to the value at `index` and remove it from the map.
-   1. If `path` is undefined, raise InvalidParameter error.
+   1. Set `aggregatorProof` to the value at `index` and remove it from the map.
+   1. If `aggregatorProof` is undefined, raise InvalidParameter error.
    1. Extract the current `nonce` and `btc1Update` for `did` from local storage.
-   1. If `btc1Update` is defined, set `btc1UpdateAnnouncement` to the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm and set `verifySignalBytes` to `hash(index + hash(nonce ^ btc1UpdateAnnouncement))`, otherwise set `verifySignalBytes` to `hash(index + hash(nonce))`.
-   1. For each `step` in `path`:
-      1. Validate that `step` has a single key-value pair.
-      1. Extract `key` and `value` from `step`.
-      1. If `key` is `"left"`, set `verifySignalBytes` to `hash(value + verifySignalBytes)`; otherwise, if `key` is `"right"`, set `verifySignalBytes` to `hash(verifySignalBytes + value)`; otherwise, raise InvalidParameter error.
+   1. If `btc1Update` is defined, set `btc1UpdateAnnouncement` to the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm and set `verifySignalBytes` to `hash(hash(nonce) + btc1UpdateAnnouncement))`, otherwise set `verifySignalBytes` to `hash(hash(nonce))`.
+   1. Set `collapsedIndex` to `0` (zero).
+   1. Set `hashCount` to `0` (zero).
+   1. For each `bit` of the 256 bits in `aggregatorProof.collapsed`, from most to least significant:
+      1. If `bit` in `aggregatorProof.collapsed` is `0`:
+         1. Shift `collapsedIndex` one bit left.
+         1. If `bit` in `index` is not `0`, set least significant bit of `collapsedIndex` to `1`.
+         1. Increment `hashCount`.
+   1. Validate that `hashCount` is equal to the size of `aggregatorProof.hashes`.
+   1. For each `aggregatorHash` in `aggregatorProof.hashes`:
+      1. If least significant bit of `collapsedIndex` is `0`, set `verifySignalBytes` to `hash(verifySignalBytes + aggregatorHash)`.
+      1. If least significant bit of `collapsedIndex` is `1`, set `verifySignalBytes` to `hash(aggregatorHash + verifySignalBytes)`.
+      1. Shift `collapsedIndex` one bit right.
    1. Validate that the last transaction output of `unsignedSpendTx` is `[OP_RETURN, OP_PUSHBYTES32, <verifySignalBytes>]`.
-   1. If `btc1UpdateAnnouncement` is defined, construct as `smtProof` the object `{id: <signalString>, nonce: <nonce>, updateId: <btc1UpdateAnnouncementString>, path: <path>}`, otherwise construct as `smtProof` the object `{id: <signalString>, nonce: <nonce>, path: <path>}`, where `signalString` is the hexadecimal string representation of `verifySignalBytes` and `btc1UpdateAnnouncementString` is the hexadecimal string representation of `btc1UpdateAnnouncement`.
+   1. If `btc1UpdateAnnouncement` is defined, construct as `smtProof` the object `{id: <verifySignalBytes>, nonce: <nonce>, updateId: <btc1UpdateAnnouncement>, collapsed: <collapsed>, hashes: <aggregatorProof.hashes>}`.
+   1. If `btc1UpdateAnnouncement` is not defined, construct as `smtProof` the object `{id: <verifySignalBytes>, nonce: <nonce>, collapsed: <collapsed>, hashes: <aggregatorProof.hashes>}`.
    1. Store `smtProof` for later presentation to verifiers.
-1. If `pathsMap` is not empty, raise InvalidParameter error.
+1. If `proofsMap` is not empty, raise InvalidParameter error.
 
 ##### Finalize Map Beacon Announcement
 
@@ -553,11 +564,19 @@ Process the ::Beacon Signal:: to retrieve the ::BTC1 Update:::
 1. Set `index` to `hash(did)`.
 1. Set `nonce` to the value of `smtProof.nonce`.
 1. Set `updateId` to the value of `smtProof.updateId`.
-1. If `updateId` is defined, set `btc1UpdateAnnouncement` to the binary representation of `updateId` and set `verifySignalBytes` to `hash(index + hash(nonce ^ btc1UpdateAnnouncement))`, otherwise set `verifySignalBytes` to `hash(index + hash(nonce))`.
-1. For each `step` in `smtProof.path`:
-   1. Validate that `step` has a single key-value pair.
-   1. Extract `key` and `value` from `step`.
-   1. If `key` is `"left"`, set `verifySignalBytes` to `hash(value + verifySignalBytes)`; otherwise, if `key` is `"right"`, set `verifySignalBytes` to `hash(verifySignalBytes + value)`; otherwise, raise InvalidDidUpdate error.
+1. If `updateId` is defined, set `btc1UpdateAnnouncement` to the binary representation of `updateId` and set `verifySignalBytes` to `hash(hash(nonce) + hash(btc1UpdateAnnouncement))`, otherwise set `verifySignalBytes` to `hash(hash(nonce))`.
+1. Set `collapsedIndex` to `0` (zero).
+1. Set `hashCount` to `0` (zero).
+1. For each `bit` of the 256 bits in `smtProof.collapsed`, from most to least significant:
+    1. If `bit` in `smtProof.collapsed` is `0`:
+        1. Shift `collapsedIndex` one bit left.
+        1. If `bit` in `index` is not `0`, set least significant bit of `collapsedIndex` to `1`.
+        1. Increment `hashCount`.
+1. Validate that `hashCount` is equal to the size of `smtProof.hashes`.
+1. For each `presenterHash` in `smtProof.hashes`:
+    1. If least significant bit of `collapsedIndex` is `0`, set `verifySignalBytes` to `hash(verifySignalBytes + presenterHash)`.
+    1. If least significant bit of `collapsedIndex` is `1`, set `verifySignalBytes` to `hash(presenterHash + verifySignalBytes)`.
+    1. Shift `collapsedIndex` one bit right.
 1. If `verifySignalBytes` ≠ `signalBytes`, raise InvalidDidUpdate error.
 1. If `updateId` is undefined, return null.
 1. Get `btc1Update` from `sidecarDocumentsMap` by its `updateId` if available, or from ::CAS:: by its `updateId` if not and `cas` is defined.
