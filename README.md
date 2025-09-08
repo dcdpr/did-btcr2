@@ -25,7 +25,7 @@ The full specification may be viewed at http://dcdpr.github.io/did-btc1/.
 The specification will be compiled and available in the `_site/index.html` file.
 
 After editing the markdown files for the specification, see the `chapters` folder, 
-you will need to rerun the script `npm run pandoc-spec-local` to see the changes.
+you will need to rerun the script `npm run pandoc-spec` to see the changes.
 
 # History and Evolution of the did:btc1 DID method
 
