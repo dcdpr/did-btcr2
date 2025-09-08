@@ -363,7 +363,7 @@ sequenceDiagram
         loop For each missing index...
             R ->> R: Validate that index is the<br/>hash of a DID expected to<br/>be in the signal and that<br/>DID has no update
             R ->> R: Generate nonce
-            R ->> R: Calculate value = hash(nonce)
+            R ->> R: Calculate value = hash(hash(nonce))
             R ->> R: Add value to updates array
         end
         
@@ -504,83 +504,99 @@ Spend the transaction:
 
 Given:
 
-* `signalBytes` - required, the bytes retrieved from the last ::UTXO:: of the ::Beacon Signal::
-* `sidecarDocumentsMap` - required, map to resolve documents not stored on a ::CAS::, keyed on document hash, including:
-    * ::BTC1 Updates:: for each ::BTC1 Update Announcement::
+* `signalTx` - required, transaction within the ::Beacon Signal::
+* `signalSidecarData` required, the ::Sidecar Data:: for the ::Beacon Signal:: transaction
 * `cas` - optional, one of:
     * "ipfs"
 
 Process the ::Beacon Signal:: to retrieve the ::BTC1 Update:::
 
-1. Set `id` to the hexadecimal string representation of `signalBytes`.
-1. Get `btc1Update` from `sidecarDocumentsMap` by its `id` if available, or from ::CAS:: by its `id` if not and `cas` is defined.
+1. Validate that the last output transaction of `signalTx` is of the form `[OP_RETURN, OP_PUSHBYTES32, <signalBytes>]` and extract `signalBytes` as `btc1UpdateAnnouncement`.
+1. If `btc1Update` is in `signalSidecarData`:
+   1. Set `bct1Update` to `signalSidecarData.btc1Update`.
+   1. If the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm is not equal to `btc1UpdateAnnouncement`, raise InvalidDidUpdate error.
+1. If `btc1Update` is not in `signalSidecarData` and `cas` is defined:
+   1. Set `bct1Update` to the content identified by `btc1UpdateAnnouncement` retrieved from ::CAS::.
 1. If `btc1Update` is undefined, raise InvalidDidUpdate error.
 1. Return `btc1Update`.
 
-> **NOTE**: The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the document hash.
+> **NOTE**: The act of retrieving from ::CAS:: validates the document hash.
 
 #### Process Map Beacon Signal
 
 Given:
 
-* `did` - required, the **did:btc1** identifier whose signal is being processed
-* `signalBytes` - required, the bytes retrieved from the last ::UTXO:: of the ::Beacon Signal::
-* `sidecarDocumentsMap` - required, map to resolve documents not stored on a ::CAS::, keyed on document hash, including:
-    * Map documents for ::BTC1 Beacons:: with services of `beaconType` "MapBeacon".
-    * ::BTC1 Updates:: for each ::BTC1 Update Announcement::
+* `signalTx` - required, transaction within the ::Beacon Signal::
+* `signalSidecarData` required, the ::Sidecar Data:: for the ::Beacon Signal:: transaction
 * `cas` - optional, one of:
     * "ipfs"
 
 Process the ::Beacon Signal:: to retrieve the ::BTC1 Update:::
 
-1. Set `id` to the hexadecimal string representation of `signalBytes`.
-1. Get `map` from `sidecarDocumentsMap` by its `id` if available, or from ::CAS:: by its `id` if not and `cas` is defined.
+1. Validate that the last output transaction of `signalTx` is of the form `[OP_RETURN, OP_PUSHBYTES32, <signalBytes>]` and extract `signalBytes` as `mapBytes`.
+1. If `map` is in `signalSidecarData`:
+   1. Set `map` to `signalSidecarData.map`.
+   1. If the result of passing `map` to the [JSON Canonicalization and Hash] algorithm is not equal to `mapBytes`, raise InvalidDidUpdate error.
+1. If `map` is not in `signalSidecarData` and `cas` is defined:
+   1. Set `map` to the content identified by `mapBytes` retrieved from ::CAS::.
 1. If `map` is undefined, raise InvalidDidUpdate error.
-1. Set `updateId` to the value of `map.<did>`.
-1. If `updateId` is undefined, return null.
-1. Get `btc1Update` from `sidecarDocumentsMap` by its `updateId` if available, or from ::CAS:: by its `updateId` if not and `cas` is defined.
+1. Set `btc1UpdateAnnouncement` to `map.<did>`.
+1. If `btc1UpdateAnnouncement` is undefined, return null.
+1. If `btc1Update` is in `signalSidecarData`:
+   1. Set `bct1Update` to `signalSidecarData.btc1Update`.
+   1. If the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm is not equal to `btc1UpdateAnnouncement`, raise InvalidDidUpdate error.
+1. If `btc1Update` is not in `signalSidecarData` and `cas` is defined:
+    1. Set `bct1Update` to the content identified by `btc1UpdateAnnouncement` retrieved from ::CAS::.
 1. If `btc1Update` is undefined, raise InvalidDidUpdate error.
 1. Return `btc1Update`.
 
-> **NOTE**: The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the document hash.
+> **NOTE**: The act of retrieving from ::CAS:: validates the document hash.
 
 #### Process SMT Beacon Signal
 
 Given:
 
-* `did` - required, the **did:btc1** identifier whose signal is being processed
-* `signalBytes` - required, the bytes retrieved from the last ::UTXO:: of the ::Beacon Signal::
-* `sidecarDocumentsMap` - required, map to resolve documents not stored on a ::CAS::, keyed on document hash, including:
-    * ::BTC1 Updates:: for each ::BTC1 Update Announcement::
-* `smtProofsMap` - map of SMT proofs of inclusion or non-inclusion, keyed on the SMT proof ID
+* `signalTx` - required, transaction within the ::Beacon Signal::
+* `signalSidecarData` required, the ::Sidecar Data:: for the ::Beacon Signal:: transaction
 * `cas` - optional, one of:
     * "ipfs"
 
 Process the ::Beacon Signal:: to retrieve the ::BTC1 Update:::
 
-1. Set `id` to the hexadecimal string representation of `signalBytes`.
-1. Get `smtProof` from `smtProofsMap` by its `id`.
+1. Validate that the last output transaction of `signalTx` is of the form `[OP_RETURN, OP_PUSHBYTES32, <signalBytes>]` and extract `signalBytes` as `smtProofBytes`.
+1. Set `smtProof` to `signalSidecarData.smtProof`.
 1. If `smtProof` is undefined, raise InvalidDidUpdate error.
+1. If `smtProof.id` is not equal to `smtProofBytes`, raise InvalidDidUpdate error.
 1. Set `index` to `hash(did)`.
-1. Set `nonce` to the value of `smtProof.nonce`.
-1. Set `updateId` to the value of `smtProof.updateId`.
-1. If `updateId` is defined, set `btc1UpdateAnnouncement` to the binary representation of `updateId` and set `verifySignalBytes` to `hash(hash(nonce) + hash(btc1UpdateAnnouncement))`, otherwise set `verifySignalBytes` to `hash(hash(nonce))`.
+1. Set `nonce` to `smtProof.nonce`.
+1. Set `btc1UpdateAnnouncement` to `smtProof.updateId`.
+1. If `btc1UpdateAnnouncement` is defined:
+   1. If `btc1Update` is in `signalSidecarData`:
+      1. Set `bct1Update` to `signalSidecarData.btc1Update`.
+      1. If the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm is not equal to `btc1UpdateAnnouncement`, raise InvalidDidUpdate error.
+   1. If `btc1Update` is not in `signalSidecarData` and `cas` is defined:
+      1. Set `bct1Update` to the content identified by `btc1UpdateAnnouncement` retrieved from ::CAS::.
+   1. If `btc1Update` is undefined, raise InvalidDidUpdate error.
+   1. Set `verifySMTProofBytes` to `hash(hash(nonce) + hash(btc1UpdateAnnouncement))`.
+1. If `btc1UpdateAnnouncement` is not defined:
+   1. Set `bct1Update` to null.
+   1. Set `verifySMTProofBytes` to `hash(hash(nonce))`.
 1. Set `collapsedIndex` to `0` (zero).
 1. Set `hashCount` to `0` (zero).
 1. For each `bit` of the 256 bits in `smtProof.collapsed`, from most to least significant:
-    1. If `bit` in `smtProof.collapsed` is `0`:
-        1. Shift `collapsedIndex` one bit left.
-        1. If `bit` in `index` is not `0`, set least significant bit of `collapsedIndex` to `1`.
-        1. Increment `hashCount`.
+   1. If `bit` in `smtProof.collapsed` is `0`:
+      1. Shift `collapsedIndex` one bit left.
+      1. If `bit` in `index` is not `0`, set least significant bit of `collapsedIndex` to `1`.
+      1. Increment `hashCount`.
 1. Validate that `hashCount` is equal to the size of `smtProof.hashes`.
 1. For each `presenterHash` in `smtProof.hashes`:
-    1. If least significant bit of `collapsedIndex` is `0`, set `verifySignalBytes` to `hash(verifySignalBytes + presenterHash)`.
-    1. If least significant bit of `collapsedIndex` is `1`, set `verifySignalBytes` to `hash(presenterHash + verifySignalBytes)`.
-    1. Shift `collapsedIndex` one bit right.
-1. If `verifySignalBytes` ≠ `signalBytes`, raise InvalidDidUpdate error.
+   1. If least significant bit of `collapsedIndex` is `0`, set `verifySMTProofBytes` to `hash(verifySMTProofBytes + presenterHash)`.
+   1. If least significant bit of `collapsedIndex` is `1`, set `verifySMTProofBytes` to `hash(presenterHash + verifySMTProofBytes)`.
+   1. Shift `collapsedIndex` one bit right.
+1. If `verifySMTProofBytes` ≠ `smtProofBytes`, raise InvalidDidUpdate error.
 1. If `updateId` is undefined, return null.
 1. Get `btc1Update` from `sidecarDocumentsMap` by its `updateId` if available, or from ::CAS:: by its `updateId` if not and `cas` is defined.
 1. If `btc1Update` is undefined, raise InvalidDidUpdate error.
 1. Return `btc1Update`.
 
-> **NOTE**: The act of retrieving from `sidecarDocumentsMap` validates the document hash.
+> **NOTE**: The act of retrieving from ::CAS:: validates the document hash.
