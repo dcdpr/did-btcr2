@@ -1,24 +1,5 @@
 ## Terminology
 
-BTC1 Beacon
-
-: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTC1 Update Announcements::. 
-
-BTC1 Beacons
-
-: ::BTC1 Beacon::
-
-: ::BTC1 Beacon::
-
-Singleton Beacon
-
-: A Singleton Beacon enables a single entity to independently post a ::DID Update
-  Payload:: in a ::Beacon Signal::.
-
-Singleton Beacons
-
-: ::Singleton Beacon::
-
 Aggregate Beacon
 
 : An Aggregate Beacon enables multiple entities (possibly controlling multiple
@@ -32,13 +13,60 @@ Aggregate Beacons
 
 : ::Aggregate Beacon::
 
-Beacon Type
+Announced BTC1 Update
 
-: One of SingletonBeacon, CIDAggregateBeacon, or SMTAggregateBeacon.
+: A ::BTC1 Update:: that has been announced in an ::Authorized Beacon Signal:: 
+which has met the specified threshold for confirmation.
 
-Beacon Types
+Announced BTC1 Updates
 
-: ::Beacon Type::
+: ::Announced BTC1 Update::
+
+Authorized Beacon Signal
+
+: An Authorized Beacon Signal is a ::Beacon Signal:: from a ::BTC1 Beacon:: with a ::BTC1 Beacon::
+  address in a then-current DID document.
+
+Authorized Beacon Signals
+
+: ::Authorized Beacon Signal::
+
+Beacon Aggregator
+
+: The entity that coordinates the protocols of an aggregate ::BTC1 Beacon::. 
+Specifically the Create Beacon Cohort and Announce Beacon Signal protocols.
+
+Beacon Aggregators
+
+: ::Beacon Aggregator::
+
+Beacon Announcement Map
+
+: A document that maps **did:btc1** identifiers to ::BTC1 Update Announcements::. 
+  This is used to distinguish which ::BTC1 Update Announcement:: applies to which 
+  **did:btc1** identifier.
+
+Beacon Announcement Maps
+
+: ::Beacon Announcement Map::
+
+Beacon Cohort
+
+: The set of unique cryptographic keys participating in a ::BTC1 Beacon:: that are required to
+authorize spends from the ::Beacon Address::.
+
+Beacon Cohorts
+
+: ::Beacon Cohort::
+
+Beacon Participant
+
+: A member of a ::Beacon Cohort::, typically a DID controller, that controls cryptographic keys required 
+to partially authorize spends from a ::Beacon Address::.
+
+Beacon Participants
+
+: ::Beacon Participant::
 
 Beacon Signal
 
@@ -55,61 +83,6 @@ Beacon Signals
 
 : ::Beacon Signal::
 
-Authorized Beacon Signal
-
-: An Authorized Beacon Signal is a ::Beacon Signal:: from a ::BTC1 Beacon:: with a ::BTC1 Beacon::
-  address in a then-current DID document.
-
-Authorized Beacon Signals
-
-: ::Authorized Beacon Signal::
-
-BTC1 Update Announcement
-
-: A 32 byte SHA256 hash committing to a ::BTC1 Update:: that has been broadcast by a ::BTC1 Beacon:: in an 
-  ::Authorized Beacon Signal::. ::Beacon Signals:: can include one or more BTC1 Update Announcements. 
-  How ::Beacon Signals:: include announcements is defined by the ::Beacon Type::.
-
-BTC1 Update Announcements
-
-: ::BTC1 Update Announcement::
-
-BTC1 Update
-
-: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btc1** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTC1 Update:: document.
-
-BTC1 Updates
-
-: ::BTC1 Update::
-
-Unsecured BTC1 Update
-
-: A ::BTC1 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btc1** DID document. 
-An Usecured BTC1 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
-along with the new version of the DID document and the source and target hashes of the DID document
-identifying the source DID document that the patch should be applied to and the target DID document that results from appliying the patch.
-
-Unsecured BTC1 Updates
-
-: ::Unsecured BTC1 Update::
-
-Pending BTC1 Update
-
-: A ::BTC1 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
-
-Pending BTC1 Updates
-
-: ::Pending BTC1 Update::
-
-Announced BTC1 Update
-
-: A ::BTC1 Update:: that has been announced in an ::Authorized Beacon Signal:: 
-which has met the specified threshold for confirmation.
-
-Announced BTC1 Updates
-
-: ::Announced BTC1 Update::
-
 Beacon Type
 
 : The type of a ::BTC1 Beacon::. The Beacon Type defines how ::BTC1 Update Announcements:: 
@@ -121,13 +94,73 @@ Beacon Types
 
 : ::Beacon Type::
 
-Singleton Beacon
 
-: A type of ::BTC1 Beacon:: whose ::Beacon Signals:: each contain a single ::BTC1 Update Announcement::.
 
-Singleton Beacons
+BTC1 Beacon
 
-: ::Singleton Beacon::
+: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTC1 Update Announcements::. 
+
+BTC1 Beacons
+
+: ::BTC1 Beacon::
+
+: ::BTC1 Beacon::
+
+BTC1 Update
+
+: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btc1** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTC1 Update:: document.
+
+BTC1 Updates
+
+: ::BTC1 Update::
+
+BTC1 Update Announcement
+
+: A 32 byte SHA256 hash committing to a ::BTC1 Update:: that has been broadcast by a ::BTC1 Beacon:: in an 
+  ::Authorized Beacon Signal::. ::Beacon Signals:: can include one or more BTC1 Update Announcements. 
+  How ::Beacon Signals:: include announcements is defined by the ::Beacon Type::.
+
+BTC1 Update Announcements
+
+: ::BTC1 Update Announcement::
+
+Content Addressable Storage
+
+: Content Addressable Storage (CAS) is a data storage system where content is
+  addressable using ::Content Identifiers:: (CIDs). The InterPlanetary File System
+  (IPFS) is an example of CAS.
+
+CAS
+
+: ::Content Addressable Storage::
+
+Content Identifier
+
+: A Content Identifier (CID) is an identifier for some digital content (e.g., a
+  file) generated from the content itself such that for any given content and CID
+  generation algorithm there is a single, unique, collision-resistant identifier.
+  This is typically done through some hashing function.
+
+Content Identifiers
+
+: ::Content Identifier::
+
+CID
+
+: ::Content Identifier::
+
+CIDs
+
+: ::Content Identifier::
+
+
+
+
+Invocation
+
+: See [Authorization Capabilities for Linked Data v0.3](https://w3c-ccg.github.io/zcap-spec/#terminology)
+
+
 
 Map Beacon
 
@@ -137,52 +170,6 @@ Map Beacon
 Map Beacons
 
 : ::Map Beacon::
-
-Beacon Announcement Map
-
-: A document that maps **did:btc1** identifiers to ::BTC1 Update Announcements::. 
-  This is used to distinguish which ::BTC1 Update Announcement:: applies to which 
-  **did:btc1** identifier.
-
-Beacon Announcement Maps
-
-: ::Beacon Announcement Map::
-
-SMT Beacon
-
-: A type of ::BTC1 Beacon:: which aggregates multiple ::BTC1 Update Announcements::.  
-  A ::Beacon Signal:: from an SMT Beacon contains the root of an optimized ::Sparse Merkle Tree::.
-
-SMT Beacons
-
-: ::SMT Beacon::
-
-Beacon Cohort
-
-: The set of unique cryptographic keys participating in a ::BTC1 Beacon:: that are required to
-authorize spends from the ::Beacon Address::.
-
-Beacon Cohorts
-
-: ::Beacon Cohort::
-
-Beacon Aggregator
-
-: The entity that coordinates the protocols of an aggregate ::BTC1 Beacon::. 
-Specifically the Create Beacon Cohort and Announce Beacon Signal protocols.
-
-Beacon Aggregators
-
-: ::Beacon Aggregator::
-
-Beacon Participant
-
-: A member of a ::Beacon Cohort::, typically a DID controller, that controls cryptographic keys required 
-to partially authorize spends from a ::Beacon Address::.
-
-Beacon Participants
-
-: ::Beacon Participant::
 
 Merkle Tree
 
@@ -197,6 +184,53 @@ Merkle Tree
 Merkle Trees
 
 : ::Merkle Tree::
+
+Pending BTC1 Update
+
+: A ::BTC1 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
+
+Pending BTC1 Updates
+
+: ::Pending BTC1 Update::
+
+
+Schnorr Signature
+
+: An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures 
+  with some major advantages, such as being able to combine digital signatures 
+  from multiple parties to form a single digital signature for the composite public key.
+
+  Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same
+  keypairs can be used to produce both Schnorr signatures and ECDSA signatures.
+
+Schnorr Signatures
+
+: ::Schnorr Signature::
+
+Schnorr
+
+: ::Schnorr Signature::
+
+Singleton Beacon
+
+: A type of ::BTC1 Beacon:: whose ::Beacon Signals:: each contain a single ::BTC1 Update Announcement::.
+
+Singleton Beacons
+
+: ::Singleton Beacon::
+
+
+
+
+
+SMT Beacon
+
+: A type of ::BTC1 Beacon:: which aggregates multiple ::BTC1 Update Announcements::.  
+  A ::Beacon Signal:: from an SMT Beacon contains the root of an optimized ::Sparse Merkle Tree::.
+
+SMT Beacons
+
+: ::SMT Beacon::
 
 Sparse Merkle Tree
 
@@ -217,32 +251,25 @@ Spares Merkle Trees
 
 : ::Sparse Merkle Tree::
 
-Invocation
-
-: See [Authorization Capabilities for Linked Data v0.3](https://w3c-ccg.github.io/zcap-spec/#terminology)
-
-Schnorr Signature
-
-: An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures 
-  with some major advantages, such as being able to combine digital signatures 
-  from multiple parties to form a single digital signature for the composite public key.
-
-  Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same
-  keypairs can be used to produce both Schnorr signatures and ECDSA signatures.
-
-Schnorr Signatures
-
-: ::Schnorr Signature::
-
-Schnorr
-
-: ::Schnorr Signature::
 
 Taproot
 
 : Taproot is an upgrade to the Bitcoin blockchain implemented in November 2021.
   This upgrade enabled Bitcoin transactions to be secured using ::Schnorr Signatures::
   through the introduction of a new address, a Taproot address.
+
+Unsecured BTC1 Update
+
+: A ::BTC1 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btc1** DID document. 
+An Usecured BTC1 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
+along with the new version of the DID document and the source and target hashes of the DID document
+identifying the source DID document that the patch should be applied to and the target DID document that results from appliying the patch.
+
+Unsecured BTC1 Updates
+
+: ::Unsecured BTC1 Update::
+
+
 
 Unspent Transaction Output
 
@@ -264,34 +291,34 @@ UTXOs
 
 : ::Unspent Transaction Output::
 
-Content Identifier
 
-: A Content Identifier (CID) is an identifier for some digital content (e.g., a
-  file) generated from the content itself such that for any given content and CID
-  generation algorithm there is a single, unique, collision-resistant identifier.
-  This is typically done through some hashing function.
 
-Content Identifiers
 
-: ::Content Identifier::
 
-CID
 
-: ::Content Identifier::
 
-CIDs
 
-: ::Content Identifier::
 
-Content Addressable Storage
 
-: Content Addressable Storage (CAS) is a data storage system where content is
-  addressable using ::Content Identifiers:: (CIDs). The InterPlanetary File System
-  (IPFS) is an example of CAS.
 
-CAS
 
-: ::Content Addressable Storage::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Non-Repudiation
 

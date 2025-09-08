@@ -10,6 +10,9 @@ lang: en
 <br>This specification is still under active development and may be subject to breaking changes.
 <br>Once we have finalized the specification text a stable v1.0 of the specification  will be published.
 
+### Published at {.unnumbered .unlisted}
+[https://dcdpr.github.io/did-btc1/](https://dcdpr.github.io/did-btc1/)
+
 ### Authors {.unnumbered .unlisted}
 
 ::: {.unformattedTable}
