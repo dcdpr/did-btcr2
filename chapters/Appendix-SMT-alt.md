@@ -185,7 +185,7 @@ With the additional information from the aggregator, the DID controller can now 
   "id": "<< Hexadecimal of Root Hash >>",
   "nonce": "<< Hexadecimal of Nonce 1101 >>",
   "updateId": "<< Hexadecimal of hash(Data Block 1101) >>",
-  "compressed": "<< Hexadecimal of 0001 >>",
+  "collapsed": "<< Hexadecimal of 0001 >>",
   "hashes": [
       "<< Hexadecimal of Hash 1110 >>",
       "<< Hexadecimal of Hash 1001 >>",
@@ -201,21 +201,21 @@ index = int(hash(did)) // 1101
 
 candidateHash = hash(hash(proof.nonce) + proof.updateId)
 
-// First compressed bit from right is 1, so index bit doesn't apply.
+// First collapsed bit from right is 1, so index bit doesn't apply.
 // Skip first index bit.
 // Candidate hash is unchanged.
 
-// Next compressed bit from right is 0, so index bit applies.
+// Next collapsed bit from right is 0, so index bit applies.
 // Next index bit from right is 0.
 // Candidate hash goes to the left against the next listed hash.
 candidateHash = hash(candidateHash, "Hash 1110")
 
-// Next compressed bit from right is 0, so index bit applies.
+// Next collapsed bit from right is 0, so index bit applies.
 // Next index bit from right is 1.
 // Candidate hash goes to the right against the next listed hash.
 candidateHash = hash("Hash 1001", candidateHash)
 
-// Next compressed bit from right is 0, so index bit applies.
+// Next collapsed bit from right is 0, so index bit applies.
 // Next index bit from right is 1.
 // Candidate hash goes to the right against the next listed hash.
 candidateHash = hash("Hash 0", candidateHash)
