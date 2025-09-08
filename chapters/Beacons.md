@@ -80,7 +80,7 @@ Given:
     * "testnet3"
     * "testnet4"
     * "mutinynet"
-    * number
+    * number: 1, 2, 3 or 4
 * `serviceEndpoint` - required, a Bitcoin address represented as a URI
 * One and only one of, required:
     * `btc1Update` - the ::BTC1 Update:: whose SHA256 hash is the ::BTC1 Update Announcement:: to be broadcast in the ::Beacon Signal::
@@ -91,7 +91,7 @@ Given:
 Construct a Bitcoin transaction that spends from the Beacon address on the selected network:
 
 1. If `network` is not a valid value per above, raise ::INVALID_PARAMETER:: error.
-1. if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
+1. Else if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
 1. If `cas` is defined and is not a valid value per above, raise ::INVALID_PARAMETER:: error.
 1. Set `bitcoinAddress` to the decoding of `serviceEndpoint` following BIP21.
 1. Ensure `bitcoinAddress` is funded; if not, fund this address.
@@ -243,14 +243,14 @@ Given:
     * "testnet3"
     * "testnet4"
     * "mutinynet"
-    * number
+    * number: 1, 2, 3, or 4
 * `serviceEndpoint` - required, a Bitcoin address represented as a URI
 * `beaconAnnouncementMap` - required, ::Beacon Announcement Map:: created as above
 
 Construct a Bitcoin transaction that spends from the Beacon address on the selected network:
 
 1. If `network` is not a valid value per above, raise ::INVALID_PARAMETER:: error.
-1. if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
+1. Else if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
 1. Set `bitcoinAddress` to the decoding of `serviceEndpoint` following BIP21.
 1. Ensure `bitcoinAddress` is funded; if not, fund this address.
 1. Set `hashBytes` to the result of passing the JSON representation of `beaconAnnouncementMap` to the [JSON Canonicalization and Hash] algorithm.
@@ -425,14 +425,14 @@ Given:
     * "testnet3"
     * "testnet4"
     * "mutinynet"
-    * number
+    * number: 1, 2, 3, or 4
 * `serviceEndpoint` - required, a Bitcoin address represented as a URI
 * `hashBytes` - required, root hash of optimized ::SMT::
 
 Construct a Bitcoin transaction that spends from the Beacon address on the selected network:
 
 1. If `network` is not a valid value per above, raise ::INVALID_PARAMETER:: error.
-1. if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
+1. Else if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
 1. Set `bitcoinAddress` to the decoding of `serviceEndpoint` following BIP21.
 1. Ensure `bitcoinAddress` is funded; if not, fund this address.
 1. Initialize `unsignedSpendTx` to a Bitcoin transaction that spends a transaction controlled by the `bitcoinAddress` and contains at least one transaction output. This signal output MUST have the format `[OP_RETURN, OP_PUSHBYTES32, <hashBytes>]`. If the transaction contains multiple transaction outputs, the signal output MUST be the last transaction output.

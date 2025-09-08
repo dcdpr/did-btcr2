@@ -111,19 +111,19 @@ Given:
   * "testnet3"
   * "testnet4"
   * "mutinynet"
-  * number
+  * number: 1, 2, 3, or 4
 * `genesisBytes` - required, byte array, one of:
   * a compressed secp256k1 public key if `idType` is "key"
   * a hash of an initiating external DID document if `idType` is "external"
 
 Encode the **did:btc1** identifier as follows:
 
-1. If `idType` is not a valid value per above, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
-1. If `version` is greater than `1`, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
-1. If `network` is not a valid value per above, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
-1. if `network` is a number and is outside the range of 1-4, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
+1. If `idType` is not a valid value per above, raise ::INVALID_PARAMETER:: error.
+1. If `version` is greater than `1`, raise ::INVALID_PARAMETER:: error.
+1. If `network` is not a valid value per above, raise ::INVALID_PARAMETER:: error.
+1. if `network` is a number and is outside the range of 1-4, raise ::INVALID_PARAMETER:: error.
 1. If `idType` is "key" and `genesisBytes` is not a valid compressed secp256k1
-   public key, raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
+   public key, raise ::INVALID_PARAMETER:: error.
 1. Map `idType` to `hrp` from the following:
    1. "key" - "k"
    1. "external" - "x"

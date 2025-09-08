@@ -59,8 +59,6 @@ The function returns the retrieved `content` or null.
 
 ### Root did:btc1 Update Capabilities
 
-Note: Not sure if these algorithms should go here or in the appendix?
-
 #### Derive Root Capability from **did:btc1** Identifier
 
 This algorithm deterministically generates an [Authorization Capabilities for Linked Data](https://w3c-ccg.github.io/zcap-spec/) (ZCAP-LD) root capability from a given **did:btc1** identifier. Each root 

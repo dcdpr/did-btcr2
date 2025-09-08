@@ -331,7 +331,7 @@ It takes the following inputs:
   * `genesisBytes` - the originating ::Intermediate DID Document::; REQUIRED; bytes.
 * `initialDocument` - the ::Initial DID Document:: for the given identifier.
 
-It returns the following outputs or raises an error:
+It returns the following output or raises an error:
 
 * `initialDocument` - a valid ::Initial DID Document:: for the given identifier.
 
@@ -378,8 +378,8 @@ The steps are as follows:
 
 #### Resolve Target Document
 
-The Resolve Target Document algorithm resolves a DID document from an initial
-document by walking the Bitcoin blockchain to identify ::Beacon Signals:: that
+The Resolve Target Document algorithm resolves a DID document from an ::Initial DID Document::
+by walking the Bitcoin blockchain to identify ::Beacon Signals:: that
 announce ::BTC1 Updates:: applicable to the **did:btc1** identifier being
 resolved. 
 
@@ -412,7 +412,7 @@ The steps are as follows:
    `resolutionOptions.versionId`.
 1. Else if `resolutionOptions.versionTime` is not null, set `targetTime` to
    `resolutionOptions.versionTime`.
-1. Else set `targetTime` to the UNIX timestamp for now at the moment of execution.
+1. Else set `targetTime` to the UNIX timestamp for `now` at the moment of execution.
 1. Set `signalsMetadata` to `resolutionOptions.sidecarData.signalsMetadata`.
 1. Set `currentVersionId` to 1.
 1. If `currentVersionId` equals `targetVersionId` return `initialDocument`.
@@ -534,8 +534,8 @@ Note: It is recommended that you use a Bitcoin indexer and API to query the Bitc
 
 It takes the following inputs:
 
-* `contemporaryBlockheight` - The height of the block this function is looking for 
-   ::Beacon Signals:: in; REQUIRED; integer greater or equal to 0.
+* `contemporaryBlockheight` - The height of the block to look in for
+   ::Beacon Signals::; REQUIRED; integer greater or equal to 0.
 * `beacons` - An array of ::BTC1 Beacon:: services in the ::Contemporary DID document::; REQUIRED; array;
    Each Beacon is a structure with the following properties:
     * `id` - The id of the ::Beacon Service:: in the DID document; REQUIRED; string.
@@ -772,7 +772,7 @@ It returns the following output:
 The steps are as follows:
 
 1. Check that `sourceDocument.id` equals `btc1Identifier` else MUST raise
-   `invalidDidUpdate` error.
+   ::INVALID_DID_UPDATE:: error.
 1. Initialize `unsecuredBtc1Update` to an empty object.
 1. Set `unsecuredBtc1Update.@context` to the following list.
    `["https://w3id.org/zcap/v1", "https://w3id.org/security/data-integrity/v2", 
@@ -781,7 +781,7 @@ The steps are as follows:
 1. Set `targetDocument` to the result of applying the `documentPatch` to the
    `sourceDocument`, following the JSON Patch specification.
 1. Validate `targetDocument` is a conformant DID document, else MUST raise
-   `invalidDidUpdate` error.
+   ::INVALID_DID_UPDATE:: error.
 1. Set `sourceHashBytes` to the result of passing `sourceDocument` into
    the [JSON Canonicalization and Hash] algorithm.
 1. Set `unsecuredBtc1Update.sourceHash` to the base64 of `sourceHashBytes`.

@@ -33,11 +33,11 @@ Any ::CAS:: that provides a deterministic mapping from a SHA256 hash of a file m
 be used, and a resolver SHOULD be informed of the specific ::CAS:: mechanism so that
 it can retrieve documents associated with a **did:btc1** identifier efficiently.
 If the ::CAS:: mechanism is not provided, the resolver MAY iterate through all
-supported ::CAS:: mechanisms to find the files or it MAY return with an error
+supported ::CAS:: mechanisms to find the files, or it MAY return with an error
 indicating that the ::CAS:: mechanism is required.
 
 At this time, IPFS is the only known ::CAS:: to provide a deterministic mapping from
-a SHA256 hash. Others may be documented in future, but the absence of any ::CAS::
+a SHA256 hash. Others may be documented in the future, but the absence of any ::CAS::
 from this or any future version of this specification MUST NOT impede its usage,
 provided there is agreement between the DID controller, relying party, and
 resolver on the use of such an algorithm.
