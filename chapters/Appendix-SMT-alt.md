@@ -114,7 +114,7 @@ To use Merkle trees to signal commitments in ::BTC1 Beacons:::
 * The index (the identification of the leaf node) is the hash of the DID with the hash byte stream converted to an integer using big-endian conversion, i.e., `index = int(hash(did))`.
     * Each DID is therefore associated with one and only one leaf node.
     * Binding the index to the DID ensures that no other index can be used by a nefarious actor to post an update to the DID.
-    * This leaves a lot of unused leaves, which makes this a sparse Merkle tree.
+    * This produces a data structure with lots of unused leaves, making it a sparse Merkle tree.
 * The value stored at a leaf node is the hash of a 256-bit nonce, concatenated with the hash of the ::BTC1 Update:: (the ::BTC1 Update Announcement::) if available, with the resulting stream hashed again, i.e., `value = hash(hash(nonce) + hash(btc1Update))` if there is a ::BTC1 Update:: or `value = hash(hash(nonce))` if there is not.
     * Provided that it is unique per DID and per signal, the use of a nonce ensures that updates and non-updates are indistinguishable to outside parties (aggregators, other DID controllers, verifiers) unless explicitly informed by the DID controller.
     * The hashing of the nonce ensures that verifiers with limited input validation deal only with a 256-bit result.
@@ -171,7 +171,7 @@ flowchart TD
     Hash1101 --> DataBlock1101[("Data Block 1101")]:::dataBlock
 ```
 
-The DID controller has to prove that there is either an update or a non-update in the ::Beacon Signal::. To prove an update, the DID controller provides the nonce and either the ::BTC1 Update:: (from which the verifier must calculate the hash) or the hash (which the verifier can use to retrieve the ::BTC1 Update:: from ::Sidecar Data:: or ::CAS::); to prove a non-update, the DID controller provides only the nonce. In addition, the DID controller must provide the verifier with the list of collapsed parents and hashes of each peer in the tree as the verifier walks up it to calculate the root hash against which to compare with the root hash in the ::Beacon Signal::.
+The DID controller has to prove that there is either an update or a non-update in the ::Beacon Signal::. To prove an update, the DID controller provides the nonce and either the ::BTC1 Update:: or the hash; to prove a non-update, the DID controller provides the nonce. In addition, the DID controller provides the list of collapsed parents and hashes of each peer in the tree necessary to recalculate the root hash against which to compare with the value in the ::Beacon Signal::.
 
 Assuming that the DID of interest is at index 13 (`int(hash(did)) == int(1101) == 13`), the aggregator (the party responsible for constructing the sparse Merkle tree) must provide the DID controller with:
 
