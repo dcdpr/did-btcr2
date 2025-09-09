@@ -59,8 +59,6 @@ The function returns the retrieved `content` or null.
 
 ### Root did:btc1 Update Capabilities
 
-Note: Not sure if these algorithms should go here or in the appendix?
-
 #### Derive Root Capability from **did:btc1** Identifier
 
 This algorithm deterministically generates an [Authorization Capabilities for Linked Data](https://w3c-ccg.github.io/zcap-spec/) (ZCAP-LD) root capability from a given **did:btc1** identifier. Each root 
@@ -79,7 +77,7 @@ The algorithm takes in a **did:btc1** identifier and returns a `rootCapability` 
 1. Set `rootCapability.invocationTarget` to `identifier`.
 1. Return `rootCapability`.
 
-Below is an example root capability for updating the DID document for **did:btc1:k1q0rnnwf657vuu8trztlczvlmphjgc6q598h79cm6sp7c4fgqh0fkc0vzd9u**:
+Below is an example root capability for updating the DID document for **did:btc1:k1qqpuwwde82nennsavvf0lqfnlvx7frrgzs57lchr02q8mz49qzaaxmqphnvcx**:
 
 ```{.json include="json/CRUD-Operations/Update-zcap-root-capability.json"}
 ```
@@ -107,7 +105,7 @@ This algorithm takes in a `capabilityId` and returns a `rootCapability` object.
 
 Below is an example of a `btc1Update`. An invoked [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/)
 capability containing a `patch` defining how the DID document for
-**did:btc1:k1q0rnnwf657vuu8trztlczvlmphjgc6q598h79cm6sp7c4fgqh0fkc0vzd9u** SHOULD
+**did:btc1:k1qqpuwwde82nennsavvf0lqfnlvx7frrgzs57lchr02q8mz49qzaaxmqphnvcx** SHOULD
 be mutated.
 
 ```{.json include="json/CRUD-Operations/Update-zcap-root-capability-patch.json"}
