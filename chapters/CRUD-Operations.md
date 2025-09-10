@@ -13,7 +13,7 @@ To create a **did:btc1** identifier from an initial DID document, use **Algo 2: 
 
 The output of encoding the ::genesis bytes:: is the newly created DID.
 
-Note: When creating from a ::genesis document::, it is likely that creators will want to include information, such as ::**Beacons::** and other service endpoints, which requires online interactions, e.g., to establish a unique ::Beacon address:: for updates.
+Note: When creating from a ::genesis document::, it is likely that creators will want to include information, such as **::Beacons::** and other service endpoints, which requires online interactions, e.g., to establish a unique ::Beacon address:: for updates.
 
 #### [Algo]{.algo-number-after}: Create Genesis Bytes from Public Key {.tabbed}
 
