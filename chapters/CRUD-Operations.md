@@ -65,10 +65,9 @@ The steps are as follows:
 
 The identifier uses a [**bech32m**](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) encoding of input bytes composed of the version, network and ::genesis bytes::. The value of the version MUST be 1. The value of the network must be according to the table below to declare which Bitcoin network anchors the identifier.
 
-The input bytes to the bech32m algorithm are constructed as follows: the first byte is the version and the network, with the version minus one in the low nibble and the value from the network table in the high nibble. The ::genesis bytes:: are then appended to the first byte to produce the input bytes. Encode the input bytes using the bech32m algorithm with the human readable part (hrp) value set to the ASCII value of either ‘k’ or ‘x’, depending on the type of the identifier. For btc1 DIDs generated from an initial secp256k1 public key, use ‘k’ for btc1 DIDs generated with a genesis document, use ‘x’. The result of the encoding is the method specific identifier. Prepend the method specific identifier with the UTF-8 string ‘did:btc1:’ to create the DID.
+The input bytes to the bech32m algorithm are constructed as follows: the first byte is the version and the network, with the version minus one in the low nibble and the value from the network table in the high nibble. The genesis bytes are then appended to the first byte to produce the input bytes. Encode the input bytes using the bech32m algorithm with the human readable part (hrp) value set to the ASCII value of either ‘k’ or ‘x’, depending on the type of the identifier. For btc1 DIDs generated from an initial secp256k1 public key, use ‘k’ for btc1 DIDs generated with a genesis document, use ‘x’. The result of the encoding is the method specific identifier. Prepend the method specific identifier with the UTF-8 string ‘did:btc1:’ to create the DID.
 
-> [!NOTE]
-> In future versions of this algorithm, it is expected that the version could take up more than one nibble with the nibble set to F indicating that the next nibble should be considered a part of the version.
+NOTE: In future versions of this algorithm, it is expected that the version could take up more than one nibble with the nibble set to F indicating that the next nibble should be considered a part of the version.
 
 | Network          | Value |
 |:-----------------|:------|
