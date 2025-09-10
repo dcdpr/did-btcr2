@@ -352,7 +352,7 @@ sequenceDiagram
     loop Until signal conditions met...
         R ->> R: Calculate index = hash(DID)
         R ->> R: Generate nonce
-        R ->> R: Calculate update = hash(nonce ^<br/>hash(BTC1 Update))
+        R ->> R: Calculate update = hash(hash(nonce) +<br/>hash(BTC1 Update))
         R ->> A: Send index and update
         A ->> A: Validate index against Beacon<br/>participant's authorized list
         A ->> A: Calculate value = hash(index +<br/>update)
@@ -367,7 +367,7 @@ sequenceDiagram
         loop For each missing index...
             R ->> R: Validate that index is the<br/>hash of a DID expected to<br/>be in the signal and that<br/>DID has no update
             R ->> R: Generate nonce
-            R ->> R: Calculate update = hash(nonce)
+            R ->> R: Calculate update = hash(hash(nonce))
             R ->> R: Add update to updates array
         end
         
@@ -469,7 +469,7 @@ Validate the proof paths map and the unsigned ::Beacon Signal:::
    1. Set `path` to the value at `index` and remove it from the map.
    1. If `path` is undefined, raise InvalidParameter error.
    1. Extract the current `nonce` and `btc1Update` for `did` from local storage.
-   1. If `btc1Update` is defined, set `btc1UpdateAnnouncement` to the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm and set `hashBytes` to `hash(index + hash(nonce ^ btc1UpdateAnnouncement))`, otherwise set `hashBytes` to `hash(index + hash(nonce))`.
+   1. If `btc1Update` is defined, set `btc1UpdateAnnouncement` to the result of passing `btc1Update` to the [JSON Canonicalization and Hash] algorithm and set `hashBytes` to `hash(index + hash(hash(nonce) + btc1UpdateAnnouncement))`, otherwise set `hashBytes` to `hash(index + hash(hash(nonce)))`.
    1. For each `step` in `path`:
       1. Validate that `step` has a single key-value pair.
       1. Extract `key` and `value` from `step`.
@@ -584,7 +584,7 @@ Process the ::Beacon Signals:: to reconstruct the DID document:
 1. Set `index` to `hash(did)`.
 1. Set `nonce` to the value of `smtProof.nonce`.
 1. Set `updateId` to the value of `smtProof.updateId`.
-1. If `updateId` is defined, set `btc1UpdateAnnouncement` to the binary representation of `updateId` and set `verifyHashBytes` to `hash(index + hash(nonce ^ btc1UpdateAnnouncement))`, otherwise set `verifyHashBytes` to `hash(index + hash(nonce))`.
+1. If `updateId` is defined, set `btc1UpdateAnnouncement` to the binary representation of `updateId` and set `verifyHashBytes` to `hash(index + hash(hash(nonce) + btc1UpdateAnnouncement))`, otherwise set `verifyHashBytes` to `hash(index + hash(hash(nonce)))`.
 1. For each `step` in `smtProof.path`:
    1. Validate that `step` has a single key-value pair.
    1. Extract `key` and `value` from `step`.
