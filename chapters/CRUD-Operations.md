@@ -35,7 +35,7 @@ In order for this DID to be updatable, controllers must include at least one ver
 
 Controllers may also add content to the ::genesis document::, including keys and services.
 
-It is recommended that controllers add at least one ::singleton beacon**::** to provide a fallback update capability. This ensures the controller can update the DID without reliance on any ::beacon aggregators:: or other parties.
+It is recommended that controllers add at least one ::singleton beacon:: to provide a fallback update capability. This ensures the controller can update the DID without reliance on any ::beacon aggregators:: or other parties.
 
 ##### Flowchart {.unnumbered .unlisted}
 
