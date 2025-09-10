@@ -45,7 +45,7 @@ It is recommended that controllers add at least one ::singleton beacon:: to prov
 
 Inputs:
 
-* `genesisDocument` - any intermediate representation of a DID document with the identifier replaced with the placeholder value throughout all fields (e.g. the id field) `did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`. It SHOULD include at least one `verificationMethod` and `service` of the type ::SingletonBeacon::; REQUIRED; object.
+* `genesisDocument` - any intermediate representation of a DID document with the identifier replaced with the placeholder value throughout all fields (e.g. the id field) `did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`. REQUIRED; object.
 
 Outputs:
 
