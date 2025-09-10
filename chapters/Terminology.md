@@ -373,3 +373,11 @@ Initial DID Document
 Initial DID Documents
 
 : ::Initial DID Document::
+
+Genesis bytes
+
+: The 32 byte SHA256 hash of a canonicalized ::genesis document:: that is encoded into an external **did:btc1** identifier.
+
+Genesis document
+
+: An intermediate representation of a DID document with the identifier set to the placeholder value.
