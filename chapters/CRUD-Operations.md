@@ -5,7 +5,7 @@ for the **did:btc1** method.
 
 ### Create
 
-Creating a **did:btc1** identifier is entirely offline, requiring no innate network interactions to generate a new identifier. Each creation starts either with a public key or an initial DID document.  Both creation algorithms first create a set of genesis bytes that encode the initial commitment to a first canonical DID Document.
+Creating a **did:btc1** identifier is entirely offline, requiring no innate network interactions to generate a new identifier. Each creation starts either with a public key or an initial DID document.  Both creation algorithms first create a set of ::genesis bytes:: that encode the initial commitment to a first canonical DID Document.
 
 To create a **did:btc1** identifier from a public key without an initial DID document, use **Algo 1: Create genesis bytes from public key**, then encode those bytes as in **Algo 3: Encode identifier**.
 
