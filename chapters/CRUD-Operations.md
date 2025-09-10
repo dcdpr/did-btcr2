@@ -19,8 +19,6 @@ The output of encoding the genesis bytes is the newly created DID.
 
 ##### Overview {.unnumbered .unlisted}
 
-Generate a secp256k1 key pair and represent the public key as bytes following the encoding defined in the Standards for Efficient Cryptography (SEC encoding). Return the bytes as the genesis bytes.
-
 Given a secp256k1 public key, encode this public key as bytes following the encoding defined in the Standards for Efficient Cryptography (SEC encoding). Return the bytes as the genesis bytes.
 
 Call the [did:btc1 Identifier Encoding] algorithm, with id type=“key”, version=1, the desired network, and the genesis bytes (the public key, as a compressed SEC encoded secp256k1 public key). The identifier returned is the did:btc1 identifier.
@@ -72,17 +70,10 @@ Put the links here.
 #### Create Genesis Bytes from Initial DID Document {.tabbed}
 
 ##### Overview {.unnumbered .unlisted}
+
 This algorithm takes in a genesis DID document and returns the genesis bytes used to generate a **did:btc1** identifier. The genesis DID document is an intermediate DID document representation, with the identifier replaced with the placeholder throughout  (did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx).
 
 The genesis document is canonicalized and hashed according to the [JSON Canonicalization and Hash] algorithm to produce the genesis bytes. Return the genesis bytes.
-
-The genesis bytes are passed to the [Encode Genesis Bytes] algorithm, with the network selection (usually “bitcoin”), identifier type “external”, and specification version 1 (the current version). This generates the DID.
-
-Copy the input DID document, replacing the placeholder identifier values with the newly generated DID to make the initial DID document.
-
-The canonical bytes can be optionally stored on a ::Content Addressable Storage:: (CAS) system like the InterPlanetary File System (IPFS). If so, implementations MUST use ::Content Identifiers:: (CIDs) generated following the IPFS v1 algorithm.
-
-The generated DID and its corresponding initial DID document are returned.
 
 ##### Flowchart {.unnumbered .unlisted}
 
