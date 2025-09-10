@@ -157,14 +157,6 @@ Append the genesis bytes onto the first byte, and bech32m encodes the result acc
 
 Append the result onto the prefix “did:btc1:” to make the identifier, and return that.
 
-##### Flowchart {.unnumbered .unlisted}
-
-Put the flowchart here.
-
-##### Examples {.unnumbered .unlisted}
-
-Put the examples here.
-
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
 Given:
@@ -214,14 +206,6 @@ Encode the did:btc1 identifier as follows:
 17. Pass `hrp` and `dataBytes` to the [Bech32m Encoding] algorithm, retrieving `encodedString`.
 18. Append `encodedString` to `identifier`.
 19. Return `identifier`.
-
-##### Example Code {.unnumbered .unlisted}
-
-Put the example code here.
-
-##### Links {.unnumbered .unlisted}
-
-Put the links here.
 
 ### Read
 
