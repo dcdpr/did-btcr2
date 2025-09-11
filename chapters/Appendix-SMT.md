@@ -109,20 +109,20 @@ flowchart TD
     Hash1111 --> DataBlock1111[("Data Block 1111")]:::dataBlock
 ```
 
-These are the requirements for using ::Merkle Trees:: to signal commitments in ::BTC1 Beacons:::
+These are the requirements for using ::Merkle Trees:: to signal commitments in ::BTCR2 Beacons:::
 
-* Each data block is either a ::BTC1 Update:: or null.
+* Each data block is either a ::BTCR2 Update:: or null.
 * No key may have more than one data block.
 * The hash of a non-leaf node is the hash of the concatenation of its child nodes' hashes.
 * The only thing published to Bitcoin is the top hash (the Merkle root).
 
-The DID controller has to prove either inclusion or non-inclusion in the ::Beacon Signal::. To prove inclusion, the DID controller provides either the ::BTC1 Update:: (from which the verifier must calculate the hash) or the hash (which the verifier can use to retrieve the ::BTC1 Update:: from a ::CAS::); to prove non-inclusion, the DID controller provides the null value (from which the verifier must calculate the hash). In addition, the DID controller must provide the hashes of each peer in the tree (the Merkle proof) as the verifier walks up it to determine the top hash (which, in turn, must have been provided to the DID controller by the aggregator).
+The DID controller has to prove either inclusion or non-inclusion in the ::Beacon Signal::. To prove inclusion, the DID controller provides either the ::BTCR2 Update:: (from which the verifier must calculate the hash) or the hash (which the verifier can use to retrieve the ::BTCR2 Update:: from a ::CAS::); to prove non-inclusion, the DID controller provides the null value (from which the verifier must calculate the hash). In addition, the DID controller must provide the hashes of each peer in the tree (the Merkle proof) as the verifier walks up it to determine the top hash (which, in turn, must have been provided to the DID controller by the aggregator).
 
 Let’s assume that the DID controller has been allocated position 13 (1101).
 
-To prove that the DID is included in the signal, the DID controller provides the ::BTC1 Update:: to calculate *Hash 1101* and the values *Hash 1100*, *Hash 111*, *Hash 10*, and *Hash 0*. The verifier then calculates *Hash 110*, *Hash 11*, *Hash 1*, and *Top Hash*. If that last value matches the value in the signal, the verifier knows that the DID is included in the signal.
+To prove that the DID is included in the signal, the DID controller provides the ::BTCR2 Update:: to calculate *Hash 1101* and the values *Hash 1100*, *Hash 111*, *Hash 10*, and *Hash 0*. The verifier then calculates *Hash 110*, *Hash 11*, *Hash 1*, and *Top Hash*. If that last value matches the value in the signal, the verifier knows that the DID is included in the signal.
 
-The logic is the same for non-inclusion, except that the DID controller provides the null value instead of the ::BTC1 Update:: to calculate *Hash 1101*.
+The logic is the same for non-inclusion, except that the DID controller provides the null value instead of the ::BTCR2 Update:: to calculate *Hash 1101*.
 
 In either case, the DID presentation would include something like the following:
 
@@ -169,7 +169,7 @@ NA makes a presentation with LA’s DID and, using the ::Sidecar:: method, provi
 To mitigate this attack, a DID’s position must be fixed deterministically and the hashing operation most not be commutative, i.e., *hash(X + Y)* ≠ *hash(Y + X)*. The following algorithm meets these requirements:
 
 1. A DID’s position is the SHA256 hash of the DID.
-2. The value at the DID’s position for the signal is the ::BTC1 Update Announcement:: for that DID (0 if null).
+2. The value at the DID’s position for the signal is the ::BTCR2 Update Announcement:: for that DID (0 if null).
 3. For any parent node:
     1. If the values of both child nodes are 0, the value of the parent node is 0.
     2. Otherwise, the value of the parent node is the hash of the concatenation of the 256-bit left child value and the 256-bit right child value.
@@ -178,7 +178,7 @@ The consequence of step 1 is that the ::Merkle Tree:: has up to 2<sup>256</sup> 
 
 #### Information Leakage
 
-To prove inclusion or non-inclusion, it is necessary to present a list of peer hashes from bottom to top. A verifier then takes the hash of the ::BTC1 Update:: (inclusion) or the hash of null (non-inclusion) and applies the algorithm above to walk up to the root. Most of the peer hashes will be zero.
+To prove inclusion or non-inclusion, it is necessary to present a list of peer hashes from bottom to top. A verifier then takes the hash of the ::BTCR2 Update:: (inclusion) or the hash of null (non-inclusion) and applies the algorithm above to walk up to the root. Most of the peer hashes will be zero.
 
 The list of peer hashes must be provided by the aggregator to the DID controller. Changes in the values (from zero to non-zero or from non-zero to zero) indicate frequency of changes to other DIDs in the peer branch. Furthermore, assuming that a verifier has a DID from a past presentation with the same aggregator Beacon address:
 
@@ -265,7 +265,7 @@ To mitigate this, inclusion and non-inclusion should be indistinguishable, i.e.,
 * A DID’s position is the SHA256 hash of the DID.
 * A signal- and DID-specific 256-bit nonce shall be generated by the DID controller, regardless of update or non-update status.
 * The value at the DID’s position for the signal is:
-    * For an update, the hash of the concatenation of the hash of the nonce and the hash of the ::BTC1 Update::.
+    * For an update, the hash of the concatenation of the hash of the nonce and the hash of the ::BTCR2 Update::.
     * For a non-update, the hash of the hash of the nonce (double hash).
 * If the DID controller is responsible for providing the value, the nature of the signal (update or non-update) is hidden from the aggregator.
 * The value of the parent node is the hash of the concatenation of the 256-bit left child value (0 if the left branch is empty) and the 256-bit right child value (0 if the right branch is empty).
@@ -337,7 +337,7 @@ flowchart TD
     Hash1101 --> DataBlock1101[("Data Block 1101")]:::dataBlock
 ```
 
-Every DID is included, so there is no longer a proof of non-inclusion. Instead, what's being proved is the presence or absence of an update, where the absence of an update is a null document. To prove presence or absence of an update, the DID controller presents the nonce, the ::BTC1 Update:: or null, and the list of peer hashes from bottom to top.
+Every DID is included, so there is no longer a proof of non-inclusion. Instead, what's being proved is the presence or absence of an update, where the absence of an update is a null document. To prove presence or absence of an update, the DID controller presents the nonce, the ::BTCR2 Update:: or null, and the list of peer hashes from bottom to top.
 
 Now, the presentation to the verifier for DID 13 includes the following:
 
