@@ -29,7 +29,7 @@ The ::genesis bytes:: is a [secp256k1 public key](https://www.secg.org/sec2-v2.p
 
 ##### Requirements {.unnumbered .unlisted}
 
-The ::genesis bytes:: is a 32-byte [SHA256](https://datatracker.ietf.org/doc/html/rfc6234) hash of an input ::genesis document:: canonicalized using the [JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785). The ::genesis document:: is an intermediate representation of a starting DID document with the identifier values replaced with a placeholder value. The placeholder value MUST be did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This is ‘did:btc1:’ followed by 60 ‘x’s, one for each character in the method-specific identifier.
+The ::genesis bytes:: is a 32-byte [SHA256](https://datatracker.ietf.org/doc/html/rfc6234) hash of an input ::genesis document:: canonicalized using the [JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785). The ::genesis document:: is an intermediate representation of a ::initial DID document:: with the identifier values replaced with a placeholder value. The placeholder value MUST be did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This is ‘did:btc1:’ followed by 60 ‘x’s, one for each character in the method-specific identifier.
 
 In order for this DID to be updatable, controllers must include at least one verification method with a `capabilityInvocation` verification relationship and at least one ::BTC1 beacon:: service.
 
