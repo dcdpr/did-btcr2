@@ -5,21 +5,35 @@ for the **did:btc1** method.
 
 ### Create
 
-Creating a **did:btc1** identifier is entirely offline, requiring no innate network interactions to generate a new identifier. Each creation starts either with a public key or a ::Genesis Document::.  Both creation algorithms first create the ::Genesis Bytes:: that commit to an ::Initial DID Document::.
+Creating a **did:btc1** identifier is entirely offline, requiring no innate
+network interactions to generate a new identifier. Each creation starts either
+with a public key or a ::Genesis Document::.  Both creation algorithms first
+create the ::Genesis Bytes:: that commit to an ::Initial DID Document::.
 
-To create a **did:btc1** identifier from a public key without an Initial DID Document, use [Algo 1: Create Genesis Bytes from Public Key], then encode those bytes as in [Algo 3: Encode Identifier].
+To create a **did:btc1** identifier from a public key without an Initial DID
+Document, use [Algo 1: Create Genesis Bytes from Public Key], then encode those
+bytes as in [Algo 3: Encode Identifier].
 
-To create a **did:btc1** identifier from an Initial DID Document, use [Algo 2: Create Genesis Bytes from Initial DID Document], then encode those bytes along with a version, network for the identifier and an identifier type of “external” using [Algo 3: Encode Identifier].
+To create a **did:btc1** identifier from an Initial DID Document, use
+[Algo 2: Create Genesis Bytes from Initial DID Document], then encode those
+bytes along with a version, network for the identifier and an identifier type of
+“external” using [Algo 3: Encode Identifier].
 
 The output of encoding the identifier is the newly created DID.
 
-Note: When creating from a ::Genesis Document::, it is likely that creators will want to include information, such as ::Beacons:: and other service endpoints, which requires online interactions, e.g., to establish a unique ::Beacon Address:: for updates.
+Note: When creating from a ::Genesis Document::, it is likely that creators will
+want to include information, such as ::Beacons:: and other service endpoints,
+which requires online interactions, e.g., to establish a unique
+::Beacon Address:: for updates.
 
 #### Algo 1: Create Genesis Bytes from Public Key {.tabbed}
 
 ##### Requirements {.unnumbered .unlisted}
 
-The ::Genesis Bytes:: is a 33-byte compressed representation of a [secp256k1 public key](https://www.secg.org/sec2-v2.pdf) following the encoding defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-v2.pdf) (SEC encoding).
+The ::Genesis Bytes:: is a 33-byte compressed representation of a
+[secp256k1 public key](https://www.secg.org/sec2-v2.pdf) following the encoding
+defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-v2.pdf)
+(SEC encoding).
 
 ##### Examples {.unnumbered .unlisted}
 
@@ -29,13 +43,26 @@ The ::Genesis Bytes:: is a 33-byte compressed representation of a [secp256k1 pub
 
 ##### Requirements {.unnumbered .unlisted}
 
-The ::Genesis Bytes:: is a 32-byte [SHA256](https://datatracker.ietf.org/doc/html/rfc6234) hash of an input ::Genesis Document:: canonicalized using the [JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785). The ::Genesis Document:: is an intermediate representation of a ::Initial DID Document:: with the identifier values replaced with a placeholder value. The placeholder value MUST be did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This is ‘did:btc1:’ followed by 60 ‘x’s, one for each character in the method-specific identifier.
+The ::Genesis Bytes:: is a 32-byte [SHA256](https://datatracker.ietf.org/doc/html/rfc6234)
+hash of an input ::Genesis Document:: canonicalized using the
+[JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785). The
+::Genesis Document:: is an intermediate representation of an
+::Initial DID Document:: with the identifier values replaced with a placeholder
+value. The placeholder value MUST be
+did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This is
+‘did:btc1:’ followed by 60 ‘x’s, one for each character in the method-specific
+identifier.
 
-In order for this DID to be updatable, controllers must include at least one verification method with a `capabilityInvocation` verification relationship and at least one ::BTC1 Beacon:: service.
+In order for this DID to be updatable, controllers must include at least one
+verification method with a `capabilityInvocation` verification relationship and
+at least one ::BTC1 Beacon:: service.
 
-Controllers may also add content to the ::Genesis Document::, including keys and services.
+Controllers may also add content to the ::Genesis Document::, including keys and
+services.
 
-It is recommended that controllers add at least one ::Singleton Beacon:: to provide a fallback update capability. This ensures the controller can update the DID without reliance on any ::Beacon Aggregators:: or other parties.
+It is recommended that controllers add at least one ::Singleton Beacon:: to
+provide a fallback update capability. This ensures the controller can update the
+DID without reliance on any ::Beacon Aggregators:: or other parties.
 
 ##### Flowchart {.unnumbered .unlisted}
 
@@ -45,17 +72,22 @@ It is recommended that controllers add at least one ::Singleton Beacon:: to prov
 
 Inputs:
 
-* `genesisDocument` - any intermediate representation of a DID document with the identifier replaced with the placeholder value throughout all fields (e.g. the id field) `did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`. REQUIRED; object.
+* `genesisDocument` - any intermediate representation of a DID document with the
+  identifier replaced with the placeholder value throughout all fields (e.g. the
+  id field) `did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`.
+  REQUIRED; object.
 
 Outputs:
 
-* `genesisBytes` - a newly created **did:btc1** identifier; string
+* `genesisBytes` - a newly created **did:btc1** identifier;
+  string
 
 The steps are as follows:
 
-1. Set canonicalizedDocument to the result of passing genesisDocument into the JSON Canonicalization Scheme.
+1. Set canonicalizedDocument to the result of passing genesisDocument into the
+   JSON Canonicalization Scheme.
 2. Set `genesisBytes` to the SHA256 hash of the `canonicalizedDocument`.
-3. Return genesisBytes
+3. Return `genesisBytes`
 
 ##### Example code {.unnumbered .unlisted}
 
@@ -63,11 +95,25 @@ The steps are as follows:
 
 ##### Requirements {.unnumbered .unlisted}
 
-The identifier uses a [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) encoding of input bytes composed of the version, network and ::Genesis Bytes::. The value of the version MUST be 1. The value of the network declares which Bitcoin network anchors the identifier and must be selected from the table below.
+The identifier uses a [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m)
+encoding of input bytes composed of the version, network and ::Genesis Bytes::.
+The value of the version MUST be 1. The value of the network declares which
+Bitcoin network anchors the identifier and must be selected from the table below.
 
-The input bytes to the bech32m algorithm are constructed as follows: the first byte is the version and the network, with the version minus one in the low nibble and the value from the network table in the high nibble. The Genesis Bytes are then appended to the first byte to produce the input bytes. Encode the input bytes using the bech32m algorithm with the human readable part (hrp) value set to the ASCII value of either ‘k’ or ‘x’, depending on the type of the identifier. For btc1 DIDs generated from an initial secp256k1 public key, use ‘k’ for btc1 DIDs generated with a Genesis Document, use ‘x’. The result of the encoding is the method specific identifier. Prepend the method specific identifier with the ASCII string ‘did:btc1:’ to create the DID.
+The input bytes to the bech32m algorithm are constructed as follows: the first
+byte is the version and the network, with the version minus one in the low
+nibble and the value from the network table in the high nibble. The Genesis
+Bytes are then appended to the first byte to produce the input bytes. Encode the
+input bytes using the bech32m algorithm with the human readable part (hrp) value
+set to the ASCII value of either ‘k’ or ‘x’, depending on the type of the
+identifier. For btc1 DIDs generated from an initial secp256k1 public key, use
+‘k’ for btc1 DIDs generated with a Genesis Document, use ‘x’. The result of the
+encoding is the method specific identifier. Prepend the method specific
+identifier with the ASCII string ‘did:btc1:’ to create the DID.
 
-NOTE: In future versions of this algorithm, it is expected that the version could take up more than one nibble with the nibble set to F indicating that the next nibble should be considered a part of the version.
+NOTE: In future versions of this algorithm, it is expected that the version
+could take up more than one nibble with the nibble set to F indicating that the
+next nibble should be considered a part of the version.
 
 | Network          | Value |
 |:-----------------|:------|
@@ -118,7 +164,8 @@ Encode the **did:btc1** identifier as follows:
 1. If `idType` is not a valid value per above, raise `invalidDid` error.
 2. If `version` is greater than `1`, raise `invalidDid` error.
 3. If `network` is not a valid value per above, raise `invalidDid` error.
-4. If `idType` is “key” and `genesisBytes` is not a valid compressed secp256k1 public key, raise `invalidDid` error.
+4. If `idType` is “key” and `genesisBytes` is not a valid compressed secp256k1
+   public key, raise `invalidDid` error.
 5. Map `idType` to `hrp` from the following:
     1. “key” - “k”
     2. “external” - “x”
@@ -126,7 +173,8 @@ Encode the **did:btc1** identifier as follows:
 7. Set `fCount` equal to `(version - 1) / 15`, rounded down.
 8. Append hexadecimal `F` (decimal `15`) to `nibbles` `fCount` times.
 9. Append `(version - 1) mod 15` to `nibbles`.
-10. If `network` is a string, append the numeric value from the following map to `nibbles`:
+10. If `network` is a string, append the numeric value from the following map to
+    `nibbles`:
     1. “bitcoin” - `0`
     2. “signet” - `1`
     3. “regtest” - `2`
@@ -138,10 +186,14 @@ Encode the **did:btc1** identifier as follows:
     9. “custom number 3” - E
     10. “custom number 4” - F
 11. If the number of entries in `nibbles` is odd, append `0`.
-12. Create a `dataBytes` byte array from `nibbles`, where `index` is from `0` to `nibbles.length / 2 - 1` and `encodingBytes[index] = (nibbles[2 * index] << 4) | nibbles[2 * index + 1]`.
+12. Create a `dataBytes` byte array from `nibbles`, where `index` is from `0` to
+    `nibbles.length / 2 - 1` and
+    `encodingBytes[index] = (nibbles[2 * index] << 4) | nibbles[2 * index + 1]`.
 13. Append `genesisBytes` to `dataBytes`.
 14. Set `identifier` to “did:btc1:”.
-15. Pass `hrp` and `dataBytes` to the [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) encoding algorithm, retrieving `encodedString`.
+15. Pass `hrp` and `dataBytes` to the
+    [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) encoding algorithm,
+    retrieving `encodedString`.
 16. Append `encodedString` to `identifier`.
 17. Return `identifier`.
 
