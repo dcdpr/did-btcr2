@@ -478,7 +478,7 @@ The steps are as follows:
 1. Set `contemporaryHash` to the result of passing `contemporaryDIDDocument` into the 
    [JSON Canonicalization and Hash] algorithm.
 1. Find all ::BTC1 Beacons:: in `contemporaryDIDDocument.service` where `service.type` equals one of
-   `SingletonBeacon`, `CIDAggregateBeacon` and `SMTAggregateBeacon`.
+   `SingletonBeacon`, `MapBeacon` and `SMTBeacon`.
 1. For each `beacon` in `beacons` convert the `beacon.serviceEndpoint` to a Bitcoin
    address following **[BIP21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)**.
    Set `beacon.address` to the Bitcoin address.
@@ -538,7 +538,7 @@ It takes the following inputs:
    Each Beacon is a structure with the following properties:
     * `id` - The id of the ::Beacon Service:: in the DID document; REQUIRED; string.
     * `type` - The type of the ::Beacon Service:: in the DID document; REQUIRED; string; MUST
-      be either `SingletonBeacon`, `CIDAggregateBeacon`, or `SMTAggregateBeacon`.
+      be either `SingletonBeacon`, `MapBeacon`, or `SMTBeacon`.
     * `serviceEndpoint` - A BIP21 URI representing a Bitcoin address; REQUIRED; string.
     * `address` - The Bitcoin address decoded from the `serviceEndpoint value; REQUIRED; string.
 * `network` - A string identifying the Bitcoin network of the **did:btc1** identifier.
@@ -603,20 +603,21 @@ The steps are as follows:
 
 1. Set `updates` to an empty array.
 1. For `beaconSignal` in `beaconSignals`:
-    1. Set `type` to `beaconSignal.beaconType`.
-    1. Set `signalTx` to `beaconSignal.tx`.
-    1. Set `signalId` to `signalTx.id`.
-    1. Set `signalSidecarData` to `signalsMetadata[signalId]`. TODO: formalize structure of sidecarData
+   1. Set `type` to `beaconSignal.beaconType`.
+   1. Set `signalTx` to `beaconSignal.tx`.
+   1. Set `signalId` to `signalTx.id`.
+   1. Set `signalSidecarData` to `signalsMetadata[signalId]`. TODO: formalize structure of sidecarData
    1. Set `btc1Update` to null.
+   1. Set `cas` to "ipfs" if one or more required documents are in IPFS. 
    1. If `type` == `SingletonBeacon`:
-      1. Set `btc1Update` to the result of passing `signalTx` and
-        `signalSidecarData` to the [Process Singleton Beacon Signal] algorithm.
-   1. If `type` == `CIDAggregateBeacon`:
-      1. Set `btc1Update` to the result of passing `signalTx` and
-        `signalSidecarData` to the [Process CIDAggregate Beacon Signal] algorithm.
-   1. If `type` == `SMTAggregateBeacon`:
-      1. Set `btc1Update` to the result of passing `signalTx` and
-        `signalSidecarData` to the [Process SMTAggregate Beacon Signal] algorithm.
+      1. Set `btc1Update` to the result of passing `signalTx`, `signalSidecarData`,
+         and `cas` to the [Process Singleton Beacon Signal] algorithm.
+   1. If `type` == `MapBeacon`:
+      1. Set `btc1Update` to the result of passing `signalTx`, `signalSidecarData`,
+         and `cas` to the [Process Map Beacon Signal] algorithm.
+   1. If `type` == `SMTBeacon`:
+      1. Set `btc1Update` to the result of passing `signalTx`, `signalSidecarData`,
+         and `cas` to the [Process SMT Beacon Signal] algorithm.
     1. If `btc1Update` is not null, push `btc1Update` to `updates`.
 1. Return `updates`.
 
@@ -873,11 +874,11 @@ The steps are as follows:
       1. Set `signalMetadata` to the result of
         passing `beaconService` and `btc1Update` to the
         [Broadcast Singleton Beacon Signal] algorithm.
-   1. Else If `beaconService.type` == `CIDAggregateBeacon`:
+   1. Else If `beaconService.type` == `MapBeacon`:
       1. Set `signalMetadata` to the result of
         passing `btc1Identifier`, `beaconService` and `btc1Update` to the
         [Broadcast CIDAggregate Beacon Signal] algorithm.
-   1. Else If `beaconService.type` == `SMTAggregateBeacon`:
+   1. Else If `beaconService.type` == `SMTBeacon`:
       1. Set `signalMetadata` to the result of
         passing `btc1Identifier`, `beaconService` and `btc1Update` to the
         [Broadcast SMTAggregate Beacon Signal] algorithm.
