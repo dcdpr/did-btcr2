@@ -19,7 +19,7 @@ Note: When creating from a ::genesis document::, it is likely that creators will
 
 ##### Requirements {.unnumbered .unlisted}
 
-The ::genesis bytes:: is a [secp256k1 public key](https://www.secg.org/sec2-v2.pdf) encoded as bytes following the encoding defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-v2.pdf) (SEC encoding).
+The ::genesis bytes:: is a 33-byte compressed representation of a [secp256k1 public key](https://www.secg.org/sec2-v2.pdf) following the encoding defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-v2.pdf) (SEC encoding).
 
 ##### Examples {.unnumbered .unlisted}
 
