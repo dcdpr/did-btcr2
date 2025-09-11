@@ -349,8 +349,8 @@ sequenceDiagram
     loop Until signal conditions met...
         R ->> R: Calculate index = hash(DID)
         R ->> R: Generate nonce
-        R ->> R: Calculate value = hash(hash(nonce) +<br/>hash(BTC1 Update))
-        R ->> A: Send index and value
+        R ->> R: Calculate update = hash(hash(nonce) +<br/>hash(BTC1 Update))
+        R ->> A: Send index and update
         A ->> A: Validate index against Beacon<br/>participant's authorized list
         A ->> A: Set optimized SMT leaf<br/>for index to value
         note right of A: Duplicate index replaces<br/>existing value
@@ -363,8 +363,8 @@ sequenceDiagram
         loop For each missing index...
             R ->> R: Validate that index is the<br/>hash of a DID expected to<br/>be in the signal and that<br/>DID has no update
             R ->> R: Generate nonce
-            R ->> R: Calculate value = hash(hash(nonce))
-            R ->> R: Add value to updates array
+            R ->> R: Calculate update = hash(hash(nonce))
+            R ->> R: Add update to updates array
         end
         
         R ->> A: Send updates
