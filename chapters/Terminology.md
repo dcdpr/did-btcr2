@@ -313,7 +313,7 @@ Late Publishing
 Offline Creation
 
 : Offline Creation refers to when a **did:btc1** identifier and corresponding
-  initial DID document are created without requiring network interactions.
+  Initial DID Document are created without requiring network interactions.
 
 **did:btc1** supports offline creation in two modes:
 
@@ -374,10 +374,10 @@ Initial DID Documents
 
 : ::Initial DID Document::
 
-Genesis bytes
+Genesis Bytes
 
-: The bytes used to generate a did:btc1 identifier. These bytes are either a 33 byte compressed SEC encoded sec256k1 public key or a 32 byte SHA256 hash of a ::genesis document::.
+: The bytes used to generate a did:btc1 identifier. These bytes are either a 33 byte compressed SEC encoded sec256k1 public key or a 32 byte SHA256 hash of a ::Genesis Document::.
 
-Genesis document
+Genesis Document
 
-: An intermediate representation of an ::initial DID document:: with the identifier set to the placeholder value.
+: An intermediate representation of an ::Initial DID Document:: with the identifier set to the placeholder value.
