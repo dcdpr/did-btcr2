@@ -7,7 +7,7 @@ aggregated updates for scalable on-chain update costs; long-term identifiers
 that can support frequent updates; private communication of the DID document;
 private DID resolution; and non-repudiation appropriate for serious contracts.
 
-The full specification may be viewed at [http://dcdpr.github.io/did-btcr2/](https://dcdpr.github.io/did-btcr2/).
+The full specification may be viewed at https://dcdpr.github.io/did-btcr2/.
 
 ## Compiling the Specification Locally
 
