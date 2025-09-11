@@ -141,7 +141,7 @@ Encode the **did:btc1** identifier as follows:
 12. Create a `dataBytes` byte array from `nibbles`, where `index` is from `0` to `nibbles.length / 2 - 1` and `encodingBytes[index] = (nibbles[2 * index] << 4) | nibbles[2 * index + 1]`.
 13. Append `genesisBytes` to `dataBytes`.
 14. Set `identifier` to “did:btc1:”.
-15. Pass `hrp` and `dataBytes` to the [**bech32m**](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) encoding algorithm, retrieving `encodedString`.
+15. Pass `hrp` and `dataBytes` to the [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) encoding algorithm, retrieving `encodedString`.
 16. Append `encodedString` to `identifier`.
 17. Return `identifier`.
 
