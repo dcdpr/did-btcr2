@@ -11,7 +11,7 @@ To create a **did:btc1** identifier from a public key without an initial DID doc
 
 To create a **did:btc1** identifier from an initial DID document, use **Algo 2: Create genesis bytes from initial DID document**, then encode those bytes along with a version, network for the identifier and an identifier type of “external” using **Algo 3: Encode identifier**.
 
-The output of encoding the ::genesis bytes:: is the newly created DID.
+The output of encoding the identifier is the newly created DID.
 
 Note: When creating from a ::genesis document::, it is likely that creators will want to include information, such as **::Beacons::** and other service endpoints, which requires online interactions, e.g., to establish a unique ::Beacon address:: for updates.
 
