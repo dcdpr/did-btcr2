@@ -163,7 +163,7 @@ The steps are as follows:
 1. Else If `identifierComponents.idType` value is "external", then set the
    `initialDocument` to the result of running [External Resolution] passing in
    the `identifier`, `identifierComponents` and `resolutionOptions` values.
-1. Else MUST raise `invalidHRPValue` error.
+1. Else MUST raise ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. Return `initialDocument`.
 
 ##### Deterministically Generate Initial DID Document
@@ -311,7 +311,7 @@ The steps are as follows:
 1. Else set `initialDocument` to the result of passing `identifier` and
    `identifierComponents` to the [CAS Retrieval] algorithm.
 1. Validate `initialDocument` is a conformant DID document according to the
-   DID Core 1.1 specification. Else MUST raise `invalidDidDocument` error.
+   DID Core 1.1 specification. Else MUST raise ::INVALID_DID_DOCUMENT:: error.
 1. Return `initialDocument`.
 
 ###### Sidecar Initial DID Document Validation
@@ -331,7 +331,7 @@ It takes the following inputs:
   * `genesisBytes` - the originating ::Intermediate DID Document::; REQUIRED; bytes.
 * `initialDocument` - the ::Initial DID Document:: for the given identifier.
 
-It returns the following outputs or throws an error:
+It returns the following output or raises an error:
 
 * `initialDocument` - a valid ::Initial DID Document:: for the given identifier.
 
@@ -342,7 +342,7 @@ The steps are as follows:
    `intermediateDocumentRepresentation` with the string
    (`did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`).
 1. Set `hashBytes` to the SHA256 hash of the `intermediateDocumentRepresentation`.
-1. If `hashBytes` does not equal `identifierComponents.genesisBytes` MUST throw an `invalidDid` error.
+1. If `hashBytes` does not equal `identifierComponents.genesisBytes` MUST raise an ::https://www.w3.org/ns/did#INVALID_DID:: error.
 1. Return `initialDocument`.
 
 ###### CAS Retrieval
@@ -378,8 +378,8 @@ The steps are as follows:
 
 #### Resolve Target Document
 
-The Resolve Target Document algorithm resolves a DID document from an initial
-document by walking the Bitcoin blockchain to identify ::Beacon Signals:: that
+The Resolve Target Document algorithm resolves a DID document from an ::Initial DID Document::
+by walking the Bitcoin blockchain to identify ::Beacon Signals:: that
 announce ::BTC1 Updates:: applicable to the **did:btc1** identifier being
 resolved. 
 
@@ -399,18 +399,20 @@ It takes the following inputs:
     ::SMT:: proofs; OPTIONAL; object.
   * `network` - the Bitcoin network used for resolution; OPTIONAL; string; default=`"bitcoin"`.
 
-It returns the following output or throws an error:
+It returns the following output or raises an error:
 
 * `targetDocument` - a DID Core conformant DID document after all updates have
    been found, validated and applied; object.
 
 The steps are as follows:
 
-1. If `resolutionOptions.versionId` is not null, set `targetVersionId` to
+1. If both `resolutionOptions.versionId` and `resolutionOptions.versionTime` are
+   not null then MUST raise an ::https://www.w3.org/ns/did#INVALID_DID:: error.
+1. Else if `resolutionOptions.versionId` is not null, set `targetVersionId` to
    `resolutionOptions.versionId`.
 1. Else if `resolutionOptions.versionTime` is not null, set `targetTime` to
    `resolutionOptions.versionTime`.
-1. Else set `targetTime` to the UNIX timestamp for now at the moment of execution.
+1. Else set `targetTime` to the UNIX timestamp for `now` at the moment of execution.
 1. Set `signalsMetadata` to `resolutionOptions.sidecarData.signalsMetadata`.
 1. Set `currentVersionId` to 1.
 1. If `currentVersionId` equals `targetVersionId` return `initialDocument`.
@@ -497,7 +499,7 @@ The steps are as follows:
        [Confirm Duplicate Update] algorithm passing in `btc1Update` and `btc1UpdateHashHistory`.
     1. If `update.targetVersionId` equals `currentVersionId + 1`:
         1.  Check that the base58 decoding of `update.sourceHash` equals `contemporaryHash`, else MUST
-            raise `latePublishing` error.
+            raise ::LATE_PUBLISHING:: error.
         1.  Set `contemporaryDIDDocument` to the result of calling [Apply DID Update]
             algorithm passing in `contemporaryDIDDocument`, `update`.
         1.  Push `contemporaryDIDDocument` onto `didDocumentHistory`.
@@ -510,7 +512,7 @@ The steps are as follows:
         1.  Set `contemporaryHash` to result of passing `contemporaryDIDDocument` into the 
             [JSON Canonicalization and Hash] algorithm.
     1.  If `update.targetVersionId` is greater than `currentVersionId + 1`, MUST
-        throw a LatePublishing error.
+        raise a ::LATE_PUBLISHING:: error.
 1. Increment `contemporaryBlockheight`.
 1. Set `targetDocument` to the result of calling the
    [Traverse Bitcoin Blockchain History] algorithm passing in `contemporaryDIDDocument`,
@@ -532,8 +534,8 @@ Note: It is recommended that you use a Bitcoin indexer and API to query the Bitc
 
 It takes the following inputs:
 
-* `contemporaryBlockheight` - The height of the block this function is looking for 
-   ::Beacon Signals:: in; REQUIRED; integer greater or equal to 0.
+* `contemporaryBlockheight` - The height of the block to look in for
+   ::Beacon Signals::; REQUIRED; integer greater or equal to 0.
 * `beacons` - An array of ::BTC1 Beacon:: services in the ::Contemporary DID document::; REQUIRED; array;
    Each Beacon is a structure with the following properties:
     * `id` - The id of the ::Beacon Service:: in the DID document; REQUIRED; string.
@@ -630,7 +632,7 @@ It takes the following inputs:
 * `btc1Update` - the ::Unsecured BTC1 Update:: to confirm as a duplicate or not; REQUIRED; object.
 * `btc1UpdateHashHistory` - an array of hashes corresponding to each ::BTC1 Update::; REQUIRED; array.
 
-It returns successfully if the `update` is a duplicate else it throws an error.
+It returns successfully if the `update` is a duplicate else it raises an error.
 
 The steps are as follows:
 
@@ -639,8 +641,8 @@ The steps are as follows:
 1. Let `updateHash` equal the result of passing `unsecuredUpdate` into the [JSON Canonicalization and Hash] algorithm.
 1. Let `updateHashIndex` equal `update.targetVersionId - 2`.
 1. Let `historicalUpdateHash` equal `updateHashHistory[updateHashIndex]`.
-1. Assert `historicalUpdateHash` equals `updateHash`, if not MUST throw a
-   LatePublishing error.
+1. Assert `historicalUpdateHash` equals `updateHash`, if not, MUST raise a
+   ::LATE_PUBLISHING:: error.
 1. Return
 
 ##### Apply DID Update
@@ -668,7 +670,7 @@ The steps are as follows:
 1. Set `capabilityId` to `update.proof.capability`.
 1. Set `rootCapability` to the result of passing `capabilityId` to the [Dereference Root Capability Identifier] algorithm.
 1. If `rootCapability.invocationTarget` does not equal `contemporaryDIDDocument.id` and `rootCapability.controller` 
-   does not equal  `contemporaryDIDDocument.id`, MUST throw an `invalidDidUpdate` error.
+   does not equal  `contemporaryDIDDocument.id`, MUST raise an ::INVALID_DID_UPDATE:: error.
 1. Instantiate a [`bip340-jcs-2025` `cryptosuite`](https://dcdpr.github.io/data-integrity-schnorr-secp256k1/#instantiate-cryptosuite)
    instance using the key referenced by the `verificationMethod` field in the update.
    ```{.json include="json/CRUD-Operations/Update-apply-did-update.json"}
@@ -680,13 +682,13 @@ The steps are as follows:
    `cryptosuite`, and `expectedProofPurpose` into the
    [Verify Proof algorithm](https://w3c.github.io/vc-data-integrity/#verify-proof)
    defined in the Verifiable Credentials (VC) Data Integrity specification.
-1. If `verificationResult.verified` equals False, MUST raise an `invalidUpdateProof` exception.
+1. If `verificationResult.verified` equals False, MUST raise an ::INVALID_UPDATE_PROOF:: exception.
 1. Set `targetDIDDocument` to a copy of `contemporaryDIDDocument`.
 1. Use JSON Patch to apply the `update.patch` to the `targetDIDDOcument`.
 1. Verify that `targetDIDDocument` is conformant with the data model specified
    by the DID Core specification.
 1. Set `targetHash` to the result of passing `targetDIDDocument` to the [JSON Canonicalization and Hash] algorithm.
-1. Check that `targetHash` equals the base58 decoded `update.targetHash`, else raise InvalidDidUpdate
+1. Check that `targetHash` equals the base58 decoded `update.targetHash`, else raise ::INVALID_DID_UPDATE::
    error.
 1. Return `targetDIDDocument`.
 
@@ -765,12 +767,12 @@ It takes the following inputs:
 
 It returns the following output:
 
-* `unsecuredBtc1Update` - a newly created ::BTC1 Update::; object.
+* `unsecuredBtc1Update` - a newly created ::BTC1 Update:: object
 
 The steps are as follows:
 
 1. Check that `sourceDocument.id` equals `btc1Identifier` else MUST raise
-   `invalidDidUpdate` error.
+   ::INVALID_DID_UPDATE:: error.
 1. Initialize `unsecuredBtc1Update` to an empty object.
 1. Set `unsecuredBtc1Update.@context` to the following list.
    `["https://w3id.org/zcap/v1", "https://w3id.org/security/data-integrity/v2", 
@@ -779,7 +781,7 @@ The steps are as follows:
 1. Set `targetDocument` to the result of applying the `documentPatch` to the
    `sourceDocument`, following the JSON Patch specification.
 1. Validate `targetDocument` is a conformant DID document, else MUST raise
-   `invalidDidUpdate` error.
+   ::INVALID_DID_UPDATE:: error.
 1. Set `sourceHashBytes` to the result of passing `sourceDocument` into
    the [JSON Canonicalization and Hash] algorithm.
 1. Set `unsecuredBtc1Update.sourceHash` to the base64 of `sourceHashBytes`.
@@ -793,15 +795,15 @@ The steps are as follows:
 
 The Invoke BTC1 Update algorithm retrieves the `privateKeyBytes` for the
 `verificationMethod` and adds a capability invocation in the form of a Data
-Integrity proof following the [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/)
-and Verifiable Credentials (VC) Data Integrity specifications.
+Integrity proof following the ::[ZCAP-LD]::
+and ::[VC-DATA-INTEGRITY]:: specifications.
 
 It takes the following inputs:
 
 * `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
 * `unsecuredBtc1Update` - an unsecured ::BTC1 Update::; REQUIRED; object.
 * `verificationMethod` - an object containing reference to keys and/or Beacons to
-   use for [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/); REQUIRED; string.
+   use for ::[ZCAP-LD]::; REQUIRED; string.
 
 It returns the following output:
 
@@ -822,19 +824,19 @@ The steps are as follows:
 1. Set `proofOptions.proofPurpose` to `capabilityInvocation`.
 1. Set `proofOptions.capability` to `rootCapability.id`.
 1. Set `proofOptions.capabilityAction` to `Write`.
-1. Set `cryptosuite` to the result of executing the Cryptosuite Instantiation
-   algorithm from the [BIP340 Data Integrity specification](https://dcdpr.github.io/data-integrity-schnorr-secp256k1) passing in
+1. Set `cryptosuite` to the result of executing the [Instantiate Cryptosuite](https://dcdpr.github.io/data-integrity-schnorr-secp256k1/#instantiate-cruptosuite)
+   algorithm from ::[BIP340]::, passing in
    `proofOptions`.
 1. Set `btc1Update` to the result of executing the
    [Add Proof](https://www.w3.org/TR/vc-data-integrity/#add-proof)
-   algorithm from VC Data Integrity passing `unsecuredBtc1Update` as the input document,
+   algorithm from ::[VC-DATA-INTEGRITY]:: passing `unsecuredBtc1Update` as the input document,
    `cryptosuite`, and the set of `proofOptions`.
 1. Return `btc1Update`.
 
-#### Announce DID Update
+#### Announce BTC1 Update
 
-The Announce DID Update algorithm retrieves `beaconServices` from the `sourceDocument`
-and calls the [Broadcast DID Update] algorithm corresponding to the type of
+The Announce BTC1 Update algorithm retrieves `beaconServices` from the `sourceDocument`
+and calls the `Broadcast _ Update` algorithm corresponding to the type of
 the ::BTC1 Beacon::.
 
 It takes the following inputs:
@@ -865,7 +867,7 @@ The steps are as follows:
 1. For `beaconId` in `beaconIds`:
    1. Find `beaconService` in `sourceDocument.service` with an `id` property
     equal to `beaconId`.
-   1. If no `beaconService` MUST throw `beaconNotFound` error.
+   1. If no `beaconService` MUST raise ::BEACON_NOT_FOUND:: error.
    1. Push `beaconService` to `beaconServices`.
 1. For `beaconService` in `beaconServices`:
    1. Set `signalMetadata` to null.
@@ -882,7 +884,7 @@ The steps are as follows:
         passing `btc1Identifier`, `beaconService` and `btc1Update` to the
         [Broadcast SMTAggregate Beacon Signal] algorithm.
    1. Else:
-      1. MUST throw `invalidBeacon` error.
+      1. MUST raise ::INVALID_BEACON:: error.
   1. Merge `signalMetadata` into `signalsMetadata`.
 1. Return `signalsMetadata`
 

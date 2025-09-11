@@ -2,7 +2,7 @@
 
 BTC1 Beacon
 
-: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTC1 Update Announcements::. 
+: An abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTC1 Update Announcements::.
 
 BTC1 Beacons
 
@@ -358,7 +358,7 @@ Contemporary Blockheight
 
 Intermediate DID Document
 
-: A representation of a DID document that it not yet fully conformant with the DID Core
+: A representation of a DID document that it not yet fully conformant with the ::[DID-CORE]::
   specification. Intermediate DID documents for the **did:btc1** DID method are DID documents
   whose identifier values have been replaced with a placeholder value.
 
