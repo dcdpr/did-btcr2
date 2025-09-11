@@ -2,7 +2,10 @@
 
 BTC1 Beacon
 
-: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTC1 Update Announcements::. 
+: A abstract mechanism, identified by a ::Beacon Address::, that is included as
+  a service in a DID document to indicate to resolvers that spends from this
+  address, called ::Beacon Signals::, should be discovered and checked for
+  ::BTC1 Update Announcements::. 
 
 BTC1 Beacons
 
@@ -76,7 +79,10 @@ BTC1 Update Announcements
 
 BTC1 Update
 
-: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btc1** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTC1 Update:: document.
+: A capability invocation secured using Data Integrity that invokes an
+  authorization capability to update a specific **did:btc1** DID document. This
+  capability invocation Data Integrity proof secures the ::Unsecured BTC1
+  Update:: document.
 
 BTC1 Updates
 
@@ -84,10 +90,13 @@ BTC1 Updates
 
 Unsecured BTC1 Update
 
-: A ::BTC1 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btc1** DID document. 
-An Usecured BTC1 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
-along with the new version of the DID document and the source and target hashes of the DID document
-identifying the source DID document that the patch should be applied to and the target DID document that results from appliying the patch.
+: A ::BTC1 Update:: without a proof attached to it invoking the capability to
+  apply the update to a **did:btc1** DID document. An Unsecured BTC1 Update
+  contains the JSON Patch object that defines the set of mutations to be applied
+  to a DID document, along with the new version of the DID document and the
+  source and target hashes of the DID document identifying the source DID
+  document that the patch should be applied to and the target DID document that
+  results from applying the patch.
 
 Unsecured BTC1 Updates
 
@@ -177,8 +186,8 @@ Beacon Aggregators
 
 Beacon Participant
 
-: A member of a ::Beacon Cohort::, typically a DID controller, that controls cryptographic keys required 
-to partially authorize spends from a ::Beacon Address::.
+: A member of a ::Beacon Cohort::, typically a DID controller, that controls
+  cryptographic keys required to partially authorize spends from a ::Beacon Address::.
 
 Beacon Participants
 
@@ -376,8 +385,11 @@ Initial DID Documents
 
 Genesis Bytes
 
-: The bytes used to generate a did:btc1 identifier. These bytes are either a 33 byte compressed SEC encoded sec256k1 public key or a 32 byte SHA256 hash of a ::Genesis Document::.
+: The bytes used to generate a did:btc1 identifier. These bytes are either a
+  33-byte compressed SEC encoded sec256k1 public key or a 32 byte SHA256 hash of
+  a ::Genesis Document::.
 
 Genesis Document
 
-: An intermediate representation of an ::Initial DID Document:: with the identifier set to the placeholder value.
+: An intermediate representation of an ::Initial DID Document:: with the
+  identifier set to the placeholder value.
