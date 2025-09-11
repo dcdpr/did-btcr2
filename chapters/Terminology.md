@@ -380,4 +380,4 @@ Genesis bytes
 
 Genesis document
 
-: An intermediate representation of a DID document with the identifier set to the placeholder value.
+: An intermediate representation of an ::initial DID document:: with the identifier set to the placeholder value.
