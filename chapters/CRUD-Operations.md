@@ -7,15 +7,15 @@ for the **did:btc1** method.
 
 Creating a **did:btc1** identifier is entirely offline, requiring no innate network interactions to generate a new identifier. Each creation starts either with a public key or a ::genesis document::.  Both creation algorithms first create the ::genesis bytes:: that commit to an ::initial DID document::.
 
-To create a **did:btc1** identifier from a public key without an initial DID document, use **Algo 1: Create genesis bytes from public key**, then encode those bytes as in **Algo 3: Encode identifier**.
+To create a **did:btc1** identifier from a public key without an initial DID document, use [Algo 1: Create Genesis Bytes from Public Key], then encode those bytes as in [Algo 3: Encode Identifier].
 
-To create a **did:btc1** identifier from an initial DID document, use **Algo 2: Create genesis bytes from initial DID document**, then encode those bytes along with a version, network for the identifier and an identifier type of “external” using **Algo 3: Encode identifier**.
+To create a **did:btc1** identifier from an initial DID document, use [Algo 2: Create Genesis Bytes from Initial DID Document], then encode those bytes along with a version, network for the identifier and an identifier type of “external” using [Algo 3: Encode Identifier].
 
 The output of encoding the identifier is the newly created DID.
 
 Note: When creating from a ::genesis document::, it is likely that creators will want to include information, such as **::Beacons::** and other service endpoints, which requires online interactions, e.g., to establish a unique ::Beacon address:: for updates.
 
-#### [Algo]{.algo-number-after}: Create Genesis Bytes from Public Key {.tabbed}
+#### Algo 1: Create Genesis Bytes from Public Key {.tabbed}
 
 ##### Requirements {.unnumbered .unlisted}
 
@@ -25,7 +25,7 @@ The ::genesis bytes:: is a 33-byte compressed representation of a [secp256k1 pub
 
 ##### Example code {.unnumbered .unlisted}
 
-#### [Algo]{.algo-number-after}: Create Genesis Bytes from Initial DID Document {.tabbed}
+#### Algo 2: Create Genesis Bytes from Initial DID Document {.tabbed}
 
 ##### Requirements {.unnumbered .unlisted}
 
@@ -59,7 +59,7 @@ The steps are as follows:
 
 ##### Example code {.unnumbered .unlisted}
 
-#### [Algo]{.algo-number-after}: Encode identifier {.tabbed}
+#### Algo 3: Encode identifier {.tabbed}
 
 ##### Requirements {.unnumbered .unlisted}
 
