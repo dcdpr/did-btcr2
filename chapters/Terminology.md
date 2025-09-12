@@ -329,11 +329,6 @@ Offline Creation
 : Offline Creation refers to when a **did:btcr2** identifier and corresponding
   initial DID document are created without requiring network interactions.
 
-**did:btcr2** supports offline creation in two modes:
-
-* Key Pair Deterministic Creation; and
-* DID Document Initiated Creation.
-
 Pending BTCR2 Update
 
 : A ::BTCR2 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
