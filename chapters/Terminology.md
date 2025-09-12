@@ -31,6 +31,11 @@ Authorized Beacon Signals
 
 : ::Authorized Beacon Signal::
 
+Beacon Address
+
+: The Bitcoin address of a ::BTCR2 Beacon::. Spends of ::UTXO:: controlled by this address are 
+identified as ::Beacon Signals::.
+
 Beacon Aggregator
 
 : The entity that coordinates the protocols of an aggregate ::BTCR2 Beacon::. 
