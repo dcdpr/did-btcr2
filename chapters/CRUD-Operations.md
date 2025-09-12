@@ -26,7 +26,7 @@ will want to include information, such as ::Beacons:: and other service
 endpoints, which requires online interactions, e.g., to establish a unique
 ::Beacon Address:: for updates.
 
-#### Algo 1: Create Genesis Bytes from Public Key {.tabbed}
+#### Algo 1: Create Genesis Bytes from Public Key {.tabbed .unnumbered}
 
 ##### Requirements {.unnumbered .unlisted}
 
@@ -39,7 +39,7 @@ defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-
 
 ##### Example code {.unnumbered .unlisted}
 
-#### Algo 2: Create Genesis Bytes from Genesis Document {.tabbed}
+#### Algo 2: Create Genesis Bytes from Genesis Document {.tabbed .unnumbered}
 
 ##### Requirements {.unnumbered .unlisted}
 
@@ -92,7 +92,7 @@ The steps are as follows:
 
 ##### Example code {.unnumbered .unlisted}
 
-#### Algo 3: Encode identifier {.tabbed}
+#### Algo 3: Encode identifier {.tabbed .unnumbered}
 
 ##### Requirements {.unnumbered .unlisted}
 
