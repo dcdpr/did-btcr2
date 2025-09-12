@@ -424,7 +424,7 @@ Initial DID Documents
 
 Genesis Bytes
 
-: The bytes used to generate a did:btc1 identifier. These bytes are either a
+: The bytes used to generate a did:btcr2 identifier. These bytes are either a
   33-byte compressed SEC encoded sec256k1 public key or a 32 byte SHA256 hash of
   a ::Genesis Document::.
 

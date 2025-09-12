@@ -5,16 +5,16 @@ for the **did:btcr2** method.
 
 ### Create
 
-Creating a **did:btc1** identifier is entirely offline, requiring no innate
+Creating a **did:btcr2** identifier is entirely offline, requiring no innate
 network interactions to generate a new identifier. Each creation starts either
 with a public key or a ::Genesis Document::.  Both creation algorithms first
 create the ::Genesis Bytes:: that commit to an ::Initial DID Document::.
 
-To create a **did:btc1** identifier from a public key without an Initial DID
+To create a **did:btcr2** identifier from a public key without an Initial DID
 Document, use [Algo 1: Create Genesis Bytes from Public Key], then encode those
 bytes as in [Algo 3: Encode Identifier].
 
-To create a **did:btc1** identifier from an Initial DID Document, use
+To create a **did:btcr2** identifier from an Initial DID Document, use
 [Algo 2: Create Genesis Bytes from Initial DID Document], then encode those
 bytes along with a version, network for the identifier and an identifier type of
 “external” using [Algo 3: Encode Identifier].
@@ -49,13 +49,13 @@ hash of an input ::Genesis Document:: canonicalized using the
 ::Genesis Document:: is an intermediate representation of an
 ::Initial DID Document:: with the identifier values replaced with a placeholder
 value. The placeholder value MUST be
-did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This is
-‘did:btc1:’ followed by 60 ‘x’s, one for each character in the method-specific
+did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This is
+‘did:btcr2:’ followed by 60 ‘x’s, one for each character in the method-specific
 identifier.
 
 In order for this DID to be updatable, controllers must include at least one
 verification method with a `capabilityInvocation` verification relationship and
-at least one ::BTC1 Beacon:: service.
+at least one ::BTCR2 Beacon:: service.
 
 Controllers may also add content to the ::Genesis Document::, including keys and
 services.
@@ -74,12 +74,12 @@ Inputs:
 
 * `genesisDocument` - any intermediate representation of a DID document with the
   identifier replaced with the placeholder value throughout all fields (e.g. the
-  id field) `did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`.
+  id field) `did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`.
   REQUIRED; object.
 
 Outputs:
 
-* `genesisBytes` - a newly created **did:btc1** identifier;
+* `genesisBytes` - a newly created **did:btcr2** identifier;
   string
 
 The steps are as follows:
@@ -106,10 +106,10 @@ nibble and the value from the network table in the high nibble. The Genesis
 Bytes are then appended to the first byte to produce the input bytes. Encode the
 input bytes using the bech32m algorithm with the human readable part (hrp) value
 set to the ASCII value of either ‘k’ or ‘x’, depending on the type of the
-identifier. For btc1 DIDs generated from an initial secp256k1 public key, use
-‘k’ for btc1 DIDs generated with a Genesis Document, use ‘x’. The result of the
+identifier. For btcr2 DIDs generated from an initial secp256k1 public key, use
+‘k’ for btcr2 DIDs generated with a Genesis Document, use ‘x’. The result of the
 encoding is the method specific identifier. Prepend the method specific
-identifier with the ASCII string ‘did:btc1:’ to create the DID.
+identifier with the ASCII string ‘did:btcr2:’ to create the DID.
 
 NOTE: In future versions of this algorithm, it is expected that the version
 could take up more than one nibble with the nibble set to F indicating that the
@@ -157,9 +157,9 @@ Inputs:
 
 Output:
 
-* identifier - a **did:btc1** identifier
+* identifier - a **did:btcr2** identifier
 
-Encode the **did:btc1** identifier as follows:
+Encode the **did:btcr2** identifier as follows:
 
 1. If `idType` is not a valid value per above, raise `invalidDid` error.
 2. If `version` is greater than `1`, raise `invalidDid` error.
@@ -190,7 +190,7 @@ Encode the **did:btc1** identifier as follows:
     `nibbles.length / 2 - 1` and
     `encodingBytes[index] = (nibbles[2 * index] << 4) | nibbles[2 * index + 1]`.
 13. Append `genesisBytes` to `dataBytes`.
-14. Set `identifier` to “did:btc1:”.
+14. Set `identifier` to “did:btcr2:”.
 15. Pass `hrp` and `dataBytes` to the
     [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) encoding algorithm,
     retrieving `encodedString`.
