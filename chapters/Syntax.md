@@ -1,6 +1,6 @@
 ## Syntax
 
-A **did:btc1** Decentralized Identifier (DID) consists of a `did:btc1` prefix, 
+A **did:btcr2** Decentralized Identifier (DID) consists of a `did:btcr2` prefix, 
 followed by an `id-bech32` value, which is a
 [Bech32m](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki)
 encoding of the following data:
@@ -27,13 +27,13 @@ into a single byte as follows:
    1. `6`-`B` = reserved for future use by the specification; or
    1. `C`-`F` = user-defined index into a custom test network.
 
-The user-defined index allows any user to stand up a custom test network and create **did:btc1**
+The user-defined index allows any user to stand up a custom test network and create **did:btcr2**
 identifiers on it. However, anyone encountering such an identifier would have to know the details
 of the network (e.g., challenge and seed node for signet) to use it. This means that:
 
 * The interpretation of a user-defined index is by mutual agreement between
-  parties issuing **did:btc1** identifiers and those resolving them.
-* Other users may use the same index, and **did:btc1** identifiers will **not**
+  parties issuing **did:btcr2** identifiers and those resolving them.
+* Other users may use the same index, and **did:btcr2** identifiers will **not**
   be interoperable in each other's network.
 
 When the last part of the encoding is of a `key-value`, the Human Readable Part
@@ -41,10 +41,10 @@ When the last part of the encoding is of a `key-value`, the Human Readable Part
 is of a `hash-value`, the HRP is set to `x`. The HRP is followed by a separator
 which is always `1`, which is then followed by the `bech32-encoding`.
 
-The Augmented Backus-Naur (ABNF) for a **did:btc1** identifier is as follows:
+The Augmented Backus-Naur (ABNF) for a **did:btcr2** identifier is as follows:
 
 ```abnf
-did-btc1 = "did:btc1:" id-bech32
+did-btcr2 = "did:btcr2:" id-bech32
 id-bech32 = key-encoding / hash-encoding
 hash-encoding = "x1" bech32-encoding
 key-encoding = "k1" bech32-encoding
@@ -61,7 +61,7 @@ ABNF is defined by [Internet Engineering Task Force (IETF) RFC5234](https://data
 The purpose of the `version` is to identify incompatible changes made in the
 specification (e.g., a change to the way ::Beacon Signals:: are constructed and
 interpreted). The updated specification may also change the way that the
-**did:btc1** identifier is encoded.
+**did:btcr2** identifier is encoded.
 
 There are two consequences. The first is that the `version` MUST be able to go
 beyond the domain of a nibble (1-16). To support this, the start of the decoded
@@ -81,7 +81,7 @@ version = 1 + sum of all nibbles up to and including first non-hexadecimal-F
 ```
 
 What appears beyond the version is version-specific. Implementations MUST NOT
-attempt to interpret **did:btc1** identifiers with an unknown `version`.
+attempt to interpret **did:btcr2** identifiers with an unknown `version`.
 
 For illustration purposes only, assume that the nibble following the version
 always represents the network and that the allowable values for the network
@@ -96,7 +96,7 @@ follows (spaces between bytes added for readability):
 | *F2 D0* 03 c7 ... |      18 | custom test network 2 |
 | *FF 72* 03 c7 ... |      38 | regtest               |
 
-### **did:btc1** Identifier Encoding
+### **did:btcr2** Identifier Encoding
 
 Given:
 
@@ -116,7 +116,7 @@ Given:
   * a compressed secp256k1 public key if `idType` is "key"
   * a hash of an initiating external DID document if `idType` is "external"
 
-Encode the **did:btc1** identifier as follows:
+Encode the **did:btcr2** identifier as follows:
 
 1. If `idType` is not a valid value per above, raise `invalidDid` error.
 1. If `version` is greater than `1`, raise `invalidDid` error.
@@ -145,24 +145,24 @@ Encode the **did:btc1** identifier as follows:
    `nibbles.length / 2 - 1` and `encodingBytes[index] =
    (nibbles[2 * index] << 4) | nibbles[2 * index + 1]`.
 1. Append `genesisBytes` to `dataBytes`.
-1. Set `identifier` to "did:btc1:".
+1. Set `identifier` to "did:btcr2:".
 1. Pass `hrp` and `dataBytes` to the [Bech32m Encoding] algorithm, retrieving
    `encodedString`.
 1. Append `encodedString` to `identifier`.
 1. Return `identifier`.
 
-### **did:btc1** Identifier Decoding
+### **did:btcr2** Identifier Decoding
 
 Given:
 
-* `identifier` - required, a string **did:btc1** identifier
+* `identifier` - required, a string **did:btcr2** identifier
 
-Decode the **did:btc1** identifier as follows:
+Decode the **did:btcr2** identifier as follows:
 
 1. Split `identifier` into an array of `components` at the colon `:` character.
 1. If the length of the `components` array is not `3`, raise `invalidDid` error.
 1. If `components[0]` is not "did", raise `invalidDid` error.
-1. If `components[1]` is not "btc1", raise `methodNotSupported` error.
+1. If `components[1]` is not "btcr2", raise `methodNotSupported` error.
 1. Set `encodedString` to `components[2]`.
 1. Pass `encodedString` to the [Bech32m Decoding] algorithm, retrieving `hrp`
    and `dataBytes`.
@@ -199,12 +199,12 @@ Decode the **did:btc1** identifier as follows:
    public key, raise `invalidDid` error.
 1. Return `idType`, `version`, `network`, and `genesisBytes`.
 
-### Differentiating **did:btc1** Identifiers
+### Differentiating **did:btcr2** Identifiers
 
 This section is non-normative.
 
 It is sometimes useful to differentiate between production (Bitcoin network) and
-test (other network) **did:btc1** identifiers without having to go through the
+test (other network) **did:btcr2** identifiers without having to go through the
 decoding process.
 
 Bech32 encodes five bits at a time, so the version and network (8 bits, assuming
@@ -215,14 +215,14 @@ With HRP `k`, there is the additional advantage that the first nibble of the
 public key is always zero (because the first byte is either 02 or 03, indicating
 the sign). That means that, for version 1 on Bitcoin network, the first three
 nibbles (12 bits) are zero, which translates to "qq" (five bits zero followed by
-five bits zero), with two bits (also zero) left over. Any `did:btc1:k1qq...`
+five bits zero), with two bits (also zero) left over. Any `did:btcr2:k1qq...`
 pattern is therefore version 1 on Bitcoin.
 
 HRP `x` is a little more complicated, because the extra two bits for the second
 block of five bits could be any of four values. Therefore, there are four
 two-character strings that could appear after the '1' separator: "qq", "qp",
-"qz", and "qr". Any `did:btc1:x1qq...`, `did:btc1:x1qp...`,
-`did:btc1:x1qz...`, or `did:btc1:x1qr...` pattern is therefore version 1 on
+"qz", and "qr". Any `did:btcr2:x1qq...`, `did:btcr2:x1qp...`,
+`did:btcr2:x1qz...`, or `did:btcr2:x1qr...` pattern is therefore version 1 on
 Bitcoin.
 
 If the version changes, the strings change as well. Version 2 on Bitcoin would

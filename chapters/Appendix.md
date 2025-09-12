@@ -2,7 +2,7 @@
 
 ### Bech32m Encoding and Decoding
 
-**did:btc1** uses the Bech32m algorithm to encode and decode several data values.
+**did:btcr2** uses the Bech32m algorithm to encode and decode several data values.
 The original Bech32 algorithm is documented in
 [BIP-0173](https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki). The updated algorithm, Bech32m, is documented in
 [BIP-0350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki).
@@ -57,16 +57,16 @@ The function returns the retrieved `content` or null.
 1. If content for `cid` cannot be found, set `content` to null.
 1. Return `content`
 
-### Root did:btc1 Update Capabilities
+### Root did:btcr2 Update Capabilities
 
-#### Derive Root Capability from **did:btc1** Identifier
+#### Derive Root Capability from **did:btcr2** Identifier
 
-This algorithm deterministically generates an [Authorization Capabilities for Linked Data](https://w3c-ccg.github.io/zcap-spec/) (ZCAP-LD) root capability from a given **did:btc1** identifier. Each root 
+This algorithm deterministically generates an [Authorization Capabilities for Linked Data](https://w3c-ccg.github.io/zcap-spec/) (ZCAP-LD) root capability from a given **did:btcr2** identifier. Each root 
 capability is unique to the identifier. This root capability is defined and understood 
-by the **did:btc1** specification as the root capability to authorize updates to the 
-specific **did:btc1** identifiers DID document.
+by the **did:btcr2** specification as the root capability to authorize updates to the 
+specific **did:btcr2** identifiers DID document.
 
-The algorithm takes in a **did:btc1** identifier and returns a `rootCapability` object.
+The algorithm takes in a **did:btcr2** identifier and returns a `rootCapability` object.
 
 1. Define `rootCapability` as an empty object.
 1. Set `rootCapability.@context` to 'https://w3id.org/zcap/v1'.
@@ -77,7 +77,7 @@ The algorithm takes in a **did:btc1** identifier and returns a `rootCapability` 
 1. Set `rootCapability.invocationTarget` to `identifier`.
 1. Return `rootCapability`.
 
-Below is an example root capability for updating the DID document for **did:btc1:k1qqpuwwde82nennsavvf0lqfnlvx7frrgzs57lchr02q8mz49qzaaxmqphnvcx**:
+Below is an example root capability for updating the DID document for **did:btcr2:k1qqpuwwde82nennsavvf0lqfnlvx7frrgzs57lchr02q8mz49qzaaxmqphnvcx**:
 
 ```{.json include="json/CRUD-Operations/Update-zcap-root-capability.json"}
 ```
@@ -97,15 +97,15 @@ This algorithm takes in a `capabilityId` and returns a `rootCapability` object.
    1. `components[1] == zcap`.
    1. `components[2] == root`.
 1. Set `uriEncodedId` to `components[3]`.
-1. Set `btc1Identifier` the result of `decodeURIComponent(uriEncodedId)`.
+1. Set `btcr2Identifier` the result of `decodeURIComponent(uriEncodedId)`.
 1. Set `rootCapability.id` to `capabilityId`.
-1. Set `rootCapability.controller` to `btc1Identifier`.
-1. Set `rootCapability.invocationTarget` to `btc1Identifier`.
+1. Set `rootCapability.controller` to `btcr2Identifier`.
+1. Set `rootCapability.invocationTarget` to `btcr2Identifier`.
 1. Return `rootCapability`.
 
-Below is an example of a `btc1Update`. An invoked [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/)
+Below is an example of a `btcr2Update`. An invoked [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/)
 capability containing a `patch` defining how the DID document for
-**did:btc1:k1qqpuwwde82nennsavvf0lqfnlvx7frrgzs57lchr02q8mz49qzaaxmqphnvcx** SHOULD
+**did:btcr2:k1qqpuwwde82nennsavvf0lqfnlvx7frrgzs57lchr02q8mz49qzaaxmqphnvcx** SHOULD
 be mutated.
 
 ```{.json include="json/CRUD-Operations/Update-zcap-root-capability-patch.json"}

@@ -4,27 +4,27 @@ Aggregate Beacon
 
 : An Aggregate Beacon enables multiple entities (possibly controlling multiple
   DIDs and possibly posting multiple updates) to collectively announce a set of
-  ::BTC1 Updates:: in a ::Beacon Signal::.
+  ::BTCR2 Updates:: in a ::Beacon Signal::.
 
-  There can only ever be one ::BTC1 Update:: per **did:btc1** in a ::Beacon
+  There can only ever be one ::BTCR2 Update:: per **did:btcr2** in a ::Beacon
   Signal:: from an Aggregate Beacon.
 
 Aggregate Beacons
 
 : ::Aggregate Beacon::
 
-Announced BTC1 Update
+Announced BTCR2 Update
 
-: A ::BTC1 Update:: that has been announced in an ::Authorized Beacon Signal:: 
+: A ::BTCR2 Update:: that has been announced in an ::Authorized Beacon Signal:: 
 which has met the specified threshold for confirmation.
 
-Announced BTC1 Updates
+Announced BTCR2 Updates
 
-: ::Announced BTC1 Update::
+: ::Announced BTCR2 Update::
 
 Authorized Beacon Signal
 
-: An Authorized Beacon Signal is a ::Beacon Signal:: from a ::BTC1 Beacon:: with a ::BTC1 Beacon::
+: An Authorized Beacon Signal is a ::Beacon Signal:: from a ::BTCR2 Beacon:: with a ::BTCR2 Beacon::
   address in a then-current DID document.
 
 Authorized Beacon Signals
@@ -33,7 +33,7 @@ Authorized Beacon Signals
 
 Beacon Aggregator
 
-: The entity that coordinates the protocols of an aggregate ::BTC1 Beacon::. 
+: The entity that coordinates the protocols of an aggregate ::BTCR2 Beacon::. 
 Specifically the Create Beacon Cohort and Announce Beacon Signal protocols.
 
 Beacon Aggregators
@@ -42,9 +42,9 @@ Beacon Aggregators
 
 Beacon Announcement Map
 
-: A document that maps **did:btc1** identifiers to ::BTC1 Update Announcements::. 
-  This is used to distinguish which ::BTC1 Update Announcement:: applies to which 
-  **did:btc1** identifier.
+: A document that maps **did:btcr2** identifiers to ::BTCR2 Update Announcements::. 
+  This is used to distinguish which ::BTCR2 Update Announcement:: applies to which 
+  **did:btcr2** identifier.
 
 Beacon Announcement Maps
 
@@ -52,7 +52,7 @@ Beacon Announcement Maps
 
 Beacon Cohort
 
-: The set of unique cryptographic keys participating in a ::BTC1 Beacon:: that are required to
+: The set of unique cryptographic keys participating in a ::BTCR2 Beacon:: that are required to
 authorize spends from the ::Beacon Address::.
 
 Beacon Cohorts
@@ -70,13 +70,13 @@ Beacon Participants
 
 Beacon Signal
 
-: Beacon Signals are Bitcoin transactions that spend from a ::BTC1 Beacon:: address and
+: Beacon Signals are Bitcoin transactions that spend from a ::BTCR2 Beacon:: address and
   include a transaction output of the format `[OP_RETURN, <32_bytes>]`. Beacon
-  Signals announce one or more ::BTC1 Updates:: and provide a means for these
+  Signals announce one or more ::BTCR2 Updates:: and provide a means for these
   payloads to be verified as part of the Beacon Signal.
 
-  The type of the ::BTC1 Beacon::  determines how these Beacon Signals SHOULD be
-  constructed and processed to validate a set of ::BTC1 Updates:: against the
+  The type of the ::BTCR2 Beacon::  determines how these Beacon Signals SHOULD be
+  constructed and processed to validate a set of ::BTCR2 Updates:: against the
   32 bytes contained within the Beacon Signal.
 
 Beacon Signals
@@ -85,9 +85,9 @@ Beacon Signals
 
 Beacon Type
 
-: The type of a ::BTC1 Beacon::. The Beacon Type defines how ::BTC1 Update Announcements:: 
+: The type of a ::BTCR2 Beacon::. The Beacon Type defines how ::BTCR2 Update Announcements:: 
   are included within a ::Beacon Signal:: broadcast on the Bitcoin network. It also defines 
-  how the content committed within ::BTC1 Update Announcements:: can be verified 
+  how the content committed within ::BTCR2 Update Announcements:: can be verified 
   against the ::Beacon Signal::.
 
 Beacon Types
@@ -96,33 +96,49 @@ Beacon Types
 
 
 
-BTC1 Beacon
+BTCR2 Beacon
 
-: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTC1 Update Announcements::. 
+: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTCR2 Update Announcements::. 
 
-BTC1 Beacons
+BTCR2 Beacons
 
-: ::BTC1 Beacon::
+: ::BTCR2 Beacon::
 
-: ::BTC1 Beacon::
+: ::BTCR2 Beacon::
 
-BTC1 Update
+BTCR2 Update
 
-: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btc1** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTC1 Update:: document.
+: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btcr2** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTCR2 Update:: document.
 
-BTC1 Updates
+BTCR2 Updates
 
-: ::BTC1 Update::
+: ::BTCR2 Update::
 
-BTC1 Update Announcement
+BTCR2 Update Announcement
 
-: A 32 byte SHA256 hash committing to a ::BTC1 Update:: that has been broadcast by a ::BTC1 Beacon:: in an 
-  ::Authorized Beacon Signal::. ::Beacon Signals:: can include one or more BTC1 Update Announcements. 
+: A 32 byte SHA256 hash committing to a ::BTCR2 Update:: that has been broadcast by a ::BTCR2 Beacon:: in an 
+  ::Authorized Beacon Signal::. ::Beacon Signals:: can include one or more BTCR2 Update Announcements. 
   How ::Beacon Signals:: include announcements is defined by the ::Beacon Type::.
 
-BTC1 Update Announcements
+BTCR2 Update Announcements
 
-: ::BTC1 Update Announcement::
+: ::BTCR2 Update Announcement::
+
+BTCR2 Update Announcement
+
+: ::BTCR2 Update Announcement::
+
+BTCR2 Update Announcements
+
+: ::BTCR2 Update Announcement::
+
+BTCR2 Update
+
+: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btcR2** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTCR2 Update:: document.
+
+BTCR2 Updates
+
+: ::BTCR2 Update::
 
 Content Addressable Storage
 
@@ -157,11 +173,11 @@ Contemporary Blockheight
 
 : The blockheight of consideration when walking the provenance of a series of DID
   updates. A DID document's contemporary time is the Signal Time of the ::Beacon Signal::
-  that announced the last ::BTC1 Update:: applied to the DID document.
+  that announced the last ::BTCR2 Update:: applied to the DID document.
 
 Initial DID Document
 
-: The canonical, conformant version 1 of a DID document for a specific **did:btc1** identifier.
+: The canonical, conformant version 1 of a DID document for a specific **did:btcr2** identifier.
 
 Initial DID Documents
 
@@ -170,7 +186,7 @@ Initial DID Documents
 Intermediate DID Document
 
 : A representation of a DID document that it not yet fully conformant with the DID Core
-  specification. Intermediate DID documents for the **did:btc1** DID method are DID documents
+  specification. Intermediate DID documents for the **did:btcr2** DID method are DID documents
   whose identifier values have been replaced with a placeholder value.
 
 Intermediate DID Documents
@@ -190,7 +206,7 @@ Late Publishing
 
 Map Beacon
 
-: A type of ::BTC1 Beacon:: which aggregates multiple ::BTC1 Update Announcements::. 
+: A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update Announcements::. 
   A ::Beacon Signal:: from a Map Beacon commits to a ::Beacon Announcement Map::.
 
 Map Beacons
@@ -223,21 +239,21 @@ Non-Repudiation
 
 Offline Creation
 
-: Offline Creation refers to when a **did:btc1** identifier and corresponding
+: Offline Creation refers to when a **did:btcr2** identifier and corresponding
   initial DID document are created without requiring network interactions.
 
-**did:btc1** supports offline creation in two modes:
+**did:btcr2** supports offline creation in two modes:
 
 * Key Pair Deterministic Creation; and
 * DID Document Initiated Creation.
 
-Pending BTC1 Update
+Pending BTCR2 Update
 
-: A ::BTC1 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
+: A ::BTCR2 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
 
-Pending BTC1 Updates
+Pending BTCR2 Updates
 
-: ::Pending BTC1 Update::
+: ::Pending BTCR2 Update::
 
 Resolution Time
 
@@ -264,7 +280,7 @@ Schnorr
 Sidecar
 
 : A mechanism by which data necessary for resolving a DID is provided alongside
-  the **did:btc1** identifier being resolved, rather than being retrieved through
+  the **did:btcr2** identifier being resolved, rather than being retrieved through
   open and standardized means (e.g., by retrieving from IPFS).
 
 : To explain the metaphor, a sidecar on a motorcycle brings along a second passenger
@@ -283,7 +299,7 @@ Signal Blockheight
 
 Singleton Beacon
 
-: A type of ::BTC1 Beacon:: whose ::Beacon Signals:: each contain a single ::BTC1 Update Announcement::.
+: A type of ::BTCR2 Beacon:: whose ::Beacon Signals:: each contain a single ::BTCR2 Update Announcement::.
 
 Singleton Beacons
 
@@ -291,7 +307,94 @@ Singleton Beacons
 
 SMT Beacon
 
-: A type of ::BTC1 Beacon:: which aggregates multiple ::BTC1 Update Announcements::.  
+: A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update Announcements::.  
+  A ::Beacon Signal:: from an SMT Beacon contains the root of an optimized ::Sparse Merkle Tree::.
+
+SMT Beacons
+
+: ::SMT Beacon::
+
+Non-Repudiation
+
+: Non-Repudiation is a feature of DID methods that can clearly state that all data
+  is available to present one canonical history for a DID.
+
+  If some data is needed but not available, the DID method MUST NOT allow DID
+  resolution to complete. Any changes to the history, such as may occur if a website
+  edits a file, MUST be detected and disallowed. The ::Late Publishing:: problem
+  breaks Non-Repudiation.
+
+Offline Creation
+
+: Offline Creation refers to when a **did:btcr2** identifier and corresponding
+  initial DID document are created without requiring network interactions.
+
+**did:btcr2** supports offline creation in two modes:
+
+* Key Pair Deterministic Creation; and
+* DID Document Initiated Creation.
+
+Pending BTCR2 Update
+
+: A ::BTCR2 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
+
+Pending BTCR2 Updates
+
+: ::Pending BTCR2 Update::
+
+Resolution Time
+
+: A Coordinated Universal Time (UTC) timestamp of when the client makes a resolution 
+  request of the controller.
+
+Schnorr Signature
+
+: An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures 
+  with some major advantages, such as being able to combine digital signatures 
+  from multiple parties to form a single digital signature for the composite public key.
+
+  Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same
+  keypairs can be used to produce both Schnorr signatures and ECDSA signatures.
+
+Schnorr Signatures
+
+: ::Schnorr Signature::
+
+Schnorr
+
+: ::Schnorr Signature::
+
+Sidecar
+
+: A mechanism by which data necessary for resolving a DID is provided alongside
+  the **did:btcr2** identifier being resolved, rather than being retrieved through
+  open and standardized means (e.g., by retrieving from IPFS).
+
+: To explain the metaphor, a sidecar on a motorcycle brings along a second passenger
+  in a transformed vehicle, the same way the DID controller MUST bring along the
+  DID document history to transform the situation into one that is verifiable.
+
+Sidecar Data
+
+: Data transmitted via ::Sidecar::.
+
+
+Signal Blockheight
+
+: The blockheight of the Bitcoin block that included a specific ::Beacon Signal::.
+  Blockheight is used as the internal time of the resolution algorithm.
+
+Singleton Beacon
+
+: A type of ::BTCR2 Beacon:: whose ::Beacon Signals:: each contain a single ::BTCR2 Update Announcement::.
+
+Singleton Beacons
+
+: ::Singleton Beacon::
+
+SMT Beacon
+
+: A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update Announcements::.  
   A ::Beacon Signal:: from an SMT Beacon contains the root of an optimized ::Sparse Merkle Tree::.
 
 SMT Beacons
@@ -305,9 +408,9 @@ Sparse Merkle Tree
 
   This data structure enables proofs of both inclusion and non-inclusion of data
   at a given index. The instantiation in this specification has 2^256 leaves
-  that are indexed by the SHA256 hash of a **did:btc1** identifier. The data
-  attested to at the leaves of the tree is the ::BTC1 Update:: for that
-  **did:btc1** identifier that indexed to the leaf.
+  that are indexed by the SHA256 hash of a **did:btcr2** identifier. The data
+  attested to at the leaves of the tree is the ::BTCR2 Update:: for that
+  **did:btcr2** identifier that indexed to the leaf.
 
 SMT
 
@@ -330,16 +433,16 @@ Target Time
   request to the resolver. If none is provided the target time is set to the
   ::Resolution Time::.
 
-Unsecured BTC1 Update
+Unsecured BTCR2 Update
 
-: A ::BTC1 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btc1** DID document. 
-An Usecured BTC1 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
+: A ::BTCR2 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btcr2** DID document. 
+An Usecured BTCR2 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
 along with the new version of the DID document and the source and target hashes of the DID document
 identifying the source DID document that the patch should be applied to and the target DID document that results from appliying the patch.
 
-Unsecured BTC1 Updates
+Unsecured BTCR2 Updates
 
-: ::Unsecured BTC1 Update::
+: ::Unsecured BTCR2 Update::
 
 
 

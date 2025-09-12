@@ -1,12 +1,12 @@
 ## CRUD Operations
 
 This section defines the Create, Read, Update, and Deactivate (CRUD) operations
-for the **did:btc1** method.
+for the **did:btcr2** method.
 
 ### Create
 
 The Create operation consists of two main algorithms for creating identifiers
-and DID documents. A **did:btc1** identifier and DID document can either be created
+and DID documents. A **did:btcr2** identifier and DID document can either be created
 from a deterministic key pair or from an external ::Intermediate DID Document::.
 In both cases, DID creation can be undertaken in an offline manner, i.e., the DID
 controller does not need to interact with the Bitcoin network to create their DID.
@@ -14,7 +14,7 @@ controller does not need to interact with the Bitcoin network to create their DI
 #### From Deterministic Key Pair
 
 The From Deterministic Key Pair algorithm encodes a secp256k1 public key
-as a **did:btc1** identifier. The public key is then used to deterministically
+as a **did:btcr2** identifier. The public key is then used to deterministically
 generate the ::initial DID document::.
 
 It takes the following inputs:
@@ -25,8 +25,8 @@ It takes the following inputs:
 
 It returns the following outputs:
 
-* `did` - a newly created **did:btc1** identifier; string
-* `initialDocument` - the valid first version of a DID document for a given **did:btc1** identifier.
+* `did` - a newly created **did:btcr2** identifier; string
+* `initialDocument` - the valid first version of a DID document for a given **did:btcr2** identifier.
 
 The steps are as follows:
 
@@ -34,8 +34,8 @@ The steps are as follows:
 1. Set `version` to `1`.
 1. Set `network` to the desired network.
 1. Set `genesisBytes` to `pubKeyBytes`.
-1. Pass `idType`, `version`, `network`, and `genesisBytes` to the [did:btc1
-   Identifier Encoding](#didbtc1-identifier-encoding) algorithm, retrieving
+1. Pass `idType`, `version`, `network`, and `genesisBytes` to the [did:btcr2
+   Identifier Encoding](#didbtcr2-identifier-encoding) algorithm, retrieving
    `id`.
 1. Set `did` to `id`.
 1. Set `initialDocument` to the result of passing `did` into the [Read] algorithm.
@@ -44,15 +44,15 @@ The steps are as follows:
 #### From External Intermediate DID Document
 
 The From External ::Intermediate DID Document:: algorithm enables the ability 
-to create a **did:btc1** from an external ::Intermediate DID Document::. This allows for a
+to create a **did:btcr2** from an external ::Intermediate DID Document::. This allows for a
 more complex ::Initial DID Document::, including the ability to include
-service endpoints and ::BTC1 Beacons:: that support aggregation.
+service endpoints and ::BTCR2 Beacons:: that support aggregation.
 
 It takes the following inputs:
 
 * `intermediateDocument` - any arbitrary, valid DID document with the `identifier`
    replaced with the placeholder value throughout all fields (e.g. the id field)
-   `did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`. It
+   `did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`. It
    SHOULD include at least one `verificationMethod` and `service` of the type
    ::SingletonBeacon::; REQUIRED; object.
 * `version` - the identifier version; OPTIONAL; integer; default=1.
@@ -61,8 +61,8 @@ It takes the following inputs:
 
 It returns the following outputs:
 
-* `did` - a newly created **did:btc1** identifier; string
-* `initialDocument` - the valid first version of a DID document for a given **did:btc1** identifier.
+* `did` - a newly created **did:btcr2** identifier; string
+* `initialDocument` - the valid first version of a DID document for a given **did:btcr2** identifier.
 
 The steps are as follows:
 
@@ -71,12 +71,12 @@ The steps are as follows:
 1. Set `network` to the desired network.
 1. Set `genesisBytes` to the result of passing `intermediateDocument` into the
    [JSON Canonicalization and Hash] algorithm.
-1. Pass `idType`, `version`, `network`, and `genesisBytes` to the [did:btc1
-   Identifier Encoding](#didbtc1-identifier-encoding) algorithm, retrieving
+1. Pass `idType`, `version`, `network`, and `genesisBytes` to the [did:btcr2
+   Identifier Encoding](#didbtcr2-identifier-encoding) algorithm, retrieving
    `id`.
 1. Set `did` to `id`.
 1. Set `initialDocument` to a copy of the `intermediateDocument`.
-1. Replace all `did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+1. Replace all `did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
    values in the `initialDocument` with the `did`.
 1. Optionally store `canonicalBytes` on a ::Content Addressable Storage:: (CAS)
    system like the InterPlanetary File System (IPFS). If doing so, implementations
@@ -87,7 +87,7 @@ The steps are as follows:
 
 The Read operation is an algorithm consisting of a series of subroutine algorithms
 executed by a resolver after a resolution request identifying a specific
-**did:btc1** `identifier` is received from a client at ::Resolution Time::.
+**did:btcr2** `identifier` is received from a client at ::Resolution Time::.
 The request MUST always contain the `resolutionOptions` object containing additional
 information to be used in resolution. This object MAY be empty. 
 See the [DID Resolution specification](https://w3c.github.io/did-resolution/#did-resolution-options) for further details about the DID Resolution Options object.
@@ -98,7 +98,7 @@ DID document of the `identifier` at a specific ::Target Time::. The
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
 * `resolutionOptions` - an object that extends the default options per
    the [DID Resolution specification](https://w3c.github.io/did-resolution/#did-resolution-options);
    the below list is not intended to be exhaustive; OPTIONAL; object.
@@ -106,7 +106,7 @@ It takes the following inputs:
       from 1; OPTIONAL; integer.
    * `versionTime` - a timestamp used during resolution as a bound for when to
       stop resolving; OPTIONAL; integer.
-   * `sidecarData` - data necessary for resolving a DID such as ::BTC1 Updates:: and
+   * `sidecarData` - data necessary for resolving a DID such as ::BTCR2 Updates:: and
       ::SMT proofs::; OPTIONAL; object.
    * `network` - the Bitcoin network used for resolution; OPTIONAL; string; default=`"bitcoin"`.
 
@@ -117,7 +117,7 @@ It returns the following output:
 
 The steps are as follows:
 
-1. Pass `identifier` to the [did:btc1 Identifier Decoding](#didbtc1-identifier-decoding)
+1. Pass `identifier` to the [did:btcr2 Identifier Decoding](#didbtcr2-identifier-decoding)
    algorithm, retrieving `idType`, `version`, `network`, and `genesisBytes`.
 1. Set `identifierComponents` to a map of `idType`, `version`, `network`, and `genesisBytes`.
 1. Set `initialDocument` to the result of running the algorithm in
@@ -130,12 +130,12 @@ The steps are as follows:
 #### Resolve Initial DID Document
 
 This algorithm specifies how to resolve an ::Initial DID document:: and validate
-it against the `identifier` for a specific **did:btc1**.
+it against the `identifier` for a specific **did:btcr2**.
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
-* `identifierComponents` - The decoded parts of a **did:btc1** identifier; REQUIRED; object.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
+* `identifierComponents` - The decoded parts of a **did:btcr2** identifier; REQUIRED; object.
   * `idType` - the type of identifier (`KEY` or `EXTERNAL`); REQUIRED; string.
   * `version` - the identifier version; REQUIRED; integer.
   * `network` - the Bitcoin network used for the identifier; REQUIRED; string.
@@ -146,13 +146,13 @@ It takes the following inputs:
     from 1; the below list is not intended to be exhaustive; OPTIONAL; integer.
   * `versionTime` - a timestamp used during resolution as a bound for when to
       stop resolving; OPTIONAL; integer.
-  * `sidecarData` - data necessary for resolving a DID such as ::BTC1 Updates:: and
+  * `sidecarData` - data necessary for resolving a DID such as ::BTCR2 Updates:: and
     ::SMT:: proofs; OPTIONAL; object.
   * `network` - the Bitcoin network used for resolution; OPTIONAL; string; default=`"bitcoin"`.
 
 It returns the following output:
 
-* `initialDocument` - the valid first version of a DID document for a given **did:btc1** identifier.
+* `initialDocument` - the valid first version of a DID document for a given **did:btcr2** identifier.
 
 The steps are as follows:
 
@@ -173,8 +173,8 @@ The Deterministically Generate ::Initial DID Document:: algorithm generates an
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
-* `identifierComponents` - The decoded parts of a **did:btc1** identifier; REQUIRED; object.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
+* `identifierComponents` - The decoded parts of a **did:btcr2** identifier; REQUIRED; object.
   * `idType` - the type of identifier (`KEY` or `EXTERNAL`); REQUIRED; string.
   * `version` - the identifier version; REQUIRED; integer.
   * `network` - the Bitcoin network used for the identifier; REQUIRED; string.
@@ -182,7 +182,7 @@ It takes the following inputs:
 
 It returns the following output:
 
-* `initialDocument` - the valid first version of a DID document for a given **did:btc1** identifier.
+* `initialDocument` - the valid first version of a DID document for a given **did:btcr2** identifier.
 
 The steps are as follows:
 
@@ -191,7 +191,7 @@ The steps are as follows:
 1. Set `initialDocument.id` to the `identifier`.
 1. Initialize a `contextArray` to empty array:
     1. Append the DID Core v1.1 context "https://www.w3.org/ns/did/v1.1".
-    1. Append the **did:btc1** context "https://btc1.dev/context/v1".
+    1. Append the **did:btcr2** context "https://btcr2.dev/context/v1".
     1. Set `initialDocument['@context]'` to `contextArray`.
 1. Initialize a `controllerArray` to empty array:
     1. Append the `identifier`.
@@ -218,8 +218,8 @@ The steps are as follows:
 ###### Deterministically Generate Beacon Services
 
 The Deterministically Generate Beacon Services algorithm generates three
-::BTC1 Beacons:: from the single `keyBytes` value used to generate the deterministic
-**did:btc1**, one for each of the following three Bitcoin address types for the
+::BTCR2 Beacons:: from the single `keyBytes` value used to generate the deterministic
+**did:btcr2**, one for each of the following three Bitcoin address types for the
 Bitcoin `network` specified by the DID:
 
 * Pay-to-Public-Key-Hash (P2PKH);
@@ -227,20 +227,20 @@ Bitcoin `network` specified by the DID:
 * Pay-to-Taproot (P2TR).
 
 Spends from these three addresses can be produced only through signatures from the
-private key associated with the `keyBytes`. Each ::BTC1 Beacon:: is a ::Singleton Beacon::.
+private key associated with the `keyBytes`. Each ::BTCR2 Beacon:: is a ::Singleton Beacon::.
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
 * `keyBytes` - a compressed SEC encoded secp256k1 public key; REQUIRED; bytes.
 * `network` - the Bitcoin network used for the identifier; REQUIRED; string; default=`"bitcoin"`.
 
 It returns the following output:
 
-* `services` - an array of ::BTC1 Beacon:: service objects containing the following properties.
+* `services` - an array of ::BTCR2 Beacon:: service objects containing the following properties.
    * `type` - described the kind of service being defined used to determine how to produce updates; 
       REQUIRED; string; default=`"SingletonBeacon"`.
-   * `id` - the **did:btc1** identifier controlling the beacon including the DID fragment pointing
+   * `id` - the **did:btcr2** identifier controlling the beacon including the DID fragment pointing
       to the location of a key in the DID document; REQUIRED; string.
    * `serviceEndpoint` - a P2PKH, P2WPKH or P2TR bitcoin address where beacon signals can be broadcast; REQUIRED; string.
 
@@ -281,8 +281,8 @@ part of the resolution request.
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
-* `identifierComponents` - The decoded parts of a **did:btc1** identifier; REQUIRED; object.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
+* `identifierComponents` - The decoded parts of a **did:btcr2** identifier; REQUIRED; object.
   * `idType` - the type of identifier (`KEY` or `EXTERNAL`); REQUIRED; string.
   * `version` - the identifier version; REQUIRED; integer.
   * `network` - the Bitcoin network used for the identifier; REQUIRED; string.
@@ -294,7 +294,7 @@ It takes the following inputs:
     from 1; OPTIONAL; integer.
   * `versionTime` - a timestamp used during resolution as a bound for when to
       stop resolving; OPTIONAL; integer.
-  * `sidecarData` - data necessary for resolving a DID such as ::BTC1 Updates:: and
+  * `sidecarData` - data necessary for resolving a DID such as ::BTCR2 Updates:: and
     ::SMT:: proofs.; OPTIONAL; object.
   * `network` - the Bitcoin network used for resolution; OPTIONAL; string; default=`"bitcoin"`.
 
@@ -323,8 +323,8 @@ The ::Sidecar:: ::Initial DID Document:: Validation algorithm validates an
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
-* `identifierComponents` - The decoded parts of a **did:btc1** identifier; REQUIRED; object.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
+* `identifierComponents` - The decoded parts of a **did:btcr2** identifier; REQUIRED; object.
   * `idType` - the type of identifier (`KEY` or `EXTERNAL`); REQUIRED; string.
   * `version` - the identifier version; REQUIRED; integer.
   * `network` - the Bitcoin network used for the identifier; REQUIRED; string.
@@ -340,7 +340,7 @@ The steps are as follows:
 1. Set `intermediateDocumentRepresentation` to a copy of the `initialDocument`.
 1. Find and replace all values of `identifier` contained within the
    `intermediateDocumentRepresentation` with the string
-   (`did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`).
+   (`did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`).
 1. Set `hashBytes` to the SHA256 hash of the `intermediateDocumentRepresentation`.
 1. If `hashBytes` does not equal `identifierComponents.genesisBytes` MUST throw an `invalidDid` error.
 1. Return `initialDocument`.
@@ -353,8 +353,8 @@ the `identifier` into a ::Content Identifier:: (CID).
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
-* `identifierComponents` - The decoded parts of a **did:btc1** identifier; REQUIRED; object.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
+* `identifierComponents` - The decoded parts of a **did:btcr2** identifier; REQUIRED; object.
   * `idType` - the type of identifier (`KEY` or `EXTERNAL`); REQUIRED; string.
   * `version` - the identifier version; REQUIRED; integer.
   * `network` - the Bitcoin network used for the identifier; REQUIRED; string.
@@ -372,7 +372,7 @@ The steps are as follows:
    against a ::Content Addressable Storage:: (CAS) system such as IPFS.
 1. Set `initialDocument` to the copy of the `intermediateDocumentRepresentation`.
 1. Replace the string
-   (`did:btc1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`) with
+   (`did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`) with
    the `identifier` throughout the `initialDocument`.
 1. Return `initialDocument`.
 
@@ -380,12 +380,12 @@ The steps are as follows:
 
 The Resolve Target Document algorithm resolves a DID document from an initial
 document by walking the Bitcoin blockchain to identify ::Beacon Signals:: that
-announce ::BTC1 Updates:: applicable to the **did:btc1** identifier being
+announce ::BTCR2 Updates:: applicable to the **did:btcr2** identifier being
 resolved. 
 
 It takes the following inputs:
 
-* `initialDocument` - the ::Initial DID Document:: that was used to initiate the **did:btc1**
+* `initialDocument` - the ::Initial DID Document:: that was used to initiate the **did:btcr2**
    identifier being resolved as verified by the [Resolve Initial DID Document] algorithm.
    A DID Core conformant DID document; REQUIRED; object.
 * `resolutionOptions` - options that extends the default options per
@@ -395,7 +395,7 @@ It takes the following inputs:
     from 1; OPTIONAL; integer.
   * `versionTime` - a timestamp used during resolution as a bound for when to
       stop resolving; OPTIONAL; integer.
-  * `sidecarData` - data necessary for resolving a DID such as ::BTC1 Updates:: and
+  * `sidecarData` - data necessary for resolving a DID such as ::BTCR2 Updates:: and
     ::SMT:: proofs; OPTIONAL; object.
   * `network` - the Bitcoin network used for resolution; OPTIONAL; string; default=`"bitcoin"`.
 
@@ -414,23 +414,23 @@ The steps are as follows:
 1. Set `signalsMetadata` to `resolutionOptions.sidecarData.signalsMetadata`.
 1. Set `currentVersionId` to 1.
 1. If `currentVersionId` equals `targetVersionId` return `initialDocument`.
-1. Set `btc1UpdateHashHistory` to an empty array.
+1. Set `btcr2UpdateHashHistory` to an empty array.
 1. Set `didDocumentHistory` to an array containing the `initialDocument`.
 1. Set `contemporaryBlockheight` to 0.
 1. Set `contemporaryDIDDocument` to the `initialDocument`.
 1. Set `targetDocument` to the result of calling the [Traverse Bitcoin Blockchain History]
    algorithm passing in `contemporaryDIDDocument`, `contemporaryBlockheight`,
    `currentVersionId`, `targetVersionId`, `targetTime`, `didDocumentHistory`,
-   `btc1UpdateHashHistory`, `signalsMetadata`, and `network`.
+   `btcr2UpdateHashHistory`, `signalsMetadata`, and `network`.
 1. Return `targetDocument`.
 
 ##### Traverse Bitcoin Blockchain History
 
 The Traverse Bitcoin Blockchain History algorithm traverses this history of the
 Bitcoin blockchain, starting from the block with the blockheight equal to
-`contemporaryBlockheight`, to find `beaconSignals` emitted by ::BTC1 Beacons::
+`contemporaryBlockheight`, to find `beaconSignals` emitted by ::BTCR2 Beacons::
 specified within the `contemporaryDIDDocument`. Each `beaconSignal` is processed
-to retrieve a ::BTC1 Update:: defining updates to the DID document. Each
+to retrieve a ::BTCR2 Update:: defining updates to the DID document. Each
 update is applied to the document and duplicates are ignored. The algorithm
 recursively executes until either a `targetVersionId` for the DID document is
 reached, or the blockchain history passes the supplied `targetTime`. At this
@@ -438,14 +438,14 @@ point the current `contemporaryDIDDocument` is returned.
 
 It takes the following inputs:
 
-* `contemporaryDIDDocument` - the DID document for the **did:btc1** identifier 
+* `contemporaryDIDDocument` - the DID document for the **did:btcr2** identifier 
    being resolved that is current at the blockheight of the `contemporaryBlockheight`. 
    A DID Core conformant DID document; REQUIRED; object.
 * `contemporaryBlockheight` - a Bitcoin blockheight identifying the contemporary time 
    at which the resolution algorithm has reached as it traverses each block in the 
    blockchain history. an integer greater of equal to 0; REQUIRED; integer.
 * `currentVersionId` - the version of the ::contemporary DID document::. An integer starting from 
-   1 and incrementing by 1 with each ::BTC1 Update:: applied to the DID document; REQUIRED; integer.
+   1 and incrementing by 1 with each ::BTCR2 Update:: applied to the DID document; REQUIRED; integer.
 * `targetVersionId` - the version of the DID document that the resolution algorithm is attempting to resolve;
    OPTIONAL; integer.
 * `targetTime` - a 64-bit UNIX timestamp that can be used to target specific historical states of a DID document.
@@ -453,19 +453,19 @@ It takes the following inputs:
    resolution algorithm; REQUIRED; integer.
 * `didDocumentHistory` - an ordered array of DID documents from version 1 up to the
    current version; REQUIRED; array.
-* `btc1UpdateHashHistory` - an ordered array of SHA256 hashes of ::BTC1 Updates:: 
+* `btcr2UpdateHashHistory` - an ordered array of SHA256 hashes of ::BTCR2 Updates:: 
    that have been applied to the DID document by the resolution algorithm in order 
    to construct the `contemporaryDIDDocument`; REQUIRED; array.
 * `signalsMetadata` - a Map from Bitcoin transaction identifiers of ::Beacon Signals::
    to an object containing ::Sidecar Data:: for that signal provided as part of the
    `resolutionOptions`; REQUIRED; Map containing the following properties:
-   * `btc1Update` - a ::BTC1 Update:: which SHOULD match the update announced
+   * `btcr2Update` - a ::BTCR2 Update:: which SHOULD match the update announced
       by the ::Beacon Signal::. In the case of a ::SMT:: proof of non-inclusion, no
-      ::BTC1 Update:: MAY be provided; OPTIONAL; object.
-   * `proofs` - a ::Sparse Merkle Tree:: proof that the provided `btc1Update` value is
-      the value at the leaf indexed by the **did:btc1** being resolved. REQUIRED; TODO: What exactly this
+      ::BTCR2 Update:: MAY be provided; OPTIONAL; object.
+   * `proofs` - a ::Sparse Merkle Tree:: proof that the provided `btcr2Update` value is
+      the value at the leaf indexed by the **did:btcr2** being resolved. REQUIRED; TODO: What exactly this
       structure is needs to be defined.
-* `network` -  a string identifying the Bitcoin network of the **did:btc1** identifier.
+* `network` -  a string identifying the Bitcoin network of the **did:btcr2** identifier.
    The algorithm MUST query the Bitcoin blockchain identified by the `network`; REQUIRED; string.
 
 It returns the following output once either `targetTime` or `targetVersionId` have been reached:
@@ -477,7 +477,7 @@ The steps are as follows:
 
 1. Set `contemporaryHash` to the result of passing `contemporaryDIDDocument` into the 
    [JSON Canonicalization and Hash] algorithm.
-1. Find all ::BTC1 Beacons:: in `contemporaryDIDDocument.service` where `service.type` equals one of
+1. Find all ::BTCR2 Beacons:: in `contemporaryDIDDocument.service` where `service.type` equals one of
    `SingletonBeacon`, `CIDAggregateBeacon` and `SMTAggregateBeacon`.
 1. For each `beacon` in `beacons` convert the `beacon.serviceEndpoint` to a Bitcoin
    address following **[BIP21](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)**.
@@ -493,8 +493,8 @@ The steps are as follows:
    property.
 1. For `update` in `orderedUpdates`:
     1. If `update.targetVersionId` is less than or equal to `currentVersionId`,
-       push `contemporaryHash` into the `btc1UpdateHashHistory` list and run the
-       [Confirm Duplicate Update] algorithm passing in `btc1Update` and `btc1UpdateHashHistory`.
+       push `contemporaryHash` into the `btcr2UpdateHashHistory` list and run the
+       [Confirm Duplicate Update] algorithm passing in `btcr2Update` and `btcr2UpdateHashHistory`.
     1. If `update.targetVersionId` equals `currentVersionId + 1`:
         1.  Check that the base58 decoding of `update.sourceHash` equals `contemporaryHash`, else MUST
             raise `latePublishing` error.
@@ -506,7 +506,7 @@ The steps are as follows:
         1.  Remove the `proof` property from the `unsecuredUpdate` object.
         1.  Set `updateHash` to the result of passing `unsecuredUpdate` into the
             [JSON Canonicalization and Hash] algorithm.
-        1.  Push `updateHash` onto `btc1UpdateHashHistory`.
+        1.  Push `updateHash` onto `btcr2UpdateHashHistory`.
         1.  Set `contemporaryHash` to result of passing `contemporaryDIDDocument` into the 
             [JSON Canonicalization and Hash] algorithm.
     1.  If `update.targetVersionId` is greater than `currentVersionId + 1`, MUST
@@ -515,7 +515,7 @@ The steps are as follows:
 1. Set `targetDocument` to the result of calling the
    [Traverse Bitcoin Blockchain History] algorithm passing in `contemporaryDIDDocument`,
    `contemporaryBlockheight`, `currentVersionId`, `targetVersionId`,
-   `targetTime`, `didDocumentHistory`, `btc1UpdateHashHistory`, `signalsMetadata`, and `network`.
+   `targetTime`, `didDocumentHistory`, `btcr2UpdateHashHistory`, `signalsMetadata`, and `network`.
 1. If `targetVersionId` in not null, set `targetDocument` to the index at the `targetVersionId`
    of the `didDocumentHistory` array.
 1. Return `targetDocument`.
@@ -534,21 +534,21 @@ It takes the following inputs:
 
 * `contemporaryBlockheight` - The height of the block this function is looking for 
    ::Beacon Signals:: in; REQUIRED; integer greater or equal to 0.
-* `beacons` - An array of ::BTC1 Beacon:: services in the ::Contemporary DID document::; REQUIRED; array;
+* `beacons` - An array of ::BTCR2 Beacon:: services in the ::Contemporary DID document::; REQUIRED; array;
    Each Beacon is a structure with the following properties:
     * `id` - The id of the ::Beacon Service:: in the DID document; REQUIRED; string.
     * `type` - The type of the ::Beacon Service:: in the DID document; REQUIRED; string; MUST
       be either `SingletonBeacon`, `CIDAggregateBeacon`, or `SMTAggregateBeacon`.
     * `serviceEndpoint` - A BIP21 URI representing a Bitcoin address; REQUIRED; string.
     * `address` - The Bitcoin address decoded from the `serviceEndpoint value; REQUIRED; string.
-* `network` - A string identifying the Bitcoin network of the **did:btc1** identifier.
+* `network` - A string identifying the Bitcoin network of the **did:btcr2** identifier.
    The algorithm MUST query the Bitcoin blockchain identified by the `network`; REQUIRED; string.
   
 It returns the following output:
 
 * `nextSignals` - an array of `signal` objects with the following properties:
-    * `beaconId` - The id for the ::BTC1 Beacon:: that the ::Beacon Signal:: was announced by.
-    * `beaconType` - The type of the ::BTC1 Beacon:: that announced the ::Beacon Signal::.
+    * `beaconId` - The id for the ::BTCR2 Beacon:: that the ::Beacon Signal:: was announced by.
+    * `beaconType` - The type of the ::BTCR2 Beacon:: that announced the ::Beacon Signal::.
     * `tx` - The Bitcoin transaction that is the ::Beacon Signal::.
     * `blockheight` - The blockheight for the block that the Bitcoin transaction was included within.
     * `blocktime` - The timestamp that the Bitcoin block was included into the blockchain.
@@ -574,30 +574,30 @@ The steps are as follows:
 
 ##### Process Beacon Signals
 
-The Process Beacon Signals algorithm processes each ::Beacon Signal:: by attempting to retrieve a ::BTC1 Update Announcement::
-for a specific **did:btc1** identifier. Then the algorithm retrieves and validates the ::BTC1 Update:: committed to by the announcement. 
-The ::Beacon Type:: of the ::BTC1 Beacon:: that broadcast the ::Beacon Signal:: defines the algorithms to retrieve and validate 
-::BTC1 Update Announcements:: and their associated ::BTC1 Updates:: against the ::Beacon Signal::.
+The Process Beacon Signals algorithm processes each ::Beacon Signal:: by attempting to retrieve a ::BTCR2 Update Announcement::
+for a specific **did:btcr2** identifier. Then the algorithm retrieves and validates the ::BTCR2 Update:: committed to by the announcement. 
+The ::Beacon Type:: of the ::BTCR2 Beacon:: that broadcast the ::Beacon Signal:: defines the algorithms to retrieve and validate 
+::BTCR2 Update Announcements:: and their associated ::BTCR2 Updates:: against the ::Beacon Signal::.
 
 It takes the following inputs:
 
 * `beaconSignals` - an array of struct representing ::Beacon Signals:: retrieved through executing
    the [Find Next Signals] algorithm; REQUIRED; object containing the follow properties:
-   * `beaconId` - the id for the ::BTC1 Beacon:: that the `signal` was announced by; REQUIRED; string.
-   * `beaconType` - the type of the ::BTC1 Beacon:: that announced the `signal`; REQUIRED; string.
+   * `beaconId` - the id for the ::BTCR2 Beacon:: that the `signal` was announced by; REQUIRED; string.
+   * `beaconType` - the type of the ::BTCR2 Beacon:: that announced the `signal`; REQUIRED; string.
    * `tx` - the Bitcoin transaction that is the ::Beacon Signal::; REQUIRED; string.
 * `signalsMetadata` - a Map from Bitcoin transaction identifiers of ::Beacon Signals::
    to a struct containing ::Sidecar Data:: for that signal provided as part of the
    `resolutionOptions`; REQUIRED; object containing the following properties:
-   * `btc1Update` - a ::BTC1 Update:: which SHOULD match the update announced
+   * `btcr2Update` - a ::BTCR2 Update:: which SHOULD match the update announced
       by the ::Beacon Signal::. In the case of a ::SMT:: proof of non-inclusion, no
-      ::BTC1 Update:: MAY be provided; OPTIONAL; object.
-   * `proofs` - a ::Sparse Merkle Tree:: proof that the provided `btc1Update` value is
-      the value at the leaf indexed by the **did:btc1** being resolved; OPTIONAL; object.
+      ::BTCR2 Update:: MAY be provided; OPTIONAL; object.
+   * `proofs` - a ::Sparse Merkle Tree:: proof that the provided `btcr2Update` value is
+      the value at the leaf indexed by the **did:btcr2** being resolved; OPTIONAL; object.
 
 It returns the following output:
 
-* `btc1Updates` - an array of ::BTC1 Updates::
+* `btcr2Updates` - an array of ::BTCR2 Updates::
 
 The steps are as follows:
 
@@ -607,28 +607,28 @@ The steps are as follows:
     1. Set `signalTx` to `beaconSignal.tx`.
     1. Set `signalId` to `signalTx.id`.
     1. Set `signalSidecarData` to `signalsMetadata[signalId]`. TODO: formalize structure of sidecarData
-   1. Set `btc1Update` to null.
+   1. Set `btcr2Update` to null.
    1. If `type` == `SingletonBeacon`:
-      1. Set `btc1Update` to the result of passing `signalTx` and
+      1. Set `btcr2Update` to the result of passing `signalTx` and
         `signalSidecarData` to the [Process Singleton Beacon Signal] algorithm.
    1. If `type` == `CIDAggregateBeacon`:
-      1. Set `btc1Update` to the result of passing `signalTx` and
+      1. Set `btcr2Update` to the result of passing `signalTx` and
         `signalSidecarData` to the [Process CIDAggregate Beacon Signal] algorithm.
    1. If `type` == `SMTAggregateBeacon`:
-      1. Set `btc1Update` to the result of passing `signalTx` and
+      1. Set `btcr2Update` to the result of passing `signalTx` and
         `signalSidecarData` to the [Process SMTAggregate Beacon Signal] algorithm.
-    1. If `btc1Update` is not null, push `btc1Update` to `updates`.
+    1. If `btcr2Update` is not null, push `btcr2Update` to `updates`.
 1. Return `updates`.
 
 ##### Confirm Duplicate Update
 
-The Confirm Duplicate Update algorithm verifies that a ::BTC1 Update:: is a
+The Confirm Duplicate Update algorithm verifies that a ::BTCR2 Update:: is a
 duplicate against the hash history of previously applied updates.
 
 It takes the following inputs:
 
-* `btc1Update` - the ::Unsecured BTC1 Update:: to confirm as a duplicate or not; REQUIRED; object.
-* `btc1UpdateHashHistory` - an array of hashes corresponding to each ::BTC1 Update::; REQUIRED; array.
+* `btcr2Update` - the ::Unsecured BTCR2 Update:: to confirm as a duplicate or not; REQUIRED; object.
+* `btcr2UpdateHashHistory` - an array of hashes corresponding to each ::BTCR2 Update::; REQUIRED; array.
 
 It returns successfully if the `update` is a duplicate else it throws an error.
 
@@ -654,10 +654,10 @@ DID document before returning it.
 
 It takes the following inputs:
 
-* `contemporaryDIDDocument` - the DID document for the **did:btc1** identifier 
+* `contemporaryDIDDocument` - the DID document for the **did:btcr2** identifier 
    being resolved that is current at the blockheight of the `contemporaryBlockheight`. 
    A DID Core conformant DID document; REQUIRED; object.
-* `update` - the ::BTC1 Update:: to apply to the `contemporaryDIDDocument`; REQUIRED; object.
+* `update` - the ::BTCR2 Update:: to apply to the `contemporaryDIDDocument`; REQUIRED; object.
 
 It returns the following output:
 
@@ -693,8 +693,8 @@ The steps are as follows:
 ### Update
 
 The Update algorithm calls a series of subroutines to construct, invoke and
-announce ::BTC1 Updates:: for **did:btc1** identifiers and their
-corresponding DID documents. An update to a **did:btc1** document is an invoked
+announce ::BTCR2 Updates:: for **did:btcr2** identifiers and their
+corresponding DID documents. An update to a **did:btcr2** document is an invoked
 capability using the [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/) data format,
 signed by a `verificationMethod` that has the authority to make the update as specified
 in the previous DID document. Capability invocations for updates MUST be authorized using Data Integrity
@@ -703,7 +703,7 @@ with a `proofPurpose` of `capabilityInvocation`.
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
 * `sourceDocument` - the DID document being updated; REQUIRED; object.
 * `sourceVersionId` - the version of the DID and DID document, an incrementing integer
    starting from 1; REQUIRED; integer.
@@ -714,7 +714,7 @@ It takes the following inputs:
    `sourceDocument`. The `verificationMethod` identified MUST be a
    [BIP340 Multikey](https://dcdpr.github.io/data-integrity-schnorr-secp256k1/#multikey);
    REQUIRED; string.
-* `beaconIds` - an array containing the IDs that correspond to ::BTC1 Beacons:: in the DID
+* `beaconIds` - an array containing the IDs that correspond to ::BTCR2 Beacons:: in the DID
    document. These MUST identify service endpoints with one of the three ::Beacon Types::
    `SingletonBeacon`, `MapBeacon`, and `SMTBeacon`; REQUIRED; array.
 
@@ -723,39 +723,39 @@ It returns the following output:
 * `signalsMetadata` - A Map from Bitcoin transaction identifiers of ::Beacon Signals:: 
    to a struct containing ::Sidecar Data:: for that signal provided as part of the
    `resolutionOptions`; object containing the following properties:
-   * `btc1Update` - A ::BTC1 Update:: which SHOULD match the update announced
+   * `btcr2Update` - A ::BTCR2 Update:: which SHOULD match the update announced
       by the ::Beacon Signal::. In the case of a ::SMT:: proof of non-inclusion, the
-      `btc1Update` will be null; object.
-   * `proofs` - A ::Sparse Merkle Tree:: proof that the provided `btc1Update` value is
-      the value at the leaf indexed by the **did:btc1** being resolved; array.
+      `btcr2Update` will be null; object.
+   * `proofs` - A ::Sparse Merkle Tree:: proof that the provided `btcr2Update` value is
+      the value at the leaf indexed by the **did:btcr2** being resolved; array.
 
 The steps are as follows:
 
-1. Set `unsecuredUpdate` to the result of passing `btc1Identifier`, `sourceDocument`,
-   `sourceVersionId`, and `documentPatch` into the [Construct BTC1 Update]
+1. Set `unsecuredUpdate` to the result of passing `btcr2Identifier`, `sourceDocument`,
+   `sourceVersionId`, and `documentPatch` into the [Construct BTCR2 Update]
    algorithm.
 1. Set `verificationMethod` to the result of retrieving the verificationMethod from
    `sourceDocument` using the `verificationMethodId`.
 1. Validate the `verificationMethod` is a BIP340 Multikey:
     1. `verificationMethod.type` == `Multikey`
     1. `verificationMethod.publicKeyMultibase[4]` == `zQ3s`
-1. Set `unsecuredBtc1Update` to the result of passing `btc1Identifier`,
+1. Set `unsecuredBtcr2Update` to the result of passing `btcr2Identifier`,
    `unsecuredUpdate`, `and `verificationMethod` to the
-   [Invoke BTC1 Update] algorithm.
-1. Set `signalsMetadata` to the result of passing `btc1Identifier`, `sourceDocument`, 
-   `beaconIds` and `unsecuredBtc1Update` to the [Announce DID Update] algorithm.
+   [Invoke BTCR2 Update] algorithm.
+1. Set `signalsMetadata` to the result of passing `btcr2Identifier`, `sourceDocument`, 
+   `beaconIds` and `unsecuredBtcr2Update` to the [Announce DID Update] algorithm.
 1. Return `signalsMetadata`. It is up to implementations to ensure that the
    `signalsMetadata` is persisted.
 
-#### Construct BTC1 Update
+#### Construct BTCR2 Update
 
-The Construct BTC1 Update algorithm applies a `documentPatch` to a
+The Construct BTCR2 Update algorithm applies a `documentPatch` to a
 `sourceDocument` and verifies the resulting `targetDocument` is a conformant
 DID document.
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
 * `sourceDocument` - the DID document being transformed by the `documentPatch`; REQUIRED; object.
 * `sourceVersionId` - the version of the DID and DID document, an incrementing integer
    starting from 1; REQUIRED; integer.
@@ -765,56 +765,56 @@ It takes the following inputs:
 
 It returns the following output:
 
-* `unsecuredBtc1Update` - a newly created ::BTC1 Update::; object.
+* `unsecuredBtcr2Update` - a newly created ::BTCR2 Update::; object.
 
 The steps are as follows:
 
-1. Check that `sourceDocument.id` equals `btc1Identifier` else MUST raise
+1. Check that `sourceDocument.id` equals `btcr2Identifier` else MUST raise
    `invalidDidUpdate` error.
-1. Initialize `unsecuredBtc1Update` to an empty object.
-1. Set `unsecuredBtc1Update.@context` to the following list.
+1. Initialize `unsecuredBtcr2Update` to an empty object.
+1. Set `unsecuredBtcr2Update.@context` to the following list.
    `["https://w3id.org/zcap/v1", "https://w3id.org/security/data-integrity/v2", 
-   "https://w3id.org/json-ld-patch/v1", "https://btc1.dev/context/v1"]`
-1. Set `unsecuredBtc1Update.patch` to `documentPatch`.
+   "https://w3id.org/json-ld-patch/v1", "https://btcr2.dev/context/v1"]`
+1. Set `unsecuredBtcr2Update.patch` to `documentPatch`.
 1. Set `targetDocument` to the result of applying the `documentPatch` to the
    `sourceDocument`, following the JSON Patch specification.
 1. Validate `targetDocument` is a conformant DID document, else MUST raise
    `invalidDidUpdate` error.
 1. Set `sourceHashBytes` to the result of passing `sourceDocument` into
    the [JSON Canonicalization and Hash] algorithm.
-1. Set `unsecuredBtc1Update.sourceHash` to the base64 of `sourceHashBytes`.
+1. Set `unsecuredBtcr2Update.sourceHash` to the base64 of `sourceHashBytes`.
 1. Set `targetHashBytes` to the result of passing `targetDocument` into
    the [JSON Canonicalization and Hash] algorithm.
-1. Set `unsecuredBtc1Update.targetHash` to the base64 of `targetHashBytes`.
-1. Set `unsecuredBtc1Update.targetVersionId` to `sourceVersionId + 1`
-1. Return `unsecuredBtc1Update`.
+1. Set `unsecuredBtcr2Update.targetHash` to the base64 of `targetHashBytes`.
+1. Set `unsecuredBtcr2Update.targetVersionId` to `sourceVersionId + 1`
+1. Return `unsecuredBtcr2Update`.
 
-#### Invoke BTC1 Update
+#### Invoke BTCR2 Update
 
-The Invoke BTC1 Update algorithm retrieves the `privateKeyBytes` for the
+The Invoke BTCR2 Update algorithm retrieves the `privateKeyBytes` for the
 `verificationMethod` and adds a capability invocation in the form of a Data
 Integrity proof following the [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/)
 and Verifiable Credentials (VC) Data Integrity specifications.
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
-* `unsecuredBtc1Update` - an unsecured ::BTC1 Update::; REQUIRED; object.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
+* `unsecuredBtcr2Update` - an unsecured ::BTCR2 Update::; REQUIRED; object.
 * `verificationMethod` - an object containing reference to keys and/or Beacons to
    use for [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/); REQUIRED; string.
 
 It returns the following output:
 
-* `btc1Update` - a ::BTC1 Update:: object invoking the capability
-   to update a specific **did:btc1** DID document.
+* `btcr2Update` - a ::BTCR2 Update:: object invoking the capability
+   to update a specific **did:btcr2** DID document.
 
 The steps are as follows:
 
 1. Set `privateKeyBytes` to the result of retrieving the private key bytes
    associated with the `verificationMethod` value. How this is achieved is left to
    the implementation.
-1. Set `rootCapability` to the result of passing `btc1Identifier` into the
-   [Derive Root Capability from **did:btc1** Identifier] algorithm.
+1. Set `rootCapability` to the result of passing `btcr2Identifier` into the
+   [Derive Root Capability from **did:btcr2** Identifier] algorithm.
 1. Initialize `proofOptions` to an empty object.
 1. Set `proofOptions.type` to `DataIntegrityProof`.
 1. Set `proofOptions.cryptosuite` to `bip340-jcs-2025`.
@@ -825,38 +825,38 @@ The steps are as follows:
 1. Set `cryptosuite` to the result of executing the Cryptosuite Instantiation
    algorithm from the [BIP340 Data Integrity specification](https://dcdpr.github.io/data-integrity-schnorr-secp256k1) passing in
    `proofOptions`.
-1. Set `btc1Update` to the result of executing the
+1. Set `btcr2Update` to the result of executing the
    [Add Proof](https://www.w3.org/TR/vc-data-integrity/#add-proof)
-   algorithm from VC Data Integrity passing `unsecuredBtc1Update` as the input document,
+   algorithm from VC Data Integrity passing `unsecuredBtcr2Update` as the input document,
    `cryptosuite`, and the set of `proofOptions`.
-1. Return `btc1Update`.
+1. Return `btcr2Update`.
 
 #### Announce DID Update
 
 The Announce DID Update algorithm retrieves `beaconServices` from the `sourceDocument`
 and calls the [Broadcast DID Update] algorithm corresponding to the type of
-the ::BTC1 Beacon::.
+the ::BTCR2 Beacon::.
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btc1** identifier; REQUIRED; string.
+* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
 * `sourceDocument` - the DID document being updated; REQUIRED; object.
-* `beaconIds` - an array containing the IDs that correspond to ::BTC1 Beacons:: in the DID
+* `beaconIds` - an array containing the IDs that correspond to ::BTCR2 Beacons:: in the DID
    document. These MUST identify service endpoints with one of the three ::Beacon Types::
    `SingletonBeacon`, `MapBeacon`, and `SMTBeacon`; REQUIRED; array.
-* `btc1Update` - a ::BTC1 Update:: object invoking the capability
-   to update a specific **did:btc1** DID document; REQUIRED; object.
+* `btcr2Update` - a ::BTCR2 Update:: object invoking the capability
+   to update a specific **did:btcr2** DID document; REQUIRED; object.
 
 It returns the following output:
 
 * `signalsMetadata` - a mapping from Bitcoin transaction identifiers of ::Beacon Signals:: 
    to a struct containing ::Sidecar Data:: for that signal, provided as part of the
    `resolutionOptions`; a map with the following properties:
-   * `btc1Update` - a ::BTC1 Update:: which SHOULD match the update announced
+   * `btcr2Update` - a ::BTCR2 Update:: which SHOULD match the update announced
       by the ::Beacon Signal::. In the case of a ::SMT:: proof of non-inclusion, the
-      `btc1Update` will be null; object.
-   * `proofs` - A ::Sparse Merkle Tree:: proof that the provided `btc1Update` value is
-      the value at the leaf indexed by the **did:btc1** being resolved; object.
+      `btcr2Update` will be null; object.
+   * `proofs` - A ::Sparse Merkle Tree:: proof that the provided `btcr2Update` value is
+      the value at the leaf indexed by the **did:btcr2** being resolved; object.
 
 The steps are as follows:
 
@@ -871,15 +871,15 @@ The steps are as follows:
    1. Set `signalMetadata` to null.
    1. If `beaconService.type` == `SingletonBeacon`:
       1. Set `signalMetadata` to the result of
-        passing `beaconService` and `btc1Update` to the
+        passing `beaconService` and `btcr2Update` to the
         [Broadcast Singleton Beacon Signal] algorithm.
    1. Else If `beaconService.type` == `CIDAggregateBeacon`:
       1. Set `signalMetadata` to the result of
-        passing `btc1Identifier`, `beaconService` and `btc1Update` to the
+        passing `btcr2Identifier`, `beaconService` and `btcr2Update` to the
         [Broadcast CIDAggregate Beacon Signal] algorithm.
    1. Else If `beaconService.type` == `SMTAggregateBeacon`:
       1. Set `signalMetadata` to the result of
-        passing `btc1Identifier`, `beaconService` and `btc1Update` to the
+        passing `btcr2Identifier`, `beaconService` and `btcr2Update` to the
         [Broadcast SMTAggregate Beacon Signal] algorithm.
    1. Else:
       1. MUST throw `invalidBeacon` error.
@@ -888,9 +888,9 @@ The steps are as follows:
 
 ### Deactivate
 
-To deactivate a **did:btc1**, the DID controller MUST add the property `deactivated`
+To deactivate a **did:btcr2**, the DID controller MUST add the property `deactivated`
 with the value `true` on the DID document. To do this, the DID controller constructs
-a valid ::BTC1 Update:: with a JSON patch that adds this property and announces
-the ::BTC1 Update:: by broadcasting an ::Authorized Beacon Signal:: following
-the algorithm in [Update]. Once a **did:btc1** has been deactivated this
+a valid ::BTCR2 Update:: with a JSON patch that adds this property and announces
+the ::BTCR2 Update:: by broadcasting an ::Authorized Beacon Signal:: following
+the algorithm in [Update]. Once a **did:btcr2** has been deactivated this
 state is considered permanent and resolution MUST terminate.
