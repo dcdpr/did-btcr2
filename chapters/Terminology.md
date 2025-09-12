@@ -2,7 +2,7 @@
 
 BTCR2 Beacon
 
-: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTCR2 Update Announcements::. 
+: An abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTCR2 Update Announcements::. 
 
 BTCR2 Beacons
 
@@ -109,9 +109,9 @@ BTC1 Updates
 Unsecured BTCR2 Update
 
 : A ::BTCR2 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btcr2** DID document. 
-An Usecured BTCR2 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
+An Unsecured BTCR2 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
 along with the new version of the DID document and the source and target hashes of the DID document
-identifying the source DID document that the patch should be applied to and the target DID document that results from appliying the patch.
+identifying the source DID document that the patch should be applied to and the target DID document that results from applying the patch.
 
 Unsecured BTCR2 Updates
 
@@ -361,7 +361,7 @@ Late Publishing
 Offline Creation
 
 : Offline Creation refers to when a **did:btcr2** identifier and corresponding
-  initial DID document are created without requiring network interactions.
+  Initial DID Document are created without requiring network interactions.
 
 **did:btcr2** supports offline creation in two modes:
 
