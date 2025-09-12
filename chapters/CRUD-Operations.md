@@ -21,9 +21,9 @@ bytes along with a version, network for the identifier and an identifier type of
 
 The output of encoding the identifier is the newly created DID.
 
-Note: When creating from a ::Genesis Document::, it is likely that creators will
-want to include information, such as ::Beacons:: and other service endpoints,
-which requires online interactions, e.g., to establish a unique
+Note: When creating from an ::Initial DID Document::, it is likely that creators
+will want to include information, such as ::Beacons:: and other service
+endpoints, which requires online interactions, e.g., to establish a unique
 ::Beacon Address:: for updates.
 
 #### Algo 1: Create Genesis Bytes from Public Key {.tabbed}
@@ -57,8 +57,8 @@ In order for this DID to be updatable, controllers must include at least one
 verification method with a `capabilityInvocation` verification relationship and
 at least one ::BTCR2 Beacon:: service.
 
-Controllers may also add content to the ::Genesis Document::, including keys and
-services.
+Controllers may also add content to the ::Initial DID Document::, including keys and
+services, prior to transforming it to a ::Genesis Document::.
 
 It is recommended that controllers add at least one ::Singleton Beacon:: to
 provide a fallback update capability. This ensures the controller can update the
@@ -72,9 +72,10 @@ DID without reliance on any ::Beacon Aggregators:: or other parties.
 
 Inputs:
 
-* `genesisDocument` - any intermediate representation of a DID document with the
-  identifier replaced with the placeholder value throughout all fields (e.g. the
-  id field) `did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`.
+* `genesisDocument` - any intermediate representation of an initial DID document
+  with the identifier replaced with the placeholder value throughout all fields
+  (e.g., the id field) with
+  `did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`.
   REQUIRED; object.
 
 Outputs:
@@ -84,10 +85,10 @@ Outputs:
 
 The steps are as follows:
 
-1. Set canonicalizedDocument to the result of passing genesisDocument into the
-   JSON Canonicalization Scheme.
+1. Set `canonicalizedDocument` to the result of passing `genesisDocument` into
+   the JSON Canonicalization Scheme.
 2. Set `genesisBytes` to the SHA256 hash of the `canonicalizedDocument`.
-3. Return `genesisBytes`
+3. Return `genesisBytes`.
 
 ##### Example code {.unnumbered .unlisted}
 
@@ -104,11 +105,11 @@ The input bytes to the bech32m algorithm are constructed as follows: the first
 byte is the version and the network, with the version minus one in the low
 nibble and the value from the network table in the high nibble. The Genesis
 Bytes are then appended to the first byte to produce the input bytes. Encode the
-input bytes using the bech32m algorithm with the human readable part (hrp) value
+input bytes using the bech32m algorithm with the human-readable part (hrp) value
 set to the ASCII value of either ‘k’ or ‘x’, depending on the type of the
 identifier. For btcr2 DIDs generated from an initial secp256k1 public key, use
-‘k’ for btcr2 DIDs generated with a Genesis Document, use ‘x’. The result of the
-encoding is the method specific identifier. Prepend the method specific
+‘k’ for btcr2 DIDs generated from an Initial DID Document, use ‘x’. The result
+of the encoding is the method-specific identifier. Prepend the method-specific
 identifier with the ASCII string ‘did:btcr2:’ to create the DID.
 
 NOTE: In future versions of this algorithm, it is expected that the version
