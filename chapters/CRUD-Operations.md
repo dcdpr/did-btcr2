@@ -14,14 +14,14 @@ To create a **did:btcr2** identifier from a public key without an Initial DID
 Document, use [Algo 1: Create Genesis Bytes from Public Key], then encode those
 bytes as in [Algo 3: Encode Identifier].
 
-To create a **did:btcr2** identifier from an Initial DID Document, use
-[Algo 2: Create Genesis Bytes from Initial DID Document], then encode those
+To create a **did:btcr2** identifier from a ::Genesis Document::, use
+[Algo 2: Create Genesis Bytes from Genesis Document], then encode those
 bytes along with a version, network for the identifier and an identifier type of
 “external” using [Algo 3: Encode Identifier].
 
 The output of encoding the identifier is the newly created DID.
 
-Note: When creating from an ::Initial DID Document::, it is likely that creators
+Note: When creating from a ::Genesis Document::, it is likely that creators
 will want to include information, such as ::Beacons:: and other service
 endpoints, which requires online interactions, e.g., to establish a unique
 ::Beacon Address:: for updates.
@@ -39,7 +39,7 @@ defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-
 
 ##### Example code {.unnumbered .unlisted}
 
-#### Algo 2: Create Genesis Bytes from Initial DID Document {.tabbed}
+#### Algo 2: Create Genesis Bytes from Genesis Document {.tabbed}
 
 ##### Requirements {.unnumbered .unlisted}
 
@@ -57,8 +57,8 @@ In order for this DID to be updatable, controllers must include at least one
 verification method with a `capabilityInvocation` verification relationship and
 at least one ::BTCR2 Beacon:: service.
 
-Controllers may also add content to the ::Initial DID Document::, including keys and
-services, prior to transforming it to a ::Genesis Document::.
+Controllers may also add content to the ::Genesis Document::, including keys and
+services.
 
 It is recommended that controllers add at least one ::Singleton Beacon:: to
 provide a fallback update capability. This ensures the controller can update the
