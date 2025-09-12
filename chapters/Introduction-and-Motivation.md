@@ -36,7 +36,7 @@ feature when key material is used to sign serious contracts. We call this featur
 ::Non-Repudiation::, and point out how an anti-feature called ::Late Publishing::
 affects some other DID methods.
 
-**did:btc1** is created for those who wish to have it all:
+**did:btcr2** is created for those who wish to have it all:
 
 * resistance to censorship;
 * non-correlation through pairwise DIDs;
@@ -100,7 +100,7 @@ provide. In summary its main limitations are:
 * Creation and update require expensive transactions.
 * did:btc does not contemplate a way to keep DID documents private.
 
-#### did:btc1
+#### did:btcr2
 
 ##### Features
 
@@ -123,11 +123,11 @@ provide. In summary its main limitations are:
 
 * Resolvers require read-only view of all blocks arriving at the Bitcoin blockchain.
 * DID controllers are responsible for providing the data referenced in their
-  ::BTC1 Beacons::' updates (although many ::BTC1 Beacons:: are expected to provide an archival
+  ::BTCR2 Beacons::' updates (although many ::BTCR2 Beacons:: are expected to provide an archival
   service making Bundles publicly available).  If this data is not available, the
   DID will not verify.
 * Because of the data availability responsibility, and the threat of a rogue
-  Beacon publishing an invalid reference, the most secure ::BTC1 Beacons:: will choose
+  Beacon publishing an invalid reference, the most secure ::BTCR2 Beacons:: will choose
   Bitcoin scripts that allow every DID controller a veto, although given current
   ::Unspent Transaction Output:: (::UTXO::)-sharing technology, this impedes
   availability.
@@ -138,5 +138,5 @@ provide. In summary its main limitations are:
   DID Document;
 * More scalable ::Aggregate Beacons:: will be possible with a "transaction
   introspection" upgrade to Bitcoin, such as OP_CTV or OP_CAT; and
-* ::BTC1 Beacons:: do not have to reuse their addresses if, in the controller's DID document,
+* ::BTCR2 Beacons:: do not have to reuse their addresses if, in the controller's DID document,
   a descriptor is used instead of an address.

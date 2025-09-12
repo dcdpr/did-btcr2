@@ -2,9 +2,9 @@
 lang: en
 ...
 
-# did:btc1 DID Method Specification
+# did:btcr2 DID Method Specification
 
-## did:btc1 DID Method Specification {.unnumbered .unlisted}
+## did:btcr2 DID Method Specification {.unnumbered .unlisted}
 
 <span style="color: orange; font-weight: bold;">WARNING</span>
 <br>This specification is still under active development and may be subject to breaking changes.
@@ -39,7 +39,7 @@ Jintek           <info@jintek.consulting>
 
 ### Licence Statement {.unnumbered .unlisted}
 
-[Mozilla Public License Version 2.0](https://github.com/dcdpr/did-btc1/blob/main/LICENSE)
+[Mozilla Public License Version 2.0](https://github.com/dcdpr/did-btcr2/blob/main/LICENSE)
 
 ### Copyright {.unnumbered .unlisted}
 
@@ -49,7 +49,7 @@ Jintek           <info@jintek.consulting>
 
 ### Abstract {.unnumbered .unlisted}
 
-**did:btc1** is a censorship-resistant Decentralized Identifier (DID) method 
+**did:btcr2** is a censorship-resistant Decentralized Identifier (DID) method 
 using the Bitcoin blockchain as a Verifiable Data Registry to announce changes 
 to the DID document. It improves on prior work by allowing: zero-cost off-chain 
 DID creation; aggregated updates for scalable on-chain update costs; long-term 

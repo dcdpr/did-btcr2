@@ -7,18 +7,18 @@ through the resolution process, it encounters one or more document hashes, which
 it uses to identify the files of interest. There are two ways in which these
 files may be shared: through a ::Sidecar:: mechanism or using ::Content Addressable Storage:: (CAS).
 
-While it's possible for a single **did:btc1** identifier to mix the two file
+While it's possible for a single **did:btcr2** identifier to mix the two file
 sharing mechanisms, it is not recommended.
 
 ### Sidecar
 
-::Sidecar:: is a mechanism by which a file is provided alongside the **did:btc1**
+::Sidecar:: is a mechanism by which a file is provided alongside the **did:btcr2**
 identifier being resolved. This is analogous to a sidecar on a motorcycle
 bringing along a second passenger: the DID controller provides the DID document
 history (in the form of JSON Patch transformations) alongside the DID to the
 relying party so that the resolver can construct the DID document.
 
-In short, when a resolver is presented with a **did:btc1** identifier, it is
+In short, when a resolver is presented with a **did:btcr2** identifier, it is
 also presented with files matching the SHA256 hashes it encounters during the
 resolution process. If any SHA256 hash doesn't have a corresponding file, the
 resolution fails.
@@ -31,7 +31,7 @@ retrieval function specific to the type of ::CAS:: to retrieve the file.
 
 Any ::CAS:: that provides a deterministic mapping from a SHA256 hash of a file may
 be used, and a resolver SHOULD be informed of the specific ::CAS:: mechanism so that
-it can retrieve documents associated with a **did:btc1** identifier efficiently.
+it can retrieve documents associated with a **did:btcr2** identifier efficiently.
 If the ::CAS:: mechanism is not provided, the resolver MAY iterate through all
 supported ::CAS:: mechanisms to find the files or it MAY return with an error
 indicating that the ::CAS:: mechanism is required.
@@ -50,7 +50,7 @@ content addressing and peer-to-peer networking.”
 
 A detailed description is available at the
 [IPFS documentation site](https://docs.ipfs.tech/), but for the purposes of
-**did:btc1**, it is a distributed file system where the files are identified
+**did:btcr2**, it is a distributed file system where the files are identified
 using a unique ::Content Identifier:: (CID) based on the content of the file. The
 content of the file determines the ::CID::, and the ::CID:: may be used by anyone,
 anywhere, to retrieve the file.
@@ -71,7 +71,7 @@ by storing the file as a raw binary using the
 This limits the file size to the block size (default 256 kB, maximum 1 MB), but
 that should be sufficient for most applications.
 
-For **did:btc1** identifiers, files stored in IPFS SHALL be stored using the Raw
+For **did:btcr2** identifiers, files stored in IPFS SHALL be stored using the Raw
 Leaves option.
 
 The IPFS CIDv1 is a binary identifier constructed from the file hash as:
