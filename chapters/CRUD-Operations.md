@@ -92,7 +92,7 @@ The steps are as follows:
 
 ##### Example code {.unnumbered .unlisted}
 
-#### Algo 3: Encode identifier {.tabbed .unnumbered}
+#### Algo 3: Encode Identifier {.tabbed .unnumbered}
 
 ##### Requirements {.unnumbered .unlisted}
 
