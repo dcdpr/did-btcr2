@@ -129,22 +129,6 @@ BTCR2 Update Announcements
 
 : ::BTCR2 Update Announcement::
 
-BTCR2 Update Announcement
-
-: ::BTCR2 Update Announcement::
-
-BTCR2 Update Announcements
-
-: ::BTCR2 Update Announcement::
-
-BTCR2 Update
-
-: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btcR2** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTCR2 Update:: document.
-
-BTCR2 Updates
-
-: ::BTCR2 Update::
-
 Content Addressable Storage
 
 : Content Addressable Storage (CAS) is a data storage system where content is
@@ -319,78 +303,6 @@ SMT Beacons
 
 : ::SMT Beacon::
 
-Offline Creation
-
-: Offline Creation refers to when a **did:btcr2** identifier and corresponding
-  initial DID document are created without requiring network interactions.
-
-Pending BTCR2 Update
-
-: A ::BTCR2 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
-
-Pending BTCR2 Updates
-
-: ::Pending BTCR2 Update::
-
-Resolution Time
-
-: A Coordinated Universal Time (UTC) timestamp of when the client makes a resolution 
-  request of the controller.
-
-Schnorr Signature
-
-: An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures 
-  with some major advantages, such as being able to combine digital signatures 
-  from multiple parties to form a single digital signature for the composite public key.
-
-  Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same
-  keypairs can be used to produce both Schnorr signatures and ECDSA signatures.
-
-Schnorr Signatures
-
-: ::Schnorr Signature::
-
-Schnorr
-
-: ::Schnorr Signature::
-
-Sidecar
-
-: A mechanism by which data necessary for resolving a DID is provided alongside
-  the **did:btcr2** identifier being resolved, rather than being retrieved through
-  open and standardized means (e.g., by retrieving from IPFS).
-
-: To explain the metaphor, a sidecar on a motorcycle brings along a second passenger
-  in a transformed vehicle, the same way the DID controller MUST bring along the
-  DID document history to transform the situation into one that is verifiable.
-
-Sidecar Data
-
-: Data transmitted via ::Sidecar::.
-
-
-Signal Blockheight
-
-: The blockheight of the Bitcoin block that included a specific ::Beacon Signal::.
-  Blockheight is used as the internal time of the resolution algorithm.
-
-Singleton Beacon
-
-: A type of ::BTCR2 Beacon:: whose ::Beacon Signals:: each contain a single ::BTCR2 Update Announcement::.
-
-Singleton Beacons
-
-: ::Singleton Beacon::
-
-SMT Beacon
-
-: A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update Announcements::.  
-  A ::Beacon Signal:: from an SMT Beacon contains the root of an optimized ::Sparse Merkle Tree::.
-
-SMT Beacons
-
-: ::SMT Beacon::
-
 Sparse Merkle Tree
 
 : A ::Merkle Tree:: data structure where each data point included
@@ -406,10 +318,9 @@ SMT
 
 : ::Sparse Merkle Tree::
 
-Spares Merkle Trees
+Sparse Merkle Trees
 
 : ::Sparse Merkle Tree::
-
 
 Taproot
 
