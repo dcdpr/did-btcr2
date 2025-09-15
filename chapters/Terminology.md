@@ -319,16 +319,6 @@ SMT Beacons
 
 : ::SMT Beacon::
 
-Non-Repudiation
-
-: Non-Repudiation is a feature of DID methods that can clearly state that all data
-  is available to present one canonical history for a DID.
-
-  If some data is needed but not available, the DID method MUST NOT allow DID
-  resolution to complete. Any changes to the history, such as may occur if a website
-  edits a file, MUST be detected and disallowed. The ::Late Publishing:: problem
-  breaks Non-Repudiation.
-
 Offline Creation
 
 : Offline Creation refers to when a **did:btcr2** identifier and corresponding
