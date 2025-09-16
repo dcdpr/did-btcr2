@@ -369,7 +369,7 @@ Decode the **did:btcr2** identifier as follows:
     4. `3` - "testnet3"
     5. `4` - "testnet4"
     6. `5` - "mutinynet"
-    7. `6`-`B` - raise `invalidDid` error
+    7. `6`-`B` - raise `INVALID_DID` error
     8. `C`-`F` - `networkValue - 11`
 17. If the number of nibbles consumed is odd:
     1. Advance to the next nibble and set `fillerNibble` to its value.
