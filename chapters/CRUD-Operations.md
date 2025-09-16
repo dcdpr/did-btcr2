@@ -494,7 +494,7 @@ INVALID_DID_DOCUMENT error.
 
 #### Algo 8. Process Beacon Signals {.tabbed .unnumbered}
 
-Traverse the Bitcoin blockchain from the start of the chain, identify the next
+Traverse the Bitcoin blockchain from the start of the chain and identify the first
 Bitcoin block that contains a ::Beacon Signal::. For all ::Beacon Signals:: in
 that block, process these signals to retrieve ::BTCR2 Updates:: announced by
 these signals. Apply these updates to the DID document to produce the
