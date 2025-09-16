@@ -402,8 +402,7 @@ The DID document must contain only the following properties:
   controlled by the public key. The three different address formats are. p2pkh,
   p2wpkh, p2tr. The id value of the service must be "#initialP2PKH",
   #initialP2WPKH” and "#initialP2TR" respectively. Finally, each of these
-  services must have a type set to the array \["BTCR2Beacon",
-  "SingletonBeacon"\]
+  services must have a type set to the string "SingletonBeacon"
 
 ##### Hide {.unnumbered .unlisted}
 
