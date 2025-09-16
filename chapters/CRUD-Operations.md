@@ -706,7 +706,7 @@ A ::BTCR2 Update:: must contain the following:
   the DID core v1.1 specification.
 * targetVersionId: The versionId of the DID document after the patch has been
   applied. The patch must be applied to the DID document with a versionId that
-  is one less than the targetVersionId. If the contemporary document is equal to
+  is one less than the targetVersionId. If the ::Contemporary DID Document:: is equal to
   or less than the targetVersionId, then the ::Unsecured BTCR2 Update:: must be
   the same as the previously applied ::BTCR2 Update::. If the targetVersionId is
   greater than one plus the contemporary document’s versionId, then a
