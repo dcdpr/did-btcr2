@@ -28,20 +28,18 @@ endpoints, which requires online interactions, e.g., to establish a unique
 
 #### Algo 1: Create Genesis Bytes from Public Key {.tabbed .unnumbered}
 
-##### Requirements {.unnumbered .unlisted}
-
 The ::Genesis Bytes:: is a 33-byte compressed representation of a
 [secp256k1 public key](https://www.secg.org/sec2-v2.pdf) following the encoding
 defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-v2.pdf)
 (SEC encoding).
+
+##### Hide {.unnumbered .unlisted}
 
 ##### Examples {.unnumbered .unlisted}
 
 ##### Example code {.unnumbered .unlisted}
 
 #### Algo 2: Create Genesis Bytes from Genesis Document {.tabbed .unnumbered}
-
-##### Requirements {.unnumbered .unlisted}
 
 The ::Genesis Bytes:: is a 32-byte [SHA256](https://datatracker.ietf.org/doc/html/rfc6234)
 hash of an input ::Genesis Document:: canonicalized using the
@@ -63,6 +61,8 @@ services.
 It is recommended that controllers add at least one ::Singleton Beacon:: to
 provide a fallback update capability. This ensures the controller can update the
 DID without reliance on any ::Beacon Aggregators:: or other parties.
+
+##### Hide {.unnumbered .unlisted}
 
 ##### Flowchart {.unnumbered .unlisted}
 
@@ -93,8 +93,6 @@ The steps are as follows:
 ##### Example code {.unnumbered .unlisted}
 
 #### Algo 3: Encode Identifier {.tabbed .unnumbered}
-
-##### Requirements {.unnumbered .unlisted}
 
 The identifier uses a [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m)
 encoding of input bytes composed of the version, network and ::Genesis Bytes::.
@@ -128,6 +126,8 @@ next nibble should be considered a part of the version.
 | custom network 2 | D     |
 | custom network 3 | E     |
 | custom network 4 | F     |
+
+##### Hide {.unnumbered .unlisted}
 
 ##### Flowchart {.unnumbered .unlisted}
 
