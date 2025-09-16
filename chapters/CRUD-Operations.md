@@ -394,7 +394,7 @@ The DID document must contain only the following properties:
   verificationMethod must have an id value of "#initialKey" be of the type
   Multikey with the publicKeyMultibase value a multikey encoding of the
   secp256k1 public key bytes.
-* An array containing the verificationMethod id ‘#initialKey’ for each of the
+* An array containing the verificationMethod id "#initialKey" for each of the
   verification relationships. assertionMethod, authentication,
   capabilityInvocation, capabilityDelegation
 * A service array containing three BTCR2 Beacon services. The serviceEndpoint
