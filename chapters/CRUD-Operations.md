@@ -36,12 +36,6 @@ The ::Genesis Bytes:: is a 33-byte compressed representation of a
 defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-v2.pdf)
 (SEC encoding).
 
-##### Hide {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
-##### Example code {.unnumbered .unlisted}
-
 #### Algo 2: Create Genesis Bytes from Genesis Document {.tabbed .unnumbered}
 
 The ::Genesis Bytes:: is a 32-byte [SHA256](https://datatracker.ietf.org/doc/html/rfc6234)
@@ -67,10 +61,6 @@ DID without reliance on any ::Beacon Aggregators:: or other parties.
 
 ##### Hide {.unnumbered .unlisted}
 
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
 Inputs:
@@ -92,8 +82,6 @@ The steps are as follows:
    the JSON Canonicalization Scheme.
 2. Set `genesisBytes` to the SHA256 hash of the `canonicalizedDocument`.
 3. Return `genesisBytes`.
-
-##### Example code {.unnumbered .unlisted}
 
 #### Algo 3: Encode Identifier {.tabbed .unnumbered}
 
@@ -136,10 +124,6 @@ Note: The values 6 through B are reserved by the specification for future use, s
 new Bitcoin test networks as they become adopted.
 
 ##### Hide {.unnumbered .unlisted}
-
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
@@ -205,8 +189,6 @@ Encode the **did:btcr2** identifier as follows:
     retrieving `encodedString`.
 16. Append `encodedString` to `identifier`.
 17. Return `identifier`.
-
-##### Example code {.unnumbered .unlisted}
 
 ### Read
 
