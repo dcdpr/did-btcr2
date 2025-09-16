@@ -1,32 +1,5 @@
 ## Terminology
 
-BTCR2 Beacon
-
-: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTCR2 Update Announcements::. 
-
-BTCR2 Beacons
-
-: ::BTCR2 Beacon::
-
-: ::BTCR2 Beacon::
-
-BTC1 Beacon
-
-: ::BTCR2 Beacon::
-
-BTC1 Beacons
-
-: ::BTCR2 Beacon::
-
-Singleton Beacon
-
-: A Singleton Beacon enables a single entity to independently post a ::DID Update
-  Payload:: in a ::Beacon Signal::.
-
-Singleton Beacons
-
-: ::Singleton Beacon::
-
 Aggregate Beacon
 
 : An Aggregate Beacon enables multiple entities (possibly controlling multiple
@@ -40,13 +13,65 @@ Aggregate Beacons
 
 : ::Aggregate Beacon::
 
-Beacon Type
+Announced BTCR2 Update
 
-: One of SingletonBeacon, CIDAggregateBeacon, or SMTAggregateBeacon.
+: A ::BTCR2 Update:: that has been announced in an ::Authorized Beacon Signal:: 
+which has met the specified threshold for confirmation.
 
-Beacon Types
+Announced BTCR2 Updates
 
-: ::Beacon Type::
+: ::Announced BTCR2 Update::
+
+Authorized Beacon Signal
+
+: An Authorized Beacon Signal is a ::Beacon Signal:: from a ::BTCR2 Beacon:: with a ::BTCR2 Beacon::
+  address in a then-current DID document.
+
+Authorized Beacon Signals
+
+: ::Authorized Beacon Signal::
+
+Beacon Address
+
+: The Bitcoin address of a ::BTCR2 Beacon::. Spends of ::UTXO:: controlled by this address are 
+identified as ::Beacon Signals::.
+
+Beacon Aggregator
+
+: The entity that coordinates the protocols of an aggregate ::BTCR2 Beacon::. 
+Specifically the Create Beacon Cohort and Announce Beacon Signal protocols.
+
+Beacon Aggregators
+
+: ::Beacon Aggregator::
+
+Beacon Announcement Map
+
+: A document that maps **did:btcr2** identifiers to ::BTCR2 Update Announcements::. 
+  This is used to distinguish which ::BTCR2 Update Announcement:: applies to which 
+  **did:btcr2** identifier.
+
+Beacon Announcement Maps
+
+: ::Beacon Announcement Map::
+
+Beacon Cohort
+
+: The set of unique cryptographic keys participating in a ::BTCR2 Beacon:: that are required to
+authorize spends from the ::Beacon Address::.
+
+Beacon Cohorts
+
+: ::Beacon Cohort::
+
+Beacon Participant
+
+: A member of a ::Beacon Cohort::, typically a DID controller, that controls cryptographic keys required 
+to partially authorize spends from a ::Beacon Address::.
+
+Beacon Participants
+
+: ::Beacon Participant::
 
 Beacon Signal
 
@@ -63,101 +88,6 @@ Beacon Signals
 
 : ::Beacon Signal::
 
-Authorized Beacon Signal
-
-: An Authorized Beacon Signal is a ::Beacon Signal:: from a ::BTCR2 Beacon:: with a ::BTCR2 Beacon::
-  address in a then-current DID document.
-
-Authorized Beacon Signals
-
-: ::Authorized Beacon Signal::
-
-BTCR2 Update Announcement
-
-: A 32 byte SHA256 hash committing to a ::BTCR2 Update:: that has been broadcast by a ::BTCR2 Beacon:: in an 
-  ::Authorized Beacon Signal::. ::Beacon Signals:: can include one or more BTCR2 Update Announcements. 
-  How ::Beacon Signals:: include announcements is defined by the ::Beacon Type::.
-
-BTCR2 Update Announcements
-
-: ::BTCR2 Update Announcement::
-
-BTC1 Update Announcement
-
-: ::BTCR2 Update Announcement::
-
-BTC1 Update Announcements
-
-: ::BTCR2 Update Announcement::
-
-BTCR2 Update
-
-: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btcR2** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTCR2 Update:: document.
-
-BTCR2 Updates
-
-: ::BTCR2 Update::
-
-BTC1 Update
-
-: ::BTCR2 Update::
-
-BTC1 Updates
-
-: ::BTCR2 Update::
-
-Unsecured BTCR2 Update
-
-: A ::BTCR2 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btcr2** DID document. 
-An Usecured BTCR2 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
-along with the new version of the DID document and the source and target hashes of the DID document
-identifying the source DID document that the patch should be applied to and the target DID document that results from appliying the patch.
-
-Unsecured BTCR2 Updates
-
-: ::Unsecured BTCR2 Update::
-
-Unsecured BTC1 Update
-
-: ::Unsecured BTCR2 Update::
-
-Unsecured BTC1 Updates
-
-: ::Unsecured BTCR2 Update::
-
-Pending BTCR2 Update
-
-: A ::BTCR2 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
-
-Pending BTCR2 Updates
-
-: ::Pending BTCR2 Update::
-
-Pending BTC1 Update
-
-: ::Pending BTCR2 Update::
-
-Pending BTC1 Updates
-
-: ::Pending BTCR2 Update::
-
-Announced BTCR2 Update
-
-: A ::BTCR2 Update:: that has been announced in an ::Authorized Beacon Signal:: 
-which has met the specified threshold for confirmation.
-
-Announced BTCR2 Updates
-
-: ::Announced BTCR2 Update::
-
-Announced BTC1 Update
-
-: ::Announced BTCR2 Update::
-
-Announced BTC1 Updates
-
-: ::Announced BTCR2 Update::
-
 Beacon Type
 
 : The type of a ::BTCR2 Beacon::. The Beacon Type defines how ::BTCR2 Update Announcements:: 
@@ -169,148 +99,45 @@ Beacon Types
 
 : ::Beacon Type::
 
-Singleton Beacon
 
-: A type of ::BTCR2 Beacon:: whose ::Beacon Signals:: each contain a single ::BTCR2 Update Announcement::.
 
-Singleton Beacons
+BTCR2 Beacon
 
-: ::Singleton Beacon::
+: A abstract mechanism, identified by a ::Beacon Address::, that is included as a service in a DID document to indicate to resolvers that spends from this address, called ::Beacon Signals::, should be discovered and checked for ::BTCR2 Update Announcements::. 
 
-Map Beacon
+BTCR2 Beacons
 
-: A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update Announcements::. 
-  A ::Beacon Signal:: from a Map Beacon commits to a ::Beacon Announcement Map::.
+: ::BTCR2 Beacon::
 
-Map Beacons
+: ::BTCR2 Beacon::
 
-: ::Map Beacon::
+BTCR2 Update
 
-Beacon Announcement Map
+: A capability invocation secured using Data Integrity that invokes an authorization capability to update a specific **did:btcr2** DID document. This capability invocation Data Integrity proof secures the ::Unsecured BTCR2 Update:: document.
 
-: A document that maps **did:btcr2** identifiers to ::BTCR2 Update Announcements::. 
-  This is used to distinguish which ::BTCR2 Update Announcement:: applies to which 
-  **did:btcR2** identifier.
+BTCR2 Updates
 
-Beacon Announcement Maps
+: ::BTCR2 Update::
 
-: ::Beacon Announcement Map::
+BTCR2 Update Announcement
 
-SMT Beacon
+: A 32 byte SHA256 hash committing to a ::BTCR2 Update:: that has been broadcast by a ::BTCR2 Beacon:: in an 
+  ::Authorized Beacon Signal::. ::Beacon Signals:: can include one or more BTCR2 Update Announcements. 
+  How ::Beacon Signals:: include announcements is defined by the ::Beacon Type::.
 
-: A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update Announcements::.  
-  A ::Beacon Signal:: from an SMT Beacon contains the root of an optimized ::Sparse Merkle Tree::.
+BTCR2 Update Announcements
 
-SMT Beacons
+: ::BTCR2 Update Announcement::
 
-: ::SMT Beacon::
+Content Addressable Storage
 
-Beacon Cohort
+: Content Addressable Storage (CAS) is a data storage system where content is
+  addressable using ::Content Identifiers:: (CIDs). The InterPlanetary File System
+  (IPFS) is an example of CAS.
 
-: The set of unique cryptographic keys participating in a ::BTCR2 Beacon:: that are required to
-authorize spends from the ::Beacon Address::.
+CAS
 
-Beacon Cohorts
-
-: ::Beacon Cohort::
-
-Beacon Aggregator
-
-: The entity that coordinates the protocols of an aggregate ::BTCR2 Beacon::. 
-Specifically the Create Beacon Cohort and Announce Beacon Signal protocols.
-
-Beacon Aggregators
-
-: ::Beacon Aggregator::
-
-Beacon Participant
-
-: A member of a ::Beacon Cohort::, typically a DID controller, that controls cryptographic keys required 
-to partially authorize spends from a ::Beacon Address::.
-
-Beacon Participants
-
-: ::Beacon Participant::
-
-Merkle Tree
-
-: A tree data structure in which the leaves are a hash of a data block and every
-  node that is not a leaf is a hash of its child node values.
-
-  The root of a Merkle Tree is a single hash that is produced by recursively
-  hashing the child nodes down to the leaves of the tree. Given the root of a
-  Merkle Tree it is possible to provide a Merkle path that proves the inclusion
-  of some data in the tree.
-
-Merkle Trees
-
-: ::Merkle Tree::
-
-Sparse Merkle Tree
-
-: A ::Merkle Tree:: data structure where each data point included
-  at the leaf of the tree is indexed.
-
-  This data structure enables proofs of both inclusion and non-inclusion of data
-  at a given index. The instantiation in this specification has 2^256 leaves
-  that are indexed by the SHA256 hash of a **did:btcr2** identifier. The data
-  attested to at the leaves of the tree is the ::BTCR2 Update:: for that
-  **did:btcr2** identifier that indexed to the leaf.
-
-SMT
-
-: ::Sparse Merkle Tree::
-
-Spares Merkle Trees
-
-: ::Sparse Merkle Tree::
-
-Invocation
-
-: See [Authorization Capabilities for Linked Data v0.3](https://w3c-ccg.github.io/zcap-spec/#terminology)
-
-Schnorr Signature
-
-: An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures 
-  with some major advantages, such as being able to combine digital signatures 
-  from multiple parties to form a single digital signature for the composite public key.
-
-  Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same
-  keypairs can be used to produce both Schnorr signatures and ECDSA signatures.
-
-Schnorr Signatures
-
-: ::Schnorr Signature::
-
-Schnorr
-
-: ::Schnorr Signature::
-
-Taproot
-
-: Taproot is an upgrade to the Bitcoin blockchain implemented in November 2021.
-  This upgrade enabled Bitcoin transactions to be secured using ::Schnorr Signatures::
-  through the introduction of a new address, a Taproot address.
-
-Unspent Transaction Output
-
-: A Bitcoin transaction takes in transaction outputs as inputs and creates new
-  transaction outputs potentially controlled by different addresses. An Unspent
-  Transaction Output (UTXO) is a transaction output from a Bitcoin transaction
-  that has not yet been included as an input, and hence spent, within another
-  Bitcoin transaction.
-
-UTXO
-
-: ::Unspent Transaction Output::
-
-Unspent Transaction Outputs
-
-: ::Unspent Transaction Output::
-
-UTXOs
-
-: ::Unspent Transaction Output::
+: ::Content Addressable Storage::
 
 Content Identifier
 
@@ -331,15 +158,63 @@ CIDs
 
 : ::Content Identifier::
 
-Content Addressable Storage
+Contemporary Blockheight
 
-: Content Addressable Storage (CAS) is a data storage system where content is
-  addressable using ::Content Identifiers:: (CIDs). The InterPlanetary File System
-  (IPFS) is an example of CAS.
+: The blockheight of consideration when walking the provenance of a series of DID
+  updates. A DID document's contemporary time is the Signal Time of the ::Beacon Signal::
+  that announced the last ::BTCR2 Update:: applied to the DID document.
 
-CAS
+Initial DID Document
 
-: ::Content Addressable Storage::
+: The canonical, conformant version 1 of a DID document for a specific **did:btcr2** identifier.
+
+Initial DID Documents
+
+: ::Initial DID Document::
+
+Intermediate DID Document
+
+: A representation of a DID document that it not yet fully conformant with the DID Core
+  specification. Intermediate DID documents for the **did:btcr2** DID method are DID documents
+  whose identifier values have been replaced with a placeholder value.
+
+Intermediate DID Documents
+
+: ::Intermediate DID Document::
+
+Invocation
+
+: See [Authorization Capabilities for Linked Data v0.3](https://w3c-ccg.github.io/zcap-spec/#terminology)
+
+Late Publishing
+
+: Late Publishing is the ability for DID updates to be revealed at a later point
+  in time, which alters the history of a DID document such that a state, that
+  appeared valid before the reveal, appears after Late Publishing to never have
+  been valid. Late Publishing breaks ::Non-Repudiation::.
+
+Map Beacon
+
+: A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update Announcements::. 
+  A ::Beacon Signal:: from a Map Beacon commits to a ::Beacon Announcement Map::.
+
+Map Beacons
+
+: ::Map Beacon::
+
+Merkle Tree
+
+: A tree data structure in which the leaves are a hash of a data block and every
+  node that is not a leaf is a hash of its child node values.
+
+  The root of a Merkle Tree is a single hash that is produced by recursively
+  hashing the child nodes down to the leaves of the tree. Given the root of a
+  Merkle Tree it is possible to provide a Merkle path that proves the inclusion
+  of some data in the tree.
+
+Merkle Trees
+
+: ::Merkle Tree::
 
 Non-Repudiation
 
@@ -351,13 +226,6 @@ Non-Repudiation
   edits a file, MUST be detected and disallowed. The ::Late Publishing:: problem
   breaks Non-Repudiation.
 
-Late Publishing
-
-: Late Publishing is the ability for DID updates to be revealed at a later point
-  in time, which alters the history of a DID document such that a state, that
-  appeared valid before the reveal, appears after Late Publishing to never have
-  been valid. Late Publishing breaks ::Non-Repudiation::.
-
 Offline Creation
 
 : Offline Creation refers to when a **did:btcr2** identifier and corresponding
@@ -367,6 +235,36 @@ Offline Creation
 
 * Key Pair Deterministic Creation; and
 * DID Document Initiated Creation.
+
+Pending BTCR2 Update
+
+: A ::BTCR2 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
+
+Pending BTCR2 Updates
+
+: ::Pending BTCR2 Update::
+
+Resolution Time
+
+: A Coordinated Universal Time (UTC) timestamp of when the client makes a resolution 
+  request of the controller.
+
+Schnorr Signature
+
+: An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures 
+  with some major advantages, such as being able to combine digital signatures 
+  from multiple parties to form a single digital signature for the composite public key.
+
+  Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same
+  keypairs can be used to produce both Schnorr signatures and ECDSA signatures.
+
+Schnorr Signatures
+
+: ::Schnorr Signature::
+
+Schnorr
+
+: ::Schnorr Signature::
 
 Sidecar
 
@@ -382,15 +280,53 @@ Sidecar Data
 
 : Data transmitted via ::Sidecar::.
 
+
 Signal Blockheight
 
 : The blockheight of the Bitcoin block that included a specific ::Beacon Signal::.
   Blockheight is used as the internal time of the resolution algorithm.
 
-Resolution Time
+Singleton Beacon
 
-: A Coordinated Universal Time (UTC) timestamp of when the client makes a resolution 
-  request of the controller.
+: A type of ::BTCR2 Beacon:: whose ::Beacon Signals:: each contain a single ::BTCR2 Update Announcement::.
+
+Singleton Beacons
+
+: ::Singleton Beacon::
+
+SMT Beacon
+
+: A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update Announcements::.  
+  A ::Beacon Signal:: from an SMT Beacon contains the root of an optimized ::Sparse Merkle Tree::.
+
+SMT Beacons
+
+: ::SMT Beacon::
+
+Sparse Merkle Tree
+
+: A ::Merkle Tree:: data structure where each data point included
+  at the leaf of the tree is indexed.
+
+  This data structure enables proofs of both inclusion and non-inclusion of data
+  at a given index. The instantiation in this specification has 2^256 leaves
+  that are indexed by the SHA256 hash of a **did:btcr2** identifier. The data
+  attested to at the leaves of the tree is the ::BTCR2 Update:: for that
+  **did:btcr2** identifier that indexed to the leaf.
+
+SMT
+
+: ::Sparse Merkle Tree::
+
+Sparse Merkle Trees
+
+: ::Sparse Merkle Tree::
+
+Taproot
+
+: Taproot is an upgrade to the Bitcoin blockchain implemented in November 2021.
+  This upgrade enabled Bitcoin transactions to be secured using ::Schnorr Signatures::
+  through the introduction of a new address, a Taproot address.
 
 Target Time
 
@@ -398,26 +334,35 @@ Target Time
   request to the resolver. If none is provided the target time is set to the
   ::Resolution Time::.
 
-Contemporary Blockheight
+Unsecured BTCR2 Update
 
-: The blockheight of consideration when walking the provenance of a series of DID
-  updates. A DID document's contemporary time is the Signal Time of the ::Beacon Signal::
-  that announced the last ::BTCR2 Update:: applied to the DID document.
+: A ::BTCR2 Update:: without a proof attached to it invoking the capability to apply the update to a **did:btcr2** DID document. 
+An Usecured BTCR2 Update contains the JSON Patch object that defines the set of mutations to be applied to a DID document, 
+along with the new version of the DID document and the source and target hashes of the DID document
+identifying the source DID document that the patch should be applied to and the target DID document that results from appliying the patch.
 
-Intermediate DID Document
+Unsecured BTCR2 Updates
 
-: A representation of a DID document that it not yet fully conformant with the DID Core
-  specification. Intermediate DID documents for the **did:btcr2** DID method are DID documents
-  whose identifier values have been replaced with a placeholder value.
+: ::Unsecured BTCR2 Update::
 
-Intermediate DID Documents
 
-: ::Intermediate DID Document::
 
-Initial DID Document
+Unspent Transaction Output
 
-: The canonical, conformant version 1 of a DID document for a specific **did:btcr2** identifier.
+: A Bitcoin transaction takes in transaction outputs as inputs and creates new
+  transaction outputs potentially controlled by different addresses. An Unspent
+  Transaction Output (UTXO) is a transaction output from a Bitcoin transaction
+  that has not yet been included as an input, and hence spent, within another
+  Bitcoin transaction.
 
-Initial DID Documents
+UTXO
 
-: ::Initial DID Document::
+: ::Unspent Transaction Output::
+
+Unspent Transaction Outputs
+
+: ::Unspent Transaction Output::
+
+UTXOs
+
+: ::Unspent Transaction Output::
