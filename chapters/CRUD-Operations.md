@@ -24,7 +24,7 @@ bytes along with a version, network for the identifier and an identifier type of
 The output of encoding the identifier is the newly created DID.
 
 Note: When creating from a ::Genesis Document::, it is likely that creators
-will want to include information, such as ::Beacons:: and other service
+will want to include information, such as ::BTCR2 Beacons:: and other service
 endpoints. While services such as ::BTCR2 Beacons:: may require network interactions, 
 e.g., to establish a unique ::Beacon Address:: for updates, they do not 
 require onchain anchoring. 
