@@ -211,7 +211,8 @@ Encode the **did:btcr2** identifier as follows:
 
 Resolving a **did:btcr2** identifier takes an input DID and returns the
 canonical DID document at the requested target time as well as additional
-metadata in a DID Resolution Result. The current time is the default.
+metadata in a DID Resolution Result. The current time is the default target
+time for a resolution request.
 
 Resolution takes part in two steps.
 
@@ -578,8 +579,8 @@ Processing ::Beacon Signals:: may require ::Sidecar Data:: passed as part of the
 resolution options in the DID resolution request.
 
 The result of processing the ::Beacon Signals:: is a set of ::BTCR2 Updates::.
-These updates must then be applied to the Contemporary DID Document using [Algo
-13. Apply BTCR2 Update].
+These updates must then be applied to the Contemporary DID Document using
+[Algo 13. Apply BTCR2 Update].
 
 ##### Hide {.unnumbered .unlisted}
 
