@@ -562,7 +562,7 @@ document hash.
 This algorithm processes a ::Beacon Signal:: broadcast from a ::Map Beacon:: to
 retrieve and validate the ::Beacon Announcement Map:: committed to by the
 signal. That map is then used to retrieve and validate a ::BTCR2 Update:: using
-the specific identifier being resolved as the key.
+the SHA256 hash of the specific identifier being resolved as the key.
 
 The ::Signal Bytes:: must be retrieved from the last transaction output of the
 Beacon Signal. These bytes must then be used to retrieve and validate the Beacon
