@@ -376,7 +376,7 @@ Decode the **did:btcr2** identifier as follows:
     2. If `fillerNibble` is not `0`, raise `invalidDid` error.
 18. Set `genesisBytes` to the remaining `dataBytes`.
 19. If `idType` is "key" and `genesisBytes` is not a valid compressed secp256k1
-    public key, raise `invalidDid` error.
+    public key, raise `INVALID_DID` error.
 20. Return `idType`, `version`, `network`, and `genesisBytes`.
 
 #### Algo 5. Deterministically Generate Initial DID Document {.tabbed .unnumbered}
