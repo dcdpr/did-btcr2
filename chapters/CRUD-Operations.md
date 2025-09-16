@@ -253,7 +253,7 @@ The resulting DID document is the canonical DID Document and must be returned to
 the caller of the resolver function in a resolution response which can be
 constructed following [Algo 14. Construct Resolution Result].
 
-NOTE. If there are no updates, the ::Initial DID Document:: is returned.
+NOTE. If there are no updates, the ::Initial DID Document:: is returned unless a specific versionId has been targetted by the resolution request.
 
 #### Algo 4. Process Resolution Inputs {.tabbed .unnumbered}
 
