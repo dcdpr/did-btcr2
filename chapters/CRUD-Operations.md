@@ -471,7 +471,7 @@ provided in the DID resolution options or from a ::Content Addressable Storage::
 transformed into a ::content identifier:: according to the CID v1.0
 specification.
 
-If the ::Genesis Document:: cannot be retrieved, it results in a FILE_NOT_FOUND.
+If the ::Genesis Document:: cannot be retrieved, it results in a FILE_NOT_FOUND error.
 If the ::Initial DID Document:: is not conformant, then it results in an
 INVALID_DID error.
 
