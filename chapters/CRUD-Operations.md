@@ -489,7 +489,7 @@ To check that it is conformant, transform the ::Genesis Document:: into the
 ::Initial DID Document:: by replacing the placeholder DID with the **did:btcr2**
 identifier being resolved. The transformed document must be a conformant DID
 document according to the DID core v1.1 specification. If it is not, this is an
-INVALID_DID_DOCUMENT error
+INVALID_DID_DOCUMENT error.
 
 Algo 8. Find & Process Beacon Signals
 
