@@ -6,9 +6,10 @@ for the **did:btcr2** method.
 ### Create
 
 Creating a **did:btcr2** identifier is entirely offline, requiring no innate
-network interactions to generate a new identifier. Each creation starts either
-with a public key or a ::Genesis Document::.  Both creation algorithms first
-create the ::Genesis Bytes:: that commit to an ::Initial DID Document::.
+network interactions or onchain anchoring transactions to generate a new identifier. 
+Each creation starts either with a public key or a ::Genesis Document::.  
+Both creation algorithms first create the ::Genesis Bytes:: that commit 
+to an ::Initial DID Document::.
 
 To create a **did:btcr2** identifier from a public key without an Initial DID
 Document, use [Algo 1: Create Genesis Bytes from Public Key], then encode those
@@ -23,8 +24,8 @@ The output of encoding the identifier is the newly created DID.
 
 Note: When creating from a ::Genesis Document::, it is likely that creators
 will want to include information, such as ::Beacons:: and other service
-endpoints, which requires online interactions, e.g., to establish a unique
-::Beacon Address:: for updates.
+endpoints. While services such as ::BTCR2 Beacons:: may require network interactions, e.g., to establish a unique
+::Beacon Address:: for updates, they do not require onchain anchoring. 
 
 #### Algo 1: Create Genesis Bytes from Public Key {.tabbed .unnumbered}
 
@@ -97,7 +98,7 @@ The steps are as follows:
 The identifier uses a [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m)
 encoding of input bytes composed of the version, network and ::Genesis Bytes::.
 The value of the version MUST be 1. The value of the network declares which
-Bitcoin network anchors the identifier and must be selected from the table below.
+Bitcoin network anchors the identifier and MUST be selected from the table below.
 
 The input bytes to the bech32m algorithm are constructed as follows: the first
 byte is the version and the network, with the version minus one in the low
@@ -122,10 +123,14 @@ next nibble should be considered a part of the version.
 | testnet3         | 3     |
 | testnet4         | 4     |
 | mutinynet        | 5     |
+| reserved         | 6-B   |
 | custom network 1 | C     |
 | custom network 2 | D     |
 | custom network 3 | E     |
 | custom network 4 | F     |
+
+Note: The values 6 through B are reserved by the specification for future use, such as identifying 
+new Bitcoin test networks as they become adopted.
 
 ##### Hide {.unnumbered .unlisted}
 
