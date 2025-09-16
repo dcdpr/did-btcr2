@@ -333,51 +333,42 @@ following fields must be used to execute the request:
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
-Given:
+The imperative algorithm to parse a did:btcr2 `identifier` into its components parts is as follows:
 
-* `identifier` - required, a string **did:btcr2** identifier
-
-Decode the **did:btcr2** identifier as follows:
-
-1. Split `identifier` into an array of `components` at the colon `.` character.
-2. If the length of the `components` array is not `3`, raise `invalidDid` error.
-3. If `components[0]` is not "did", raise `invalidDid` error.
-4. If `components[1]` is not "btcr2", raise `methodNotSupported` error.
-5. Set `encodedString` to `components[2]`.
-6. Decode the `encodedString` using the Bech32m Decoding algorithm defined in [BIP350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki), retrieving `hrp`
-   and `dataBytes`.
-7. If the decoding algorithm fails, raise `INVALID_DID` error.
-8. Map `hrp` to `idType` from the following:
-   1. "k" - "key"
-   2. "x" - "external"
-   3. other - raise `INVALID_DID` error
-9. Set `version` to `1`.
-10. If at any point in the remaining steps there are not enough nibbles to
-    complete the process, raise `INVALID_DID` error.
-11. Start with the first nibble (the higher nibble of the first byte) of
-    `dataBytes`.
-12. Add the value of the current nibble to `version`.
-13. If the value of the nibble is hexadecimal `F` (decimal `15`), advance to the
-    next nibble (the lower nibble of the current byte or the higher nibble of
-    the next byte) and return to the previous step.
-14. If `version` is greater than `1`, raise `INVALID_DID` error.
-15. Advance to the next nibble and set `networkValue` to its value.
-16. Map `networkValue` to `network` from the following:
-    1. `0` - "bitcoin"
-    2. `1` - "signet"
-    3. `2` - "regtest"
-    4. `3` - "testnet3"
-    5. `4` - "testnet4"
-    6. `5` - "mutinynet"
-    7. `6`-`B` - raise `INVALID_DID` error
-    8. `C`-`F` - `networkValue - 11`
-17. If the number of nibbles consumed is odd:
-    1. Advance to the next nibble and set `fillerNibble` to its value.
-    2. If `fillerNibble` is not `0`, raise `invalidDid` error.
-18. Set `genesisBytes` to the remaining `dataBytes`.
-19. If `idType` is "key" and `genesisBytes` is not a valid compressed secp256k1
-    public key, raise `INVALID_DID` error.
+1. Split `identifier` into an array of `components` at the colon `:` character.  
+2. If the length of the `components` array is not `3`, raise `INVALID_DID` error.  
+3. If `components[0]` is not “did”, raise `INVALID_DID` error.  
+4. If `components[1]` is not “btcr2”, raise `METHOD_NOT_SUPPORTED` error.  
+5. Set `encodedString` to `components[2]`.  
+6. Pass `encodedString` to the [Bech32m Decoding](https://dcdpr.github.io/did-btc1/#bech32m-decoding) algorithm, retrieving `hrp` and `dataBytes`.  
+7. If the [Bech32m Decoding](https://dcdpr.github.io/did-btc1/#bech32m-decoding) algorithm fails, raise `INVALID_DID` error.  
+8. Map `hrp` to `idType` from the following:  
+   1. “k” \- “key”  
+   2. “x” \- “external”  
+   3. other \- raise `INVALID_DID` error  
+9. Set `version` to `1`.  
+10. If at any point in the remaining steps there are not enough nibbles to complete the process, raise `INVALID_DID` error.  
+11. Start with the first nibble (the higher nibble of the first byte) of `dataBytes`.  
+12. Add the value of the current nibble to `version`.  
+13. If the value of the nibble is hexadecimal `F` (decimal `15`), advance to the next nibble (the lower nibble of the current byte or the higher nibble of the next byte) and return to the previous step.  
+14. If `version` is greater than `1`, raise `INVALID_DID` error.  
+15. Advance to the next nibble and set `networkValue` to its value.  
+16. Map `networkValue` to `network` from the following:  
+    1. `0` \- “bitcoin”  
+    2. `1` \- “signet”  
+    3. `2` \- “regtest”  
+    4. `3` \- “testnet3”  
+    5. `4` \- “testnet4”  
+    6. `5` \- “mutinynet”  
+    7. `6`\-`B` \- raise `INVALID_DID` error  
+    8. `C`\-`F` \- `networkValue - 11`  
+17. If the number of nibbles consumed is odd:  
+    1. Advance to the next nibble and set `fillerNibble` to its value.  
+    2. If `fillerNibble` is not `0`, raise `INVALID_DID` error.  
+18. Set `genesisBytes` to the remaining `dataBytes`.  
+19. If `idType` is “key” and `genesisBytes` is not a valid compressed secp256k1 public key, raise `INVALID_DID` error.  
 20. Return `idType`, `version`, `network`, and `genesisBytes`.
+
 
 #### Algo 5. Deterministically Generate Initial DID Document {.tabbed .unnumbered}
 
@@ -408,55 +399,59 @@ The DID document must contain only the following properties:
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
-The Deterministically Generate ::Initial DID Document:: algorithm generates an
-::Initial DID Document:: from a secp256k1 public key.
+The Deterministically Generate [Initial DID Document](https://dcdpr.github.io/did-btc1/#def-initial-did-document) algorithm generates an [Initial DID Document](https://dcdpr.github.io/did-btc1/#def-initial-did-document) from a secp256k1 public key.
 
 It takes the following inputs:
 
-* `identifier` - a valid **did:btcr2** identifier; REQUIRED; string.
-* `identifierComponents` - The decoded parts of a **did:btcr2** identifier;
-  REQUIRED; object.
-  * `idType` - the type of identifier (`KEY` or `EXTERNAL`); REQUIRED; string.
-  * `version` - the identifier version; REQUIRED; integer.
-  * `network` - the Bitcoin network used for the identifier; REQUIRED; string.
-  * `genesisBytes` - the originating public key; REQUIRED; bytes.
+* `identifier` \- a valid did:btcr2 identifier; REQUIRED; string.  
+* `network` \- the Bitcoin network used for the identifier; REQUIRED; string.  
+* `keyBytes` \- the originating public key encoded as Genesis Bytes; REQUIRED; bytes.
 
 It returns the following output:
 
-* `initialDocument` - the valid first version of a DID document for a given
-  **did:btcr2** identifier.
+* `initialDocument` \- the valid first version of a DID document for a given did:btcr2 identifier.
 
 The steps are as follows:
 
-1. Set `keyBytes` to `identifierComponents.genesisBytes`.
-2. Initialize an `initialDocument` variable as an empty object.
-3. Set `initialDocument.id` to the `identifier`.
-4. Initialize a `contextArray` to empty array:
-   1. Append the DID Core v1.1 context "https://www.w3.org/ns/did/v1.1".
-   2. Append the did:btcr2 context "https://btcr2.dev/context/v1".
-   3. Set `initialDocument.@context` to `contextArray`.
-5. Initialize a `controllerArray` to empty array:
-   1. Append the `identifier`.
-   2. Set `initialDocument.controller` to `controllerArray`.
-6. Create an initial verification method:
-   1. Initialize `verificationMethod` to an empty object.
-   2. Set `verificationMethod.id` to `{identifier}#initialKey`.
-   3. Set `verificationMethod.type` to "Multikey".
-   4. Set `verificationMethod.controller` to `identifier`.
-   5. Set `verificationMethod.publicKeyMultibase` to the result of the encoding
-      algorithm in [BIP340 Multikey](https://dcdpr.github.io/data-integrity-schnorr-secp256k1/#multikey).
-7. Set `initialDocument.verificationMethod` to an array containing
-   `verificationMethod`.
-8. Initialize a `tempArray` variable to an array with the single element
-   `verificationMethod.id`.
-9. Set the `authentication`, `assertionMethod`, `capabilityInvocation`, and the
-   `capabilityDelegation` properties in `initialDocument` to a copy of the
-   `tempArray` variable.
-10. Set the `initialDocument.services` property in `initialDocument` to the
-    result of passing the `identifier`, `keyBytes` and
-    `identifierComponents.network` to the [Deterministically Generate Beacon
-    Services] algorithm.
-11. Return `initialDocument`.
+1. Initialize an `initialDocument` variable as an empty object.  
+2. Set `initialDocument.id` to the `identifier`.  
+3. Initialize a `contextArray` to empty array:  
+   1. Append the DID Core v1.1 context “https://www.w3.org/ns/did/v1.1”.  
+   2. Append the did:btcr2 context “https://btcr2.dev/context/v1”.  
+   3. Set `initialDocument['@context]'` to `contextArray`.  
+4. Initialize a `controllerArray` to empty array:  
+   1. Append the `identifier`.  
+   2. Set `initialDocument.controller` to `controllerArray`.  
+5. Create an initial verification method:  
+   1. Initialize `verificationMethod` to an empty object.  
+   2. Set `verificationMethod.id` to `{identifier}#initialKey`.  
+   3. Set `verificationMethod.type` to “Multikey”.  
+   4. Set `verificationMethod.controller` to `identifier`.  
+   5. Set `verificationMethod.publicKeyMultibase` to the result of the encoding algorithm in [BIP340 Multikey](https://dcdpr.github.io/data-integrity-schnorr-secp256k1/#multikey).  
+6. Set `initialDocument.verificationMethod` to an array containing `verificationMethod`.  
+7. Initialize a `tempArray` variable to an array with the single element `verificationMethod.id`.  
+8. Set the `authentication`, `assertionMethod`, `capabilityInvocation`, and the `capabilityDelegation` properties in `initialDocument` to a copy of the `tempArray` variable.  
+9. Initialize a `services` variable to an empty array.  
+10. Set `p2pkhBeacon` to an empty object.  
+11. Set `p2pkhBeacon.id` to `{identifier}#initialP2PKH`.  
+12. Set `p2pkhBeacon.type` to “SingletonBeacon”  
+13. Set `beaconAddress` to the result of generating a Pay-to-Public-Key-Hash (P2PKH) Bitcoin address from the `keyBytes` for the appropriate `network`.  
+14. Set `p2pkhBeacon.serviceEndpoint` to the result of BIP21 encoding the `beaconAddress`.  
+15. Push `p2pkhBeacon` to `services`.  
+16. Set `p2wpkhBeacon` to an empty object.  
+17. Set `p2wpkhBeacon.id` to `{identifier}#initialP2WPKH`.  
+18. Set `p2wpkhBeacon.type` to “SingletonBeacon”  
+19. Set `beaconAddress` to the result of generating a Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address from the `keyBytes` for the appropriate `network`.  
+20. Set `p2wpkhBeacon.serviceEndpoint` to the result of BIP21 encoding the `beaconAddress`.  
+21. Push `p2wpkhBeacon` to `services`.  
+22. Set `p2trBeacon` to an empty object.  
+23. Set `p2trBeacon.id` to `{identifier}#initialP2TR`.  
+24. Set `p2trBeacon.type` to “SingletonBeacon”  
+25. Set `beaconAddress` to the result of generating a Pay-to-Taproot (P2TR) Bitcoin address from the `keyBytes` for the appropriate `network`.  
+26. Set `p2trBeacon.serviceEndpoint` to the result of BIP21 encoding the `beaconAddress`.  
+27. Push `p2trBeacon` to `services`.  
+28. Set the `initialDocument.services` property to `services`  
+29. Return `initialDocument`.
 
 #### Algo 6. Retrieve Genesis Document {.tabbed .unnumbered}
 
@@ -544,18 +539,21 @@ BTCR2 Update must raise a MISSING_UPDATE_DATA error.
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
-Given the 32 `signalBytes` from the Singleton Beacon Signal and a
-`sidecarDocumentsMap`:
+Given:
 
-1. Set `id` to the hexadecimal string representation of `signalBytes`.
-2. Get `btcr2Update` from `sidecarDocumentsMap` by its `id` if available, or
-   from ::CAS:: by its `id` if not and `cas` is defined.
-3. If `btcr2Update` is undefined, raise INVALID_DID_UPDATE error.
-4. Set `btcr2Update`
+*  `signalBytes`: 32 Signal Bytes from a Singleton Beacon Signal  
+* `sidecarDocumentsMap`: A map of documents provided through Sidecar Data keyed by the SHA256 hash of these documents. This map should be constructed by the resolver.
+
+The algorithm to process the signal bytes is as follows:
+
+1. Set `id` to the hexadecimal string representation of `signalBytes`.  
+2. Get `btcr2Update` from `sidecarDocumentsMap` by its `id` if available, or from [CAS](https://dcdpr.github.io/did-btc1/#def-content-addressable-storage) by its `id` if not and `cas` is defined.  
+3. If `btcr2Update` is undefined, raise a `MISSING_UPDATE_DATA` error.  
+4. Set `btcr2Update`  
 5. Return `btcr2Update`.
 
-NOTE. The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the
-document hash.
+NOTE. The act of retrieving from `sidecarDocumentsMap` or [CAS](https://dcdpr.github.io/did-btc1/#def-content-addressable-storage) validates the document hash.
+
 
 #### Algo 10. Process Map Beacon Signal {.tabbed .unnumbered}
 
@@ -581,22 +579,28 @@ CID v1 specification.
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
-Given the 32 `signalBytes` from the Map Beacon Signal and a `sidecarDocumentsMap`:
+Given:
 
-1. Set `id` to the hexadecimal string representation of `signalBytes`.
-2. Get `map` from `sidecarDocumentsMap` by its `id` if available, or from
-   ::CAS:: by its `id` if not and `cas` is defined.
-3. If `map` is undefined, raise INVALID_DID_UPDATE error.
-4. Set `index` to `hash(did)`.
+*  `identifier`: The did:btcr2 identifier being resolved
+*  `signalBytes`: 32 Signal Bytes from a Map Beacon Signal  
+* `sidecarDocumentsMap`: A map of documents provided through Sidecar Data keyed by
+the SHA256 hash of these documents. This map should be constructed by the resolver.
+
+The algorithm to process the signal bytes is as follows:
+
+1. Set `id` to the hexadecimal string representation of `signalBytes`.  
+2. Get `map` from `sidecarDocumentsMap` by its `id` if available, or from [CAS](https://dcdpr.github.io/did-btc1/#def-content-addressable-storage) 
+by its `id` if not and `cas` is defined.  
+3. If `map` is undefined, raise `MISSING_UPDATE_DATA` error.  
+4. Set `index` to the SHA256 hash of the `identifier`.  
 5. Set `updateId` to the value of `map.<index>`.
-6. If `updateId` is undefined, return null.
-7. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available,
-   or from ::CAS:: by its `updateId` if not and `cas` is defined.
-8. If `btcr2Update` is undefined, raise INVALID_DID_UPDATE error.
-9. Return `btcr2Update`.
+5. If `updateId` is undefined, return null.  
+6. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available, or from [CAS](https://dcdpr.github.io/did-btc1/#def-content-addressable-storage) by its `updateId` if not and `cas` is defined.  
+7. If `btcr2Update` is undefined, raise `MISSING_UPDATE_DATA` error.  
+8. Return `btcr2Update`.
 
-NOTE. The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the
-document hash.
+NOTE. The act of retrieving from `sidecarDocumentsMap` or 
+[CAS](https://dcdpr.github.io/did-btc1/#def-content-addressable-storage) validates the document hash.
 
 #### Algo 11. Process SMT Beacon Signal {.tabbed .unnumbered}
 
@@ -617,35 +621,41 @@ commits to the provided content.
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
-Given the 32 `signalBytes` from the SMT Beacon Signal, a `sidecarDocumentsMap`
-and a `smtProofsMap`:
+Given:
 
-1. Set `id` to the hexadecimal string representation of `signalBytes`.
-2. Get `smtProof` from `smtProofsMap` by its `id`.
-3. If `smtProof` is undefined, raise INVALID_DID_UPDATE error.
-4. Set `index` to `hash(did)`.
-5. Set `nonce` to the value of `smtProof.nonce`.
-6. Set `updateId` to the value of `smtProof.updateId`.
-7. If `updateId` is defined, set `btcr2UpdateAnnouncement` to the binary
-   representation of `updateId` and set `verifyHashBytes` to `hash(index +
-   hash(nonce ^ btcr2UpdateAnnouncement))`, otherwise set `verifyHashBytes` to
-   `hash(index + hash(nonce))`.
-8. For each `step` in `smtProof.path`:
-   1. Validate that `step` has a single key-value pair.
-   2. Extract `key` and `value` from `step`.
-   3. If `key` is `"left"`, set `verifyHashBytes` to `hash(value +
-       verifyHashBytes)`; otherwise, if `key` is `"right"`, set
-       `verifyHashBytes` to `hash(verifyHashBytes + value)`; otherwise, raise
-       INVALID_DID_UPDATE error.
-9. If `verifyHashBytes` ≠ `signalBytes`, raise INVALID_DID_UPDATE error.
-10. If `updateId` is undefined, return null.
-11. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available,
-    or from ::CAS:: by its `updateId` if not and `cas` is defined.
-12. If `btcr2Update` is undefined, raise INVALID_DID_UPDATE error.
+*  `identifier`: The did:btcr2 identifier being resolved
+*  `signalBytes`: 32 Signal Bytes from a SMT Beacon Signal  
+* `sidecarDocumentsMap`: A map of documents provided through Sidecar Data keyed 
+by the SHA256 hash of these documents. This map should be constructed by the resolver.  
+* `smtProofsMap`: A map of SMT proof paths keyed by the SMT root of the sparse merkle 
+tree the proof is for. This SMT root is the signal bytes included in a specific SMT Beacon Signal.
+
+
+  
+The algorithm to process the signal bytes is as follows:
+
+1. Set `id` to the hexadecimal string representation of `signalBytes`.  
+2. Get `smtProof` from `smtProofsMap` by its `id`.  
+3. If `smtProof` is undefined, raise a `MISSING_UPDATE_DATA` error.  
+4. Set `index` to `hash(identifier)`.  
+5. Set `nonce` to the value of `smtProof.nonce`.  
+6. Set `updateId` to the value of `smtProof.updateId`.  
+7. If `updateId` is defined, set `btcr2UpdateAnnouncement` to the binary representation 
+of `updateId` and set `verifyHashBytes` to `hash(index + hash(nonce ^ btcr2UpdateAnnouncement))`, 
+otherwise set `verifyHashBytes` to `hash(index + hash(nonce))`.  
+8. For each `step` in `smtProof.path`:  
+   1. Validate that `step` has a single key-value pair.  
+   2. Extract `key` and `value` from `step`.  
+   3. If `key` is `"left"`, set `verifyHashBytes` to `hash(value + verifyHashBytes)`; 
+   otherwise, if `key` is `"right"`, set `verifyHashBytes` to `hash(verifyHashBytes + value)`; 
+   otherwise, raise `INVALID_DID_UPDATE` error.  
+9. If `verifyHashBytes` ≠ `signalBytes`, raise `INVALID_DID_UPDATE` error.  
+10. If `updateId` is undefined, return null.  
+11. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available, 
+or from [CAS](https://dcdpr.github.io/did-btc1/#def-content-addressable-storage) by 
+its `updateId` if not and `cas` is defined.  
+12. If `btcr2Update` is undefined, raise a MISSING\_UPDATE\_DATA error.  
 13. Return `btcr2Update`.
-
-NOTE. The act of retrieving from `sidecarDocumentsMap` validates the document
-hash.
 
 #### Algo 12. Derive Root Capability {.tabbed .unnumbered}
 
