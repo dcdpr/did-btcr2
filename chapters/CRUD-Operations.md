@@ -108,10 +108,11 @@ nibble and the value from the network table in the high nibble. The Genesis
 Bytes are then appended to the first byte to produce the input bytes. Encode the
 input bytes using the bech32m algorithm with the human-readable part (hrp) value
 set to the ASCII value of either 'k' or 'x', depending on the type of the
-identifier. For btcr2 DIDs generated from an initial secp256k1 public key, use
-'k' for *did:btcr2* identifiers generated from an Initial DID Document, use 'x'. The result
-of the encoding is the method-specific identifier. Prepend the method-specific
-identifier with the ASCII string "did:btcr2:" to create the DID.
+identifier. For **did:btcr2** identifiers generated from an initial secp256k1
+public key, use 'k' for *did:btcr2* identifiers generated from an Initial DID
+Document, use 'x'. The result of the encoding is the method-specific identifier.
+Prepend the method-specific identifier with the ASCII string "did:btcr2:" to
+create the DID.
 
 NOTE: In future versions of this algorithm, it is expected that the version
 could take up more than one nibble with the nibble set to F indicating that the
