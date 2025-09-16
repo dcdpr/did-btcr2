@@ -13,7 +13,8 @@ to an ::Initial DID Document::.
 
 To create a **did:btcr2** identifier from a public key without an Initial DID
 Document, use [Algo 1: Create Genesis Bytes from Public Key], then encode those
-bytes along with a version, network for the identifier and an identifier type of **“key”** as in [Algo 3: Encode Identifier].
+bytes along with a version, network for the identifier and an identifier type of 
+**“key”** as in [Algo 3: Encode Identifier].
 
 To create a **did:btcr2** identifier from a ::Genesis Document::, use
 [Algo 2: Create Genesis Bytes from Genesis Document], then encode those
@@ -24,8 +25,9 @@ The output of encoding the identifier is the newly created DID.
 
 Note: When creating from a ::Genesis Document::, it is likely that creators
 will want to include information, such as ::Beacons:: and other service
-endpoints. While services such as ::BTCR2 Beacons:: may require network interactions, e.g., to establish a unique
-::Beacon Address:: for updates, they do not require onchain anchoring. 
+endpoints. While services such as ::BTCR2 Beacons:: may require network interactions, 
+e.g., to establish a unique ::Beacon Address:: for updates, they do not 
+require onchain anchoring. 
 
 #### Algo 1: Create Genesis Bytes from Public Key {.tabbed .unnumbered}
 
