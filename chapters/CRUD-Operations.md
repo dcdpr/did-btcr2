@@ -350,7 +350,7 @@ Decode the **did:btcr2** identifier as follows:
 8. Map `hrp` to `idType` from the following:
    1. "k" - "key"
    2. "x" - "external"
-   3. other - raise `invalidDid` error
+   3. other - raise `INVALID_DID` error
 9. Set `version` to `1`.
 10. If at any point in the remaining steps there are not enough nibbles to
     complete the process, raise `INVALID_DID` error.
