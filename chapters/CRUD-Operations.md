@@ -388,7 +388,7 @@ conformant DID document according to the DID core v1.1 specification.
 
 The DID document must contain only the following properties:
 
-* A @context array containing the DID core v1.1 context url ("[https://www.w3.org/ns/did/v1.1](https://www.w3.org/ns/did/v1.1)" )
+* A \@context array containing the DID core v1.1 context url ("[https://www.w3.org/ns/did/v1.1](https://www.w3.org/ns/did/v1.1)" )
   and the did:btcr2 context ("[https://btcr2.dev/context/v1](https://btc1.dev/context/v1)").
 * A verificationMethod array containing a single verificationMethod. This
   verificationMethod must have an id value of "#initialKey" be of the type
@@ -435,7 +435,7 @@ The steps are as follows:
 4. Initialize a `contextArray` to empty array:
    1. Append the DID Core v1.1 context "https://www.w3.org/ns/did/v1.1".
    2. Append the did:btcr2 context "https://btcr2.dev/context/v1".
-   3. Set `initialDocument['@context]'` to `contextArray`.
+   3. Set `initialDocument.@context` to `contextArray`.
 5. Initialize a `controllerArray` to empty array:
    1. Append the `identifier`.
    2. Set `initialDocument.controller` to `controllerArray`.
@@ -663,7 +663,7 @@ the [Authorization Capabilities v0.3](https://w3c-ccg.github.io/zcap-spec/)
 specification. The root capability for a specific **did:btcr2** identifier is a
 JSON containing the following fields:
 
-* @context: The string "[https://w3id.org/zcap/v1](https://w3id.org/zcap/v1)"
+* \@context: The string "[https://w3id.org/zcap/v1](https://w3id.org/zcap/v1)"
 * id: A URN of the following format: urn:zcap:root:${encodeURIComponent(DID)}
 * invocationTarget: The DID
 * btcr2 identifiercontroller: The DID
@@ -696,7 +696,7 @@ it to the appropriate DID document as identified by the update.
 
 A ::BTCR2 Update:: must contain the following:
 
-* @context. A context array containing the follow context URLs
+* \@context. A context array containing the follow context URLs
     * `"https://w3id.org/zcap/v1"`
     * `"https://w3id.org/security/data-integrity/v2"`
     * `"https://w3id.org/json-ld-patch/v1"`
