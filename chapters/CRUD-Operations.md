@@ -238,7 +238,7 @@ Process SMT Beacon Signal].
 document. ::BTCR2 Updates:: must be invocations of the capability to update the
 DID being resolved. To verify this, the resolver must first derive the root
 capability from the DID itself using  [Algo 12. Derive Root Capability], then
-verify and apply the invocation using [Algo 13. Apply BTCR Update].
+verify and apply the invocation using [Algo 13. Apply BTCR2 Update].
 
 Traverse the blockchain and apply updates in temporal order, updating and
 maintaining a ::Contemporary DID Document:: until all updates are processed.
