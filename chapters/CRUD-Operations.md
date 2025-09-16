@@ -550,7 +550,7 @@ Given the 32 `signalBytes` from the Singleton Beacon Signal and a
 1. Set `id` to the hexadecimal string representation of `signalBytes`.
 2. Get `btcr2Update` from `sidecarDocumentsMap` by its `id` if available, or
    from ::CAS:: by its `id` if not and `cas` is defined.
-3. If `btcr2Update` is undefined, raise InvalidDidUpdate error.
+3. If `btcr2Update` is undefined, raise INVALID_DID_UPDATE error.
 4. Set `btcr2Update`
 5. Return `btcr2Update`.
 
@@ -586,13 +586,13 @@ Given the 32 `signalBytes` from the Map Beacon Signal and a `sidecarDocumentsMap
 1. Set `id` to the hexadecimal string representation of `signalBytes`.
 2. Get `map` from `sidecarDocumentsMap` by its `id` if available, or from
    ::CAS:: by its `id` if not and `cas` is defined.
-3. If `map` is undefined, raise InvalidDidUpdate error.
+3. If `map` is undefined, raise INVALID_DID_UPDATE error.
 4. Set `index` to `hash(did)`.
 5. Set `updateId` to the value of `map.<index>`.
 6. If `updateId` is undefined, return null.
 7. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available,
    or from ::CAS:: by its `updateId` if not and `cas` is defined.
-8. If `btcr2Update` is undefined, raise InvalidDidUpdate error.
+8. If `btcr2Update` is undefined, raise INVALID_DID_UPDATE error.
 9. Return `btcr2Update`.
 
 NOTE. The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the
@@ -622,7 +622,7 @@ and a `smtProofsMap`:
 
 1. Set `id` to the hexadecimal string representation of `signalBytes`.
 2. Get `smtProof` from `smtProofsMap` by its `id`.
-3. If `smtProof` is undefined, raise InvalidDidUpdate error.
+3. If `smtProof` is undefined, raise INVALID_DID_UPDATE error.
 4. Set `index` to `hash(did)`.
 5. Set `nonce` to the value of `smtProof.nonce`.
 6. Set `updateId` to the value of `smtProof.updateId`.
@@ -636,12 +636,12 @@ and a `smtProofsMap`:
    3. If `key` is `"left"`, set `verifyHashBytes` to `hash(value +
        verifyHashBytes)`; otherwise, if `key` is `"right"`, set
        `verifyHashBytes` to `hash(verifyHashBytes + value)`; otherwise, raise
-       InvalidDidUpdate error.
-9. If `verifyHashBytes` ≠ `signalBytes`, raise InvalidDidUpdate error.
+       INVALID_DID_UPDATE error.
+9. If `verifyHashBytes` ≠ `signalBytes`, raise INVALID_DID_UPDATE error.
 10. If `updateId` is undefined, return null.
 11. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available,
     or from ::CAS:: by its `updateId` if not and `cas` is defined.
-12. If `btcr2Update` is undefined, raise InvalidDidUpdate error.
+12. If `btcr2Update` is undefined, raise INVALID_DID_UPDATE error.
 13. Return `btcr2Update`.
 
 NOTE. The act of retrieving from `sidecarDocumentsMap` validates the document
