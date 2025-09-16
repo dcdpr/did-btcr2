@@ -331,10 +331,6 @@ following fields must be used to execute the request:
 
 ##### Hide {.unnumbered .unlisted}
 
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
 Given:
@@ -383,12 +379,6 @@ Decode the **did:btcr2** identifier as follows:
     public key, raise `invalidDid` error.
 20. Return `idType`, `version`, `network`, and `genesisBytes`.
 
-##### Example code {.unnumbered .unlisted}
-
-##### Links {.unnumbered .unlisted}
-
-to btcr2.dev discussion forum
-
 #### Algo 5. Deterministically Generate Initial DID Document {.tabbed .unnumbered}
 
 This algorithm deterministically generates an ::Initial DID Document:: from a
@@ -416,10 +406,6 @@ The DID document must contain only the following properties:
   "SingletonBeacon"\]
 
 ##### Hide {.unnumbered .unlisted}
-
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
@@ -473,12 +459,6 @@ The steps are as follows:
     Services] algorithm.
 11. Return `initialDocument`.
 
-##### Example code {.unnumbered .unlisted}
-
-##### Links {.unnumbered .unlisted}
-
-to btcr2.dev discussion forum
-
 #### Algo 6. Retrieve Genesis Document {.tabbed .unnumbered}
 
 This algorithm uses the ::Genesis Bytes:: encoded into an external **did:btcr2**
@@ -496,20 +476,6 @@ If the ::Genesis Document:: cannot be retrieved, it results in a FILE_NOT_FOUND.
 If the ::Initial DID Document:: is not conformant, then it results in an
 INVALID_DID error.
 
-##### Hide {.unnumbered .unlisted}
-
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
-##### Imperative Algorithm {.unnumbered .unlisted}
-
-##### Example code {.unnumbered .unlisted}
-
-##### Links {.unnumbered .unlisted}
-
-to btcr2.dev discussion forum
-
 #### Algo 7. Verify Genesis Document {.tabbed .unnumbered}
 
 Verifying the ::Genesis Document:: requires checking its hash against the
@@ -525,20 +491,6 @@ To check that it is conformant, transform the ::Genesis Document:: into the
 identifier being resolved. The transformed document must be a conformant DID
 document according to the DID core v1.1 specification. If it is not, this is an
 INVALID_DID_DOCUMENT error
-
-##### Hide {.unnumbered .unlisted}
-
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
-##### Imperative Algorithm {.unnumbered .unlisted}
-
-##### Example code {.unnumbered .unlisted}
-
-##### Links {.unnumbered .unlisted}
-
-to btcr2.dev discussion forum
 
 Algo 8. Find & Process Beacon Signals
 
@@ -582,14 +534,6 @@ The result of processing the ::Beacon Signals:: is a set of ::BTCR2 Updates::.
 These updates must then be applied to the Contemporary DID Document using
 [Algo 13. Apply BTCR2 Update].
 
-##### Hide {.unnumbered .unlisted}
-
-##### Imperative Algorithm {.unnumbered .unlisted}
-
-##### Example code {.unnumbered .unlisted}
-
-##### Links {.unnumbered .unlisted}
-
 #### Algo 9. Process Singleton Beacon Signal {.tabbed .unnumbered}
 
 This algorithm processes a ::Beacon Signal:: broadcast from a ::Singleton
@@ -607,10 +551,6 @@ BTCR2 Update must raise a MISSING_UPDATE_DATA error.
 
 ##### Hide {.unnumbered .unlisted}
 
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
 Given the 32 `signalBytes` from the Singleton Beacon Signal and a
@@ -625,12 +565,6 @@ Given the 32 `signalBytes` from the Singleton Beacon Signal and a
 
 NOTE. The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the
 document hash.
-
-##### Example code {.unnumbered .unlisted}
-
-##### Links {.unnumbered .unlisted}
-
-to btcr2.dev discussion forum
 
 #### Algo 10. Process Map Beacon Signal {.tabbed .unnumbered}
 
@@ -654,10 +588,6 @@ CID v1 specification.
 
 ##### Hide {.unnumbered .unlisted}
 
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
 Given the 32 `signalBytes` from the Map Beacon Signal and a `sidecarDocumentsMap`:
@@ -676,12 +606,6 @@ Given the 32 `signalBytes` from the Map Beacon Signal and a `sidecarDocumentsMap
 NOTE. The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the
 document hash.
 
-##### Example code {.unnumbered .unlisted}
-
-##### Links {.unnumbered .unlisted}
-
-to btcr2.dev discussion forum
-
 #### Algo 11. Process SMT Beacon Signal {.tabbed .unnumbered}
 
 This algorithm processes a ::Beacon Signal:: broadcast from a ::SMT Beacon:: to
@@ -698,10 +622,6 @@ from ::Sidecar Data:: along with a proof path that demonstrates the indexed leaf
 commits to the provided content.
 
 ##### Hide {.unnumbered .unlisted}
-
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
@@ -735,12 +655,6 @@ and a `smtProofsMap`:
 NOTE. The act of retrieving from `sidecarDocumentsMap` validates the document
 hash.
 
-##### Example code {.unnumbered .unlisted}
-
-##### Links {.unnumbered .unlisted}
-
-to btcr2.dev discussion forum
-
 #### Algo 12. Derive Root Capability {.tabbed .unnumbered}
 
 This algorithm derives a root capability to update a specific **did:btcr2**
@@ -760,10 +674,6 @@ controller resolves to the contemporary DID document. That is the DID document
 that was current when the capability was invoked.
 
 ##### Hide {.unnumbered .unlisted}
-
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
 
 ##### Imperative Algorithm {.unnumbered .unlisted}
 
@@ -816,14 +726,6 @@ A ::BTCR2 Update:: must contain the following:
   that results from applying the patch to the source document. The DID document
   must be canonicalized using the JSON Canonicalization Scheme (JCS).
 
-##### Hide {.unnumbered .unlisted}
-
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
-##### Imperative Algorithm {.unnumbered .unlisted}
-
 #### Algo 14. Construct Resolution Result {.tabbed .unnumbered}
 
 A DID Resolution Result is an object defined according to the [DID Resolution
@@ -839,14 +741,6 @@ DID Resolvers may also support clients that request a verbose response to their
 resolution request. This response should contain the history of the DID
 document, its ::BTCR2 Updates:: and the transaction identifiers of the ::Beacon
 Signals:: that announced these updates on the Bitcoin blockchain.
-
-##### Hide {.unnumbered .unlisted}
-
-##### Flowchart {.unnumbered .unlisted}
-
-##### Examples {.unnumbered .unlisted}
-
-##### Imperative Algorithm {.unnumbered .unlisted}
 
 ### Update
 
