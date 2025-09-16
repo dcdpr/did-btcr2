@@ -688,33 +688,33 @@ it to the appropriate DID document as identified by the update.
 
 A ::BTCR2 Update:: must contain the following:
 
-* \@context. A context array containing the follow context URLs
+* \@context: A context array containing the follow context URLs
     * `"https://w3id.org/zcap/v1"`
     * `"https://w3id.org/security/data-integrity/v2"`
     * `"https://w3id.org/json-ld-patch/v1"`
     * `"https://btcr2.dev/context/v1"`
-* proof. A Data Integrity proof for with the proof purpose set to
+* proof: A Data Integrity proof for with the proof purpose set to
   capabilityInvocation. This must be an invocation of the capability to update
   the DID document of the DID being resolved. The root capability to update a
   specific **did:btcr2** identifier's DID document is derived following
   [Algo 12. Derive Root Capability] from **did:btcr2** identifier. While the
   [zCap-LD specification](https://w3c-ccg.github.io/zcap-spec) allows
   delegation, this specification does not define how such delegation might work.
-* patch. A [JSON patch](https://datatracker.ietf.org/doc/html/rfc6902) object
+* patch: A [JSON patch](https://datatracker.ietf.org/doc/html/rfc6902) object
   that defines a set of transformations to be applied to a DID document. The
   result of applying the patch must be a conformant DID document according to
   the DID core v1.1 specification.
-* targetVersionId. The versionId of the DID document after the patch has been
+* targetVersionId: The versionId of the DID document after the patch has been
   applied. The patch must be applied to the DID document with a versionId that
   is one less than the targetVersionId. If the contemporary document is equal to
   or less than the targetVersionId, then the ::Unsecured BTCR2 Update:: must be
   the same as the previously applied ::BTCR2 Update::. If the targetVersionId is
   greater than one plus the contemporary document’s versionId, then a
   LATE_PUBLISHING error must be raised.
-* sourceHash. A base64 encoded SHA256 hash of the canonicalized DID document
+* sourceHash: A base64 encoded SHA256 hash of the canonicalized DID document
   that the patch must be applied to. The DID document must be canonicalized
   using the JSON Canonicalization Scheme (JCS).
-* targetHash. A base64 encoded SHA256 hash of the canonicalized DID document
+* targetHash: A base64 encoded SHA256 hash of the canonicalized DID document
   that results from applying the patch to the source document. The DID document
   must be canonicalized using the JSON Canonicalization Scheme (JCS).
 
