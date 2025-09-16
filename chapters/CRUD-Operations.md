@@ -243,7 +243,7 @@ verify and apply the invocation using [Algo 13. Apply BTCR2 Update].
 Traverse the blockchain and apply updates in temporal order, updating and
 maintaining a ::Contemporary DID Document:: until all updates are processed.
 At each stage, the Contemporary DID Document defines the ::BTCR2 Beacons::
-active at that point in time; those beacons–and only those Beacon–are checked
+active at that point in time; those Beacons – and only those Beacons – are checked
 for updates.
 
 Continue traversing the chain until all timely, authentic ::Beacon Signals::
