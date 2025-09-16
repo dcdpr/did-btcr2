@@ -1,9 +1,9 @@
 {
     "type": "DataIntegrityProof",
     "cryptosuite": "bip340-jcs-2025",
-    "verificationMethod": "did:btc1:x1q20n602dgh7awm6akhgne0mjcmfpnjpc9jrqnrzuuexglrmklzm6u98hgvp#key-1",
+    "verificationMethod": "did:btcr2:x1q20n602dgh7awm6akhgne0mjcmfpnjpc9jrqnrzuuexglrmklzm6u98hgvp#key-1",
     "proofPurpose": "capabilityInvocation",
-    "capability": "urn:zcap:root:did%3Abtc1%3Ax1q20n602dgh7awm6akhgne0mjcmfpnjpc9jrqnrzuuexglrmklzm6u98hgvp",
+    "capability": "urn:zcap:root:did%3Abtcr2%3Ax1q20n602dgh7awm6akhgne0mjcmfpnjpc9jrqnrzuuexglrmklzm6u98hgvp",
     "capabilityAction": "Write",
     "@context": [
         "https://w3id.org/security/v2",
