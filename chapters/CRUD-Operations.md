@@ -491,14 +491,6 @@ identifier being resolved. The transformed document must be a conformant DID
 document according to the DID core v1.1 specification. If it is not, this is an
 INVALID_DID_DOCUMENT error.
 
-Algo 8. Find & Process Beacon Signals
-
-1. Algo 9. Scan until Signal, Select Block
-2. Algo 10. For block, process Signals
-    1. For each signal,
-        1. Algo 11,12,13 Beacon Specific Algo
-        2. Algo 14 Apply Update
-3. Continue Scanning until end state
 
 #### Algo 8. Process Beacon Signals {.tabbed .unnumbered}
 
