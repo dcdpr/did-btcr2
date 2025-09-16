@@ -269,7 +269,7 @@ character. The first component must be the string ‘did’, the second componen
 must be ‘btcr2’ and the third component is the BTCR2-specific identifier.
 Otherwise an INVALID_DID error MUST be raised.
 
-The BTCR2-specific identifier is decoded using the bech32m algorithm which
+The BTCR2-specific identifier is decoded using the [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) algorithm which
 returns the human readable part (*hrp value*) and the encoded data bytes. The
 encoded data bytes must be parsed as follows to retrieve the version, network,
 and ::Genesis Bytes::. The low nibble of the first byte indicates the version;
