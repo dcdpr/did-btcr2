@@ -238,12 +238,12 @@ Process SMT Beacon Signal].
 document. ::BTCR2 Updates:: must be invocations of the capability to update the
 DID being resolved. To verify this, the resolver must first derive the root
 capability from the DID itself using  [Algo 12. Derive Root Capability], then
-verify and apply the invocation using [Algo 13. Apply BTCR Update].
+verify and apply the invocation using [Algo 13. Apply BTCR2 Update].
 
 Traverse the blockchain and apply updates in temporal order, updating and
 maintaining a ::Contemporary DID Document:: until all updates are processed.
 At each stage, the Contemporary DID Document defines the ::BTCR2 Beacons::
-active at that point in time; those beacons–and only those Beacon–are checked
+active at that point in time; those Beacons – and only those Beacons – are checked
 for updates.
 
 Continue traversing the chain until all timely, authentic ::Beacon Signals::
@@ -253,7 +253,7 @@ The resulting DID document is the canonical DID Document and must be returned to
 the caller of the resolver function in a resolution response which can be
 constructed following [Algo 14. Construct Resolution Result].
 
-NOTE. If there are no updates, the ::Initial DID Document:: is returned.
+NOTE. If there are no updates, the ::Initial DID Document:: is returned unless a specific versionId has been targetted by the resolution request.
 
 #### Algo 4. Process Resolution Inputs {.tabbed .unnumbered}
 
@@ -269,7 +269,7 @@ character. The first component must be the string ‘did’, the second componen
 must be ‘btcr2’ and the third component is the BTCR2-specific identifier.
 Otherwise an INVALID_DID error MUST be raised.
 
-The BTCR2-specific identifier is decoded using the bech32m algorithm which
+The BTCR2-specific identifier is decoded using the [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) algorithm which
 returns the human readable part (*hrp value*) and the encoded data bytes. The
 encoded data bytes must be parsed as follows to retrieve the version, network,
 and ::Genesis Bytes::. The low nibble of the first byte indicates the version;
