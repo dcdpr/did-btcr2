@@ -346,7 +346,7 @@ Decode the **did:btcr2** identifier as follows:
 5. Set `encodedString` to `components[2]`.
 6. Decode the `encodedString` using the Bech32m Decoding algorithm defined in [BIP350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki), retrieving `hrp`
    and `dataBytes`.
-7. If the [Bech32m Decoding] algorithm fails, raise `invalidDid` error.
+7. If the decoding algorithm fails, raise `INVALID_DID` error.
 8. Map `hrp` to `idType` from the following:
    1. "k" - "key"
    2. "x" - "external"
