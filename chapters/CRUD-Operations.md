@@ -12,7 +12,7 @@ create the ::Genesis Bytes:: that commit to an ::Initial DID Document::.
 
 To create a **did:btcr2** identifier from a public key without an Initial DID
 Document, use [Algo 1: Create Genesis Bytes from Public Key], then encode those
-bytes as in [Algo 3: Encode Identifier].
+bytes along with a version, network for the identifier and an identifier type of **“key”** as in [Algo 3: Encode Identifier].
 
 To create a **did:btcr2** identifier from a ::Genesis Document::, use
 [Algo 2: Create Genesis Bytes from Genesis Document], then encode those
@@ -54,13 +54,13 @@ did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This is
 identifier.
 
 In order for this DID to be updatable, controllers must include at least one
-verification method with a `capabilityInvocation` verification relationship and
+verification method with a [capability invocation](https://www.w3.org/TR/cid-1.0/#capability-invocation) verification relationship and
 at least one ::BTCR2 Beacon:: service.
 
 Controllers may also add content to the ::Genesis Document::, including keys and
 services.
 
-It is recommended that controllers add at least one ::Singleton Beacon:: to
+It is RECOMMENDED that controllers add at least one ::Singleton Beacon:: to
 provide a fallback update capability. This ensures the controller can update the
 DID without reliance on any ::Beacon Aggregators:: or other parties.
 
@@ -108,7 +108,7 @@ Bytes are then appended to the first byte to produce the input bytes. Encode the
 input bytes using the bech32m algorithm with the human-readable part (hrp) value
 set to the ASCII value of either ‘k’ or ‘x’, depending on the type of the
 identifier. For btcr2 DIDs generated from an initial secp256k1 public key, use
-‘k’ for btcr2 DIDs generated from an Initial DID Document, use ‘x’. The result
+‘k’ for *did:btcr2* identifiers generated from an Initial DID Document, use ‘x’. The result
 of the encoding is the method-specific identifier. Prepend the method-specific
 identifier with the ASCII string ‘did:btcr2:’ to create the DID.
 
