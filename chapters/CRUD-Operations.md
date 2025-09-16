@@ -360,7 +360,7 @@ Decode the **did:btcr2** identifier as follows:
 13. If the value of the nibble is hexadecimal `F` (decimal `15`), advance to the
     next nibble (the lower nibble of the current byte or the higher nibble of
     the next byte) and return to the previous step.
-14. If `version` is greater than `1`, raise `invalidDid` error.
+14. If `version` is greater than `1`, raise `INVALID_DID` error.
 15. Advance to the next nibble and set `networkValue` to its value.
 16. Map `networkValue` to `network` from the following:
     1. `0` - "bitcoin"
