@@ -344,7 +344,7 @@ Decode the **did:btcr2** identifier as follows:
 3. If `components[0]` is not "did", raise `invalidDid` error.
 4. If `components[1]` is not "btcr2", raise `methodNotSupported` error.
 5. Set `encodedString` to `components[2]`.
-6. Pass `encodedString` to the [Bech32m Decoding] algorithm, retrieving `hrp`
+6. Decode the `encodedString` using the Bech32m Decoding algorithm defined in [BIP350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki), retrieving `hrp`
    and `dataBytes`.
 7. If the [Bech32m Decoding] algorithm fails, raise `invalidDid` error.
 8. Map `hrp` to `idType` from the following:
