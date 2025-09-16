@@ -478,7 +478,7 @@ The steps are as follows:
 
 to btcr2.dev discussion forum
 
-#### Algo 6. Retrieve Genesis DID Document {.tabbed .unnumbered}
+#### Algo 6. Retrieve Genesis Document {.tabbed .unnumbered}
 
 This algorithm uses the ::Genesis Bytes:: encoded into an external **did:btcr2**
 identifier to retrieve and verify the ::Genesis Document::. This document is
@@ -509,7 +509,7 @@ INVALID_DID error.
 
 to btcr2.dev discussion forum
 
-#### Algo 7. Verify Genesis DID Document {.tabbed .unnumbered}
+#### Algo 7. Verify Genesis Document {.tabbed .unnumbered}
 
 Verifying the ::Genesis Document:: requires checking its hash against the
 ::Genesis Bytes:: and then validating that it is a conformant document.
