@@ -325,7 +325,7 @@ following fields must be used to execute the request:
     Signals:: by their hash, this should be used to retrieve the relevant
     document from ::Sidecar Data::.
   * smtProofs: An array of SMT proofs that prove inclusion or non-inclusion of a
-    ::BTCR2 Update:: announced within a SMT Beacon Signal. Each proof must have
+    ::BTCR2 Update:: announced within an SMT Beacon Signal. Each proof must have
     an id field which is the hex encoded merkle root that is included as the
     Signal Bytes of the Beacon Signal.
 
