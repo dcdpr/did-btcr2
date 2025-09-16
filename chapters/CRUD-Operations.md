@@ -585,15 +585,15 @@ Given the 32 `signalBytes` from the Map Beacon Signal and a `sidecarDocumentsMap
 
 1. Set `id` to the hexadecimal string representation of `signalBytes`.
 2. Get `map` from `sidecarDocumentsMap` by its `id` if available, or from
-3. ::CAS:: by its `id` if not and `cas` is defined.
+   ::CAS:: by its `id` if not and `cas` is defined.
 3. If `map` is undefined, raise InvalidDidUpdate error.
 4. Set `index` to `hash(did)`.
-4. Set `updateId` to the value of `map.<index>`.
-5. If `updateId` is undefined, return null.
-6. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available,
-7. or from ::CAS:: by its `updateId` if not and `cas` is defined.
-7. If `btcr2Update` is undefined, raise InvalidDidUpdate error.
-8. Return `btcr2Update`.
+5. Set `updateId` to the value of `map.<index>`.
+6. If `updateId` is undefined, return null.
+7. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available,
+   or from ::CAS:: by its `updateId` if not and `cas` is defined.
+8. If `btcr2Update` is undefined, raise InvalidDidUpdate error.
+9. Return `btcr2Update`.
 
 NOTE. The act of retrieving from `sidecarDocumentsMap` or ::CAS:: validates the
 document hash.
