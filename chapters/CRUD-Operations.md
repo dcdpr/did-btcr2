@@ -587,7 +587,8 @@ Given the 32 `signalBytes` from the Map Beacon Signal and a `sidecarDocumentsMap
 2. Get `map` from `sidecarDocumentsMap` by its `id` if available, or from
 3. ::CAS:: by its `id` if not and `cas` is defined.
 3. If `map` is undefined, raise InvalidDidUpdate error.
-4. Set `updateId` to the value of `map.<did>`.
+4. Set `index` to `hash(did)`.
+4. Set `updateId` to the value of `map.<index>`.
 5. If `updateId` is undefined, return null.
 6. Get `btcr2Update` from `sidecarDocumentsMap` by its `updateId` if available,
 7. or from ::CAS:: by its `updateId` if not and `cas` is defined.
