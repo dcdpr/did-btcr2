@@ -499,7 +499,7 @@ Bitcoin block that contains a ::Beacon Signal::. For all ::Beacon Signals:: in
 that block, process these signals to retrieve ::BTCR2 Updates:: announced by
 these signals. Apply these updates to the DID document to produce the
 ::Contemporary DID Document:: with that block. Continue traversing the
-blockchain until the latest block.
+blockchain, processing blocks with signals, until the latest block.
 
 A ::Beacon Signal:: is a Bitcoin transaction that spends at least one ::UTXO::
 controlled by a ::Beacon Address:: defined by a Beacon in the service array of
