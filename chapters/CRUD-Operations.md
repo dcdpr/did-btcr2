@@ -353,7 +353,7 @@ Decode the **did:btcr2** identifier as follows:
    3. other - raise `invalidDid` error
 9. Set `version` to `1`.
 10. If at any point in the remaining steps there are not enough nibbles to
-    complete the process, raise `invalidDid` error.
+    complete the process, raise `INVALID_DID` error.
 11. Start with the first nibble (the higher nibble of the first byte) of
     `dataBytes`.
 12. Add the value of the current nibble to `version`.
