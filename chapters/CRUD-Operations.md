@@ -709,7 +709,7 @@ A ::BTCR2 Update:: must contain the following:
   is one less than the targetVersionId. If the ::Contemporary DID Document:: is equal to
   or less than the targetVersionId, then the ::Unsecured BTCR2 Update:: must be
   the same as the previously applied ::BTCR2 Update::. If the targetVersionId is
-  greater than one plus the contemporary document’s versionId, then a
+  greater than one plus the Contemporary DID Document’s versionId, then a
   LATE_PUBLISHING error must be raised.
 * sourceHash: A base64 encoded SHA256 hash of the canonicalized DID document
   that the patch must be applied to. The DID document must be canonicalized
