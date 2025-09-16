@@ -399,7 +399,7 @@ The DID document must contain only the following properties:
   capabilityInvocation, capabilityDelegation
 * A service array containing three BTCR2 Beacon services. The serviceEndpoint
   for each of these services must be a BIP21 URI encoding of a bitcoin address
-  controlled by the public key. The three different address formats are. p2pkh,
+  controlled by the public key. The three different address formats are p2pkh,
   p2wpkh, p2tr. The id value of the service must be "#initialP2PKH",
   #initialP2WPKH” and "#initialP2TR" respectively. Finally, each of these
   services must have a type set to the string "SingletonBeacon"
