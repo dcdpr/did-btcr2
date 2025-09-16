@@ -325,7 +325,7 @@ following fields must be used to execute the request:
     Signals:: by their hash, this should be used to retrieve the relevant
     document from ::Sidecar Data::.
   * smtProofs: An array of SMT proofs that prove inclusion or non-inclusion of a
-    ::BTCR2 Update:: announced within a SMT Beacon Signal. Each proof must have
+    ::BTCR2 Update:: announced within an SMT Beacon Signal. Each proof must have
     an id field which is the hex encoded merkle root that is included as the
     Signal Bytes of the Beacon Signal.
 
@@ -344,23 +344,23 @@ Decode the **did:btcr2** identifier as follows:
 3. If `components[0]` is not "did", raise `invalidDid` error.
 4. If `components[1]` is not "btcr2", raise `methodNotSupported` error.
 5. Set `encodedString` to `components[2]`.
-6. Pass `encodedString` to the [Bech32m Decoding] algorithm, retrieving `hrp`
+6. Decode the `encodedString` using the Bech32m Decoding algorithm defined in [BIP350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki), retrieving `hrp`
    and `dataBytes`.
-7. If the [Bech32m Decoding] algorithm fails, raise `invalidDid` error.
+7. If the decoding algorithm fails, raise `INVALID_DID` error.
 8. Map `hrp` to `idType` from the following:
    1. "k" - "key"
    2. "x" - "external"
-   3. other - raise `invalidDid` error
+   3. other - raise `INVALID_DID` error
 9. Set `version` to `1`.
 10. If at any point in the remaining steps there are not enough nibbles to
-    complete the process, raise `invalidDid` error.
+    complete the process, raise `INVALID_DID` error.
 11. Start with the first nibble (the higher nibble of the first byte) of
     `dataBytes`.
 12. Add the value of the current nibble to `version`.
 13. If the value of the nibble is hexadecimal `F` (decimal `15`), advance to the
     next nibble (the lower nibble of the current byte or the higher nibble of
     the next byte) and return to the previous step.
-14. If `version` is greater than `1`, raise `invalidDid` error.
+14. If `version` is greater than `1`, raise `INVALID_DID` error.
 15. Advance to the next nibble and set `networkValue` to its value.
 16. Map `networkValue` to `network` from the following:
     1. `0` - "bitcoin"
@@ -369,14 +369,14 @@ Decode the **did:btcr2** identifier as follows:
     4. `3` - "testnet3"
     5. `4` - "testnet4"
     6. `5` - "mutinynet"
-    7. `6`-`B` - raise `invalidDid` error
+    7. `6`-`B` - raise `INVALID_DID` error
     8. `C`-`F` - `networkValue - 11`
 17. If the number of nibbles consumed is odd:
     1. Advance to the next nibble and set `fillerNibble` to its value.
     2. If `fillerNibble` is not `0`, raise `invalidDid` error.
 18. Set `genesisBytes` to the remaining `dataBytes`.
 19. If `idType` is "key" and `genesisBytes` is not a valid compressed secp256k1
-    public key, raise `invalidDid` error.
+    public key, raise `INVALID_DID` error.
 20. Return `idType`, `version`, `network`, and `genesisBytes`.
 
 #### Algo 5. Deterministically Generate Initial DID Document {.tabbed .unnumbered}
@@ -402,8 +402,7 @@ The DID document must contain only the following properties:
   controlled by the public key. The three different address formats are. p2pkh,
   p2wpkh, p2tr. The id value of the service must be "#initialP2PKH",
   #initialP2WPKH” and "#initialP2TR" respectively. Finally, each of these
-  services must have a type set to the array \["BTCR2Beacon",
-  "SingletonBeacon"\]
+  services must have a type set to the string "SingletonBeacon"
 
 ##### Hide {.unnumbered .unlisted}
 
