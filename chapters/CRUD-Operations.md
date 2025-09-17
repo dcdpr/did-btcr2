@@ -799,7 +799,50 @@ The steps are as follows:
 
 ### Update
 
+Updating a BTCR2 DID is a matter of constructing a signed ::BTCR2 Update:: then announcing 
+that update via one or more ::BTCR2 Beacons:: listed in the current DID document. 
+Updates are either announced independently using ::Singleton Beacons::, or 
+announced as part of an aggregation cohort to minimize on-chain costs, 
+using either ::Map Beacons:: or ::SMT Beacons::.
 
+Fundamentally, two steps are involved. First, create an update to the DID Document, 
+secured by capability invocation verification method in the current DID Document. 
+Second, announce that update by broadcasting an on-chain ::Beacon Signal::.
+
+#### Create a Beacon Service {.unnumbered}
+
+All ::BTCR2 Updates:: MUST be announced via a ::BTCR2 Beacon:: listed in the 
+canonical DID document at the time of the update. This is why it is vital to ensure 
+that every BTCR2 DID document contains at least one BTCR2 Beacon. 
+Use [Algo 15. Create Singleton Beacon Service] to create a BTCR2 Beacon that can be updated independently. 
+Or, use [Algo 16. Join Cohort and Establish Aggregate Beacon Service] to use aggregation; 
+this allows any number of DIDs from any number of DID controllers to announce multiple participants’ 
+updates in a single Bitcoin transaction.
+
+#### Create a BTCR2 Update {.unnumbered}
+
+Starting with a DID document and its associated BTCR2 Beacon services, the DID Controller creates an 
+update using [Algo 17. Create Canonical BTCR2 Update]. This creates a signed [zCap invocation](https://w3c-ccg.github.io/zcap-spec/) 
+that is ready to be announced.
+
+#### Announce BTCR2 Update {.unnumbered}
+
+To announce an update using a ::Singleton Beacon::, use [Algo 18. Create & Announce Singleton Beacon Signal]. 
+
+To aggregate a ::BTCR2 Update Announcement:: within a ::Beacon Signal:: from a 
+::Map Beacon:: or an ::SMT Beacon::, this specification defines a five-step process 
+that guarantees all participants have confirmed every Signal that gets announced 
+on the Bitcoin blockchain. 
+
+First, the ::Beacon Aggregator:: advertises the update opportunity using [Algo 19. Advertise Update Opportunity]. 
+Then, each member of the cohort prepares a response to that opportunity using 
+[Algo 20. Prepare & Submit Update Response]. Once all responses are received, the aggregator 
+combines those responses into a Beacon Signal and requests confirmation by all participants using 
+[Algo 21. Aggregate & Request Signal Confirmation (Aggregator)]. To confirm that signal, 
+each participant uses [Algo 22. Confirm Signal (Participant)] to sign and submit their 
+MuSig2 partially signed Bitcoin transaction. Finally, the aggregator combines all confirmations 
+to finalize the transaction and posts the Signal to the Bitcoin blockchain using 
+[Algo 23. Broadcast Aggregated Signal (Aggregator)].
 
 ### Deactivate
 
