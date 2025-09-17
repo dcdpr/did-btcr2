@@ -662,19 +662,19 @@ its `updateId` if not and `cas` is defined.
 #### Algo 12. Derive Root Capability {.tabbed .unnumbered}
 
 This algorithm derives a root capability to update a specific **did:btcr2**
-identifier from the identifier itself. The root capability must be conformant to
+identifier from the identifier itself. The root capability MUST be conformant with
 the [Authorization Capabilities v0.3](https://w3c-ccg.github.io/zcap-spec/)
 specification. The root capability for a specific **did:btcr2** identifier is a
-JSON containing the following fields:
+JSON that MUST contain the following fields:
 
 * \@context: The string "[https://w3id.org/zcap/v1](https://w3id.org/zcap/v1)"
 * id: A URN of the following format: urn:zcap:root:${encodeURIComponent(DID)}
 * invocationTarget: The DID
-* btcr2 identifiercontroller: The DID
+* controller: The DID
 
 Note: The controller of this capability is the DID, which resolves to a DID
-document. When verifying a BTCR2 Update is an invocation of this capability, the
-controller resolves to the Contemporary DID document. That is the DID document
+document. When verifying a ::BTCR2 Update:: is an invocation of this capability, the
+controller resolves to the ::Contemporary DID document::. That is the DID document
 that was current when the capability was invoked.
 
 ##### Hide {.unnumbered .unlisted}
