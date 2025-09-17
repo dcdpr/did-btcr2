@@ -477,14 +477,14 @@ Verifying the ::Genesis Document:: requires checking its hash against the
 
 To check its hash, compute the SHA256 of the ::Genesis Document:: canonicalized
 using the [JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785)
-(JCS). The computed hash must be equal to the ::Genesis Bytes::. If it is not,
+(JCS). The computed hash MUST be equal to the ::Genesis Bytes::. If it is not,
 this is an INVALID_DID_DOCUMENT_CONSTRUCTION error.
 
 To check that it is conformant, transform the ::Genesis Document:: into the
 ::Initial DID Document:: by replacing the placeholder DID with the **did:btcr2**
-identifier being resolved. The transformed document must be a conformant DID
-document according to the DID core v1.1 specification. If it is not, this is an
-INVALID_DID_DOCUMENT error.
+identifier being resolved. The transformed document MUST be a conformant DID
+document according to the [DID core v1.1](https://www.w3.org/TR/did-1.1/) specification. If it is not, 
+the algorithm MUST result in an INVALID_DID_DOCUMENT error.
 
 
 #### Algo 8. Process Beacon Signals {.tabbed .unnumbered}
