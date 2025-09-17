@@ -211,8 +211,8 @@ Encode the **did:btcr2** identifier as follows:
 
 Resolving a **did:btcr2** identifier takes an input DID and returns the
 canonical DID document at the requested target time as well as additional
-metadata in a DID Resolution Result. The current time is the default target
-time for a resolution request.
+metadata in a [DID Resolution Result](https://w3c.github.io/did-resolution/#did-resolution-result). 
+The current time is the default target time for a resolution request.
 
 Resolution takes part in two steps.
 
