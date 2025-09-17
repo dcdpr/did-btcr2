@@ -525,15 +525,15 @@ These updates MUST then be applied to the DID Document according to their versio
 This algorithm processes a ::Beacon Signal:: broadcast from a ::Singleton
 Beacon:: to retrieve and validate the ::BTCR2 update:: announced by this signal.
 
-For signals from Singleton Beacons, the ::Signal Bytes:: are the SHA256 of a
-canonicalized ::BTCR2 Update::. The BTCR2 update committed to by the Signal
-Bytes must be retrieved, canonicalized using JCS, and then hashed. The resulting
-hash bytes must equal the ::Signal Bytes::.
+For signals from ::Singleton Beacons::, the ::Signal Bytes:: are the SHA256 of a
+canonicalized ::BTCR2 Update::. The BTCR2 update committed to by the ::Signal
+Bytes:: MUST be retrieved, canonicalized using JCS, and then hashed. The resulting
+hash bytes MUST equal the ::Signal Bytes::.
 
-A BTCR2 Update may be retrieved from ::Sidecar Data::, or through querying a
-::CAS::. If querying a ::CAS::, the ::Signal Bytes:: must be transformed into a
-::CID:: according to the IPFS CID v1 specification. Inability to retrieve the
-BTCR2 Update must raise a MISSING_UPDATE_DATA error.
+The ::BTCR2 Update:: MAY be retrieved from ::Sidecar Data::, or through querying a
+::CAS::. If querying a ::CAS::, the ::Signal Bytes:: MUST be transformed into a
+::CID:: according to the [IPFS CID v1](https://github.com/multiformats/cid) specification. 
+Inability to retrieve the BTCR2 Update MUST raise a MISSING_UPDATE_DATA error.
 
 ##### Hide {.unnumbered .unlisted}
 
