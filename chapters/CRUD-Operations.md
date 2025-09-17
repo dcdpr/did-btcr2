@@ -573,7 +573,7 @@ the ::BTCR2 Update:: announced.
 Retrieval of the ::Beacon Announcement Map:: and ::BTCR2 Update:: documents MAY be
 done through querying either ::Sidecar Data:: or a ::CAS::. If querying a
 ::CAS::, the 32-byte hashes MUST be transformed into a CID following the IPFS
-CID v1 specification. Inability to retrieve either of these files MUST raise a MISSING_UPDATE_DATA error.
+CID v1 specification. Inability to retrieve this data MUST raise a MISSING_UPDATE_DATA error.
 
 ##### Hide {.unnumbered .unlisted}
 
@@ -607,15 +607,17 @@ NOTE. The act of retrieving from `sidecarDocumentsMap` or
 This algorithm processes a ::Beacon Signal:: broadcast from a ::SMT Beacon:: to
 retrieve and validate a ::BTCR2 Update:: for a specific DID being resolved.
 
-The ::Signal Bytes:: in the Beacon Signal are the root of a ::Sparse Merkle
-Tree::. (SMT). This root must be used to verify the contents of the leaf of the
+The ::Signal Bytes:: MUST be retrieved from the last transaction output of the
+Beacon Signal. These bytes are the root of a ::Sparse Merkle
+Tree::. (SMT). This root MUST be used to verify the contents of the leaf of the
 SMT indexed by the SHA256 hash of the DID being resolved.
 
 The contents of this leaf either contains the double SHA256 hash of a nonce, or
 it contains the SHA256 hash of the concatenation of the SHA256 hashes of a nonce
-and ::BTCR2 Update::. The ::BTCR2 Update:: and nonce values must be retrieved
-from ::Sidecar Data:: along with a proof path that demonstrates the indexed leaf
-commits to the provided content.
+and ::BTCR2 Update::. The ::BTCR2 Update:: and nonce values MUST be retrieved
+from ::Sidecar Data:: along with a ::SMT:: proof path that demonstrates the indexed leaf
+commits to the provided content. Inability to retrieve either of this data MUST raise a 
+MISSING_UPDATE_DATA error.
 
 ##### Hide {.unnumbered .unlisted}
 
