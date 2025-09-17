@@ -261,25 +261,25 @@ NOTE. If there are no updates, the ::Initial DID Document:: is returned unless a
 This algorithm processes the resolution inputs from a resolution request. First,
 parse the identifier string, then process the resolution options.
 
-First take the identifier string, validate it according to the DID syntax and
-decode it to retrieve the identifier type, version, network and ::Genesis
+First take the identifier string, validate it according to the [DID syntax](https://www.w3.org/TR/did-1.1/#did-syntax) 
+and decode it to retrieve the identifier type, version, network and ::Genesis
 Bytes::.
 
-The identifier string must consist of three components separated by a ‘:’
-character. The first component must be the string ‘did’, the second component
-must be ‘btcr2’ and the third component is the BTCR2-specific identifier.
+The identifier string MUST consist of three components separated by a ‘:’
+character. The first component MUST be the string ‘did’, the second component
+MUST be ‘btcr2’ and the third component is the BTCR2-specific identifier.
 Otherwise an INVALID_DID error MUST be raised.
 
 The BTCR2-specific identifier is decoded using the [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) algorithm which
 returns the human readable part (*hrp value*) and the encoded data bytes. The
-encoded data bytes must be parsed as follows to retrieve the version, network,
+encoded data bytes MUST be parsed as follows to retrieve the version, network,
 and ::Genesis Bytes::. The low nibble of the first byte indicates the version;
 the high nibble of the first byte indicates the specific Bitcoin network used
 to anchor the identifier, and all bytes after the first byte are the ::Genesis
 Bytes::.
 
 To get the version, add one to the value in the low nibble of the first byte.
-At this time, the version must be 1. Any other value results in an INVALID_DID
+At this time, the version MUST be 1. Any other value results in an INVALID_DID
 error.
 
 To get the network, look up the value from the high nibble of the first byte in
@@ -298,16 +298,16 @@ this table.
 | E     | custom network 3 |
 | F     | custom network 4 |
 
-Any value not in the table results in an INVALID_DID Error.
+Any value not in the table MUST result in an INVALID_DID Error.
 
 To validate the ::Genesis Bytes::, check the hrp value. If hrp is ‘k’, the
-::Genesis Bytes:: must be a 33-byte representation of a compressed secp256k1
-public key. If hrp is ‘x’, the ::Genesis Bytes:: must be a 32-byte SHA256 hash
+::Genesis Bytes:: MUST be a 33-byte representation of a compressed secp256k1
+public key. If hrp is ‘x’, the ::Genesis Bytes:: MUST be a 32-byte SHA256 hash
 of a ::Genesis Document::. If these conditions are not met, or hrp has any other
-value, it results in an INVALID_DID Error.
+value, it MUST result in an INVALID_DID Error.
 
-Then the resolution options of a resolution request must be processed and the
-following fields must be used to execute the request:
+Then the resolution options of a resolution request MUST be processed and the
+following fields MUST be used to execute the request:
 
 * versionId: The versionId of the DID document targeted by this resolution
   request. If there is a DID document with this versionId, it MUST be returned
@@ -320,12 +320,12 @@ following fields must be used to execute the request:
 * sidecar: The set of ::Sidecar Data:: provided to the Resolver by the client as
   part of their resolution request. This data is likely provided to the client
   by the DID controller.
-  * documents: An array of JSON documents that must be used to execute the
+  * documents: An array of JSON documents that MUST be used to execute the
     resolution request. ::Sidecar:: documents are identified within ::Beacon
     Signals:: by their hash, this should be used to retrieve the relevant
     document from ::Sidecar Data::.
   * smtProofs: An array of SMT proofs that prove inclusion or non-inclusion of a
-    ::BTCR2 Update:: announced within an SMT Beacon Signal. Each proof must have
+    ::BTCR2 Update:: announced within an SMT Beacon Signal. Each proof MUST have
     an id field which is the hex encoded merkle root that is included as the
     Signal Bytes of the Beacon Signal.
 
