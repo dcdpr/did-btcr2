@@ -500,12 +500,12 @@ A ::Beacon Signal:: is a Bitcoin transaction that spends at least one ::UTXO::
 controlled by a ::Beacon Address:: defined by a Beacon in the service array of
 the Contemporary DID Document. The Beacon Signal contains ::Signal Bytes::, 32
 bytes included in the last transaction output of the transaction. The script of
-this transaction output has the following form. \[OP_RETURN, OP_PUSH_BYTES,
-<32 signal bytes>\].
+this transaction output MUST have the following form: `[OP_RETURN, OP_PUSH_BYTES,
+<32 signal bytes>]`.
 
 Process ::Beacon Signals:: according to their type, as identified by the Beacon
 Service in the Contemporary DID Document. The table below defines the algorithm
-you must use to process a Beacon Signal for  a specific ::Beacon Type::.
+you MUST use to process a Beacon Signal for a specific ::Beacon Type::.
 
 | ::Beacon Type::      | Processing Algorithm                      |
 |:---------------------|:------------------------------------------|
@@ -513,11 +513,11 @@ you must use to process a Beacon Signal for  a specific ::Beacon Type::.
 | ::Map Beacon::       | [Algo 10. Process Map Beacon Signal]      |
 | ::SMT Beacon::       | [Algo 11. Process SMT Beacon Signal]      |
 
-Processing ::Beacon Signals:: may require ::Sidecar Data:: passed as part of the
+Processing ::Beacon Signals:: MAY require ::Sidecar Data:: passed as part of the
 resolution options in the DID resolution request.
 
 The result of processing the ::Beacon Signals:: is a set of ::BTCR2 Updates::.
-These updates must then be applied to the Contemporary DID Document using
+These updates MUST then be applied to the DID Document according to their version using
 [Algo 13. Apply BTCR2 Update].
 
 #### Algo 9. Process Singleton Beacon Signal {.tabbed .unnumbered}
