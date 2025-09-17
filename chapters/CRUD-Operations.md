@@ -374,26 +374,26 @@ The imperative algorithm to parse a did:btcr2 `identifier` into its components p
 
 This algorithm deterministically generates an ::Initial DID Document:: from a
 33-byte compressed representation of a secp256k1 public key encoded into the
-identifier as the ::Genesis Bytes::. The DID document generated must be a
-conformant DID document according to the DID core v1.1 specification.
+identifier as the ::Genesis Bytes::. The DID document generated MUST be a
+conformant DID document according to the [DID core v1.1](https://www.w3.org/TR/did-1.1/) specification.
 
-The DID document must contain only the following properties:
+The DID document MUST contain only the following properties:
 
 * A \@context array containing the DID core v1.1 context url ("[https://www.w3.org/ns/did/v1.1](https://www.w3.org/ns/did/v1.1)" )
   and the did:btcr2 context ("[https://btcr2.dev/context/v1](https://btc1.dev/context/v1)").
 * A verificationMethod array containing a single verificationMethod. This
-  verificationMethod must have an id value of "#initialKey" be of the type
-  Multikey with the publicKeyMultibase value a multikey encoding of the
+  verificationMethod MUST have an id value of "#initialKey" MUST be of the type
+  "Multikey". The the publicKeyMultibase value MUST be a multikey encoding of the
   secp256k1 public key bytes.
 * An array containing the verificationMethod id "#initialKey" for each of the
   verification relationships. assertionMethod, authentication,
   capabilityInvocation, capabilityDelegation
-* A service array containing three BTCR2 Beacon services. The serviceEndpoint
-  for each of these services must be a BIP21 URI encoding of a bitcoin address
+* A service array containing three ::BTCR2 Beacon:: services. The serviceEndpoint
+  for each of these services Must be a [BIP21 URI](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki) encoding of a bitcoin address
   controlled by the public key. The three different address formats are p2pkh,
-  p2wpkh, p2tr. The id value of the service must be "#initialP2PKH",
+  p2wpkh, p2tr. The id value of the service MUST be "#initialP2PKH",
   #initialP2WPKH” and "#initialP2TR" respectively. Finally, each of these
-  services must have a type set to the string "SingletonBeacon"
+  services MUST have a type set to the string "SingletonBeacon"
 
 ##### Hide {.unnumbered .unlisted}
 
