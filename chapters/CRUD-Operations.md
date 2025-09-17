@@ -698,7 +698,7 @@ object.
 This algorithm takes a ::BTCR2 Update::, attempts to verify it and then applies
 it to the appropriate DID document as identified by the update.
 
-A ::BTCR2 Update:: must contain the following:
+A ::BTCR2 Update:: is a JSON document that MUST contain the following properties:
 
 * \@context: A context array containing the follow context URLs
     * `"https://w3id.org/zcap/v1"`
@@ -706,7 +706,7 @@ A ::BTCR2 Update:: must contain the following:
     * `"https://w3id.org/json-ld-patch/v1"`
     * `"https://btcr2.dev/context/v1"`
 * proof: A Data Integrity proof for with the proof purpose set to
-  capabilityInvocation. This must be an invocation of the capability to update
+  capabilityInvocation. This MUST be an invocation of the capability to update
   the DID document of the DID being resolved. The root capability to update a
   specific **did:btcr2** identifier's DID document is derived following
   [Algo 12. Derive Root Capability] from **did:btcr2** identifier. While the
@@ -714,35 +714,35 @@ A ::BTCR2 Update:: must contain the following:
   delegation, this specification does not define how such delegation might work.
 * patch: A [JSON patch](https://datatracker.ietf.org/doc/html/rfc6902) object
   that defines a set of transformations to be applied to a DID document. The
-  result of applying the patch must be a conformant DID document according to
-  the DID core v1.1 specification.
+  result of applying the patch MUST be a conformant DID document according to
+  the [DID core v1.1](https://www.w3.org/TR/did-1.1/) specification.
 * targetVersionId: The versionId of the DID document after the patch has been
-  applied. The patch must be applied to the DID document with a versionId that
+  applied. The patch MUST be applied to the DID document with a versionId that
   is one less than the targetVersionId. If the ::Contemporary DID Document:: is equal to
-  or less than the targetVersionId, then the ::Unsecured BTCR2 Update:: must be
+  or less than the targetVersionId, then the ::Unsecured BTCR2 Update:: MUST be
   the same as the previously applied ::BTCR2 Update::. If the targetVersionId is
   greater than one plus the Contemporary DID Document’s versionId, then a
-  LATE_PUBLISHING error must be raised.
+  LATE_PUBLISHING error MUST be raised.
 * sourceHash: A base64 encoded SHA256 hash of the canonicalized DID document
-  that the patch must be applied to. The DID document must be canonicalized
+  that the patch MUST be applied to. The DID document MUST be canonicalized
   using the JSON Canonicalization Scheme (JCS).
 * targetHash: A base64 encoded SHA256 hash of the canonicalized DID document
-  that results from applying the patch to the source document. The DID document
-  must be canonicalized using the JSON Canonicalization Scheme (JCS).
+  that MUST result from applying the patch to the source document. The DID document
+  MUST be canonicalized using the JSON Canonicalization Scheme (JCS).
 
 #### Algo 14. Construct Resolution Result {.tabbed .unnumbered}
 
 A DID Resolution Result is an object defined according to the [DID Resolution
 v1.0](https://w3c.github.io/did-resolution/#did-resolution-result)
-specification. The DID document metadata in the resolution response must specify
+specification. The DID document metadata in the resolution response MUST specify
 the following information about the returned DID document:
 
 * The versionId of the returned DID document
 * The number of confirmations that the first Beacon Signal that announced the
 * ::BTCR2 Update:: that produced the returned DID Document.
 
-DID Resolvers may also support clients that request a verbose response to their
-resolution request. This response should contain the history of the DID
+DID Resolvers MAY also support clients that request a verbose response to their
+resolution request. This response SHOULD contain the history of the DID
 document, its ::BTCR2 Updates:: and the transaction identifiers of the ::Beacon
 Signals:: that announced these updates on the Bitcoin blockchain.
 
