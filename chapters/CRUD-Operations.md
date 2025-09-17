@@ -228,7 +228,7 @@ this document according to [Algo 7. Verify Genesis Document].
 
 Second, iterate through ::Beacon Signals:: posted to the Bitcoin blockchain
 using [Algo 8. Process Beacon Signals] processing them according to their
-::Beacon Type::. Processing Beacon Signals retrieves the announced ::BTCR2
+::Beacon Type::. Processing ::Beacon Signals:: retrieves the announced ::BTCR2
 Update:: for the DID being resolved. The algorithms for processing ::Beacon
 Signals:: according to their ::Beacon Types:: are as follows: for ::Singleton
 Beacons:: use [Algo 9. Process Singleton Beacon Signal];  for ::Map Beacons::
@@ -313,7 +313,7 @@ following fields must be used to execute the request:
   request. If there is a DID document with this versionId, it MUST be returned
   in the resolution result.
 * versionTime: A UTC timestamp that is targeted by the resolution request. The
-  resolve MUST return the contemporary DID document at this time as determined
+  resolve MUST return the Contemporary DID Document at this time as determined
   by the Bitcoin block time.
 * verbose: A boolean value. This client is requesting additional detail as to 
   how the resolution result was constructed.
@@ -528,7 +528,7 @@ Beacon:: to retrieve and validate the ::BTCR2 update:: announced by this signal.
 For signals from Singleton Beacons, the ::Signal Bytes:: are the SHA256 of a
 canonicalized ::BTCR2 Update::. The BTCR2 update committed to by the Signal
 Bytes must be retrieved, canonicalized using JCS, and then hashed. The resulting
-hash bytes must equal the Signal Bytes.
+hash bytes must equal the ::Signal Bytes::.
 
 A BTCR2 Update may be retrieved from ::Sidecar Data::, or through querying a
 ::CAS::. If querying a ::CAS::, the ::Signal Bytes:: must be transformed into a
@@ -671,8 +671,8 @@ JSON containing the following fields:
 * btcr2 identifiercontroller: The DID
 
 Note: The controller of this capability is the DID, which resolves to a DID
-document. When verifying a BTCR2 update is an invocation of this capability, the
-controller resolves to the contemporary DID document. That is the DID document
+document. When verifying a BTCR2 Update is an invocation of this capability, the
+controller resolves to the Contemporary DID document. That is the DID document
 that was current when the capability was invoked.
 
 ##### Hide {.unnumbered .unlisted}
