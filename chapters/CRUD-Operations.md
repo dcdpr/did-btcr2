@@ -457,18 +457,18 @@ The steps are as follows:
 
 This algorithm uses the ::Genesis Bytes:: encoded into an external **did:btcr2**
 identifier to retrieve and verify the ::Genesis Document::. This document is
-then transformed into the ::Initial DID Document::, which must be validated as a
-conformant DID document according to the DID core v1.1 specification.
+then transformed into the ::Initial DID Document::, which MUST be validated as a
+conformant DID document according to the [DID core v1.1](https://www.w3.org/TR/did-1.1/) specification.
 
-The ::Genesis Document:: may be retrieved either from the ::Sidecar Data::
-provided in the DID resolution options or from a ::Content Addressable Storage::
-(CAS) such as IPFS. If retrieving from ::CAS::, the ::Genesis Bytes:: must be
-transformed into a ::content identifier:: according to the CID v1.0
+The ::Genesis Document:: MAY be retrieved either from the ::Sidecar Data::
+provided in the DID resolution options or from ::Content Addressable Storage::
+(CAS) such as IPFS. If retrieving from ::CAS::, the ::Genesis Bytes:: MUST be
+transformed into a ::Content Identifier:: according to the CID v1.0
 specification.
 
-If the ::Genesis Document:: cannot be retrieved, it results in a FILE_NOT_FOUND error.
-If the ::Initial DID Document:: is not conformant, then it results in an
-INVALID_DID error.
+If the ::Genesis Document:: cannot be retrieved, the algorithm MUST result in a FILE_NOT_FOUND error.
+If the ::Initial DID Document:: is not conformant, then the algorithm MUST result in an
+INVALID_DID_DOCUMENT error.
 
 #### Algo 7. Verify Genesis Document {.tabbed .unnumbered}
 
