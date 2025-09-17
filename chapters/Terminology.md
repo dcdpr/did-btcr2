@@ -432,3 +432,10 @@ Genesis Document
 
 : An intermediate representation of an ::Initial DID Document:: with the
   identifier set to the placeholder value.
+
+Contemporary DID Document
+
+: The DID document that is contemporary with a Bitcoin block at a specific blockheight.
+The Contemporary DID Document changes as a resolver traverses the blockchain and applies 
+the relevant ::BTCR2 Updates:: announced by ::Authorized Beacon Signals:: it identifies in 
+specific Bitcoin blocks.
