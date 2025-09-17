@@ -562,18 +562,18 @@ retrieve and validate the ::Beacon Announcement Map:: committed to by the
 signal. That map is then used to retrieve and validate a ::BTCR2 Update:: using
 the SHA256 hash of the specific identifier being resolved as the key.
 
-The ::Signal Bytes:: must be retrieved from the last transaction output of the
-Beacon Signal. These bytes must then be used to retrieve and validate the Beacon
-Announcement Map. A ::BTCR2 Update Announcement:: must be retrieved from the map
+The ::Signal Bytes:: MUST be retrieved from the last transaction output of the
+Beacon Signal. These bytes MUST then be used to retrieve and validate the Beacon
+Announcement Map. A ::BTCR2 Update Announcement:: MUST be retrieved from the map
 document using the hex encoded SHA256 hash of the identifier being resolved as
-the key. There may be no announcement for the identifier. The announcement is a
-32-byte hash of the ::BTCR2 Update::, this must be used to retrieve and validate
-the ::BTCR2 Update::.
+the key. There MAY be no announcement for the identifier. The announcement is a
+32-byte hash of the ::BTCR2 Update::, this MUST be used to retrieve and validate
+the ::BTCR2 Update:: announced.
 
-Retrieval of the Beacon Announcement Map and ::BTCR2 Update:: documents may be
+Retrieval of the ::Beacon Announcement Map:: and ::BTCR2 Update:: documents MAY be
 done through querying either ::Sidecar Data:: or a ::CAS::. If querying a
-::CAS::, the 32-byte hashes must be transformed into a CID following the IPFS
-CID v1 specification.
+::CAS::, the 32-byte hashes MUST be transformed into a CID following the IPFS
+CID v1 specification. Inability to retrieve either of these files MUST raise a MISSING_UPDATE_DATA error.
 
 ##### Hide {.unnumbered .unlisted}
 
