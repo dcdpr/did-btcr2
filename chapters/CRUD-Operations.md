@@ -36,6 +36,14 @@ The ::Genesis Bytes:: is a 33-byte compressed representation of a
 defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-v2.pdf)
 (SEC encoding).
 
+##### Hide {.unnumbered .unlisted}
+
+##### Examples {.unnumbered .unlisted}
+
+[[Example]{.example-number-after} - The Genesis Bytes of a SEC encoded secp256k1 public key]{.example-caption}
+
+`b"\x03\x193\xf6\xbe\xb1\xbf\x10[\xd0\xaf\x9c\x18wE\xf3\x82\x89d\x03\xe1\x16\xe4\xd1\xf3\x05'\x93k\xe5\x96\xe0\x01"`
+
 #### Algo 2: Create Genesis Bytes from Genesis Document {.tabbed .unnumbered}
 
 The ::Genesis Bytes:: is a 32-byte [SHA256](https://datatracker.ietf.org/doc/html/rfc6234)
@@ -82,6 +90,19 @@ The steps are as follows:
    the JSON Canonicalization Scheme.
 2. Set `genesisBytes` to the SHA256 hash of the `canonicalizedDocument`.
 3. Return `genesisBytes`.
+
+
+##### Examples {.unnumbered .unlisted}
+
+[[Example]{.example-number-after} - A Genesis Document]{.example-caption}
+
+
+```{.json include="json/CRUD-Operations/genesis-document.json"}
+```
+
+[[Example]{.example-number-after} - The Genesis Bytes for the above Genesis Document]{.example-caption}
+
+`b'\xe4\xedJwv\t\xca;\xbc\xa9\x9f\x80\xb9\x82\xf5q\x14\x1dX\x8f;\x9b\x80=O\xbe$\xa3st\x1b\xe8'`
 
 #### Algo 3: Encode Identifier {.tabbed .unnumbered}
 
@@ -189,6 +210,16 @@ Encode the **did:btcr2** identifier as follows:
     retrieving `encodedString`.
 16. Append `encodedString` to `identifier`.
 17. Return `identifier`.
+
+##### Examples {.unnumbered .unlisted}
+
+[[Example]{.example-number-after} - A did:btc2 identifier derived from a secp256k1 public key that anchors updates to the Bitcoin mainnet]{.example-caption}
+
+`did:btcr2:k1qqp3jvlkh6cm7yzm6zhecxrhghec9ztyq0s3dex37vzj0ymtuktwqqg4vlfh3`
+
+[[Example]{.example-number-after} - A did:btc2 identifier derived from a Genesis Document that anchors updates to the Bitcoin mutinynet]{.example-caption}
+
+`did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`
 
 ### Read
 
