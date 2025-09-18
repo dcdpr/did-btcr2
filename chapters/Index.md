@@ -208,6 +208,13 @@ BTCR2 Update Announcements
 
 : ::BTCR2 Update Announcement::
 
+Contemporary DID Document
+
+: The DID document that is contemporary with a Bitcoin block at a specific blockheight.
+The Contemporary DID Document changes as a resolver traverses the blockchain and applies 
+the relevant ::BTCR2 Updates:: announced by ::Authorized Beacon Signals:: it identifies in 
+specific Bitcoin blocks.
+
 Content Addressable Storage
 
 : Content Addressable Storage (CAS) is a data storage system where content is addressable using ::Content Identifiers:: (CIDs). The InterPlanetary File System (IPFS) is an example of CAS.
@@ -236,6 +243,17 @@ Contemporary Blockheight
 
 : The blockheight of consideration when walking the provenance of a series of DID updates. A DID document's contemporary time is the Signal Time of the ::Beacon Signal:: that announced the last ::BTCR2 Update:: applied to the DID document.
 
+Genesis Bytes
+
+: The bytes used to generate a did:btcr2 identifier. These bytes are either a
+  33-byte compressed SEC encoded sec256k1 public key or a 32 byte SHA256 hash of
+  a ::Genesis Document::.
+
+Genesis Document
+
+: An intermediate representation of an ::Initial DID Document:: with the
+  identifier set to the placeholder value.
+
 Initial DID Document
 
 : The canonical, conformant version 1 of a DID document for a specific **did:btcr2** identifier.
@@ -246,7 +264,7 @@ Initial DID Documents
 
 Intermediate DID Document
 
-: A representation of a DID document that it not yet fully conformant with the DID Core specification. Intermediate DID documents for the **did:btcr2** DID method are DID documents whose identifier values have been replaced with a placeholder value.
+: A representation of a DID document that it not yet fully conformant with the DID Core specification. Intermediate DID Documents for the **did:btcr2** DID method are DID documents whose identifier values have been replaced with a placeholder value.
 
 Intermediate DID Documents
 
