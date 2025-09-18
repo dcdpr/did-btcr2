@@ -770,6 +770,49 @@ A ::BTCR2 Update:: is a JSON document that MUST contain the following properties
 
 ##### Hide {.unnumbered .unlisted}
 
+##### Imperative Algorithm {.unnumbered .unlisted}
+
+This algorithm defines how to verify a ::BTCR2 Update:: and apply it to a ::Contemporary DID Document::. 
+This should only be called if the targetVersionId of the update is one more than the versionId 
+of the Contemporary DID Document.
+
+* `contemporaryDIDDocument` \- the DID document for the did:btcr2 identifier being resolved that is contemporary 
+with the blockheight that contained the Beacon Signal that announced the update. A DID Core conformant DID document; REQUIRED; object.  
+* `update` \- the [BTCR2 Update](https://dcdpr.github.io/did-btcr2/#def-btcr2-update) to apply to the `contemporaryDIDDocument`; REQUIRED; object.
+
+It returns the following output:
+
+* `targetDIDDocument` \- The DID document that results from applying the JSON Patch transformations contained within the BTCR2 Update; object.
+
+The steps are as follows:
+
+1. Set `sourceHash` to the result of JCS canonicalizing `contemporaryDIDDocument` and then SHA256 hashing the result.  
+2. Check that `sourceHash` equals the base64 decoded `update.sourceHash`, else raise an `INVALID_DID_UPDATE` error. 
+3. Set `rootCapability` to the result of calling [Algo 12. Derive Root Capability], passing in the did:btcr2 identifier being resolved.
+4. Set `proofCapabilityId` to `update.proof.capability`.  
+5. If `rootCapability.id` does not equal `update.proof.capability`, raise an `INVALID_DID_UPDATE` error.
+6. If `rootCapability.invocationTarget` does not equal `update.proof.invocationTarget` raise an `INVALID_DID_UPDATE` error.  
+7. Retrieve the `verificationMethod` referenced by the `update.proof.verificationMethod` field from the `contemporaryDIDDocument`. 
+If no `verificationMethod` is found then raise an `INVALID_DID_UPDATE` error.
+8. Check that the `verificationMethod` is authorized for the `capabilityInvocation` verification relationship in the `contemporaryDIDDocument`.
+If not raise an `INVALID_DID_UPDATE` error.
+9. Instantiate a [`bip340-jcs-2025` cryptosuite](https://dcdpr.github.io/data-integrity-schnorr-secp256k1/#instantiate-cryptosuite) i
+nstance using the key defined by the `verificationMethod`.
+10. Set `expectedProofPurpose` to “capabilityInvocation”.  
+11. Set `mediaType` to “application/ld+json”.  
+12. Set `documentBytes` to the bytes representation of `update`.  
+13. Set `verificationResult` to the result of passing `mediaType`, `documentBytes`, `cryptosuite`, 
+and `expectedProofPurpose` into the [Verify Proof algorithm](https://w3c.github.io/vc-data-integrity/#verify-proof) 
+defined in the Verifiable Credentials (VC) Data Integrity specification.  
+14. If `verificationResult.verified` equals False, raise an `INVALID_DID_UPDATE` exception.  
+15. Set `targetDIDDocument` to a copy of `contemporaryDIDDocument`.  
+16. Use JSON Patch to apply the `update.patch` to the `targetDIDDOcument`.  
+17. Verify that `targetDIDDocument` is conformant with the data model specified by the DID Core specification.  
+18. Set `targetHash` to the result of JCS canonicalizing `targetDIDDocument` and the SHA256 hashing the result.  
+19. Check that `targetHash` equals the base64 decoded `update.targetHash`, else raise an `INVALID_DID_UPDATE` error.  
+20. Return `targetDIDDocument`.
+
+
 ##### Examples {.unnumbered .unlisted}
 
 [[Example]{.example-number-after} - The BTCR2 Update to apply to the version 1 DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
