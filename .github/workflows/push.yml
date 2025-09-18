@@ -1,9 +1,7 @@
-name: Push to main
+name: Push to any branch
 
 on:
-  push:
-    branches:
-      - main
+  push
 
 permissions:
   id-token: write
@@ -19,3 +17,4 @@ jobs:
         with:
           include-repository: true
           include-pages: true
+          include-branches: true
