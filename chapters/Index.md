@@ -45,8 +45,8 @@ Jintek           <info@jintek.consulting>
 
 ::: {.unformattedTable}
 ------------------------- ---------------------------------------------------
-Specification Repository  https://github.com/dcdpr/did-btcr2
-Issues                    https://github.com/dcdpr/did-btcr2/issues
+Specification Repository  <https://github.com/dcdpr/did-btcr2>
+Issues                    <https://github.com/dcdpr/did-btcr2/issues>
 ------------------------- ---------------------------------------------------
 :::
 
