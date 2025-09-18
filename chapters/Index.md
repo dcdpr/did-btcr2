@@ -1,5 +1,6 @@
-lang: en ...
-
+---
+lang: en
+...
 # did:btcr2 DID Method Specification
 
 ## did:btcr2 DID Method Specification {.unnumbered .unlisted}
