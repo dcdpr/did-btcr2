@@ -634,7 +634,7 @@ defined in the [Standards for Efficient Cryptography](https://www.secg.org/sec1-
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - The Genesis Bytes of a SEC encoded secp256k1 public key]{.example-caption}
+[**Example 1.1** - The Genesis Bytes of a SEC encoded secp256k1 public key]{.example-caption}
 
 `b"\x03\x193\xf6\xbe\xb1\xbf\x10[\xd0\xaf\x9c\x18wE\xf3\x82\x89d\x03\xe1\x16\xe4\xd1\xf3\x05'\x93k\xe5\x96\xe0\x01"`
 
@@ -687,12 +687,12 @@ The steps are as follows:
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - A Genesis Document]{.example-caption}
+[**Example 2.1** - A Genesis Document]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/genesis-document.json"}
 ```
 
-[[Example]{.example-number-after} - The Genesis Bytes for the above Genesis Document]{.example-caption}
+[**Example 2.2** - The Genesis Bytes for the above Genesis Document]{.example-caption}
 
 `b'\xe4\xedJwv\t\xca;\xbc\xa9\x9f\x80\xb9\x82\xf5q\x14\x1dX\x8f;\x9b\x80=O\xbe$\xa3st\x1b\xe8'`
 
@@ -805,11 +805,11 @@ Encode the **did:btcr2** identifier as follows:
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - A did:btc2 identifier derived from a secp256k1 public key that anchors updates to the Bitcoin mainnet]{.example-caption}
+[**Example 3.1** - A did:btc2 identifier derived from a secp256k1 public key that anchors updates to the Bitcoin mainnet]{.example-caption}
 
 `did:btcr2:k1qqp3jvlkh6cm7yzm6zhecxrhghec9ztyq0s3dex37vzj0ymtuktwqqg4vlfh3`
 
-[[Example]{.example-number-after} - A did:btc2 identifier derived from a Genesis Document that anchors updates to the Bitcoin mutinynet]{.example-caption}
+[**Example 3.2** - A did:btc2 identifier derived from a Genesis Document that anchors updates to the Bitcoin mutinynet]{.example-caption}
 
 `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`
 
@@ -977,12 +977,12 @@ The imperative algorithm to parse a did:btcr2 `identifier` into its components p
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - The result of parsing `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+[**Example 4.1** - The result of parsing `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/identifier-components.json"}
 ```
 
-[[Example]{.example-number-after} - The resolution options for resolving `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54` to version 1]{.example-caption}
+[**Example 4.2** - The resolution options for resolving `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54` to version 1]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/resolution-options.json"}
 ```
@@ -1072,7 +1072,7 @@ The steps are as follows:
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - The Initial DID Document for `did:btcr2:k1qqp3jvlkh6cm7yzm6zhecxrhghec9ztyq0s3dex37vzj0ymtuktwqqg4vlfh3`]{.example-caption}
+[**Example 5.1** - The Initial DID Document for `did:btcr2:k1qqp3jvlkh6cm7yzm6zhecxrhghec9ztyq0s3dex37vzj0ymtuktwqqg4vlfh3`]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/k1-initial-did-document.json"}
 ```
@@ -1114,7 +1114,7 @@ the algorithm MUST result in an INVALID_DID_DOCUMENT error.
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - The Initial DID Document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+[**Example 7.1** - The Initial DID Document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/x1-initial-did-document.json"}
 ```
@@ -1188,15 +1188,15 @@ NOTE. The act of retrieving from `sidecarDocumentsMap` or [CAS](https://dcdpr.gi
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - A hex encoded Beacon Signal from a Singleton Beacon announcing an update to `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+[**Example 9.1** - A hex encoded Beacon Signal from a Singleton Beacon announcing an update to `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
 
 `0100000000010175b62c3943aa4c696e4d95a6dd552b39cf7e98129501b2f285782f00ca59da400000000000ffffffff02a08c0000000000001600145ee17e005920fd86de8b54ffab2630f452d24c320000000000000000226a2056396c9fd0d1bc02ec630744bbb3796fa806b036c70b2faa07b63eab506e234102483045022100d574679ef541e07cea27efb4c6527825ffcbd70481ad0ef18e54ce40dfa234b4022027eb9dbc3f0e0c8daa10fdab70586550744c874fa2ebd01d3e13d1b39b61d86601210324ee967d8495aec7e15ad5509db305f8c84792452d8ba5cb5eb0f3ea12aeb9fb00000000`
 
-[[Example]{.example-number-after} - The Signal Bytes in the above Singleton Beacon. A SHA256 hash of a canonicalized BTCR2 Update.]{.example-caption}
+[**Example 9.2** - The Signal Bytes in the above Singleton Beacon. A SHA256 hash of a canonicalized BTCR2 Update.]{.example-caption}
 
 `b'V9l\x9f\xd0\xd1\xbc\x02\xecc\x07D\xbb\xb3yo\xa8\x06\xb06\xc7\x0b/\xaa\x07\xb6>\xabPn#A'`
 
-[[Example]{.example-number-after} - The BTCR2 Update announced by the Beacon Signal]{.example-caption}
+[**Example 9.3** - The BTCR2 Update announced by the Beacon Signal]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/btcr2-update.json"}
 ```
@@ -1339,7 +1339,7 @@ object.
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - The root capability to update the DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+[**Example 12.1** - The root capability to update the DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/root-capability.json"}
 ```
@@ -1427,12 +1427,12 @@ defined in the Verifiable Credentials (VC) Data Integrity specification.
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - The BTCR2 Update to apply to the version 1 DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+[**Example 13.1** - The BTCR2 Update to apply to the version 1 DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/btcr2-update.json"}
 ```
 
-[[Example]{.example-number-after} - The version 2 DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54` after the update has been applied]{.example-caption}
+[**Example 13.2** - The version 2 DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54` after the update has been applied]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/v2-did-document.json"}
 ```
@@ -1518,7 +1518,7 @@ encoded Bitcoin address. This address SHOULD be under the sole control of the DI
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - A Singleton Beacon Service]{.example-caption}
+[**Example 15.1** - A Singleton Beacon Service]{.example-caption}
 
 ```{.json include="json/Beacons/SingletonBeacon-service.json"}
 ```
@@ -1571,12 +1571,12 @@ This MUST match the type of the BTCR2 Beacon as specified by the Beacon Aggregat
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - A Map Beacon Service]{.example-caption}
+[**Example 16.1** - A Map Beacon Service]{.example-caption}
 
 ```{.json include="json/Beacons/MapBeacon-service.json"}
 ```
 
-[[Example]{.example-number-after} - An SMT Beacon Service]{.example-caption}
+[**Example 16.2** - An SMT Beacon Service]{.example-caption}
 
 ```{.json include="json/Beacons/SMTBeacon-service.json"}
 ```
@@ -1650,7 +1650,7 @@ algorithm from VC Data Integrity passing `unsecuredBTCR2Update` as the input doc
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - A BTCR2 Update that adds a new verification method and
+[**Example 17.1** - A BTCR2 Update that adds a new verification method and
 authorizing it for the authentication verification relationship to an Initial DID Document]{.example-caption}
 
 ```{.json include="json/CRUD-Operations/btcr2-update.json"}
@@ -1676,7 +1676,7 @@ within the Bitcoin blockchain.
 
 ##### Examples {.unnumbered .unlisted}
 
-[[Example]{.example-number-after} - A hex encoded signed Beacon Signal from a Singleton Beacon]{.example-caption}
+[**Example 18.1** - A hex encoded signed Beacon Signal from a Singleton Beacon]{.example-caption}
 
 `0100000000010175b62c3943aa4c696e4d95a6dd552b39cf7e98129501b2f285782f00ca59da400000000000ffffffff02a08c0000000000001600145ee17e005920fd86de8b54ffab2630f452d24c320000000000000000226a205eb68e519c150ec8df198ed9718d342fe23c17789e86eaa78ad1ede073f082d102483045022100909b73a6545c69333143c176b22486bc165fa2e36092b307787db103cce5a4e90220707f5f127ebe98304db415ae9ccbdaa997f13c226421c927471df979fa8f1e6b01210324ee967d8495aec7e15ad5509db305f8c84792452d8ba5cb5eb0f3ea12aeb9fb00000000`
 
