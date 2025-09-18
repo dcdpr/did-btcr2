@@ -352,6 +352,19 @@ The imperative algorithm to parse a did:btcr2 `identifier` into its components p
 19. If `idType` is “key” and `genesisBytes` is not a valid compressed secp256k1 public key, raise `INVALID_DID` error.  
 20. Return `idType`, `version`, `network`, and `genesisBytes`.
 
+##### Examples {.unnumbered .unlisted}
+
+[[Example]{.example-number-after} - The result of parsing `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+
+```{.json include="json/CRUD-Operations/identifier-components.json"}
+```
+
+[[Example]{.example-number-after} - The resolution options for resolving `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54` to version 1]{.example-caption}
+
+```{.json include="json/CRUD-Operations/resolution-options.json"}
+```
+
+
 
 #### Algo 5. Deterministically Generate Initial DID Document {.tabbed .unnumbered}
 
@@ -436,6 +449,14 @@ The steps are as follows:
 28. Set the `initialDocument.services` property to `services`  
 29. Return `initialDocument`.
 
+##### Examples {.unnumbered .unlisted}
+
+[[Example]{.example-number-after} - The Initial DID Document for `did:btcr2:k1qqp3jvlkh6cm7yzm6zhecxrhghec9ztyq0s3dex37vzj0ymtuktwqqg4vlfh3`]{.example-caption}
+
+```{.json include="json/CRUD-Operations/k1-initial-did-document.json"}
+```
+
+
 #### Algo 6. Retrieve Genesis Document {.tabbed .unnumbered}
 
 This algorithm uses the ::Genesis Bytes:: encoded into an external **did:btcr2**
@@ -468,6 +489,16 @@ To check that it is conformant, transform the ::Genesis Document:: into the
 identifier being resolved. The transformed document MUST be a conformant DID
 document according to the [DID core v1.1](https://www.w3.org/TR/did-1.1/) specification. If it is not, 
 the algorithm MUST result in an INVALID_DID_DOCUMENT error.
+
+##### Hide {.unnumbered .unlisted}
+
+##### Examples {.unnumbered .unlisted}
+
+[[Example]{.example-number-after} - The Initial DID Document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+
+```{.json include="json/CRUD-Operations/x1-initial-did-document.json"}
+```
+
 
 
 #### Algo 8. Process Beacon Signals {.tabbed .unnumbered}
@@ -537,6 +568,20 @@ The algorithm to process the signal bytes is as follows:
 
 NOTE. The act of retrieving from `sidecarDocumentsMap` or [CAS](https://dcdpr.github.io/did-btc1/#def-content-addressable-storage) validates the document hash.
 
+##### Examples {.unnumbered .unlisted}
+
+[[Example]{.example-number-after} - A hex encoded Beacon Signal from a Singleton Beacon announcing an update to `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+
+`0100000000010175b62c3943aa4c696e4d95a6dd552b39cf7e98129501b2f285782f00ca59da400000000000ffffffff02a08c0000000000001600145ee17e005920fd86de8b54ffab2630f452d24c320000000000000000226a2056396c9fd0d1bc02ec630744bbb3796fa806b036c70b2faa07b63eab506e234102483045022100d574679ef541e07cea27efb4c6527825ffcbd70481ad0ef18e54ce40dfa234b4022027eb9dbc3f0e0c8daa10fdab70586550744c874fa2ebd01d3e13d1b39b61d86601210324ee967d8495aec7e15ad5509db305f8c84792452d8ba5cb5eb0f3ea12aeb9fb00000000`
+
+[[Example]{.example-number-after} - The Signal Bytes in the above Singleton Beacon. A SHA256 hash of a canonicalized BTCR2 Update.]{.example-caption}
+
+`b'V9l\x9f\xd0\xd1\xbc\x02\xecc\x07D\xbb\xb3yo\xa8\x06\xb06\xc7\x0b/\xaa\x07\xb6>\xabPn#A'`
+
+[[Example]{.example-number-after} - The BTCR2 Update announced by the Beacon Signal]{.example-caption}
+
+```{.json include="json/CRUD-Operations/btcr2-update.json"}
+```
 
 #### Algo 10. Process Map Beacon Signal {.tabbed .unnumbered}
 
@@ -676,6 +721,16 @@ object.
 6. Set `rootCapability.invocationTarget` to `identifier`.
 7. Return `rootCapability`.
 
+##### Examples {.unnumbered .unlisted}
+
+
+[[Example]{.example-number-after} - The root capability to update the DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+
+```{.json include="json/CRUD-Operations/root-capability.json"}
+```
+
+
+
 #### Algo 13. Apply BTCR2 Update {.tabbed .unnumbered}
 
 This algorithm takes a ::BTCR2 Update::, attempts to verify it and then applies
@@ -712,6 +767,23 @@ A ::BTCR2 Update:: is a JSON document that MUST contain the following properties
 * targetHash: A base64 encoded SHA256 hash of the canonicalized DID document
   that MUST result from applying the patch to the source document. The DID document
   MUST be canonicalized using the JSON Canonicalization Scheme (JCS).
+
+##### Hide {.unnumbered .unlisted}
+
+##### Examples {.unnumbered .unlisted}
+
+[[Example]{.example-number-after} - The BTCR2 Update to apply to the version 1 DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`]{.example-caption}
+
+```{.json include="json/CRUD-Operations/btcr2-update.json"}
+```
+
+
+[[Example]{.example-number-after} - The version 2 DID document for `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54` after the update has been applied]{.example-caption}
+
+```{.json include="json/CRUD-Operations/v2-did-document.json"}
+```
+
+
 
 #### Algo 14. Construct Resolution Result {.tabbed .unnumbered}
 
