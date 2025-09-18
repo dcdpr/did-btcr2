@@ -1250,7 +1250,7 @@ NOTE. The act of retrieving from `sidecarDocumentsMap` or
 
 #### Algo 11. Process SMT Beacon Signal {.tabbed .unnumbered}
 
-This algorithm processes a ::Beacon Signal:: broadcast from a ::SMT Beacon:: to
+This algorithm processes a ::Beacon Signal:: broadcast from an ::SMT Beacon:: to
 retrieve and validate a ::BTCR2 Update:: for a specific DID being resolved.
 
 The ::Signal Bytes:: MUST be retrieved from the last transaction output of the
@@ -1261,7 +1261,7 @@ SMT indexed by the SHA256 hash of the DID being resolved.
 The contents of this leaf either contains the double SHA256 hash of a nonce, or
 it contains the SHA256 hash of the concatenation of the SHA256 hashes of a nonce
 and ::BTCR2 Update::. The ::BTCR2 Update:: and nonce values MUST be retrieved
-from ::Sidecar Data:: along with a ::SMT:: proof path that demonstrates the indexed leaf
+from ::Sidecar Data:: along with an ::SMT:: proof path that demonstrates the indexed leaf
 commits to the provided content. Inability to retrieve either of this data MUST raise a
 MISSING_UPDATE_DATA error.
 
@@ -1272,7 +1272,7 @@ MISSING_UPDATE_DATA error.
 Given:
 
 * `identifier`: The did:btcr2 identifier being resolved
-* `signalBytes`: 32 Signal Bytes from a SMT Beacon Signal  
+* `signalBytes`: 32 Signal Bytes from an SMT Beacon Signal  
 * `sidecarDocumentsMap`: A map of documents provided through Sidecar Data keyed
 by the SHA256 hash of these documents. This map should be constructed by the resolver.  
 * `smtProofsMap`: A map of SMT proof paths keyed by the SMT root of the sparse merkle
@@ -1576,7 +1576,7 @@ This MUST match the type of the BTCR2 Beacon as specified by the Beacon Aggregat
 ```{.json include="json/Beacons/MapBeacon-service.json"}
 ```
 
-[[Example]{.example-number-after} - A SMT Beacon Service]{.example-caption}
+[[Example]{.example-number-after} - An SMT Beacon Service]{.example-caption}
 
 ```{.json include="json/Beacons/SMTBeacon-service.json"}
 ```
@@ -1701,7 +1701,7 @@ Beacon Participant as part of joining the ::Beacon Cohort::.
 * For each index included within the Beacon Signal, the value of the update MUST be provided.
 The calculation of the value varies by ::Beacon Type::.
   * For a ::Map Beacon:: the value is the SHA256 hash of the ::BTCR2 Update:: canonicalized using JCS.
-  * For a ::SMT Beacon:: the value is either the double SHA256 hash of a random nonce if no
+  * For an ::SMT Beacon:: the value is either the double SHA256 hash of a random nonce if no
   update is present for the index or the SHA256 hash of the concatenated SHA256 hash of a
   random nonce and the canonicalized BTCR2 Update. Participants MUST persist their nonce values.
   * Participants of ::SMT Beacons:: MUST provide an update for all indexes they registered
