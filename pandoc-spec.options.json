@@ -4,19 +4,7 @@
   "autoDate": true,
   "inputDirectory": "chapters",
   "inputFiles": [
-    "Index.md",
-    "Introduction-and-Motivation.md",
-    "Conformance.md",
-    "Terminology.md",
-    "Syntax.md",
-    "File-Sharing.md",
-    "Beacons.md",
-    "CRUD-Operations.md",
-    "Security-Considerations.md",
-    "Privacy-Considerations.md",
-    "References.md",
-    "Appendix.md",
-    "Appendix-SMT.md"
+    "Index.md"
   ],
   "cssFiles": [
     "index.css"
