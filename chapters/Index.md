@@ -1823,7 +1823,7 @@ An ::Aggregate Beacon:: Address SHOULD be an n-of-n Pay-to-Taproot (P2TR) addres
 
 #### Key Compromise
 
-In **did:btcr2**, cryptographic keys authorize both DID updates and ::Beacon Signals::. Should these keys get compromised without the DID controller's knowledge, it would be possible for an adversary to take control of a DID by submitting a ::DID Update Payload:: to a ::BTCR2 Beacon:: that replaces key material and ::BTCR2 Beacons:: in the DID document for ones under the adversary's control. Such an attack would be detectable by the DID controller, as they would see a valid spend from a ::BTCR2 Beacon:: that they did not authorize. Additionally, if the DID relied on ::Sidecar Data::, without access to this data the DID would be useless to the adversary as they would be unable to demonstrate a valid complete history of the DID during resolution.
+In **did:btcr2**, cryptographic keys authorize both DID updates and ::Beacon Signals::. Should these keys get compromised without the DID controller's knowledge, it would be possible for an adversary to take control of a DID by submitting a ::BTCR2 Update:: to a ::BTCR2 Beacon:: that replaces key material and ::BTCR2 Beacons:: in the DID document for ones under the adversary's control. Such an attack would be detectable by the DID controller, as they would see a valid spend from a ::BTCR2 Beacon:: that they did not authorize. Additionally, if the DID relied on ::Sidecar Data::, without access to this data the DID would be useless to the adversary as they would be unable to demonstrate a valid complete history of the DID during resolution.
 
 #### Cryptographic Compromise
 
@@ -1861,15 +1861,15 @@ In order to prevent consensus splits, **did:btcr2** needs a particularly good te
 
 ### Deployment Considerations
 
-#### Update Payloads Stored in Content Addressable Storage (CAS) Systems are Publicly Accessible
+#### BTCR2 Updates Stored in Content Addressable Storage (CAS) Systems are Publicly Accessible
 
 Update payloads stored in ::Content Addressable Storage:: (CAS) such as IPFS SHOULD be considered public. Anyone MAY retrieve this information (assuming they have the ::CID::) and use it to track the DID over time. IPFS node operators would have access to all content stored on IPFS and could choose to index certain data like ::BTCR2 Updates::, including the updates posted by that DID's ::BTCR2 Beacon::. This MAY advertise information about the DID that the controller wishes to remain private.
 
-Those parties most concerned about privacy SHOULD maintain their ::DID Update Payloads:: in a ::Sidecar:: manner and provide them to necessary parties during resolution. It is RECOMMENDED not to include any sensitive data other than the necessary DID update data.
+Those parties most concerned about privacy SHOULD maintain their ::BTCR2 Updates:: in a ::Sidecar:: manner and provide them to necessary parties during resolution. It is RECOMMENDED not to include any sensitive data other than the necessary DID update data.
 
 #### Beacon Coordinators Know the DIDs Being Aggregated by a Cohort
 
-Within ::Sparse Merkle Tree:: (SMT) ::BTCR2 Beacons::, the DID is used as a path to a leaf node in the ::SMT::. The coordinator MUST know these paths for them to be able to construct the tree and generate the correct proof paths. Within ::Content Identifier:: (CID)-based ::BTCR2 Beacons::, the coordinator MUST construct an aggregated bundle that includes all DIDs aggregated as a key to the ::CID:: for that ::DID's Update Payload::. This means that for both types of ::Aggregate Beacons::, the coordinator necessarily MUST know all DIDs being aggregated by a cohort.
+Within ::Sparse Merkle Tree:: (SMT) ::BTCR2 Beacons::, the DID is used as a path to a leaf node in the ::SMT::. The coordinator MUST know these paths for them to be able to construct the tree and generate the correct proof paths. Within ::Content Identifier:: (CID)-based ::BTCR2 Beacons::, the coordinator MUST construct an aggregated bundle that includes all DIDs aggregated as a key to the ::CID:: for that DID's ::BTCR2 Update::. This means that for both types of ::Aggregate Beacons::, the coordinator necessarily MUST know all DIDs being aggregated by a cohort.
 
 #### CIDAggregate Cohort Members Know All DIDs that are Updated
 
