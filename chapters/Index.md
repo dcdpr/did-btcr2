@@ -459,7 +459,7 @@ bech32char = "0" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9" / "a" / "c" /
 
 ABNF is defined by [Internet Engineering Task Force (IETF) RFC5234](https://datatracker.ietf.org/doc/html/rfc5234).
 
-For details on how to interpret a BTCR2 DID, see \[Resolve\].
+For details on how to interpret a BTCR2 DID, see [Resolve].
 
 ## Update Distribution
 
