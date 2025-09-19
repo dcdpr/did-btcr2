@@ -262,9 +262,6 @@ Initial DID Documents
 
 : ::Initial DID Document::
 
-Invocation
-
-: See [Authorization Capabilities for Linked Data v0.3](https://w3c-ccg.github.io/zcap-spec/#terminology)
 
 Late Publishing
 
