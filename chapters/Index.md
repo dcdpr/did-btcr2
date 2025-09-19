@@ -96,7 +96,7 @@ A conforming **did:btcr2** DID is any concrete expression of the rules specified
 
 A conforming **did:btcr2** DID document is any concrete expression of the data model described in this specification which complies with the relevant normative statements in DID core sections [4\. Data Model](http://w3.org/TR/did-1.1/#data-model) and [5\. Core Properties](https://www.w3.org/TR/did-1.1/#core-properties). A serialization format for the conforming document is deterministic, bi-directional, and lossless, as described in [6\. Representations](https://www.w3.org/TR/did-1.1/#representations).
 
-A conforming registrar is any algorithm realized as software and/or hardware that generates and updates conforming **did:btcr2** identifier or conforming DID Documents and complies with the relevant normative statements in [6\. Representations](https://www.w3.org/TR/did-1.1/#representations) of DID core and the \[Create\], \[Update\] and \[Deactivate\] sections of this specification.
+A conforming registrar is any algorithm realized as software and/or hardware that generates and updates conforming **did:btcr2** identifier or conforming DID Documents and complies with the relevant normative statements in [6\. Representations](https://www.w3.org/TR/did-1.1/#representations) of DID core and the [Create], [Update] and [Deactivate] sections of this specification.
 
 A conforming **did:btcr2** resolver is any algorithm realized as software and/or hardware that complies with the relevant normative statements in [4\. DID Resolution](https://www.w3.org/TR/did-resolution/#resolving) of the DID Resolution specification and the \[Read\] section of this specification.
 
