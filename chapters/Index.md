@@ -1879,13 +1879,6 @@ Cohort members participating in a CIDAggregate ::BTCR2 Beacon:: learn all DIDs t
 
 Although it might seem obvious, one of the side effects of using a DID is that a DID controller's relying party will see their DID Document. In addition, resolving a DID document requires making available to the resolver all prior DID document updates.
 
-## References
-
-[BIP-0173] "Base32 address format for native v0-16 witness outputs"  
-<https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki>
-
-[BIP-0350] "Bech32m format for v1+ witness addresses"  
-<https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki>  
 
 ## Appendix
 
