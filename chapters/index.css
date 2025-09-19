@@ -75,3 +75,23 @@ th, td {
     border: 0;
     padding: 0 .5em 0 0;
 }
+
+.algo-counter-reset {
+    counter-reset: algo-counter;
+}
+
+.content {
+    counter-reset: example-counter figure-counter table-counter algo-counter;
+}
+
+.content .algo-number-after, .content .algo-number-before {
+    counter-increment: algo-counter 1;
+}
+
+.content .algo-number-after::after {
+    content: " " counter(algo-counter);
+}
+
+.content .algo-number-before::before {
+    content: counter(algo-counter) ". ";
+}
