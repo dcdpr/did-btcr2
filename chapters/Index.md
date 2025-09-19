@@ -440,7 +440,7 @@ For details on how to interpret a BTCR2 DID, see [Resolve].
 
 When additional data is required for resolution, the controller has two primary means for getting that data to the Resolver, both secured by cryptographic hash. The first is using ::Sidecar::. The second is ::Content Addressable Storage:: (CAS). No matter, how the Resolver gets this data, all update data must be available to process resolution. We use cryptographic hashes to ensure that the data received by the Resolver is the data secured by a legitimate update.
 
-All files used for resolution are identified by their SHA256 cryptographic hash calculated according to the [JSON Canonicalization and Hash](https://www.rfc-editor.org/rfc/rfc8785) algorithm.
+All JSON documents used for resolution are identified by their SHA256 cryptographic hash by first canonicalizing the document according to the [JSON Canonicalization and Algorithm](https://www.rfc-editor.org/rfc/rfc8785) and the computing the SHA256 hash of the canonicalized document.
 
 As a resolver goes through the resolution process, it encounters one or more document hashes, which it uses to identify the files of interest.
 
