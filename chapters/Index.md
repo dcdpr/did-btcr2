@@ -381,9 +381,6 @@ SMT Proof
 : A set of SHA256 hashes for nodes in a ::Sparse Merkle Tree:: that together form a path from a leaf in the tree
 to the Merkle root, proving that the leaf is in the tree.
 
-Taproot
-
-: Taproot is an upgrade to the Bitcoin blockchain implemented in November 2021\. This upgrade enabled Bitcoin transactions to be secured using ::Schnorr Signatures:: through the introduction of a new address, a Taproot address.
 
 Target Time
 
