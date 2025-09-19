@@ -1815,7 +1815,7 @@ Invalidation attacks are where adversaries are able to publish ::Beacon Signals:
 
 #### Aggregate Beacon Address Verification
 
-An ::Aggregate Beacon:: Address SHOULD be an n-of-n Pay-to-Taproot (P2TR) address, with a cohort key contributed to the n by each of the cohort participants. DID controllers participating in aggregation cohorts SHOULD verify the ::BTCR2 Beacon:: address is an n-of-n and that one of the n keys is the cohort key provided to the ::BTCR2 Beacon:: coordinator. This can be achieved only by constructing the address for themselves from the set of cohort keys which the coordinator SHOULD provide.
+A ::Beacon Address:: of an ::Aggregate Beacon:: SHOULD be an n-of-n Pay-to-Taproot (P2TR) address, with a cohort key contributed to the n by each of the ::Beacon Participants::. DID controllers participating in a ::Beacon Cohort:: SHOULD verify the ::Beacon Address:: is an n-of-n and that one of the n keys is the cohort key they provided to the ::Beacon Aggregator::. This can be achieved only by constructing the address for themselves from the set of cohort keys which the aggregator SHOULD provide.
 
 #### Aggregate Beacon Signal Verification
 
