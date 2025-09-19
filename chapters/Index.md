@@ -168,7 +168,7 @@ Beacon Signal
 
 : Beacon Signals are Bitcoin transactions that spend from a ::BTCR2 Beacon:: address and include a transaction output of the format `[OP_RETURN, OP_PUSH_BYTES, <32_bytes>]`. Beacon Signals announce one or more ::BTCR2 Updates:: and provide a means for these updates to be validated against the Beacon Signal.
 
-The type of the ::BTCR2 Beacon::  determines how these Beacon Signals SHOULD be constructed and processed to validate a set of ::BTCR2 Updates:: against the 32 bytes contained within the Beacon Signal.
+The type of the ::BTCR2 Beacon:: determines how these Beacon Signals are constructed and processed to validate a set of ::BTCR2 Updates:: against the 32 bytes contained within the Beacon Signal.
 
 Beacon Signals
 
