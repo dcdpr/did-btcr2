@@ -516,7 +516,7 @@ BTCR2 provides no DID-method-specific dereferencing mechanisms. However, we anti
 
 ### Overview
 
-A ::BTCR2 Beacon:: is a service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the DID. The service properties define a Bitcoin address to watch for transactions containing ::Beacon Signals::.
+A ::BTCR2 Beacon:: is a service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the DID. The service properties define a Bitcoin address to watch for ::Beacon Signals::.
 
 All Beacon Signals broadcast from a ::BTCR2 Beacon:: in the ::Contemporary DID Document:: MUST be processed as part of DID document resolution. The ::Beacon Type:: in the service defines how ::Beacon Signals:: MUST be processed.
 
