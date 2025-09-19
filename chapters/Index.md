@@ -582,7 +582,7 @@ If a ::BTCR2 Update:: is not publicly discoverable (i.e., is not published to a 
 
 For a ::Map Beacon::, proof of non-inclusion of a **did:btcr2** identifier is simply its absence from the map.
 
-The `beaconType` of the `service` for a ::Map Beacon:: is "MapBeacon".
+The type of a service defining a ::Map Beacon:: in a DID document is "MapBeacon".
 
 ### SMT Beacon
 
