@@ -262,14 +262,6 @@ Initial DID Documents
 
 : ::Initial DID Document::
 
-Intermediate DID Document
-
-: A representation of a DID document that it not yet fully conformant with the DID Core specification. Intermediate DID Documents for the **did:btcr2** DID method are DID documents whose identifier values have been replaced with a placeholder value.
-
-Intermediate DID Documents
-
-: ::Intermediate DID Document::
-
 Invocation
 
 : See [Authorization Capabilities for Linked Data v0.3](https://w3c-ccg.github.io/zcap-spec/#terminology)
@@ -351,6 +343,11 @@ Signal Blockheight
 
 : The blockheight of the Bitcoin block that included a specific ::Beacon Signal::. Blockheight is used as the internal time of the resolution algorithm.
 
+Signal Bytes
+
+: The 32 bytes of information that are included within the last transaction output of a ::Beacon Signal::. 
+The script of this transaction output has the following form: `[OP_RETURN, OP_PUSH_BYTES, <32 signal bytes>]`.
+
 Singleton Beacon
 
 : A type of ::BTCR2 Beacon:: whose ::Beacon Signals:: each contain a single ::BTCR2 Update Announcement::.
@@ -382,6 +379,11 @@ Sparse Merkle Trees
 
 : ::Sparse Merkle Tree::
 
+SMT Proof
+
+: A set of SHA256 hashes for nodes in a ::Sparse Merkle Tree:: that together form a path from a leaf in the tree
+to the Merkle root, proving that the leaf is in the tree.
+
 Taproot
 
 : Taproot is an upgrade to the Bitcoin blockchain implemented in November 2021\. This upgrade enabled Bitcoin transactions to be secured using ::Schnorr Signatures:: through the introduction of a new address, a Taproot address.
@@ -397,6 +399,10 @@ Unsecured BTCR2 Update
 Unsecured BTCR2 Updates
 
 : ::Unsecured BTCR2 Update::
+
+Unsigned Beacon Signal
+
+: The Bitcoin transaction of the ::Beacon Signal:: before its transaction inputs have been signed, effectively spending these inputs.
 
 Unspent Transaction Output
 
@@ -1734,7 +1740,7 @@ that registered the index.
 For a ::Map Beacon::, the request signal confirmation message contains:
 
 * The ::Beacon Announcement Map::.  
-* The ::Unsigned Beacon Signal::.  
+* The Unsigned Beacon Signal::.  
 * The MuSig2 aggregated nonce.
 
 For an ::SMT Beacon::, the request signal confirmation message contains:
