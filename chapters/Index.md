@@ -176,7 +176,7 @@ Beacon Signals
 
 Beacon Type
 
-: The type of a ::BTCR2 Beacon::. The Beacon Type defines how ::BTCR2 Update Announcements:: are included within a ::Beacon Signal:: broadcast on the Bitcoin network. It also defines how the content committed within ::BTCR2 Update Announcements:: can be verified against the ::Beacon Signal::.
+: The type of a ::BTCR2 Beacon::. The Beacon Type defines how ::BTCR2 Update Announcements:: are included within a ::Beacon Signal:: broadcast on the Bitcoin network. It also defines how the content committed within ::BTCR2 Update Announcements:: can be validated against the ::Beacon Signal::.
 
 Beacon Types
 
