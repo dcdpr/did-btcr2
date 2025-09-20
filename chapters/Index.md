@@ -92,13 +92,13 @@ This document contains examples that contain JSON and JSON-LD content. Some of t
 
 Interoperability of implementations of the **did:btcr2** DID method is tested by evaluating an implementation's ability to create, update, deactivate, and resolve **did:btcr2** identifier and DID documents that conform to this specification. Interoperability for producers and consumers of **did:btcr2** identifier and DID documents is provided by ensuring the DIDs and DID documents conform.
 
-A conforming **did:btcr2** DID is any concrete expression of the rules specified in \[Syntax\] which complies with relevant normative statements in that section.
+A conforming **did:btcr2** DID is any concrete expression of the rules specified in [Syntax] which complies with relevant normative statements in that section.
 
 A conforming **did:btcr2** DID document is any concrete expression of the data model described in this specification which complies with the relevant normative statements in DID core sections [4\. Data Model](http://w3.org/TR/did-1.1/#data-model) and [5\. Core Properties](https://www.w3.org/TR/did-1.1/#core-properties). A serialization format for the conforming document is deterministic, bi-directional, and lossless, as described in [6\. Representations](https://www.w3.org/TR/did-1.1/#representations).
 
 A conforming registrar is any algorithm realized as software and/or hardware that generates and updates conforming **did:btcr2** identifier or conforming DID Documents and complies with the relevant normative statements in [6\. Representations](https://www.w3.org/TR/did-1.1/#representations) of DID core and the [Create], [Update] and [Deactivate] sections of this specification.
 
-A conforming **did:btcr2** resolver is any algorithm realized as software and/or hardware that complies with the relevant normative statements in [4\. DID Resolution](https://www.w3.org/TR/did-resolution/#resolving) of the DID Resolution specification and the \[Read\] section of this specification.
+A conforming **did:btcr2** resolver is any algorithm realized as software and/or hardware that complies with the relevant normative statements in [4\. DID Resolution](https://www.w3.org/TR/did-resolution/#resolving) of the DID Resolution specification and the [Resolve] section of this specification.
 
 ## Terminology
 
@@ -112,14 +112,6 @@ Aggregate Beacons
 
 : ::Aggregate Beacon::
 
-Announced BTCR2 Update
-
-: A ::BTCR2 Update:: that has been announced in an ::Authorized Beacon Signal:: which has met the specified threshold for confirmation.
-
-Announced BTCR2 Updates
-
-: ::Announced BTCR2 Update::
-
 Authorized Beacon Signal
 
 : An Authorized Beacon Signal is a ::Beacon Signal:: from a ::BTCR2 Beacon:: with a ::BTCR2 Beacon:: address in a then-current DID document.
@@ -131,6 +123,10 @@ Authorized Beacon Signals
 Beacon Address
 
 : The Bitcoin address of a ::BTCR2 Beacon::. Spends of ::UTXO:: controlled by this address are identified as ::Beacon Signals::.
+
+Beacon Addresses
+
+: ::Beacon Address::
 
 Beacon Aggregator
 
@@ -239,10 +235,6 @@ CIDs
 
 : ::Content Identifier::
 
-Contemporary Blockheight
-
-: The blockheight of consideration when walking the provenance of a series of DID updates. A DID document's contemporary time is the Signal Time of the ::Beacon Signal:: that announced the last ::BTCR2 Update:: applied to the DID document.
-
 Genesis Bytes
 
 : The bytes used to generate a did:btcr2 identifier. These bytes are either a
@@ -300,14 +292,6 @@ Offline Creation
 * Key Pair Deterministic Creation; and  
 * DID Document Initiated Creation.
 
-Pending BTCR2 Update
-
-: A ::BTCR2 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
-
-Pending BTCR2 Updates
-
-: ::Pending BTCR2 Update::
-
 Resolution Time
 
 : A Coordinated Universal Time (UTC) timestamp of when the client makes a resolution request of the controller.
@@ -335,10 +319,6 @@ Sidecar
 Sidecar Data
 
 : Data transmitted via ::Sidecar::.
-
-Signal Blockheight
-
-: The blockheight of the Bitcoin block that included a specific ::Beacon Signal::. Blockheight is used as the internal time of the resolution algorithm.
 
 Signal Bytes
 
@@ -380,11 +360,6 @@ SMT Proof
 
 : A set of SHA256 hashes for nodes in a ::Sparse Merkle Tree:: that together form a path from a leaf in the tree
 to the Merkle root, proving that the leaf is in the tree.
-
-
-Target Time
-
-: A UTC timestamp that specifies a target time provided by a client in a resolution request to the resolver. If none is provided the target time is set to the ::Resolution Time::.
 
 Unsecured BTCR2 Update
 
@@ -465,7 +440,7 @@ For details on how to interpret a BTCR2 DID, see [Resolve].
 
 When additional data is required for resolution, the controller has two primary means for getting that data to the Resolver, both secured by cryptographic hash. The first is using ::Sidecar::. The second is ::Content Addressable Storage:: (CAS). No matter, how the Resolver gets this data, all update data must be available to process resolution. We use cryptographic hashes to ensure that the data received by the Resolver is the data secured by a legitimate update.
 
-All files used for resolution are identified by their SHA256 cryptographic hash calculated according to the \[JSON Canonicalization and Hash\] algorithm.
+All JSON documents used for resolution are identified by their SHA256 cryptographic hash by first canonicalizing the document according to the [JSON Canonicalization and Algorithm](https://www.rfc-editor.org/rfc/rfc8785) and the computing the SHA256 hash of the canonicalized document.
 
 As a resolver goes through the resolution process, it encounters one or more document hashes, which it uses to identify the files of interest.
 
@@ -520,7 +495,7 @@ A ::BTCR2 Beacon:: is a service listed in a BTCR2 DID document that informs reso
 
 All Beacon Signals broadcast from a ::BTCR2 Beacon:: in the ::Contemporary DID Document:: MUST be processed as part of DID document resolution. The ::Beacon Type:: in the service defines how ::Beacon Signals:: MUST be processed.
 
-Any on-chain Beacon Signal that cannot be processed renders the related DID invalid. For this reason, all DID controllers SHOULD ensure the ::Beacon Addresses:: they include in their DID document require their cryptographic approval so spend ::UTXO:: controlled by the address, so that only approved Signals can be posted to Bitcoin. For resilience, BTCR2 DIDs can specify any number of Beacons and SHOULD include at least one ::Singleton Beacon:: as a fallback in case all ::Aggregation Beacons:: fail.
+Any on-chain Beacon Signal that cannot be processed renders the related DID invalid. For this reason, all DID controllers SHOULD ensure the ::Beacon Addresses:: they include in their DID document require their cryptographic approval so spend ::UTXO:: controlled by the address, so that only approved Signals can be posted to Bitcoin. For resilience, BTCR2 DIDs can specify any number of Beacons and SHOULD include at least one ::Singleton Beacon:: as a fallback in case all ::Aggregate Beacons:: fail.
 
 A ::Beacon Signal:: commits to, and anchors in a Bitcoin block 32 bytes of information. These ::Signal Bytes:: represent one of the following:
 
@@ -1734,7 +1709,7 @@ that registered the index.
 For a ::Map Beacon::, the request signal confirmation message contains:
 
 * The ::Beacon Announcement Map::.  
-* The Unsigned Beacon Signal::.  
+* The ::Unsigned Beacon Signal::.  
 * The MuSig2 aggregated nonce.
 
 For an ::SMT Beacon::, the request signal confirmation message contains:
