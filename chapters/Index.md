@@ -80,7 +80,7 @@ Many DID methods lack verifiable provenance. For many, it is simply impossible t
 
 ### Offline Creation
 
-Finally, we wanted to support the creation of DIDs without requiring on-chain interactions. BTCR creation depended on getting a transaction on-chain. BTCR2 supports creating DIDs with sophisticated DID documents without registering them on-chain. In fact, all BTCR2 DIDs start with offline creation. Only updates to the DID document require on-chain interactions. Our approach supports both key-based deterministic DIDs and document-based deterministic DIDs. In key-based DIDs, the DID itself contains everything you need to bootstrap an initial DID Document with usable verification methods suitable for authentication, attestation, and capability invocation and delegation. For document-based DIDs, additional sidecar data must be used to create the initial DID document. Offline creation allows unlimited DID creation and use without requiring any on-chain or online interactions, making it suitable for a wide range of high-volume, low cost use cases.
+Finally, we wanted to support the creation of DIDs without requiring on-chain interactions. BTCR creation depended on getting a transaction on-chain. BTCR2 supports creating DIDs with sophisticated DID documents without registering them on-chain. In fact, all BTCR2 DIDs start with offline creation. Only updates to the DID document require on-chain interactions. Our approach supports both key-based deterministic DIDs and document-based deterministic DIDs. In key-based DIDs, the DID itself contains everything you need to bootstrap an initial DID Document with usable verification methods suitable for authentication, attestation, and capability invocation and delegation. For document-based DIDs, additional ::Sidecar Data:: - a ::Genesis Document:: - must be used to create the ::Initial DID document::. Offline creation allows unlimited DID creation and use without requiring any on-chain or online interactions, making it suitable for a wide range of high-volume, low cost use cases.
 
 ## Conformance
 
@@ -92,13 +92,13 @@ This document contains examples that contain JSON and JSON-LD content. Some of t
 
 Interoperability of implementations of the **did:btcr2** DID method is tested by evaluating an implementation's ability to create, update, deactivate, and resolve **did:btcr2** identifier and DID documents that conform to this specification. Interoperability for producers and consumers of **did:btcr2** identifier and DID documents is provided by ensuring the DIDs and DID documents conform.
 
-A conforming **did:btcr2** DID is any concrete expression of the rules specified in \[Syntax\] which complies with relevant normative statements in that section.
+A conforming **did:btcr2** DID is any concrete expression of the rules specified in [Syntax] which complies with relevant normative statements in that section.
 
 A conforming **did:btcr2** DID document is any concrete expression of the data model described in this specification which complies with the relevant normative statements in DID core sections [4\. Data Model](http://w3.org/TR/did-1.1/#data-model) and [5\. Core Properties](https://www.w3.org/TR/did-1.1/#core-properties). A serialization format for the conforming document is deterministic, bi-directional, and lossless, as described in [6\. Representations](https://www.w3.org/TR/did-1.1/#representations).
 
-A conforming registrar is any algorithm realized as software and/or hardware that generates and updates conforming **did:btcr2** identifier or conforming DID Documents and complies with the relevant normative statements in [6\. Representations](https://www.w3.org/TR/did-1.1/#representations) of DID core and the \[Create\], \[Update\] and \[Deactivate\] sections of this specification.
+A conforming registrar is any algorithm realized as software and/or hardware that generates and updates conforming **did:btcr2** identifier or conforming DID Documents and complies with the relevant normative statements in [6\. Representations](https://www.w3.org/TR/did-1.1/#representations) of DID core and the [Create], [Update] and [Deactivate] sections of this specification.
 
-A conforming **did:btcr2** resolver is any algorithm realized as software and/or hardware that complies with the relevant normative statements in [4\. DID Resolution](https://www.w3.org/TR/did-resolution/#resolving) of the DID Resolution specification and the \[Read\] section of this specification.
+A conforming **did:btcr2** resolver is any algorithm realized as software and/or hardware that complies with the relevant normative statements in [4\. DID Resolution](https://www.w3.org/TR/did-resolution/#resolving) of the DID Resolution specification and the [Resolve] section of this specification.
 
 ## Terminology
 
@@ -112,14 +112,6 @@ Aggregate Beacons
 
 : ::Aggregate Beacon::
 
-Announced BTCR2 Update
-
-: A ::BTCR2 Update:: that has been announced in an ::Authorized Beacon Signal:: which has met the specified threshold for confirmation.
-
-Announced BTCR2 Updates
-
-: ::Announced BTCR2 Update::
-
 Authorized Beacon Signal
 
 : An Authorized Beacon Signal is a ::Beacon Signal:: from a ::BTCR2 Beacon:: with a ::BTCR2 Beacon:: address in a then-current DID document.
@@ -131,6 +123,10 @@ Authorized Beacon Signals
 Beacon Address
 
 : The Bitcoin address of a ::BTCR2 Beacon::. Spends of ::UTXO:: controlled by this address are identified as ::Beacon Signals::.
+
+Beacon Addresses
+
+: ::Beacon Address::
 
 Beacon Aggregator
 
@@ -166,9 +162,9 @@ Beacon Participants
 
 Beacon Signal
 
-: Beacon Signals are Bitcoin transactions that spend from a ::BTCR2 Beacon:: address and include a transaction output of the format `[OP_RETURN, <32_bytes>]`. Beacon Signals announce one or more ::BTCR2 Updates:: and provide a means for these payloads to be verified as part of the Beacon Signal.
+: Beacon Signals are Bitcoin transactions that spend from a ::BTCR2 Beacon:: address and include a transaction output of the format `[OP_RETURN, OP_PUSH_BYTES, <32_bytes>]`. Beacon Signals announce one or more ::BTCR2 Updates:: and provide a means for these updates to be validated against the Beacon Signal.
 
-The type of the ::BTCR2 Beacon::  determines how these Beacon Signals SHOULD be constructed and processed to validate a set of ::BTCR2 Updates:: against the 32 bytes contained within the Beacon Signal.
+The type of the ::BTCR2 Beacon:: determines how these Beacon Signals are constructed and processed to validate a set of ::BTCR2 Updates:: against the 32 bytes contained within the Beacon Signal.
 
 Beacon Signals
 
@@ -176,7 +172,7 @@ Beacon Signals
 
 Beacon Type
 
-: The type of a ::BTCR2 Beacon::. The Beacon Type defines how ::BTCR2 Update Announcements:: are included within a ::Beacon Signal:: broadcast on the Bitcoin network. It also defines how the content committed within ::BTCR2 Update Announcements:: can be verified against the ::Beacon Signal::.
+: The type of a ::BTCR2 Beacon::. The Beacon Type defines how ::BTCR2 Update Announcements:: are included within a ::Beacon Signal:: broadcast on the Bitcoin network. It also defines how the content committed within ::BTCR2 Update Announcements:: can be validated against the ::Beacon Signal::.
 
 Beacon Types
 
@@ -239,10 +235,6 @@ CIDs
 
 : ::Content Identifier::
 
-Contemporary Blockheight
-
-: The blockheight of consideration when walking the provenance of a series of DID updates. A DID document's contemporary time is the Signal Time of the ::Beacon Signal:: that announced the last ::BTCR2 Update:: applied to the DID document.
-
 Genesis Bytes
 
 : The bytes used to generate a did:btcr2 identifier. These bytes are either a
@@ -262,17 +254,6 @@ Initial DID Documents
 
 : ::Initial DID Document::
 
-Intermediate DID Document
-
-: A representation of a DID document that it not yet fully conformant with the DID Core specification. Intermediate DID Documents for the **did:btcr2** DID method are DID documents whose identifier values have been replaced with a placeholder value.
-
-Intermediate DID Documents
-
-: ::Intermediate DID Document::
-
-Invocation
-
-: See [Authorization Capabilities for Linked Data v0.3](https://w3c-ccg.github.io/zcap-spec/#terminology)
 
 Late Publishing
 
@@ -311,14 +292,6 @@ Offline Creation
 * Key Pair Deterministic Creation; and  
 * DID Document Initiated Creation.
 
-Pending BTCR2 Update
-
-: A ::BTCR2 Update:: that has not yet been announced in an ::Authorized Beacon Signal::.
-
-Pending BTCR2 Updates
-
-: ::Pending BTCR2 Update::
-
 Resolution Time
 
 : A Coordinated Universal Time (UTC) timestamp of when the client makes a resolution request of the controller.
@@ -347,9 +320,10 @@ Sidecar Data
 
 : Data transmitted via ::Sidecar::.
 
-Signal Blockheight
+Signal Bytes
 
-: The blockheight of the Bitcoin block that included a specific ::Beacon Signal::. Blockheight is used as the internal time of the resolution algorithm.
+: The 32 bytes of information that are included within the last transaction output of a ::Beacon Signal::. 
+The script of this transaction output has the following form: `[OP_RETURN, OP_PUSH_BYTES, <32 signal bytes>]`.
 
 Singleton Beacon
 
@@ -382,13 +356,10 @@ Sparse Merkle Trees
 
 : ::Sparse Merkle Tree::
 
-Taproot
+SMT Proof
 
-: Taproot is an upgrade to the Bitcoin blockchain implemented in November 2021\. This upgrade enabled Bitcoin transactions to be secured using ::Schnorr Signatures:: through the introduction of a new address, a Taproot address.
-
-Target Time
-
-: A UTC timestamp that specifies a target time provided by a client in a resolution request to the resolver. If none is provided the target time is set to the ::Resolution Time::.
+: A set of SHA256 hashes for nodes in a ::Sparse Merkle Tree:: that together form a path from a leaf in the tree
+to the Merkle root, proving that the leaf is in the tree.
 
 Unsecured BTCR2 Update
 
@@ -397,6 +368,10 @@ Unsecured BTCR2 Update
 Unsecured BTCR2 Updates
 
 : ::Unsecured BTCR2 Update::
+
+Unsigned Beacon Signal
+
+: The Bitcoin transaction of the ::Beacon Signal:: before its transaction inputs have been signed, effectively spending these inputs.
 
 Unspent Transaction Output
 
@@ -459,13 +434,13 @@ bech32char = "0" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9" / "a" / "c" /
 
 ABNF is defined by [Internet Engineering Task Force (IETF) RFC5234](https://datatracker.ietf.org/doc/html/rfc5234).
 
-For details on how to interpret a BTCR2 DID, see \[Resolve\].
+For details on how to interpret a BTCR2 DID, see [Resolve].
 
 ## Update Distribution
 
 When additional data is required for resolution, the controller has two primary means for getting that data to the Resolver, both secured by cryptographic hash. The first is using ::Sidecar::. The second is ::Content Addressable Storage:: (CAS). No matter, how the Resolver gets this data, all update data must be available to process resolution. We use cryptographic hashes to ensure that the data received by the Resolver is the data secured by a legitimate update.
 
-All files used for resolution are identified by their SHA256 cryptographic hash calculated according to the \[JSON Canonicalization and Hash\] algorithm.
+All JSON documents used for resolution are identified by their SHA256 cryptographic hash by first canonicalizing the document according to the [JSON Canonicalization and Algorithm](https://www.rfc-editor.org/rfc/rfc8785) and the computing the SHA256 hash of the canonicalized document.
 
 As a resolver goes through the resolution process, it encounters one or more document hashes, which it uses to identify the files of interest.
 
@@ -473,7 +448,7 @@ While it's possible for a single **did:btcr2** identifier to mix the two distrib
 
 ### Sidecar
 
-::Sidecar:: provides  alongside the **did:btcr2** identifier being resolved. This is analogous to a sidecar on a motorcycle bringing along a second passenger: the DID controller provides the DID document history (in the form of JSON Patch transformations) alongside the DID to the relying party so that the resolver can construct the DID document.
+::Sidecar:: provides  alongside the **did:btcr2** identifier being resolved. This is analogous to a sidecar on a motorcycle bringing along a second passenger: the DID controller provides the DID document history (in the form of ::BTCR2 Updates:: and any additional proofs) alongside the DID to the relying party so that the resolver can construct the DID document.
 
 In short, when a resolver is presented with a **did:btcr2** identifier, it is also presented with files matching the SHA256 hashes it encounters during the resolution process. If any SHA256 hash doesn't have a corresponding file, the resolution fails.
 
@@ -516,13 +491,13 @@ BTCR2 provides no DID-method-specific dereferencing mechanisms. However, we anti
 
 ### Overview
 
-A ::BTCR2 Beacon:: is a service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the DID. The service properties define a Bitcoin address to watch for transactions containing ::Beacon Signals::.
+A ::BTCR2 Beacon:: is a service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the DID. The service properties define a Bitcoin address to watch for ::Beacon Signals::.
 
 All Beacon Signals broadcast from a ::BTCR2 Beacon:: in the ::Contemporary DID Document:: MUST be processed as part of DID document resolution. The ::Beacon Type:: in the service defines how ::Beacon Signals:: MUST be processed.
 
-Any on-chain Beacon Signal that cannot be processed renders the related DID invalid. For this reason, all Beacon Signals MUST ensure the approval by the DID controller, so that only approved Signals can be posted to Bitcoin. For resilience, BTCR2 DIDs can specify any number of Beacons and SHOULD include at least one Singleton Beacon as a fallback in case all Aggregation Beacons fail.
+Any on-chain Beacon Signal that cannot be processed renders the related DID invalid. For this reason, all DID controllers SHOULD ensure the ::Beacon Addresses:: they include in their DID document require their cryptographic approval so spend ::UTXO:: controlled by the address, so that only approved Signals can be posted to Bitcoin. For resilience, BTCR2 DIDs can specify any number of Beacons and SHOULD include at least one ::Singleton Beacon:: as a fallback in case all ::Aggregate Beacons:: fail.
 
-A ::Beacon Signal:: commits to, and anchors in a Bitcoin block, 32 bytes of information that represents one of the following:
+A ::Beacon Signal:: commits to, and anchors in a Bitcoin block 32 bytes of information. These ::Signal Bytes:: represent one of the following:
 
 * a ::BTCR2 Update Announcement::;  
 * the hash of a ::Beacon Announcement Map::; or  
@@ -572,7 +547,7 @@ A ::Singleton Beacon:: is a ::BTCR2 Beacon:: that can be used to announce commit
 
 If the ::BTCR2 Update:: committed to by the ::BTCR2 Update Announcement:: is not publicly discoverable (i.e., is not published to a ::CAS:: under its hash), the only parties that are aware of it are the DID controller and any parties provided it by the DID controller.
 
-The `beaconType` of the `service` for a ::Singleton Beacon:: is "SingletonBeacon".
+The type of a service defining a ::Singleton Beacon:: in a DID document is "SingletonBeacon".
 
 ### Map Beacon
 
@@ -582,7 +557,7 @@ If a ::BTCR2 Update:: is not publicly discoverable (i.e., is not published to a 
 
 For a ::Map Beacon::, proof of non-inclusion of a **did:btcr2** identifier is simply its absence from the map.
 
-The `beaconType` of the `service` for a ::Map Beacon:: is "MapBeacon".
+The type of a service defining a ::Map Beacon:: in a DID document is "MapBeacon".
 
 ### SMT Beacon
 
@@ -590,7 +565,7 @@ An ::SMT Beacon:: creates a ::Beacon Signal:: that commits to multiple ::BTCR2 U
 
 An ::SMT Beacon:: provides maximum privacy for the DID controller, as the DID controller never has to reveal their DIDs or ::BTCR2 Updates:: to the aggregator. This introduces a small risk, as the DID controller is not required to prove control over a DID in order to participate.
 
-The `beaconType` of the `service` for an ::SMT Beacon:: is "SMTBeacon".
+The type of a service defining a ::SMT Beacon:: in a DID document is "SMTBeacon".
 
 ## CRUD Operations
 
@@ -1787,7 +1762,7 @@ signed Bitcoin transaction. The aggregator then broadcasts this transaction onto
 ### Deactivate
 
 To deactivate a **did:btcr2**, the DID controller MUST add the property `deactivated`
-with the value `true` on the DID document. To do this, the DID controller constructs
+with the value `true` to the DID document. To do this, the DID controller constructs
 a valid ::BTCR2 Update:: with a JSON Patch that adds this property and announces
 the ::BTCR2 Update:: by broadcasting an ::Authorized Beacon Signal:: following
 the algorithms defined in [Update]. Once a **did:btcr2** has been deactivated this
@@ -1815,15 +1790,15 @@ Invalidation attacks are where adversaries are able to publish ::Beacon Signals:
 
 #### Aggregate Beacon Address Verification
 
-An ::Aggregate Beacon:: Address SHOULD be an n-of-n Pay-to-Taproot (P2TR) address, with a cohort key contributed to the n by each of the cohort participants. DID controllers participating in aggregation cohorts SHOULD verify the ::BTCR2 Beacon:: address is an n-of-n and that one of the n keys is the cohort key provided to the ::BTCR2 Beacon:: coordinator. This can be achieved only by constructing the address for themselves from the set of cohort keys which the coordinator SHOULD provide.
+A ::Beacon Address:: of an ::Aggregate Beacon:: SHOULD be an n-of-n Pay-to-Taproot (P2TR) address, with a cohort key contributed to the n by each of the ::Beacon Participants::. DID controllers participating in a ::Beacon Cohort:: SHOULD verify the ::Beacon Address:: is an n-of-n and that one of the n keys is the cohort key they provided to the ::Beacon Aggregator::. This can be achieved only by constructing the address for themselves from the set of cohort keys which the aggregator SHOULD provide.
 
 #### Aggregate Beacon Signal Verification
 
-::Beacon Signals:: from Aggregators that a DID controller is a participant of will either announce an update for their DID or will contain no update for their DID. The DID controller SHOULD verify that the ::Beacon Signal:: announces the update they expect (or no update) for all ::Beacon Signals:: broadcast by Aggregators before authorizing them. If they do not, then invalidation attacks become possible where a ::Beacon Signal:: announces an update for a DID that cannot be retrieved, causing the DID to be invalidated.
+::Beacon Signals:: from ::Beacon Aggregators:: that a DID controller is a participant of will either announce an update for their DID or will contain no update for their DID. The DID controller SHOULD verify that the ::Beacon Signal:: announces the update they expect (or no update) for all ::Beacon Signals:: broadcast by Aggregators before authorizing them. If they do not, then invalidation attacks become possible where a ::Beacon Signal:: announces an update for a DID that cannot be retrieved, causing the DID to be invalidated.
 
 #### Key Compromise
 
-In **did:btcr2**, cryptographic keys authorize both DID updates and ::Beacon Signals::. Should these keys get compromised without the DID controller's knowledge, it would be possible for an adversary to take control of a DID by submitting a ::DID Update Payload:: to a ::BTCR2 Beacon:: that replaces key material and ::BTCR2 Beacons:: in the DID document for ones under the adversary's control. Such an attack would be detectable by the DID controller, as they would see a valid spend from a ::BTCR2 Beacon:: that they did not authorize. Additionally, if the DID relied on ::Sidecar Data::, without access to this data the DID would be useless to the adversary as they would be unable to demonstrate a valid complete history of the DID during resolution.
+In **did:btcr2**, cryptographic keys authorize both DID updates and ::Beacon Signals::. Should these keys get compromised without the DID controller's knowledge, it would be possible for an adversary to take control of a DID by submitting a ::BTCR2 Update:: to a ::BTCR2 Beacon:: that replaces key material and ::BTCR2 Beacons:: in the DID document for ones under the adversary's control. Such an attack would be detectable by the DID controller, as they would see a valid spend from a ::BTCR2 Beacon:: that they did not authorize. Additionally, if the DID relied on ::Sidecar Data::, without access to this data the DID would be useless to the adversary as they would be unable to demonstrate a valid complete history of the DID during resolution.
 
 #### Cryptographic Compromise
 
@@ -1861,15 +1836,15 @@ In order to prevent consensus splits, **did:btcr2** needs a particularly good te
 
 ### Deployment Considerations
 
-#### Update Payloads Stored in Content Addressable Storage (CAS) Systems are Publicly Accessible
+#### BTCR2 Updates Stored in Content Addressable Storage (CAS) Systems are Publicly Accessible
 
 Update payloads stored in ::Content Addressable Storage:: (CAS) such as IPFS SHOULD be considered public. Anyone MAY retrieve this information (assuming they have the ::CID::) and use it to track the DID over time. IPFS node operators would have access to all content stored on IPFS and could choose to index certain data like ::BTCR2 Updates::, including the updates posted by that DID's ::BTCR2 Beacon::. This MAY advertise information about the DID that the controller wishes to remain private.
 
-Those parties most concerned about privacy SHOULD maintain their ::DID Update Payloads:: in a ::Sidecar:: manner and provide them to necessary parties during resolution. It is RECOMMENDED not to include any sensitive data other than the necessary DID update data.
+Those parties most concerned about privacy SHOULD maintain their ::BTCR2 Updates:: in a ::Sidecar:: manner and provide them to necessary parties during resolution. It is RECOMMENDED not to include any sensitive data other than the necessary DID update data.
 
 #### Beacon Coordinators Know the DIDs Being Aggregated by a Cohort
 
-Within ::Sparse Merkle Tree:: (SMT) ::BTCR2 Beacons::, the DID is used as a path to a leaf node in the ::SMT::. The coordinator MUST know these paths for them to be able to construct the tree and generate the correct proof paths. Within ::Content Identifier:: (CID)-based ::BTCR2 Beacons::, the coordinator MUST construct an aggregated bundle that includes all DIDs aggregated as a key to the ::CID:: for that ::DID's Update Payload::. This means that for both types of ::Aggregate Beacons::, the coordinator necessarily MUST know all DIDs being aggregated by a cohort.
+Within ::Sparse Merkle Tree:: (SMT) ::BTCR2 Beacons::, the DID is used as a path to a leaf node in the ::SMT::. The coordinator MUST know these paths for them to be able to construct the tree and generate the correct proof paths. Within ::Content Identifier:: (CID)-based ::BTCR2 Beacons::, the coordinator MUST construct an aggregated bundle that includes all DIDs aggregated as a key to the ::CID:: for that DID's ::BTCR2 Update::. This means that for both types of ::Aggregate Beacons::, the coordinator necessarily MUST know all DIDs being aggregated by a cohort.
 
 #### CIDAggregate Cohort Members Know All DIDs that are Updated
 
@@ -1879,126 +1854,7 @@ Cohort members participating in a CIDAggregate ::BTCR2 Beacon:: learn all DIDs t
 
 Although it might seem obvious, one of the side effects of using a DID is that a DID controller's relying party will see their DID Document. In addition, resolving a DID document requires making available to the resolver all prior DID document updates.
 
-## References
 
-[BIP-0173] "Base32 address format for native v0-16 witness outputs"  
-<https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki>
-
-[BIP-0350] "Bech32m format for v1+ witness addresses"  
-<https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki>  
-
-## Appendix
-
-### Bech32m Encoding and Decoding
-
-**did:btcr2** uses the Bech32m algorithm to encode and decode several data values.
-The original Bech32 algorithm is documented in
-[BIP-0173](https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki). The updated algorithm, Bech32m, is documented in
-[BIP-0350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki).
-
-#### Bech32m Encoding
-
-Given:
-
-* `hrp` - required, a string representing the Human-Readable Part (HRP) of the encoding
-* `dataBytes` - required, a byte array to be encoded
-
-1. Initialize `encodedString` to the output of Bech32m encoding the `hrp` and
-   the `dataBytes` as described in
-   [BIP-0350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki).
-1. Return `encodedString`.
-
-#### Bech32m Decoding
-
-Given:
-
-* `encodedString` - required, the Bech32m-encoded string from a prior encoding
-  operation
-
-1. Initialize `hrp` and `dataBytes` to the result of Bech32m decoding the
-   `encodedString` as described in
-   [BIP-0350](https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki).
-1. Return `hrp` and `dataBytes`.
-
-### JSON Canonicalization and Hash
-
-A macro function that takes in a JSON document, `document`, and canonicalizes it
-following the [JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785).
-The function returns the `canonicalizedBytes`.
-
-1. Set `canonicalBytes` to the result of applying the JSON Canonicalization Scheme
-   to the `document`.
-1. Set `hashBytes` to the result of applying the SHA256 cryptographic hashing
-   algorithm to the `canonicalBytes`.
-1. Return `hashBytes`.
-
-### Fetch Content from Addressable Storage
-
-A macro function that takes in SHA256 hash of some content, `hashBytes`, converts these
-bytes to an InterPlanetary File System (IPFS) v1 ::Content Identifier:: (CID) and attempts
-to retrieve the identified content from ::Content Addressable Storage:: (CAS).
-
-The function returns the retrieved `content` or null.
-
-1. Set `cid` to the result of converting `hashBytes` to an IPFS v1 ::CID::.
-1. Set `content` to the result of fetching the `cid` from a ::CAS:: system. Which ::CAS:: systems
-   checked is left to the implementation. TODO: Is this right? Are implementations just supposed to check all CAS they trust?
-1. If content for `cid` cannot be found, set `content` to null.
-1. Return `content`
-
-### Root did:btcr2 Update Capabilities
-
-#### Derive Root Capability from **did:btcr2** Identifier
-
-This algorithm deterministically generates an [Authorization Capabilities for Linked Data](https://w3c-ccg.github.io/zcap-spec/) (ZCAP-LD) root capability from a given **did:btcr2** identifier. Each root
-capability is unique to the identifier. This root capability is defined and understood
-by the **did:btcr2** specification as the root capability to authorize updates to the
-specific **did:btcr2** identifiers DID document.
-
-The algorithm takes in a **did:btcr2** identifier and returns a `rootCapability` object.
-
-1. Define `rootCapability` as an empty object.
-1. Set `rootCapability.@context` to '<https://w3id.org/zcap/v1>'.
-1. Set `encodedIdentifier` to result of calling algorithm
-   `encodeURIComponent(identifier)`.
-1. Set `rootCapability.id` to `urn:zcap:root:${encodedIdentifier}`.
-1. Set `rootCapability.controller` to `identifier`.
-1. Set `rootCapability.invocationTarget` to `identifier`.
-1. Return `rootCapability`.
-
-Below is an example root capability for updating the DID document for **did:btcr2:k1qqpuwwde82nennsavvf0lqfnlvx7frrgzs57lchr02q8mz49qzaaxmqphnvcx**:
-
-```{.json include="json/CRUD-Operations/Update-zcap-root-capability.json"}
-```
-
-#### Dereference Root Capability Identifier
-
-This algorithm takes in a root capability identifier and dereferences it to the
-root capability object.
-
-This algorithm takes in a `capabilityId` and returns a `rootCapability` object.
-
-1. Set `rootCapability` to an empty object.
-1. Set `components` to the result of `capabilityId.split(":")`.
-1. Validate `components`:
-   1. Assert length of `components` is 4.
-   1. `components[0] == urn`.
-   1. `components[1] == zcap`.
-   1. `components[2] == root`.
-1. Set `uriEncodedId` to `components[3]`.
-1. Set `btcr2Identifier` the result of `decodeURIComponent(uriEncodedId)`.
-1. Set `rootCapability.id` to `capabilityId`.
-1. Set `rootCapability.controller` to `btcr2Identifier`.
-1. Set `rootCapability.invocationTarget` to `btcr2Identifier`.
-1. Return `rootCapability`.
-
-Below is an example of a `btcr2Update`. An invoked [ZCAP-LD](https://w3c-ccg.github.io/zcap-spec/)
-capability containing a `patch` defining how the DID document for
-**did:btcr2:k1qqpuwwde82nennsavvf0lqfnlvx7frrgzs57lchr02q8mz49qzaaxmqphnvcx** SHOULD
-be mutated.
-
-```{.json include="json/CRUD-Operations/Update-zcap-root-capability-patch.json"}
-```
 
 
 ## Appendix SMT - Optimized Sparse Merkle Tree Implementation
