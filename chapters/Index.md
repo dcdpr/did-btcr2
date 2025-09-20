@@ -2001,9 +2001,9 @@ be mutated.
 ```
 
 
-# Appendix SMT - Optimized Sparse Merkle Tree Implementation
+## Appendix SMT - Optimized Sparse Merkle Tree Implementation
 
-## Overview
+### Overview
 
 From [Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree):
 
@@ -2161,9 +2161,9 @@ This assumes that *hash(X + Y)* = *hash(Y + X)*, i.e., that the addition operati
 }
 ```
 
-### Attacks
+#### Attacks
 
-#### Misrepresented Proof of Inclusion/Non-Inclusion
+##### Misrepresented Proof of Inclusion/Non-Inclusion
 
 Let’s assume that a nefarious actor (NA) joined the cohort in the beginning and was allocated position 2 (0010). At some point in time, NA gains access to the cryptographic material and the entire DID history for the DID in position 13 (1101) belonging to a legitimate actor (LA). NA does not gain access to the cryptographic material LA uses to sign their part of the n-of-n Pay-to-Taproot (P2TR) Bitcoin address, which is unrelated to the DID. LA discovers the breach immediately and posts an update, rotating their keys or deactivating the DID.
 
@@ -2358,7 +2358,7 @@ Now, the presentation to the verifier for DID 13 includes the following:
 
 From this, the verifier can infer only that position 12 (1100) is not allocated. Having the nonce vary per signal ensures that the hash of the null value varies and so can't be tested for across signals. Having the nonce vary per DID ensures that the verifier can't test for non-update of other known DIDs. Peer hashes that are zero will always be zero and those that are non-zero will always be non-zero.
 
-### Optimization
+#### Optimization
 
 The tree can be further optimized as outlined in [The Libra Blockchain](https://diem-developers-components.netlify.app/papers/the-diem-blockchain/2020-05-26.pdf). The first optimization collapses empty nodes into a fixed value; this is already defined above where the hash of an empty node is zero. The second optimization is to replace subtrees containing exactly one leaf with a single node. This reduces the tree size significantly to a depth of approximately *log2(n)*, where *n* is the number of leaves.
 
@@ -2426,3 +2426,4 @@ Now, the presentation to the verifier for DID 13 includes the following:
 ```
 
 The only thing the verifier can infer from any presentation is the depth of the tree and therefore an estimate of the number of DIDs using the Beacon.
+S
