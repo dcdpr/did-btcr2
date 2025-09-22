@@ -438,9 +438,9 @@ For details on how to interpret a BTCR2 DID, see [Resolve].
 
 ## Update Distribution
 
-When additional data is required for resolution, the controller has two primary means for getting that data to the Resolver, both secured by cryptographic hash. The first is using ::Sidecar::. The second is ::Content Addressable Storage:: (CAS). No matter, how the Resolver gets this data, all update data must be available to process resolution. We use cryptographic hashes to ensure that the data received by the Resolver is the data secured by a legitimate update.
+When additional data is required for resolution, the controller has two primary means for getting that data to the Resolver, both secured by cryptographic hash. The first is using ::Sidecar::. The second is ::Content Addressable Storage:: (CAS). No matter how the Resolver gets this data, all update data must be available to process resolution. We use cryptographic hashes to ensure that the data received by the Resolver is the data secured by a legitimate update.
 
-All JSON documents used for resolution are identified by their SHA256 cryptographic hash by first canonicalizing the document according to the [JSON Canonicalization and Algorithm](https://www.rfc-editor.org/rfc/rfc8785) and the computing the SHA256 hash of the canonicalized document.
+All documents used for resolution are JSON documents, identified by their SHA256 cryptographic hash by first canonicalizing the document according to the [JSON Canonicalization and Algorithm](https://www.rfc-editor.org/rfc/rfc8785) and the computing the SHA256 hash of the canonicalized document.
 
 As a resolver goes through the resolution process, it encounters one or more document hashes, which it uses to identify the files of interest.
 
@@ -448,13 +448,13 @@ While it's possible for a single **did:btcr2** identifier to mix the two distrib
 
 ### Sidecar
 
-::Sidecar:: provides  alongside the **did:btcr2** identifier being resolved. This is analogous to a sidecar on a motorcycle bringing along a second passenger: the DID controller provides the DID document history (in the form of ::BTCR2 Updates:: and any additional proofs) alongside the DID to the relying party so that the resolver can construct the DID document.
+::Sidecar:: provides additional data alongside the **did:btcr2** identifier being resolved. This is analogous to a sidecar on a motorcycle bringing along a second passenger: the DID controller provides the DID document history (in the form of ::BTCR2 Updates:: and any additional proofs) alongside the DID to the relying party so that the resolver can construct the DID document.
 
 In short, when a resolver is presented with a **did:btcr2** identifier, it is also presented with files matching the SHA256 hashes it encounters during the resolution process. If any SHA256 hash doesn't have a corresponding file, the resolution fails.
 
 ### Content Addressable Storage (CAS)
 
-Content Addressable Storage (CAS) is a mechanism by which a file stored is addressed by its content, not its name or location. The content address is determined by a cryptographic hash of the file. The hash is then passed into a retrieval function specific to the type of ::CAS:: to retrieve the file.
+Content Addressable Storage (CAS) is a mechanism by which a digital file is stored on a network for retrieval based on its content, not its name or location. The content address is determined by a cryptographic hash of the file. The hash is then passed into a retrieval function specific to the type of ::CAS:: to retrieve the file.
 
 Any ::CAS:: that provides a deterministic mapping from a SHA256 hash of a file may be used, and a resolver SHOULD be informed of the specific ::CAS:: mechanism so that it can retrieve documents associated with a **did:btcr2** identifier efficiently. If the ::CAS:: mechanism is not provided, the resolver MAY iterate through all supported ::CAS:: mechanisms to find the files or it MAY return with an error indicating that the ::CAS:: mechanism is required.
 
@@ -466,7 +466,7 @@ The Interplanetary File System ([IPFS](https://docs.ipfs.tech/)) “is a set of 
 
 A detailed description is available at the [IPFS documentation site](https://docs.ipfs.tech/), but for the purposes of **did:btcr2**, it is a distributed file system where the files are identified using a unique ::Content Identifier:: (CID) based on the content of the file. The content of the file determines the ::CID::, and the ::CID:: may be used by anyone, anywhere, to retrieve the file.
 
-For did:btcr2 identifiers, files stored in IPFS MUST override the default chunking behaviour by storing the file as a raw binary using the [Raw Leaves option](https://richardschneider.github.io/net-ipfs-engine/articles/fs/raw.html). This limits the file size to the block size (default 256 kB, maximum 1 MB), but that should be sufficient for most applications and ensures that the entire file is included when calculating the CID.
+For did:btcr2 identifiers, files stored in IPFS MUST override the default chunking behaviour by storing the file as a raw binary using the [Raw Leaves option](https://richardschneider.github.io/net-ipfs-engine/articles/fs/raw.html). This limits the file size to the block size (default 256 kB, maximum 1 MB), but that should be sufficient for most applications, ensuring that the entire file is included when calculating the CID.
 
 The IPFS CIDv1 is a binary identifier constructed from the file hash as:
 
@@ -515,32 +515,6 @@ The current, active ::BTCR2 Beacons:: of a DID document are specified in the doc
 
 All resolvers of **did:btcr2** DIDs MUST support the ::Beacon Types:: defined in this specification.
 
-## Aggregation
-
-Three types of ::BTCR2 Beacons:: are defined: SingletonBeacon, MapBeacon and SMTBeacon.  Two of them, MapBeacon and SMTBeacon, support aggregation, i.e. the act of  committing to multiple ::BTCR2 Update Announcements:: in a ::Beacon Signal::.
-
-### Aggregation Participants
-
-The participants in aggregation are as follows:
-
-* DID controller \- A party that controls one or more **did:btcr2** identifiers participating in a ::BTCR2 Beacon::.  
-* ::Beacon Cohort:: \- The set of unique cryptographic keys participating in a ::BTCR2 Beacon:: that make up its n-of-n MuSig2 Bitcoin address.  
-* ::Beacon Aggregator:: \- The entity that coordinates the protocols of an Aggregate ::BTCR2 Beacon::, specifically the "Create Beacon Cohort" and "Announce Beacon Signal" protocols.  
-* ::Beacon Participant:: \- A member of a ::Beacon Cohort::, typically a DID controller, that controls cryptographic keys required to partially authorize the broadcasting of a ::Beacon Signal:: to the Bitcoin blockchain.  
-* Verifier \- A party verifying a **did:btcr2** identifier presentation.
-
-How coordination between an aggregator and multiple ::Beacon Participants:: is managed is out of scope, but one possible mechanism is outlined in “MuSig2 3-of-3 Multisig with Coordinator Facilitation” at [MuSig2 Sequence Diagrams](https://developer.blockchaincommons.com/musig/sequence/#musig2-3-of-3-multisig-with-coordinator-facilitation).
-
-When defining a ::Beacon Cohort::, the ::Beacon Aggregator:: may define the conditions for the cohort, including but not limited to:
-
-* Automatic publication to ::CAS:: (::Map Beacon:: only).  
-* Minimum and/or maximum number of ::Beacon Participants::.  
-* Minimum and/or maximum number of DIDs per ::Beacon Participant::.  
-* Cost of enrollment.  
-* Cost per signal per DID or ::Beacon Participant::.  
-* Minimum and/or maximum time between signals.  
-* Number of pending updates that trigger a signal.
-
 #### Singleton Beacon
 
 A ::Singleton Beacon:: is a ::BTCR2 Beacon:: that can be used to announce commitments to a single ::BTCR2 Update:: targeting a single DID document. It creates a ::Beacon Signal:: that commits to a single ::BTCR2 Update Announcement::. This is typically done directly by the DID controller, as there is no ::Beacon Cohort::.
@@ -567,10 +541,49 @@ An ::SMT Beacon:: provides maximum privacy for the DID controller, as the DID co
 
 The type of a service defining a ::SMT Beacon:: in a DID document is "SMTBeacon".
 
+## Aggregation
+
+Aggregation is how did:btcr2 minimizes on-chain transactions when updated DID documents. Rather than every DID update needing a separate transaction, as in BTCR, DID controllers can use ::Aggregate Beacons::, such as ::SMT Beacon:: and ::Map Beacon::. Listed in their repsective DID documents, these beacons enable an aggregator to broadcast Beacon Signals that contain updates for any number of DIDs and DID controllers. 
+
+The participants in aggregation are as follows.
+
+* DID controller \- A party that controls one or more **did:btcr2** identifiers participating in a ::BTCR2 Beacon::.  
+* ::Beacon Cohort:: \- The set of unique cryptographic keys participating in a ::BTCR2 Beacon:: that make up its n-of-n MuSig2 Bitcoin address.  
+* ::Beacon Aggregator:: \- The entity that coordinates the protocols of an Aggregate ::BTCR2 Beacon::, specifically the "Create Beacon Cohort" and "Announce Beacon Signal" protocols.  
+* ::Beacon Participant:: \- A member of a ::Beacon Cohort::, typically a DID controller, that controls cryptographic keys required to partially authorize the broadcasting of a ::Beacon Signal:: to the Bitcoin blockchain.  
+* Verifier \- A party verifying a **did:btcr2** identifier presentation.
+
+How coordination between an aggregator and multiple ::Beacon Participants:: is managed is out of scope, but the result of the interactions between members of the cohort is a trustable Beacon Signal on the bitcoin blockchain announcing updates approved by all members of the cohort.
+
+When defining a ::Beacon Cohort::, the ::Beacon Aggregator:: may define the conditions for the cohort, including but not limited to:
+
+* Automatic publication to ::CAS:: (::Map Beacon:: only).  
+* Minimum and/or maximum number of ::Beacon Participants::.  
+* Minimum and/or maximum number of DIDs per ::Beacon Participant::.  
+* Cost of enrollment.  
+* Cost per signal per DID or ::Beacon Participant::.  
+* Minimum and/or maximum time between signals.  
+* Number of pending updates that trigger a signal.
+
+### No Privileged Role
+Although aggregation **does** depend on some party (or protocol) acting as the coordinator and publisher of Beacon Signals, that role may be satisfied by any party. To ensure that the aggregator gains no specific benefit with regard to the authority to publish a Beacon Signal or not, aggregations SHOULD use a protocol that ensures every participant in the cohort has explicitly signed the Beacon Signal itself. We anticipate that future innovations in Bitcoin will enable alternative forms of assurance. However, today, we recommend an n-of-n Schnoor signature where each participant explicitly signs in a provable manner.
+
+### Worst Case
+Since aggregation depends on others, it should be expected that any given Beacon might fail. Perhaps the aggregator stops providing the service or a peer in the cohort stops signing their portion of the Beacon Signal.
+
+The best practice to avoid complete failure is to have at least one ::Singleton Beacon:: in every DID document, ensuring a fallback mechanism should all Aggregate Beacons fail.
+
+However, even in the case of failure at the Aggregation layer, only two negative consequence are possible.
+
+First, if the Beacon Signal does not require n-of-n signing, a hostile Cohort (or Aggregator) could invalidate the DID by publishing an Beacon Signal with a malformed update.
+
+Second, when the Beacon Signal does require n-of-n signing, a hostile Cohort (or Aggregator) could render that Beacon inoperable, preventing publication of DID Updates through that address. However, this has no effect on other Beacons.
+
+In no cast is it possible for an aggregation participant to compromise the DID document itself. All DID updates are still cryptographically secured. Compromising the DID document requires compromising the Controller's key store: a threat which is already the primary attach vector for DIDs. No new threats to DID document provenance are created by aggregation.
+
 ## CRUD Operations
 
-This section defines the Create, Read, Update, and Deactivate (CRUD) operations
-for the **did:btcr2** method.
+Creating and using did:bctr2 DIDs is achieved through specified cryptographic and network operations, with all updates anchored to Bitcoin transactions. This section defines the Create, Read, Update, and Deactivate (CRUD) operations for the **did:btcr2** method.
 
 ### Create
 
