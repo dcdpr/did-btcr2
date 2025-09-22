@@ -1,5 +1,5 @@
 {
+    "id": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#service-0",
     "type": "SingletonBeacon",
-    "id": "did:btc1:k1qypcylxwhf8sykn2dztm6z8lxm43kwkyzf07qmp9jafv3zfntmpwtks9hmnrw#initialP2PKH",
-    "serviceEndpoint": "bitcoin:moZUuvjVnipp1jd6y6a2vdhjLjdaWpuTCv"
+    "serviceEndpoint": "bitcoin:tb1qtmshuqzeyr7cdh5t2nl6kf3s73fdynpj5apgtx"
 }
