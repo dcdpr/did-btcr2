@@ -95,3 +95,11 @@ th, td {
 .content .algo-number-before::before {
     content: counter(algo-counter) ". ";
 }
+
+.abnf { 
+    background-color: #efefef;
+}
+
+.json { 
+    background-color: #efefef;
+}

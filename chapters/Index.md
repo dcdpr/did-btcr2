@@ -614,7 +614,7 @@ by a separator which is always `1`, which is then followed by the
 The Augmented Backus-Naur (ABNF) for a **did:btcr2** identifier is as
 follows:
 
-```
+```{.abnf}
 did-btcr2 = "did:btcr2:" id-bech32
 id-bech32 = key-encoding / hash-encoding
 hash-encoding = "x1" bech32-encoding
