@@ -57,7 +57,7 @@ Issues                     <https://github.com/dcdpr/did-btcr2/issues>
 
 ---
 
-## Abstract
+## Abstract {.unnumbered}
 
 **did:btcr2** is a censorship-resistant Decentralized Identifier (DID)
 method using the Bitcoin blockchain as a Verifiable Data Registry to
@@ -73,7 +73,7 @@ DID document; private DID resolution; and non-repudiation.
 Public digital identity was introduced to the Internet through Pretty Good
 Privacy's (PGP) foundational legal work in the 1990s. With Decentralized
 Identifiers (DIDs), digital identity can be preserved through a rotation of
-key material, without relying on a centralized party.
+key material, without relying on a centralized party. This specification defines **did:btcr2**, a DID method designed and motivated by the following considerations:
 
 ### Anti-censorship
 
@@ -174,8 +174,8 @@ normative statements in DID core sections [4\. Data
 Model](http://w3.org/TR/did-1.1/#data-model) and [5\. Core
 Properties](https://www.w3.org/TR/did-1.1/#core-properties). A
 serialization format for the conforming document is deterministic,
-bi-directional, and lossless, as described in [6\.
-Representations](https://www.w3.org/TR/did-1.1/#representations).
+bi-directional, and lossless, as described in 
+[6\. Representations](https://www.w3.org/TR/did-1.1/#representations).
 
 A conforming registrar is any algorithm realized as software and/or
 hardware that creates and updates conforming **did:btcr2** identifiers or
@@ -228,8 +228,7 @@ Beacon Addresses
 Beacon Aggregator
 
 : The entity that coordinates the protocols of an aggregate ::BTCR2
-Beacon::. Specifically the Create Beacon Cohort and Announce Beacon Signal
-protocols.
+Beacon:: in order to establish a ::Beacon Cohort:: and aggregate ::BTCR2 Update Announcements:: in a ::Beacon Signal::. 
 
 Beacon Aggregators
 
@@ -294,7 +293,7 @@ Beacon Types
 
 BTCR2 Beacon
 
-: A a service listed in a BTCR2 DID document that informs
+: A service listed in a BTCR2 DID document that informs
 resolvers how to find authentic updates to the DID. It must be either a
 ::Singleton Beacon::, ::SMT Beacon::, or a ::Map Beacon::.
 
@@ -317,7 +316,7 @@ BTCR2 Updates
 
 BTCR2 Update Announcement
 
-: A 32 byte SHA256 hash committing to a ::BTCR2 Update:: that has been
+: A 32-byte SHA256 hash committing to a ::BTCR2 Update:: that has been
 broadcast by a ::BTCR2 Beacon:: in an ::Authorized Beacon Signal::.
 ::Beacon Signals:: can include one or more BTCR2 Update Announcements. How
 ::Beacon Signals:: include announcements is defined by the ::Beacon Type::.
@@ -366,7 +365,7 @@ CIDs
 Genesis Bytes
 
 : The bytes used to generate a did:btcr2 identifier. These bytes are either
-  a 33-byte compressed SEC encoded sec256k1 public key or a 32 byte SHA256
+  a 33-byte compressed SEC encoded sec256k1 public key or a 32-byte SHA256
   hash of a ::Genesis Document::.
 
 Genesis Document
@@ -511,8 +510,6 @@ leaf of the tree is indexed.
 This data structure enables proofs of both inclusion and non-inclusion of
 data at a given index. The instantiation in this specification has 2^256
 leaves that are indexed by the SHA256 hash of a **did:btcr2** identifier.
-The data attested to at the leaves of the tree is the ::BTCR2 Update:: for
-that **did:btcr2** identifier that indexed to the leaf.
 
 SMT
 
@@ -579,8 +576,7 @@ encoding of the following data:
 * `network` \- the Bitcoin network the DID can be used on; and  
 * either:  
   * a `key-value` representing a secp256k1 public key; or  
-  * a `hash-value` representing the hash of an initiating external DID
-    document.
+  * a `hash-value` representing the hash of a ::Genesis Document::.
 
 The specification `version` and the Bitcoin `network` are encoded into a
 single byte as follows:
@@ -655,7 +651,7 @@ As a resolver goes through the resolution process, it encounters one or
 more document hashes, which it uses to identify the files of interest.
 
 While it's possible for a single **did:btcr2** identifier to mix the two
-distribution mechanisms, it is not recommended. Instead, it is RECOMMENDED
+distribution mechanisms, it is NOT RECOMMENDED. Instead, it is RECOMMENDED
 that controllers pick a distribution mechanism and use it throughout the
 lifetime of a given DID.
 
@@ -851,7 +847,7 @@ An ::SMT Beacon:: provides maximum privacy for the DID controller, as the
 DID controller never has to reveal their DIDs or ::BTCR2 Updates:: to the
 aggregator.
 
-The type of a service defining a ::SMT Beacon:: in a DID document is
+The type of a service defining an ::SMT Beacon:: in a DID document is
 "SMTBeacon".
 
 ---
@@ -859,7 +855,7 @@ The type of a service defining a ::SMT Beacon:: in a DID document is
 ## Aggregation
 
 Aggregation is how did:btcr2 minimizes on-chain transactions when updating
-DID documents. Rather than every DID update needing a separate transaction,
+DID documents. Rather than every ::BTCR2 Update:: needing a separate transaction,
 as in BTCR, DID controllers can use ::Aggregate Beacons::, such as ::SMT
 Beacon:: and ::Map Beacon::. Listed in their repsective DID documents,
 these beacons enable an aggregator to broadcast Beacon Signals that contain
@@ -872,8 +868,7 @@ The participants in aggregation are as follows.
 * ::Beacon Cohort:: \- The set of unique cryptographic keys participating
   in a ::BTCR2 Beacon:: that make up its n-of-n MuSig2 Bitcoin address.  
 * ::Beacon Aggregator:: \- The entity that coordinates the protocols of an
-  Aggregate ::BTCR2 Beacon::, specifically the "Create Beacon Cohort" and
-  "Announce Beacon Signal" protocols.  
+  Aggregate ::BTCR2 Beacon::.  
 * ::Beacon Participant:: \- A member of a ::Beacon Cohort::, typically a
   DID controller, that controls cryptographic keys required to partially
   authorize the broadcasting of a ::Beacon Signal:: to the Bitcoin
@@ -882,7 +877,7 @@ The participants in aggregation are as follows.
 
 How coordination between an aggregator and multiple ::Beacon Participants::
 is managed is out of scope, but the result of the interactions between
-members of the cohort is a trustable Beacon Signal on the bitcoin
+members of the cohort is a trustable Beacon Signal on the Bitcoin
 blockchain announcing updates approved by all members of the cohort.
 
 When defining a ::Beacon Cohort::, the ::Beacon Aggregator:: defines the
@@ -904,32 +899,32 @@ regard to the authority to publish a Beacon Signal, aggregations
 SHOULD use a protocol that ensures every participant in the cohort has
 explicitly signed the Beacon Signal itself. We anticipate that future
 innovations in Bitcoin will enable alternative forms of assurance. However,
-today, we recommend an n-of-n Schnoor signature where each participant
+today, it is RECOMMENDED that ::Aggregate Beacon:: use a ::Beacon Address:: that requires an n-of-n Schnorr signature where each participant
 explicitly signs in a provable manner.
 
 ### Worst Case
 Since aggregation depends on others, it should be expected that any given
-Beacon might fail. Perhaps the aggregator stops providing the service or a
+::BTCR2 Beacon:: might fail. Perhaps the aggregator stops providing the service or a
 peer in the cohort stops signing their portion of the Beacon Signal.
 
 The best practice to avoid complete failure is to have at least one
 ::Singleton Beacon:: in every DID document, ensuring a fallback mechanism
 should all Aggregate Beacons fail.
 
-However, even in the case of failure at the Aggregation layer, only two
+However, even in the case of failure at the aggregation layer, only two
 negative consequence are possible.
 
 First, if the Beacon Signal does not require n-of-n signing, a hostile
-Cohort (or Aggregator) could invalidate the DID by publishing an Beacon
+Cohort (or Aggregator) could invalidate the DID by publishing a Beacon
 Signal with a malformed update.
 
 Second, when the Beacon Signal does require n-of-n signing, a hostile
 Cohort (or Aggregator) could render that Beacon inoperable, preventing
-publication of DID Updates through that address. However, this has no
+publication of ::BTCR2 Updates:: through that address. However, this has no
 effect on other Beacons.
 
-In no case is it possible for an aggregation participant other than the
-DID controller to compromise the DID document itself. All DID updates remain
+In no case is it possible for a ::Beacon Participant:: other than the
+DID controller to compromise the DID document itself. All ::BTCR2 Updates:: remain
 cryptographically secured. Compromising the DID document requires compromising
 the Controller's key store: a threat which is already the primary attack
 vector for compromising DIDs. No new threats to DID document provenance
@@ -941,7 +936,7 @@ are created by aggregation.
 
 Creating and using did:bctr2 DIDs is achieved through specified
 cryptographic and network operations, with all updates anchored to Bitcoin
-transactions. This section defines the Create, Read, Update, and Deactivate
+transactions. This section defines the Create, Resolve, Update, and Deactivate
 (CRUD) operations for the **did:btcr2** method.
 
 ---
@@ -1062,11 +1057,11 @@ network anchors the identifier and MUST be selected from the table below.
 The input bytes to the bech32m algorithm are constructed as follows: the
 first byte is the version and the network, with the version minus one in
 the low nibble and the value from the network table in the high nibble. The
-Genesis Bytes are then appended to the first byte to produce the input
+::Genesis Bytes:: are then appended to the first byte to produce the input
 bytes. Encode the input bytes using the bech32m algorithm with the
 human-readable part (hrp) value set to the ASCII value of either 'k' or
 'x', depending on the type of the identifier. For **did:btcr2** identifiers
-generated from an initial secp256k1 public key, use 'k' for *did:btcr2*
+generated from an initial secp256k1 public key, use 'k' for **did:btcr2**
 identifiers generated from an Initial DID Document, use 'x'. The result of
 the encoding is the method-specific identifier. Prepend the method-specific
 identifier with the ASCII string "did:btcr2:" to create the DID.
@@ -1212,7 +1207,7 @@ BTCR2 Update].
 
 Traverse the blockchain and apply updates in temporal order, updating and
 maintaining a ::Contemporary DID Document:: until all updates are
-processed. At each stage, the Contemporary DID Document defines the ::BTCR2
+processed. At each stage, the ::Contemporary DID Document:: defines the ::BTCR2
 Beacons:: active at that point in time; those Beacons – and only those
 Beacons – are checked for updates.
 
@@ -1238,7 +1233,8 @@ retrieve the identifier type, version, network and ::Genesis Bytes::.
 The identifier string MUST consist of three components separated by a ‘:’
 character. The first component MUST be the string "did", the second
 component MUST be "btcr2" and the third component is the BTCR2-specific
-identifier. Otherwise an INVALID_DID error MUST be raised.
+identifier. If the second component is not "btcr2" a METHOD_NOT_SUPPORTED error 
+MUST be raised, otherwise for all other errors an INVALID_DID error MUST be raised.
 
 The BTCR2-specific identifier is decoded using the
 [bech32m](https://en.bitcoin.it/wiki/BIP_0350#Bech32m) algorithm which
@@ -1297,7 +1293,7 @@ the following fields MUST be used to execute the request:
     relevant document from ::Sidecar Data::.
   * smtProofs: An array of SMT proofs that prove inclusion or non-inclusion
     of a ::BTCR2 Update:: announced within an SMT Beacon Signal. Each proof
-    MUST have an id field which is the hex encoded merkle root that is
+    MUST have an id field which is the hex encoded Merkle root that is
     included as the Signal Bytes of the Beacon Signal.
 
 ##### Hide {.unnumbered .unlisted}
@@ -1391,7 +1387,7 @@ The DID document MUST contain only the following properties:
 * A service array containing three ::BTCR2 Beacon:: services. The
   serviceEndpoint for each of these services Must be a [BIP21
   URI](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)
-  encoding of a bitcoin address controlled by the public key. The three
+  encoding of a Bitcoin address controlled by the public key. The three
   different address formats are p2pkh, p2wpkh, p2tr. The id value of the
   service MUST be "#initialP2PKH", #initialP2WPKH” and "#initialP2TR"
   respectively. Finally, each of these services MUST have a type set to the
@@ -2039,7 +2035,7 @@ the ::Beacon Cohort:: are outside the scope of this specification.
 DID controllers that wish to join an advertised ::Beacon Cohort:: MUST
 provide the aggregator with a Schnorr public key. Participants MUST also
 provide the set of indexes that are used to identify specific ::BTCR2
-Updates:: announced by a ::Beacon Signal::.. These indexes MUST be SHA256
+Updates:: announced by a ::Beacon Signal::. These indexes MUST be SHA256
 hashes of the DIDs that will use the ::BTCR2 Beacon:: to aggregate updates.
 
 The ::Beacon Aggregator:: decides when to finalize the ::Beacon Cohort::.
@@ -2101,9 +2097,8 @@ defines a set of transformations to be applied to a DID document. The
 result of applying the patch MUST be a conformant DID document according to
 the [DID core v1.1](https://www.w3.org/TR/did-1.1/) specification.  
 * targetVersionId - The versionId of the DID document after the patch has
-been applied. When constructing an BTCR2 Update to a DID document with a
-specific versionId, the targetVersionId MUST be one more than this
-versionId.  
+been applied. The targetVersionId MUST be one more than the
+versionId of the DID document being updated.  
 * sourceHash - A base64 encoded SHA256 hash of the canonicalized DID
 document that the patch MUST be applied to. The DID document MUST be
 canonicalized using the [JSON Canonicalization
@@ -2122,6 +2117,7 @@ specification](https://w3c-ccg.github.io/zcap-spec). The following
 properties MUST be set to specific values:  
   * capability - the identifier of the root capability to update a specific
     did:btcr2 DID document  
+  * capabilityAction - this MUST be the string value "Write".
   * invocationTarget - the did:btcr2 identifier whose DID document is being
     updated.
 
@@ -2236,7 +2232,7 @@ MUST be provided. The calculation of the value varies by ::Beacon Type::.
     Update:: canonicalized using JCS.
   * For an ::SMT Beacon:: the value is either the double SHA256 hash of a
   random nonce if no update is present for the index or the SHA256 hash of
-  the concatenated SHA256 hash of a random nonce and the canonicalized
+  the concatenated SHA256 hashes of a random nonce and the canonicalized
   BTCR2 Update. Participants MUST persist their nonce values.
   * Participants of ::SMT Beacons:: MUST provide an update for all indexes
   they registered with the ::Beacon Aggregator::.
@@ -2265,13 +2261,13 @@ Beacon::.
 that maps indexes provided by participants to ::BTCR2 Update
 Announcements::. The ::Signal Bytes:: included in a Map Beacon Signal is
 the SHA256 hash of the Beacon Announcement Map.  
-* For SMT Beacons, the aggregator constructs a ::Sparse Merkle Tree::. The
+* For SMT Beacons, the aggregator constructs a ::Sparse Merkle Tree:: (SMT). The
 index provided by a ::Beacon Participant:: is the index of a leaf node,
 with the value of this leaf being the value provided by the participant for
 that index. All indexes registered with the aggregator MUST have values at
-their leaves within the SMT. Once constructed, the ::SMT:: is optimized and
+their leaves within the ::SMT::. Once constructed, the ::SMT:: is optimized and
 individual SMT proofs are generated for each index and shared with the
-::Beacon Participant:: that registered the index.
+::Beacon Participant:: that registered the index. The ::Signal Bytes:: of a SMT Beacon Signal is the 32 byte SMT root.
 
 For a ::Map Beacon::, the request signal confirmation message contains:
 
