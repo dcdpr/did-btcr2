@@ -14,32 +14,30 @@ Once we have finalized the specification text a stable v1.0 of the specification
 
 ::: {.unformattedTable}
 ------------- ------------------------ ---------------------------------------------------
-Ryan Grant    <rgrant@contract.design> [Digital Contract
-Design](https://contract.design/) Will Abramson <will@legreq.com>
-[Legendary Requirements](https://legreq.com/) Joe Andrieu
-<joe@legreq.com>         [Legendary Requirements](https://legreq.com/)
-Kevin Dean    <kevin@legreq.com>       [Legendary
-Requirements](https://legreq.com/) Dan Pape      <dpape@contract.design>
-[Digital Contract Design](https://contract.design/) Jennie Meier
-<jennie@contract.design> [Digital Contract
-Design](https://contract.design/)
+Ryan Grant    <rgrant@contract.design> [Digital Contract Design](https://contract.design/) 
+Will Abramson <will@legreq.com>        [Legendary Requirements](https://legreq.com/) 
+Joe Andrieu   <joe@legreq.com>         [Legendary Requirements](https://legreq.com/)
+Kevin Dean    <kevin@legreq.com>       [Legendary Requirements](https://legreq.com/) 
+Dan Pape      <dpape@contract.design>  [Digital Contract Design](https://contract.design/)
+Jennie Meier  <jennie@contract.design> [Digital Contract Design](https://contract.design/)
 ------------- ------------------------ ---------------------------------------------------
 :::
 
 ### Contributors {.unnumbered .unlisted}
 
 ::: {.unformattedTable}
----------------- ------------------------ ---------------------------------------------------
-Kate Sills       <katelynsills@gmail.com> Markus Sabadello
-<markus@danubetech.com> Jintek           <info@jintek.consulting>
----------------- ------------------------ ---------------------------------------------------
+---------------- ------------------------ 
+Kate Sills       <katelynsills@gmail.com> 
+Markus Sabadello <markus@danubetech.com> 
+Jintek           <info@jintek.consulting>
+---------------- ------------------------ 
 :::
 
 ### Publication Date {.unnumbered .unlisted}
 
-20th September 2025
+21st September 2025
 
-### Licence {.unnumbered .unlisted}
+### License {.unnumbered .unlisted}
 
 [Mozilla Public License Version
 2.0](https://github.com/dcdpr/did-btcr2/blob/main/LICENSE)
@@ -47,10 +45,10 @@ Kate Sills       <katelynsills@gmail.com> Markus Sabadello
 ### Contribute {.unnumbered .unlisted}
 
 ::: {.unformattedTable}
-------------------------- ---------------------------------------------------
-Specification Repository  <https://github.com/dcdpr/did-btcr2> Issues
-<https://github.com/dcdpr/did-btcr2/issues>
-------------------------- ---------------------------------------------------
+-------------------------- -------------------------------------------
+Specification Repository   <https://github.com/dcdpr/did-btcr2> 
+Issues                     <https://github.com/dcdpr/did-btcr2/issues>
+-------------------------- -------------------------------------------
 :::
 
 ### Copyright {.unnumbered .unlisted}
@@ -67,6 +65,8 @@ announce changes to the DID document. It supports zero-cost off-chain DID
 creation; aggregated updates for scalable on-chain update costs; long-term
 identifiers that can support frequent updates; private communication of the
 DID document; private DID resolution; and non-repudiation.
+
+---
 
 ## Introduction and Motivation
 
@@ -111,10 +111,10 @@ sees the same cryptographically anchored result.
 
 ### Late Publishing
 
-Many DID methods lack verifiable provenance. For many, it is simply
+Many DID methods lack verifiable provenance: it is simply
 impossible to reconstruct a cryptographically verifiable history of
-updates. Instead, they use a Verifiable Data Registry that can be used to
-rewrite history. Bitcoin's blockchain is the premiere global database for
+updates. Instead, they use a Verifiable Data Registry that can
+rewrite history. Bitcoin's blockchain is the premiere global network for
 immutably anchoring information to a specific time. This DID method ensures
 that every BTCR2 DID is anchored on a single, canonical, immutable history
 for the lifetime of the DID. It is simply not possible for anyone to modify
@@ -136,6 +136,8 @@ capability invocation and delegation. For document-based DIDs, additional
 ::Initial DID document::. Offline creation allows unlimited DID creation
 and use without requiring any on-chain or online interactions, making it
 suitable for a wide range of high-volume, low cost use cases.
+
+---
 
 ## Conformance
 
@@ -176,11 +178,10 @@ bi-directional, and lossless, as described in [6\.
 Representations](https://www.w3.org/TR/did-1.1/#representations).
 
 A conforming registrar is any algorithm realized as software and/or
-hardware that generates and updates conforming **did:btcr2** identifier or
+hardware that creates and updates conforming **did:btcr2** identifiers or
 conforming DID Documents and complies with the relevant normative
-statements in [6\.
-Representations](https://www.w3.org/TR/did-1.1/#representations) of DID
-core and the [Create], [Update] and [Deactivate] sections of this
+statements in [6\. Representations] (https://www.w3.org/TR/did-1.1/#representations) 
+of DID core, and the [Create], [Update], and [Deactivate] sections of this
 specification.
 
 A conforming **did:btcr2** resolver is any algorithm realized as software
@@ -188,6 +189,8 @@ and/or hardware that complies with the relevant normative statements in
 [4\. DID Resolution](https://www.w3.org/TR/did-resolution/#resolving) of
 the DID Resolution specification and the [Resolve] section of this
 specification.
+
+---
 
 ## Terminology
 
@@ -291,10 +294,9 @@ Beacon Types
 
 BTCR2 Beacon
 
-: A abstract mechanism, identified by a ::Beacon Address::, that is
-included as a service in a DID document to indicate to resolvers that
-spends from this address, called ::Beacon Signals::, should be discovered
-and checked for ::BTCR2 Update Announcements::.
+: A a service listed in a BTCR2 DID document that informs
+resolvers how to find authentic updates to the DID. It must be either a
+::Singleton Beacon::, ::SMT Beacon::, or a ::Map Beacon::.
 
 BTCR2 Beacons
 
@@ -436,8 +438,8 @@ interactions.
 
 Resolution Time
 
-: A Coordinated Universal Time (UTC) timestamp of when the client makes a
-resolution request of the controller.
+: A Coordinated Universal Time (UTC) timestamp set when the resolver
+receives a resolution request.
 
 Schnorr Signature
 
@@ -483,7 +485,7 @@ the following form: `[OP_RETURN, OP_PUSH_BYTES, <32 signal bytes>]`.
 Singleton Beacon
 
 : A type of ::BTCR2 Beacon:: whose ::Beacon Signals:: each contain a single
-::BTCR2 Update Announcement::.
+::BTCR2 Update Announcement::. See [Singleton Beacon] for more.
 
 Singleton Beacons
 
@@ -492,9 +494,10 @@ Singleton Beacons
 SMT Beacon
 
 : A type of ::BTCR2 Beacon:: which aggregates multiple ::BTCR2 Update
-Announcements::.  
+Announcements:: using an optimized ::Sparse Merkle Tree::.  
+
 A ::Beacon Signal:: from an SMT Beacon contains the root of an optimized
-::Sparse Merkle Tree::.
+::Sparse Merkle Tree::. See [SMT Beacon] for more.
 
 SMT Beacons
 
@@ -527,8 +530,7 @@ that the leaf is in the tree.
 
 Unsecured BTCR2 Update
 
-: A ::BTCR2 Update:: without a proof attached to it invoking the capability
-to apply the update to a **did:btcr2** DID document. An Usecured BTCR2
+: A ::BTCR2 Update:: without a proof attached to it. An Unsecured BTCR2
 Update contains the JSON Patch object that defines the set of mutations to
 be applied to a DID document, along with the new version of the DID
 document and the source and target hashes of the DID document identifying
@@ -563,6 +565,8 @@ Unspent Transaction Outputs
 UTXOs
 
 : ::Unspent Transaction Output::
+
+---
 
 ## Syntax
 
@@ -630,7 +634,9 @@ RFC5234](https://datatracker.ietf.org/doc/html/rfc5234).
 
 For details on how to interpret a BTCR2 DID, see [Resolve].
 
-## Update Distribution
+---
+
+## Update Data Distribution
 
 When additional data is required for resolution, the controller has two
 primary means for getting that data to the Resolver, both secured by
@@ -641,10 +647,9 @@ hashes to ensure that the data received by the Resolver is the data secured
 by a legitimate update.
 
 All documents used for resolution are JSON documents, identified by their
-SHA256 cryptographic hash by first canonicalizing the document according to
-the [JSON Canonicalization and
-Algorithm](https://www.rfc-editor.org/rfc/rfc8785) and the computing the
-SHA256 hash of the canonicalized document.
+SHA256 cryptographic hash calculated after first canonicalizing the document
+according to the [JSON Canonicalization and Algorithm](https://www.rfc-editor.org/rfc/rfc8785) 
+and the computing the SHA256 hash of the result.
 
 As a resolver goes through the resolution process, it encounters one or
 more document hashes, which it uses to identify the files of interest.
@@ -656,11 +661,11 @@ lifetime of a given DID.
 
 ### Sidecar
 
-::Sidecar:: provides additional data alongside the **did:btcr2** identifier
+::Sidecar:: provides additional update data alongside the **did:btcr2** identifier
 being resolved. This is analogous to a sidecar on a motorcycle bringing
 along a second passenger: the DID controller provides the DID document
 history (in the form of ::BTCR2 Updates:: and any additional proofs)
-alongside the DID to the relying party so that the resolver can construct
+along with DID to the relying party so that the resolver can construct
 the DID document.
 
 In short, when a resolver is presented with a **did:btcr2** identifier, it
@@ -725,6 +730,8 @@ A resolver retrieves a file associated with a SHA256 hash by constructing
 the IPFS CIDv1 per the above algorithm and requesting the file from an IPFS
 node.
 
+---
+
 ## Dereferencing
 
 To dereference a BTCR2 DID URL, first resolve the DID in the DID URL to get
@@ -742,6 +749,8 @@ anticipate a potential future option to enable a BTCR2 DID URL that
 dereferences Ordinal-based assets that are stored on-chain. However, this
 is out of scope for this specification.
 
+---
+
 ## Beacons
 
 ### Overview
@@ -757,8 +766,8 @@ processed.
 
 Any on-chain Beacon Signal that cannot be processed renders the related DID
 invalid. For this reason, all DID controllers SHOULD ensure the ::Beacon
-Addresses:: they include in their DID document require their cryptographic
-approval so spend ::UTXO:: controlled by the address, so that only approved
+Addresses:: they include in their DID document require appropriate
+approval to spend ::UTXOs:: controlled by the address, so that only approved
 Signals can be posted to Bitcoin. For resilience, BTCR2 DIDs can specify
 any number of Beacons and SHOULD include at least one ::Singleton Beacon::
 as a fallback in case all ::Aggregate Beacons:: fail.
@@ -817,18 +826,15 @@ The type of a service defining a ::Singleton Beacon:: in a DID document is
 A ::Map Beacon:: creates a ::Beacon Signal:: that commits to multiple
 ::BTCR2 Update Announcements:: through a ::Beacon Announcement Map::. To do
 so, it constructs a map where the key is the **did:btcr2** identifier and
-the value is the hash of the corresponding ::BTCR2 Update::, and broadcasts
-a SHA256 hash of the map in the ::Beacon Signal::.
+the value is the hash of the corresponding ::BTCR2 Update::. The Beacon 
+Signal contains a SHA256 hash of the map.
 
 If a ::BTCR2 Update:: is not publicly discoverable (i.e., is not published
-to a ::CAS:: under its hash), the only parties that are aware of it are the
-DID controller and any parties provided it by the DID controller. However,
-any party that has access to or is provided the map is at least aware of
-the existence of all **did:btcr2** identifiers in the map and the existence
-of their ::BTCR2 Update Announcements::.
+to a ::CAS:: under its hash), the only parties with access to the update are
+the DID controller and any parties they gave it to (etc.). 
 
 For a ::Map Beacon::, proof of non-inclusion of a **did:btcr2** identifier
-is simply its absence from the map.
+is simply its absence from the map. 
 
 The type of a service defining a ::Map Beacon:: in a DID document is
 "MapBeacon".
@@ -843,15 +849,16 @@ publishes the Merkle root.
 
 An ::SMT Beacon:: provides maximum privacy for the DID controller, as the
 DID controller never has to reveal their DIDs or ::BTCR2 Updates:: to the
-aggregator. This introduces a small risk, as the DID controller is not
-required to prove control over a DID in order to participate.
+aggregator.
 
 The type of a service defining a ::SMT Beacon:: in a DID document is
 "SMTBeacon".
 
+---
+
 ## Aggregation
 
-Aggregation is how did:btcr2 minimizes on-chain transactions when updated
+Aggregation is how did:btcr2 minimizes on-chain transactions when updating
 DID documents. Rather than every DID update needing a separate transaction,
 as in BTCR, DID controllers can use ::Aggregate Beacons::, such as ::SMT
 Beacon:: and ::Map Beacon::. Listed in their repsective DID documents,
@@ -878,7 +885,7 @@ is managed is out of scope, but the result of the interactions between
 members of the cohort is a trustable Beacon Signal on the bitcoin
 blockchain announcing updates approved by all members of the cohort.
 
-When defining a ::Beacon Cohort::, the ::Beacon Aggregator:: may define the
+When defining a ::Beacon Cohort::, the ::Beacon Aggregator:: defines the
 conditions for the cohort, including but not limited to:
 
 * Automatic publication to ::CAS:: (::Map Beacon:: only).  
@@ -893,7 +900,7 @@ conditions for the cohort, including but not limited to:
 Although aggregation **does** depend on some party (or protocol) acting as
 the coordinator and publisher of Beacon Signals, that role may be satisfied
 by any party. To ensure that the aggregator gains no specific benefit with
-regard to the authority to publish a Beacon Signal or not, aggregations
+regard to the authority to publish a Beacon Signal, aggregations
 SHOULD use a protocol that ensures every participant in the cohort has
 explicitly signed the Beacon Signal itself. We anticipate that future
 innovations in Bitcoin will enable alternative forms of assurance. However,
@@ -921,11 +928,14 @@ Cohort (or Aggregator) could render that Beacon inoperable, preventing
 publication of DID Updates through that address. However, this has no
 effect on other Beacons.
 
-In no case is it possible for an aggregation participant to compromise the
-DID document itself. All DID updates remain cryptographically secured.
-Compromising the DID document requires compromising the Controller's key
-store: a threat which is already the primary attach vector for compromising
-DIDs. No new threats to DID document provenance are created by aggregation.
+In no case is it possible for an aggregation participant other than the
+DID controller to compromise the DID document itself. All DID updates remain
+cryptographically secured. Compromising the DID document requires compromising
+the Controller's key store: a threat which is already the primary attack
+vector for compromising DIDs. No new threats to DID document provenance
+are created by aggregation.
+
+---
 
 ## CRUD Operations
 
@@ -933,6 +943,8 @@ Creating and using did:bctr2 DIDs is achieved through specified
 cryptographic and network operations, with all updates anchored to Bitcoin
 transactions. This section defines the Create, Read, Update, and Deactivate
 (CRUD) operations for the **did:btcr2** method.
+
+---
 
 ### Create
 
@@ -1159,6 +1171,8 @@ that anchors updates to the Bitcoin mutinynet]{.example-caption}
 
 `did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54`
 
+---
+
 ### Resolve
 
 Resolving a **did:btcr2** identifier takes an input DID and returns the
@@ -1210,8 +1224,7 @@ The resulting DID document is the canonical DID Document and MUST be
 returned to the caller of the resolver function in a resolution response
 which can be constructed following [Algo 14. Construct Resolution Result].
 
-NOTE. If there are no updates, the ::Initial DID Document:: is returned
-unless a specific versionId has been targetted by the resolution request.
+NOTE. If there are no updates, the ::Initial DID Document:: is returned.
 
 #### Algo 4. Process Resolution Inputs {.tabbed .unnumbered}
 
@@ -1223,8 +1236,8 @@ syntax](https://www.w3.org/TR/did-1.1/#did-syntax) and decode it to
 retrieve the identifier type, version, network and ::Genesis Bytes::.
 
 The identifier string MUST consist of three components separated by a ‘:’
-character. The first component MUST be the string ‘did’, the second
-component MUST be ‘btcr2’ and the third component is the BTCR2-specific
+character. The first component MUST be the string "did", the second
+component MUST be "btcr2" and the third component is the BTCR2-specific
 identifier. Otherwise an INVALID_DID error MUST be raised.
 
 The BTCR2-specific identifier is decoded using the
@@ -1917,6 +1930,8 @@ their resolution request. This response SHOULD contain the history of the
 DID document, its ::BTCR2 Updates:: and the transaction identifiers of the
 ::Beacon Signals:: that announced these updates on the Bitcoin blockchain.
 
+---
+
 ### Update
 
 Updating a did:btcr2 identifier is a matter of constructing a signed
@@ -1981,10 +1996,10 @@ Beacon:: to be included within a DID document.
 A ::Singleton Beacon:: service is a JSON object and MUST contain the
 properties:
 
-* id - A string that uniquely identifies the service within the DID
+* `id` - A string that uniquely identifies the service within the DID
 document that the service is going to be included.  
-* type - The string value ‘SingletonBeacon’  
-* serviceEndpoint - A [BIP21
+* `type` - The string value ‘SingletonBeacon’  
+* `serviceEndpoint` - A [BIP21
 URI](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki)
 encoded Bitcoin address. This address SHOULD be under the sole control of
 the DID controller.
@@ -2042,14 +2057,14 @@ service array for the relevant DIDs.
 
 The service object MUST contain the following properties:
 
-* id \- A URL expressed according to the [DID
+* `id` \- A URL expressed according to the [DID
   Syntax](https://www.w3.org/TR/did/upcoming/#did-syntax) that uniquely
   identifies the service within the DID document that the service is going
   to be included.  
-* type \- The type of the BTCR2 Beacon service. For ::Aggregate Beacons::
-this must be either “MapBeacon” or “SMTBeacon”. This MUST match the type of
+* `type` \- The type of the BTCR2 Beacon service. For ::Aggregate Beacons::
+this must be either 'MapBeacon' or 'SMTBeacon'. This MUST match the type of
 the BTCR2 Beacon as specified by the Beacon Aggregator.
-* serviceEndpoint \- The ::Beacon Address:: received from the aggregator,
+* `serviceEndpoint` \- The ::Beacon Address:: received from the aggregator,
   encoded as a [BIP21
   URI](https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki).
 
@@ -2321,6 +2336,8 @@ aggregation algorithm specified in
 The result is a signed Bitcoin transaction. The aggregator then broadcasts
 this transaction onto the Bitcoin network.
 
+---
+
 ### Deactivate
 
 To deactivate a **did:btcr2**, the DID controller MUST add the property
@@ -2330,6 +2347,8 @@ adds this property and announces the ::BTCR2 Update:: by broadcasting an
 ::Authorized Beacon Signal:: following the algorithms defined in [Update].
 Once a **did:btcr2** has been deactivated this state is considered
 permanent and resolution MUST terminate.
+
+---
 
 ## Security Considerations
 
@@ -2363,6 +2382,7 @@ these attacks, all ::Beacon Signals:: SHOULD be authorized by all cohort
 participants using an n-of-n multi-signature. That way DID controllers can
 verify the updates announced within a ::Beacon Signal:: before authorizing
 it.
+
 
 ### Deployment Considerations
 
@@ -2436,6 +2456,8 @@ network, however this would require the 51% attack to remain indefinitely
 enforced. Furthermore, without Key Compromise related to a specific DID,
 the compromise of the Bitcoin blockchain would not enable adversarial
 parties to take control of a DID.
+
+---
 
 ## Privacy Considerations
 
@@ -2539,6 +2561,8 @@ Although it might seem obvious, one of the side effects of using a DID is
 that a DID controller's relying party will see their DID Document. In
 addition, resolving a DID document requires making available to the
 resolver all prior DID document updates.
+
+---
 
 ## Appendix SMT - Optimized Sparse Merkle Tree Implementation
 
