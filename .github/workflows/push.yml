@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Pandoc specification builder
-        uses: legreq/pandoc-spec@fix-branch-deploy
+        uses: legreq/pandoc-spec@main
         with:
           include-repository: true
           include-pages: true
