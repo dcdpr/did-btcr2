@@ -796,7 +796,7 @@ and apply them in the order determined by the version specified by the
 All resolvers of **did:btcr2** DIDs MUST support the ::Beacon Types::
 defined in this specification.
 
-#### Singleton Beacon
+### Singleton Beacon
 
 A ::Singleton Beacon:: is a ::BTCR2 Beacon:: that can be used to announce
 commitments to a single ::BTCR2 Update:: targeting a single DID document.
@@ -921,11 +921,11 @@ Cohort (or Aggregator) could render that Beacon inoperable, preventing
 publication of DID Updates through that address. However, this has no
 effect on other Beacons.
 
-In no cast is it possible for an aggregation participant to compromise the
-DID document itself. All DID updates are still cryptographically secured.
+In no case is it possible for an aggregation participant to compromise the
+DID document itself. All DID updates remain cryptographically secured.
 Compromising the DID document requires compromising the Controller's key
-store: a threat which is already the primary attach vector for DIDs. No new
-threats to DID document provenance are created by aggregation.
+store: a threat which is already the primary attach vector for compromising
+DIDs. No new threats to DID document provenance are created by aggregation.
 
 ## CRUD Operations
 
@@ -940,6 +940,7 @@ Creating a **did:btcr2** identifier is entirely offline, requiring no
 innate network interactions or onchain anchoring transactions to generate a
 new identifier. Each creation starts either with a public key or a
 ::Genesis Document::.  
+
 Both creation algorithms first create the ::Genesis Bytes:: that commit to
 an ::Initial DID Document::.
 
