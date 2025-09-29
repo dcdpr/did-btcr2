@@ -11,6 +11,8 @@ command = "mdbook-mermaid"
 bibliography = "references.bib"
 title = "References"
 render-bib = "all"
+hb-tpl = "../theme/references.hbs"
+css = "../theme/references.css"
 
 [output.html]
 additional-js = ["src/mermaid.min.js", "src/mermaid-init.js"]

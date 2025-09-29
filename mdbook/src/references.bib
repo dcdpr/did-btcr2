@@ -1,25 +1,45 @@
 @misc{BIP173,
   title = {Base32 address format for native v0-16 witness outputs},
-  author = {{Bitcoin Community}},
+  author = {Pieter Wuille, Greg Maxwell},
   howpublished = {Bitcoin Improvement Proposal 173},
+  year = {2017},
+  month = {March},
   url = {https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki},
-  note = {BIP-0173}
+  note = {BIP-0173},
+  abstract = {This document proposes a checksummed base32 format, "Bech32", and a standard for native segregated witness output addresses using it.}
+}
+
+@misc{BIP340,
+  title = {Schnorr Signatures for secp256k1},
+  author = {Pieter Wuille, Jonas Nick, Tim Ruffing},
+  howpublished = {Bitcoin Improvement Proposal 340},
+  year = {2020},
+  month = {January},
+  url = {https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki},
+  note = {BIP-0340},
+  abstract = {This document proposes a standard for 64-byte Schnorr signatures over the elliptic curve secp256k1.}
 }
 
 @misc{BIP350,
   title = {Bech32m format for v1+ witness addresses},
-  author = {{Bitcoin Community}},
+  author = {Pieter Wuille},
   howpublished = {Bitcoin Improvement Proposal 350},
+  year = {2020},
+  month = {December},
   url = {https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki},
-  note = {BIP-0350}
+  note = {BIP-0350},
+  abstract = {This document defines an improved variant of Bech32 called Bech32m, and amends BIP173 to use Bech32m for native segregated witness outputs of version 1 and later. Bech32 remains in use for segregated witness outputs of version 0.}
 }
 
 @misc{Cryptosuites,
   title = {Data Integrity BIP340 Cryptosuites},
-  author = {{DCDPR}},
+  author = {Will Abramson},
   howpublished = {Online},
+  year = {2025},
+  month = {August},
   url = {https://dcdpr.github.io/data-integrity-schnorr-secp256k1/},
-  note = {Cryptosuites}
+  note = {Cryptosuites},
+  abstract = {This specification describes Data Integrity cryptographic suites for use when creating or verifying a digital signature using the the secp256k1 instantiation of the Schnorr Signature Algorithm as defined in [BIP340].}
 }
 
 @techreport{RFC6902,
@@ -30,7 +50,8 @@
   number = {6902},
   year = {2013},
   month = {April},
-  url = {https://datatracker.ietf.org/doc/html/rfc6902}
+  url = {https://datatracker.ietf.org/doc/html/rfc6902},
+  abstract = {JSON Patch defines a JSON document structure for expressing a sequence of operations to apply to a JavaScript Object Notation (JSON) document; it is suitable for use with the HTTP PATCH method. The "application/json-patch+json" media type is used to identify such patch documents.}
 }
 
 @techreport{RFC8785,
@@ -41,7 +62,10 @@
   number = {8785},
   year = {2020},
   month = {June},
-  url = {https://datatracker.ietf.org/doc/html/rfc8785}
+  url = {https://datatracker.ietf.org/doc/html/rfc8785},
+  abstract = {Cryptographic operations like hashing and signing need the data to be expressed in an invariant format so that the operations are reliably repeatable. One way to address this is to create a canonical representation of the data. Canonicalization also permits data to be exchanged in its original form on the "wire" while cryptographic operations performed on the canonicalized counterpart of the data in the producer and consumer endpoints generate consistent results.
+
+This document describes the JSON Canonicalization Scheme (JCS). This specification defines how to create a canonical representation of JSON data by building on the strict serialization methods for JSON primitives defined by ECMAScript, constraining JSON data to the Internet JSON (I-JSON) subset, and by using deterministic property sorting.}
 }
 
 @techreport{SHA256,
@@ -52,5 +76,6 @@
   number = {FIPS 180-4},
   year = {2015},
   month = {August},
-  url = {https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf}
+  url = {https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf},
+  abstract = {This standard specifies hash algorithms that can be used to generate digests of messages. The digests are used to detect whether messages have been changed since the digests were generated.}
 }
