@@ -41,8 +41,10 @@ for key-based creation and "x" as the HRP for intermediate doc-based
 creation. See {{#cite BIP173}} and {{#cite BIP350}} for details.
 
 
-
 ## JSON Document Hashing
 
 - Encode the document using JCS, {{#cite RFC8785}}.
 - Hash the encoded document with SHA-256, {{#cite SHA256}}.
+
+
+{{#include ./includes/includes.md}}

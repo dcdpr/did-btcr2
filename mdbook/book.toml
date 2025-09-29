@@ -8,6 +8,7 @@ title = "did:btcr2 DID Method Specification"
 command = "mdbook-mermaid"
 
 [preprocessor.bib]
+after = ["links"]
 bibliography = "references.bib"
 title = "References"
 render-bib = "all"
