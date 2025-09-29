@@ -4,8 +4,6 @@ language = "en"
 src = "src"
 title = "did:btcr2 DID Method Specification"
 
-[preprocessor]
-
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
 
@@ -14,12 +12,10 @@ bibliography = "references.bib"
 title = "References"
 render-bib = "all"
 
-
-[output]
-
 [output.html]
 additional-js = ["src/mermaid.min.js", "src/mermaid-init.js"]
+preferred-dark-theme = "coal"
+smart-punctuation = true
 
 [output.html.search]
 limit-results = 10
-

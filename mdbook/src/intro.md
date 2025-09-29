@@ -1,3 +1,13 @@
+# Abstract
+
+`did:btcr2` is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin
+blockchain as a Verifiable Data Registry to announce changes to the DID document. It supports
+zero-cost off-chain DID creation; aggregated updates for scalable on-chain update costs; long-term
+identifiers that can support frequent updates; private communication of the DID document; private
+DID resolution; and non-repudiation.
+
+<hr>
+
 # Introduction and Motivation
 
 Public digital identity was introduced to the Internet through Pretty
@@ -21,7 +31,6 @@ and states the ability to anchor private attestations to identifiers
 under individuals’ direct control, giving humans an unprecedented
 ability to participate in digital interactions on their own terms, using
 the identifiers they choose, when they choose.
-
 
 ## Privacy
 

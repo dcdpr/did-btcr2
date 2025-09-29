@@ -1,18 +1,16 @@
 # Summary
 
-
-[Authors](authors.md)
-[Contributors](contributors.md)
-[Publication Date](publication_date.md)
-[License](license.md)
+[`did:btcr2` DID Method](index.md)
 
 - [Introduction and Motivation](intro.md)
 - [Conformance](conformance.md)
 - [Terminology](terminology.md)
-- [Syntax](syntax.md)
 - [Beacons](beacons.md)
-- [Aggregation](aggregation.md)
 - [CRUD Operations](crud.md)
+  - [Create](crud/create.md)
+  - [Resolve](crud/resolve.md)
+  - [Update](crud/update.md)
+  - [Deactivate](crud/deactivate.md)
 - [Algorithms](algorithms.md)
 - [Errors](errors.md)
 - [Appendix](appendix.md)
