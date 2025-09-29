@@ -1,4 +1,3 @@
-# Abstract
 
 `did:btcr2` is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin
 blockchain as a Verifiable Data Registry to announce changes to the DID document. It supports
