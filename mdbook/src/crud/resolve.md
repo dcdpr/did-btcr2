@@ -80,3 +80,6 @@ What's missing for a specification is describing how to do the resolution, namel
 * Post-patch verifications (e.g., check the target document hash, look for late publishing errors, etc.)
 * Handling stop conditions (resolutionOptions.versionId, resolutionOptions.versionTime, etc.)
 * Constructing didResolutionMetadata and didDocumentMetadata returned by the Resolve operation.
+
+
+{{#include ./includes/includes.md}}
