@@ -1,0 +1,15 @@
+div.bib_div h2 {
+    margin-block-start: 0.5em;
+}
+
+div.bib_div hr {
+    margin-block-start: 1.5em;
+}
+
+div.bib_div:last-of-type hr {
+    display: none;
+}
+
+div.bib_div section.abstract {
+    margin-left: 1.5em;
+}
