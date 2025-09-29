@@ -1,0 +1,25 @@
+[book]
+authors = ["Daniel X. Pape"]
+language = "en"
+src = "src"
+title = "did:btcr2 DID Method Specification"
+
+[preprocessor]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
+
+[preprocessor.bib]
+bibliography = "references.bib"
+title = "References"
+render-bib = "all"
+
+
+[output]
+
+[output.html]
+additional-js = ["src/mermaid.min.js", "src/mermaid-init.js"]
+
+[output.html.search]
+limit-results = 10
+
