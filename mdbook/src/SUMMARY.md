@@ -6,6 +6,7 @@
 - [Conformance](conformance.md)
 - [Terminology](terminology.md)
 - [Beacons](beacons.md)
+- [JSON-LD Data Structures](data.md)
 - [Operations](operations.md)
   - [Create](operations/create.md)
   - [Resolve](operations/resolve.md)
