@@ -68,17 +68,82 @@ DID. It must be either a [Singleton Beacon], [SMT Beacon], or a [Map Beacon].
 
 A [BTCR2 Update] with a proof attached to it.
 
-<!-- I want to remove this notion of capability invocation. -->
+[todo] I want to remove this notion of capability invocation.
 
 A capability invocation secured using Data Integrity that invokes an authorization capability to
 update a specific **did:btcr2** DID document. This capability invocation Data Integrity proof
 secures the [BTCR2 Unsigned Update] document.
 
+<div class="tabs" id="terminology-tabs">
+  <div class="tablist" role="tablist" aria-label="Terminology">
+    <button role="tab"
+            id="tab-1"
+            aria-selected="true"
+            aria-controls="panel-1"
+            data-tab="panel-1">Hide</button>
+    <button role="tab"
+            id="tab-2"
+            aria-selected="false"
+            aria-controls="panel-2"
+            data-tab="panel-2">Show Example</button>
+  </div>
+
+<section id="panel-1" role="tabpanel" aria-labelledby="tab-1"></section>
+<section id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+
+```json
+{
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "patch": [
+    {
+      "op": "add",
+      "path": "/verificationMethod/1",
+      "value": {
+        "id": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1",
+        "type": "Multikey",
+        "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+        "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/authentication",
+      "value": [
+        "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1"
+      ]
+    }
+  ],
+  "sourceHash": "8beuAJ8w88YWrms8hsqCnZn2atxBMGsQ7YBFhzPx5b2q",
+  "targetHash": "F2F1pmK9tWAwzf6rKyVCietbswatFctvSJHM4sj1fiAw",
+  "targetVersionId": 2,
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "bip340-jcs-2025",
+    "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+    "proofPurpose": "capabilityInvocation",
+    "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+    "capabilityAction": "Write",
+    "@context": [
+      "https://w3id.org/security/v2",
+      "https://w3id.org/zcap/v1",
+      "https://w3id.org/json-ld-patch/v1",
+      "https://btcr2.dev/context/v1"
+    ],
+    "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
+  }
+}
+```
+
+</section>
+</div>
+
+
 ## BTCR2 Unsigned Update { #btcr2-unsigned-update }
-
-A [BTCR2 Update] without a proof attached to it.
-
-## BTCR2 Update { #btcr2-update }
 
 A data structure used for transforming a source DID document into a target DID document. It contains
 a JSON Patch {{#cite RFC6902}} object, a version number for the target DID document, and SHA256
@@ -117,6 +182,51 @@ identifier. This is typically done through some hashing function.
 ## CID { #cid }
 
 [Content Identifier]
+
+## Data Integrity Proof { #data-integrity-proof }
+
+A digital signature added to a [BTCR2 Unsigned Update] in order to convert 
+to a [BTCR2 Signed Update]. See {{#cite BIP340-Cryptosuite}}
+
+<div class="tabs" id="terminology-tabs">
+  <div class="tablist" role="tablist" aria-label="Terminology">
+    <button role="tab"
+            id="tab-1"
+            aria-selected="true"
+            aria-controls="panel-1"
+            data-tab="panel-1">Hide</button>
+    <button role="tab"
+            id="tab-2"
+            aria-selected="false"
+            aria-controls="panel-2"
+            data-tab="panel-2">Show Example</button>
+  </div>
+
+<section id="panel-1" role="tabpanel" aria-labelledby="tab-1"></section>
+<section id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+
+```json
+{
+  "type": "DataIntegrityProof",
+  "cryptosuite": "bip340-jcs-2025",
+  "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+  "proofPurpose": "capabilityInvocation",
+  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "capabilityAction": "Write",
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
+}
+```
+
+</section>
+</div>
+
+
 
 ## Genesis Bytes { #genesis-bytes }
 
