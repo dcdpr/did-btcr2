@@ -9,6 +9,51 @@ posting multiple updates) to collectively announce a set of [BTCR2 Updates][BTCR
 There can only ever be one [BTCR2 Update] per **did:btcr2** DID in a [Beacon Signal] from an
 Aggregate Beacon.
 
+<div class="tabs" id="terminology-tabs">
+  <div class="tablist" role="tablist" aria-label="Terminology">
+    <button role="tab"
+            id="tab-1"
+            aria-selected="true"
+            aria-controls="panel-1"
+            data-tab="panel-1">Hide</button>
+    <button role="tab"
+            id="tab-2"
+            aria-selected="false"
+            aria-controls="panel-2"
+            data-tab="panel-2">Tab 2</button>
+    <button role="tab"
+            id="tab-3"
+            aria-selected="false"
+            aria-controls="panel-3"
+            data-tab="panel-3">Tab 3</button>
+  </div>
+
+<section id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+</section>
+
+<section id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+
+```json
+{
+    "tab": 2,
+    "panel": 2
+}
+```
+
+</section>
+
+<section id="panel-3" role="tabpanel" aria-labelledby="tab-3" hidden>
+
+```json
+{
+    "tab": 3,
+    "panel": 3
+}
+```
+
+</section>
+</div>
+
 ## Authorized Beacon Signal { #authorized-beacon=signal }
 
 An Authorized Beacon Signal is a [Beacon Signal] from a [BTCR2 Beacon] with a [BTCR2 Beacon] address
