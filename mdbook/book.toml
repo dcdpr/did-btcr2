@@ -16,8 +16,8 @@ hb-tpl = "../theme/references.hbs"
 css = "../theme/references.css"
 
 [output.html]
-additional-js = ["src/_assets/mermaid.min.js", "src/_assets/mermaid-init.js", "src/_assets/tabs.js"]
-additional-css = ["src/_assets/tabs.css"]
+additional-js = ["src/assets/mermaid.min.js", "src/assets/mermaid-init.js", "src/assets/tabs.js"]
+additional-css = ["src/assets/tabs.css"]
 preferred-dark-theme = "coal"
 smart-punctuation = true
 
