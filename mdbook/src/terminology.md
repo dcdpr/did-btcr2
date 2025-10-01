@@ -128,9 +128,95 @@ encoded sec256k1 public key or a 32-byte SHA256 hash of a [Genesis Document].
 An intermediate representation of an [Initial DID Document] with the identifier set to the
 placeholder value.
 
+Example:
+```json
+{
+  "@context": [
+    "https://www.w3.org/TR/did-1.1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "id": "did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "verificationMethod": [
+    {
+      "id": "did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#key-0",
+      "type": "Multikey",
+      "controller": "did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+    }
+  ],
+  "assertionMethod": [
+    "did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#key-0"
+  ],
+  "capabilityInvocation": [
+    "did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#key-0"
+  ],
+  "service": [
+    {
+      "id": "did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#service-0",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "bitcoin:tb1qtmshuqzeyr7cdh5t2nl6kf3s73fdynpj5apgtx"
+    },
+    {
+      "id": "did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#service-1",
+      "type": "MapBeacon",
+      "serviceEndpoint": "bitcoin:tb1pt97580gtfuge9mnrkvj2upk982alrr08pk4hhmlzkeutc06pt9pqyjqef2"
+    },
+    {
+      "id": "did:btcr2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#service-2",
+      "type": "SMTBeacon",
+      "serviceEndpoint": "bitcoin:tb1pgrn7wxhtlsakjjelag6usrmzw89h8tnsaq2ly50ty29hujerqu0sk5kv4e"
+    }
+  ]
+}
+```
+
 ## Initial DID Document { #initial-did-document }
 
 The canonical, conformant version 1 of a DID document for a specific **did:btcr2** identifier.
+
+[todo] Make sure this example is re-done to have a real DID.
+
+Example:
+```json
+{
+  "@context": [
+    "https://www.w3.org/TR/did-1.1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7",
+  "verificationMethod": [
+    {
+      "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#key-0",
+      "type": "Multikey",
+      "controller": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7",
+      "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+    }
+  ],
+  "assertionMethod": [
+    "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#key-0"
+  ],
+  "capabilityInvocation": [
+    "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#key-0"
+  ],
+  "service": [
+    {
+      "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#service-0",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "bitcoin:tb1qtmshuqzeyr7cdh5t2nl6kf3s73fdynpj5apgtx"
+    },
+    {
+      "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#service-1",
+      "type": "MapBeacon",
+      "serviceEndpoint": "bitcoin:tb1pt97580gtfuge9mnrkvj2upk982alrr08pk4hhmlzkeutc06pt9pqyjqef2"
+    },
+    {
+      "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#service-2",
+      "type": "SMTBeacon",
+      "serviceEndpoint": "bitcoin:tb1pgrn7wxhtlsakjjelag6usrmzw89h8tnsaq2ly50ty29hujerqu0sk5kv4e"
+    }
+  ]
+}
+```
 
 ## Late Publishing { #late-publishing }
 

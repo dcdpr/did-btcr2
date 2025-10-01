@@ -20,14 +20,14 @@ the elliptic curve point. See Section 2.3.3 in {{#cite SEC}}.
 A [Genesis Document] can be used as the [Genesis Bytes], but must be hashed
 to 32 bytes using the [JSON Document Hashing] algorithm.
 
-{{#include ./includes/includes.md}}
-
 ## Discussion
 
-Creating a **did:btcr2** identifier from an secp256k1 public key will
-result in an [Initial DID Document] when first resolved.  Creating a
-**did:btcr2** identifier from a [Genesis Document] allows for the
-creation of a more complex Initial DID Document, including the ability
-to include service endpoints and [BTCR2 Beacons][BTCR2 Beacon] that
-support aggregation.  Any active btcr2 DID can be updated later with
-new key material and service endpoints.
+Creating a **did:btcr2** identifier from an secp256k1 public key will result
+in an [Initial DID Document] when first resolved. Creating a **did:btcr2**
+identifier from a [Genesis Document] allows for the creation of a more
+complex [Initial DID Document], including the ability to include service
+endpoints and [BTCR2 Beacons][BTCR2 Beacon] that support aggregation. Any
+active btcr2 DID can be updated later with new key material and service endpoints.
+
+
+{{#include ./includes/includes.md}}
