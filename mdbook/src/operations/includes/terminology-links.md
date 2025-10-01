@@ -10,13 +10,13 @@
 [BTCR2 Beacon]: ../terminology.md#btcr2-beacon
 [BTCR2 Signed Update]: ../terminology.md#btcr2-signed-update
 [BTCR2 Unsigned Update]: ../terminology.md#btcr2-unsigned-update
-[BTCR2 Update]: ../terminology.md#btcr2-update
 [BTCR2 Update Announcement]: ../terminology.md#btcr2-update-announcement
 [Contemporary DID Document]: ../terminology.md#contemporary-did-document
 [Content Addressable Storage]: ../terminology.md#content-addressable-storage
 [CAS]: ../terminology.md#cas
 [Content Identifier]: ../terminology.md#content-identifier
 [CID]: ../terminology.md#cid
+[Data Integrity Proof]: terminology.md#data-integrity-proof
 [Genesis Bytes]: ../terminology.md#genesis-bytes
 [Genesis Document]: ../terminology.md#genesis-document
 [Initial DID Document]: ../terminology.md#initial-did-document
