@@ -12,7 +12,7 @@ SMTProof {
   path: Vector<Hash>
 }
 MapAnnouncement { Map<DID, Hash> }
-SidecarDataGeneric{
+SidecarDataGeneric {
   cas_manifest   : Option<Vector<Hash>>,
   genesis_diddoc : Option<IntermediateDiddoc>,
   updates        : Vector<DocUpdateSigned>,
