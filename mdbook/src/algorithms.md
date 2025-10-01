@@ -1,5 +1,11 @@
 # Algorithms
 
+<style>
+table {
+    margin: 1em;
+}
+</style>
+
 These algorithms are referenced throughout this specification.
 
 ## DID-BTCR2 Identifier Encoding
