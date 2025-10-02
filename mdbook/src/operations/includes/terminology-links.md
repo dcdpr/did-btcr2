@@ -10,6 +10,7 @@
 [BTCR2 Beacon]: ../terminology.md#btcr2-beacon
 [BTCR2 Signed Update]: ../terminology.md#btcr2-signed-update
 [BTCR2 Unsigned Update]: ../terminology.md#btcr2-unsigned-update
+[BTCR2 Update]: ../terminology.md#btcr2-update
 [BTCR2 Update Announcement]: ../terminology.md#btcr2-update-announcement
 [Contemporary DID Document]: ../terminology.md#contemporary-did-document
 [Content Addressable Storage]: ../terminology.md#content-addressable-storage

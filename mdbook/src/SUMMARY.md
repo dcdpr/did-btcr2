@@ -1,12 +1,13 @@
 # Summary
 
-[`did:btcr2` DID Method](index.md)
+[did:btcr2 DID Method](index.md)
 
 - [Introduction and Motivation](intro.md)
 - [Conformance](conformance.md)
 - [Terminology](terminology.md)
+- [Update Data Distribution](update-data-distribution.md)
 - [Beacons](beacons.md)
-- [JSON-LD Data Structures](data.md)
+- [Data Structures](data.md)
 - [Operations](operations.md)
   - [Create](operations/create.md)
   - [Resolve](operations/resolve.md)

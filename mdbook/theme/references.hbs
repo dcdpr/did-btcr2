@@ -8,7 +8,6 @@
 - {{#if authors}}{{#each authors as |author|}}{{#each author as |name|}}{{name}}{{#unless @last}}, {{/unless}}{{/each}}{{#unless @last}} and {{/unless}}{{/each}}
 - {{/if}}{{#if title}}{{#if url}}<a href="{{url}}" target="_blank">{{/if}}<cite>{{title}}</cite>{{#if url}}</a>{{/if}}.{{/if}}
 - {{#if pub_year}}{{pub_year}}.{{/if}}
-- <button onclick="copyToClipboard('\{\{ #cite {{citation_key}} \}\}')">Copy citation_key</button>
 </summary>
 
 {{!-- summary/abstract --}}
