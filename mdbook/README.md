@@ -3,12 +3,8 @@
 On my mac:
 
 ```zsh
-> cargo install mdbook
-> cargo install mdbook-mermaid
-> cargo install mdbook-bib
+> cargo install mdbook mdbook-mermaid mdbook-bib mdbook-tera
 
 > cd mdbook
 > mdbook serve --open
 ```
-
-

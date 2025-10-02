@@ -15,6 +15,9 @@ render-bib = "all"
 hb-tpl = "../theme/references.hbs"
 css = "../theme/references.css"
 
+[preprocessor.tera]
+after = ["bib"]
+
 [output.html]
 additional-js = ["src/assets/mermaid.min.js", "src/assets/mermaid-init.js", "src/assets/tabs.js"]
 additional-css = ["src/assets/tabs.css"]
