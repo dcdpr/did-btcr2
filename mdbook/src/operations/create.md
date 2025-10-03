@@ -29,5 +29,4 @@ complex [Initial DID Document], including the ability to include service
 endpoints and [BTCR2 Beacons][BTCR2 Beacon] that support aggregation. Any
 active btcr2 DID can be updated later with new key material and service endpoints.
 
-
 {{#include ./includes/includes.md}}

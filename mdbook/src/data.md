@@ -1,3 +1,5 @@
+{% import "macros.tera" as ui %}
+
 # Data Structures
 
 For the purposes of interoperability, this specification defines data structures using the data
@@ -39,24 +41,10 @@ verification method with a capability invocation verification relationship and a
 A [Genesis Document] is a [DID document (data structure)] with the identifier set to the
 placeholder value (`did:btcr2:_`).
 
-<div class="tabs">
-  <div class="tablist" role="tablist" aria-label="Terminology">
-    <button role="tab"
-            id="tab-1"
-            aria-selected="true"
-            aria-controls="panel-1"
-            data-tab="panel-1">Hide</button>
-    <button role="tab"
-            id="tab-2"
-            aria-selected="false"
-            aria-controls="panel-2"
-            data-tab="panel-2">Show Example</button>
-  </div>
-
-<section id="panel-1" role="tabpanel" aria-labelledby="tab-1"></section>
-<section id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
-
-```json
+{% set hide_text = `` %}
+{% set ex_genesis_document = 
+`
+~~~json
 {
   "@context": [
     "https://www.w3.org/TR/did-1.1",
@@ -95,10 +83,17 @@ placeholder value (`did:btcr2:_`).
     }
   ]
 }
-```
+~~~
+` %}
 
-</section>
-</div>
+{{ ui::show_example_tabs(
+  group_id="genesis-document-example",
+  example=ex_genesis_document,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 ## Initial DID Document { #initial-did-document }
 
@@ -106,26 +101,10 @@ An [Initial DID Document] is a conformant [DID document (data structure)].
 
 <!-- todo: Make sure this example is re-done to have a real DID. -->
 
-<div class="tabs">
-  <div class="tablist" role="tablist" aria-label="Terminology">
-    <button role="tab"
-            id="tab-1"
-            aria-selected="true"
-            aria-controls="panel-1"
-            data-tab="panel-1">Hide</button>
-    <button role="tab"
-            id="tab-2"
-            aria-selected="false"
-            aria-controls="panel-2"
-            data-tab="panel-2">Show Example</button>
-  </div>
-
-<section id="panel-1" role="tabpanel" aria-labelledby="tab-1">
-</section>
-
-<section id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
-
-```json
+{% set hide_text = `` %}
+{% set ex_initial_did_document = 
+`
+~~~json
 {
   "@context": [
     "https://www.w3.org/TR/did-1.1",
@@ -164,11 +143,17 @@ An [Initial DID Document] is a conformant [DID document (data structure)].
     }
   ]
 }
-```
+~~~
+` %}
 
-</section>
-</div>
-
+{{ ui::show_example_tabs(
+  group_id="initial-did-document-example",
+  example=ex_initial_did_document,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 ## BTCR2 Unsigned Update { #btcr2-unsigned-update }
 
@@ -189,24 +174,10 @@ A [BTCR2 Unsigned Update] is a map data structure with the following properties:
 - `targetHash`: A SHA-256 hash of the DID document that results from applying the patch to the
   source document. The hash MUST be produced by the [JSON Document Hashing] algorithm.
 
-<div class="tabs">
-  <div class="tablist" role="tablist" aria-label="Terminology">
-    <button role="tab"
-            id="tab-1"
-            aria-selected="true"
-            aria-controls="panel-1"
-            data-tab="panel-1">Hide</button>
-    <button role="tab"
-            id="tab-2"
-            aria-selected="false"
-            aria-controls="panel-2"
-            data-tab="panel-2">Show Example</button>
-  </div>
-
-<section id="panel-1" role="tabpanel" aria-labelledby="tab-1"></section>
-<section id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
-
-```json
+{% set hide_text = `` %}
+{% set ex_btcr2_unsigned_update = 
+`
+~~~json
 {
   "@context": [
     "https://w3id.org/security/v2",
@@ -252,12 +223,17 @@ A [BTCR2 Unsigned Update] is a map data structure with the following properties:
     "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
   }
 }
-```
+~~~
+` %}
 
-</section>
-</div>
-
-
+{{ ui::show_example_tabs(
+  group_id="btcr2-unsigned-update-example",
+  example=ex_btcr2_unsigned_update,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 ## BTCR2 Signed Update { #btcr2-signed-update }
 
@@ -296,24 +272,11 @@ The following properties MUST be included in the Data Integrity proof:
 - `proofValue`: MUST be a detached Schnorr signature produced according to {{#cite BIP340}}, encoded
   using the "base64url" {{#cite RFC4648}} encoding.
 
-<div class="tabs">
-  <div class="tablist" role="tablist" aria-label="Terminology">
-    <button role="tab"
-            id="tab-1"
-            aria-selected="true"
-            aria-controls="panel-1"
-            data-tab="panel-1">Hide</button>
-    <button role="tab"
-            id="tab-2"
-            aria-selected="false"
-            aria-controls="panel-2"
-            data-tab="panel-2">Show Example</button>
-  </div>
 
-<section id="panel-1" role="tabpanel" aria-labelledby="tab-1"></section>
-<section id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
-
-```json
+{% set hide_text = `` %}
+{% set ex_di_proof = 
+`
+~~~json
 {
   "@context": [
     "https://w3id.org/security/v2",
@@ -329,11 +292,17 @@ The following properties MUST be included in the Data Integrity proof:
   "capabilityAction": "Write",
   "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
 }
-```
+~~~
+` %}
 
-</section>
-</div>
-
+{{ ui::show_example_tabs(
+  group_id="data-integrity-proof-example",
+  example=ex_di_proof,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 ## Root Capability { #root-capability }
 
@@ -347,36 +316,27 @@ The Root Capability MUST be a map containing only the following fields:
 - `invocationTarget`: The `DID`
 - `controller`: The `DID`
 
-<div class="tabs">
-  <div class="tablist" role="tablist" aria-label="Terminology">
-    <button role="tab"
-            id="tab-1"
-            aria-selected="true"
-            aria-controls="panel-1"
-            data-tab="panel-1">Hide</button>
-    <button role="tab"
-            id="tab-2"
-            aria-selected="false"
-            aria-controls="panel-2"
-            data-tab="panel-2">Show Example</button>
-  </div>
-
-<section id="panel-1" role="tabpanel" aria-labelledby="tab-1">
-</section>
-
-<section id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
-
-```json
+{% set hide_text = `` %}
+{% set ex_root_capability = 
+`
+~~~json
 {
   "@context": "https://w3id.org/zcap/v1",
   "id": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
   "invocationTarget": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
   "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"
 }
-```
+~~~
+` %}
 
-</section>
-</div>
+{{ ui::show_example_tabs(
+  group_id="root-capability-example",
+  example=ex_root_capability,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 ## resolutionOptions { #resolution-options }
 

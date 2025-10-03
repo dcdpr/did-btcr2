@@ -1,0 +1,25 @@
+{# Reusable "Hide / Show Example" tabs component #}
+{% macro show_example_tabs(group_id, example, hide="", default="hide", show_label="Show Example", hide_label="Hide") %}
+  {% set start_show = default == "show" %}
+
+<div class="tabs" id="{{ group_id }}">
+  <div class="tablist" role="tablist" aria-label="{{ group_id }}">
+    <button role="tab" id="{{ group_id }}-tab-hide" aria-selected="{{ not start_show }}" class="{% if not start_show %}is-active{% endif %}" aria-controls="{{ group_id }}-panel-hide" data-tab="{{ group_id }}-panel-hide">{{ hide_label }}</button>
+    <button role="tab" id="{{ group_id }}-tab-show" aria-selected="{{ start_show }}" class="{% if start_show %}is-active{% endif %}" aria-controls="{{ group_id }}-panel-show" data-tab="{{ group_id }}-panel-show">{{ show_label }}</button>
+  </div>
+
+  <section id="{{ group_id }}-panel-hide"
+           role="tabpanel"
+           aria-labelledby="{{ group_id }}-tab-hide"
+           {% if start_show %}hidden{% endif %}>
+{{ hide | safe }}
+  </section>
+
+  <section id="{{ group_id }}-panel-show"
+           role="tabpanel"
+           aria-labelledby="{{ group_id }}-tab-show"
+           {% if not start_show %}hidden{% endif %}>
+{{ example | safe }}
+  </section>
+</div>
+{% endmacro %}
