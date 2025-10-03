@@ -7,7 +7,7 @@
 - [Terminology](terminology.md)
 - [Update Data Distribution](update-data-distribution.md)
 - [Beacons](beacons.md)
-- [Data Structures](data.md)
+- [Data Structures](data-structures.md)
 - [Operations](operations.md)
   - [Create](operations/create.md)
   - [Resolve](operations/resolve.md)

@@ -12,13 +12,13 @@ fn resolve(did, resolutionOptions) ->
 Input arguments:
 
 - `did`: The DID.
-- `resolutionOptions`: [resolutionOptions (data structure)].
+- `resolutionOptions`: [Resolution options (data structure)].
 
 Outputs:
 
-- `didResolutionMetadata`: [didResolutionMetadata (data structure)].
+- `didResolutionMetadata`: [DID resolution metadata (data structure)].
 - `didDocument`: [DID document (data structure)].
-- `didDocumentMetadata`: [didDocumentMetadata (data structure)].
+- `didDocumentMetadata`: [DID document metadata (data structure)].
 
 
 TODO: Describe what this operations does:

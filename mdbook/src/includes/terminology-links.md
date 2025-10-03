@@ -29,6 +29,7 @@
 [Resolution Time]: terminology.md#resolution-time
 [Schnorr Signature]: terminology.md#schnorr-signature
 [Sidecar]: terminology.md#sidecar
+[Sidecar Data]: terminology.md#sidecar-data
 [Signal Bytes]: terminology.md#signal-bytes
 [Singleton Beacon]: terminology.md#singleton-beacon
 [SMT Beacon]: terminology.md#smt-beacon
