@@ -41,7 +41,7 @@ Genesis Bytes are then appended to the first byte.
 | 4 bits   | 4 bits   | 32 or 33 bytes  |
 
 Use a Bech32 encoding function to encode this data. Use "k" as the HRP
-for key-based creation and "x" as the HRP for intermediate doc-based
+for key-based creation and "x" as the HRP for [Genesis Document]-based
 creation. See {{#cite BIP173}} and {{#cite BIP350}} for details.
 
 ## JSON Document Hashing

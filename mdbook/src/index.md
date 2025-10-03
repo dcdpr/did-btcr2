@@ -16,9 +16,10 @@ WARNING This specification is still under active development and may be subject 
 | Will Abramson | <will@legreq.com>        | [Legendary Requirements](https://legreq.com/)       |
 | Joe Andrieu   | <joe@legreq.com>         | [Legendary Requirements](https://legreq.com/)       |
 | Kevin Dean    | <kevin@legreq.com>       | [Legendary Requirements](https://legreq.com/)       |
+| Jintek        | <info@jintek.consulting> | [Jintek, LLC](https://jintek.consulting/)           |
+| Jennie Meier  | <jennie@contract.design> | [Digital Contract Design](https://contract.design/) |
 | Jay Oster     | <jay@blipjoy.com>        | [BlipJoy, LLC](https://blipjoy.com/)                |
 | Dan Pape      | <dpape@contract.design>  | [Digital Contract Design](https://contract.design/) |
-| Jennie Meier  | <jennie@contract.design> | [Digital Contract Design](https://contract.design/) |
 
 
 ## Contributors
@@ -27,7 +28,7 @@ WARNING This specification is still under active development and may be subject 
 | ---------------- | ------------------------ | --------------------------------------------------- |
 | Kate Sills       | <katelynsills@gmail.com> |                                                     |
 | Markus Sabadello | <markus@danubetech.com>  | [Danube Tech](https://danubetech.com/)              |
-| Jintek           | <info@jintek.consulting> | [Jintek, LLC](https://jintek.consulting/)           |
+
 
 ## Publication Date
 

@@ -13,14 +13,15 @@ MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
 
 ## DID Document { #did-document }
 
-A DID document is a map data structure defined by {{#cite DID-CORE}}.
+A DID document is a map data structure defined by the DID core v1.1 specification {{#cite
+DID-CORE}}.
 
 The following properties MUST be included:
 
 - `@context`: A context array containing the following context URLs:
   - `"https://www.w3.org/TR/did-1.1"`
   - `"https://btcr2.dev/context/v1"`
-- `id`: The DID
+- `id`: The `DID`.
 
 It can optionally include one or more of the following properties:
 
@@ -42,47 +43,10 @@ A [Genesis Document] is a [DID document (data structure)] with the identifier se
 placeholder value (`did:btcr2:_`).
 
 {% set hide_text = `` %}
-{% set ex_genesis_document = 
+{% set ex_genesis_document =
 `
 ~~~json
-{
-  "@context": [
-    "https://www.w3.org/TR/did-1.1",
-    "https://btcr2.dev/context/v1"
-  ],
-  "id": "did:btcr2:_",
-  "verificationMethod": [
-    {
-      "id": "did:btcr2:_#key-0",
-      "type": "Multikey",
-      "controller": "did:btcr2:_",
-      "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
-    }
-  ],
-  "assertionMethod": [
-    "did:btcr2:_#key-0"
-  ],
-  "capabilityInvocation": [
-    "did:btcr2:_#key-0"
-  ],
-  "service": [
-    {
-      "id": "did:btcr2:_#service-0",
-      "type": "SingletonBeacon",
-      "serviceEndpoint": "bitcoin:tb1qtmshuqzeyr7cdh5t2nl6kf3s73fdynpj5apgtx"
-    },
-    {
-      "id": "did:btcr2:_#service-1",
-      "type": "MapBeacon",
-      "serviceEndpoint": "bitcoin:tb1pt97580gtfuge9mnrkvj2upk982alrr08pk4hhmlzkeutc06pt9pqyjqef2"
-    },
-    {
-      "id": "did:btcr2:_#service-2",
-      "type": "SMTBeacon",
-      "serviceEndpoint": "bitcoin:tb1pgrn7wxhtlsakjjelag6usrmzw89h8tnsaq2ly50ty29hujerqu0sk5kv4e"
-    }
-  ]
-}
+{{#include example-data/genesis-document.json}}
 ~~~
 ` %}
 
@@ -102,47 +66,10 @@ An [Initial DID Document] is a conformant [DID document (data structure)].
 <!-- todo: Make sure this example is re-done to have a real DID. -->
 
 {% set hide_text = `` %}
-{% set ex_initial_did_document = 
+{% set ex_initial_did_document =
 `
 ~~~json
-{
-  "@context": [
-    "https://www.w3.org/TR/did-1.1",
-    "https://btcr2.dev/context/v1"
-  ],
-  "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7",
-  "verificationMethod": [
-    {
-      "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#key-0",
-      "type": "Multikey",
-      "controller": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7",
-      "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
-    }
-  ],
-  "assertionMethod": [
-    "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#key-0"
-  ],
-  "capabilityInvocation": [
-    "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#key-0"
-  ],
-  "service": [
-    {
-      "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#service-0",
-      "type": "SingletonBeacon",
-      "serviceEndpoint": "bitcoin:tb1qtmshuqzeyr7cdh5t2nl6kf3s73fdynpj5apgtx"
-    },
-    {
-      "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#service-1",
-      "type": "MapBeacon",
-      "serviceEndpoint": "bitcoin:tb1pt97580gtfuge9mnrkvj2upk982alrr08pk4hhmlzkeutc06pt9pqyjqef2"
-    },
-    {
-      "id": "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7#service-2",
-      "type": "SMTBeacon",
-      "serviceEndpoint": "bitcoin:tb1pgrn7wxhtlsakjjelag6usrmzw89h8tnsaq2ly50ty29hujerqu0sk5kv4e"
-    }
-  ]
-}
+{{#include example-data/initial-did-document.json}}
 ~~~
 ` %}
 
@@ -175,54 +102,10 @@ A [BTCR2 Unsigned Update] is a map data structure with the following properties:
   source document. The hash MUST be produced by the [JSON Document Hashing] algorithm.
 
 {% set hide_text = `` %}
-{% set ex_btcr2_unsigned_update = 
+{% set ex_btcr2_unsigned_update =
 `
 ~~~json
-{
-  "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
-    "https://w3id.org/json-ld-patch/v1",
-    "https://btcr2.dev/context/v1"
-  ],
-  "patch": [
-    {
-      "op": "add",
-      "path": "/verificationMethod/1",
-      "value": {
-        "id": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1",
-        "type": "Multikey",
-        "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-        "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
-      }
-    },
-    {
-      "op": "add",
-      "path": "/authentication",
-      "value": [
-        "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1"
-      ]
-    }
-  ],
-  "sourceHash": "8beuAJ8w88YWrms8hsqCnZn2atxBMGsQ7YBFhzPx5b2q",
-  "targetHash": "F2F1pmK9tWAwzf6rKyVCietbswatFctvSJHM4sj1fiAw",
-  "targetVersionId": 2,
-  "proof": {
-    "@context": [
-      "https://w3id.org/security/v2",
-      "https://w3id.org/zcap/v1",
-      "https://w3id.org/json-ld-patch/v1",
-      "https://btcr2.dev/context/v1"
-    ],
-    "type": "DataIntegrityProof",
-    "cryptosuite": "bip340-jcs-2025",
-    "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
-    "proofPurpose": "capabilityInvocation",
-    "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-    "capabilityAction": "Write",
-    "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
-  }
-}
+{{#include example-data/btcr2-unsigned-update.json}}
 ~~~
 ` %}
 
@@ -235,10 +118,28 @@ A [BTCR2 Unsigned Update] is a map data structure with the following properties:
   hide_label="Hide"
 ) }}
 
+
 ## BTCR2 Signed Update { #btcr2-signed-update }
 
 A [BTCR2 Signed Update] is a map data structure with the same properties as [BTCR2 Unsigned Update]
 and one additional property, `proof`: a [Data Integrity Proof (data structure)].
+
+{% set hide_text = `` %}
+{% set ex_btcr2_signed_update =
+`
+~~~json
+{{#include example-data/btcr2-signed-update.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="btcr2-signed-update-example",
+  example=ex_btcr2_signed_update,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 
 ## Data Integrity Proof { #data-integrity-proof }
@@ -270,28 +171,14 @@ The following properties MUST be included in the Data Integrity proof:
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
 - `proofValue`: MUST be a detached Schnorr signature produced according to {{#cite BIP340}}, encoded
-  using the "base64url" {{#cite RFC4648}} encoding.
+  using the `"base64url"` {{#cite RFC4648}} encoding.
 
 
 {% set hide_text = `` %}
-{% set ex_di_proof = 
+{% set ex_di_proof =
 `
 ~~~json
-{
-  "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
-    "https://w3id.org/json-ld-patch/v1",
-    "https://btcr2.dev/context/v1"
-  ],
-  "type": "DataIntegrityProof",
-  "cryptosuite": "bip340-jcs-2025",
-  "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
-  "proofPurpose": "capabilityInvocation",
-  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-  "capabilityAction": "Write",
-  "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
-}
+{{#include example-data/data-integrity-proof.json}}
 ~~~
 ` %}
 
@@ -313,19 +200,14 @@ The Root Capability MUST be a map containing only the following fields:
 
 - `@context`: The string `"https://w3id.org/zcap/v1"`
 - `id`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(DID)}`
-- `invocationTarget`: The `DID`
-- `controller`: The `DID`
+- `invocationTarget`: The `DID`.
+- `controller`: The `DID`.
 
 {% set hide_text = `` %}
-{% set ex_root_capability = 
+{% set ex_root_capability =
 `
 ~~~json
-{
-  "@context": "https://w3id.org/zcap/v1",
-  "id": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-  "invocationTarget": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-  "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"
-}
+{{#include example-data/root-capability.json}}
 ~~~
 ` %}
 
@@ -338,21 +220,88 @@ The Root Capability MUST be a map containing only the following fields:
   hide_label="Hide"
 ) }}
 
-## resolutionOptions { #resolution-options }
+## Resolution Options { #resolution-options }
+
+Resolution Options is a map data structure that contains input options for the DID Resolution
+process {{#cite DID-RESOLUTION}}.
+
+The following optional properties could be set:
+
+- `versionId`: Identifies a specific version of a DID document to be resolved.
+- `versionTime`: Identifies a certain version timestamp of a DID document to be resolved.
+- `sidecar`: [Sidecar Data (data structure)]
+
 
 ## Sidecar Data { #sidecar-data }
 
+The [Sidecar Data] contains optional properties:
+
+- `genesisDocument`: OPTIONAL [Genesis Document]. It is REQUIRED when resolving **did:btcr2**
+  identifiers with `x` HRP.
+- `updates`: OPTIONAL array of [BTCR2 Signed Updates][BTCR2 Signed Update]. It is REQUIRED
+  if the DID being resolved has ever had a published [BTCR2 Update].
+- `mapUpdates`: OPTIONAL array of [Map Announcements][Map Announcement (data structure)]. It is REQUIRED
+  if the DID being resolved has used a [Map Beacon] to publish a [BTCR2 Update].
+- `smtProofs`: OPTIONAL array of [SMT Proofs][SMT Proof (data structure)]. It is REQUIRED
+  if the DID being resolved has used a [SMT Beacon] to publish a [BTCR2 Update].
+
+{% set hide_text = `` %}
+{% set ex_sidecar_data =
+`
+~~~json
+{{#include example-data/sidecar-data.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="sidecar-data-example",
+  example=ex_sidecar_data,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
+
 ## SMT Proof { #smt-proof }
 
-## didResolutionMetadata { #did-resolution-metadata }
+A [SMT Proof] data structure contains the following properties:
 
-## didDocumentMetadata { #did-document-metadata }
+- `id`: hash of the root node.
+- `nonce`: OPTIONAL 256-bit nonce generated for each update.
+- `updateId`: hash of the [BTCR2 Signed Update].
+- `path`: array of Hashes representing the sibling SMT Nodes from the root to the leaf containing the hash of the [BTCR2 Signed Update] or the "zero identity".
+- `collapsed`: bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
 
-## MapAnnouncement { #map-announcement }
+## DID Resolution Result { #did-resolution-result }
 
-This is a JSON object that maps DIDs to hashed [BTCR2 Signed Updates][BTCR2 Signed Update]. It MUST be hashed with [JSON Document Hashing]. This
-object will be published to a CAS.
+<!-- todo: add this section for completeness
+  didResolutionMetadata: {},
+  didDocument: {},
+  didDocumentMetadata: {}
+} -->
 
+## DID Resolution Metadata { #did-resolution-metadata }
+
+A data structure returned as part of the DID Resolution Result data structure that may contain the following properties:
+
+- `contentType`: OPTIONAL media type of the returned DID document. <!-- todo: what is our contentType? application/ld+json? -->
+- `error`: REQUIRED if an error occurs during DID resolution.
+
+See [DID RESOLUTION] for more details on other possible properties.
+
+## DID Document Metadata { #did-document-metadata }
+
+A data structure returned as part of the DID Resolution Result data structure that may contain the following properties:
+
+- `created`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the Create operation execution for the resolved DID document.
+- `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the document version which was resolved.
+- `deactivated`: REQUIRED boolean if the DID being resolved have been deactivated.
+- `versionId`: OPTIONAL ASCII string of the version of the last Update operation for the document version that was resolved.
+
+## Map Announcement { #map-announcement }
+
+This is a JSON object that maps DIDs to hashed [BTCR2 Signed Updates][BTCR2 Signed Update]. It MUST
+be hashed with [JSON Document Hashing]. This object will be published to a CAS.
 
 ## Example type system things
 
