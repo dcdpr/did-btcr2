@@ -245,6 +245,10 @@ The [Sidecar Data] contains optional properties:
 - `smtProofs`: OPTIONAL array of [SMT Proofs][SMT Proof (data structure)]. It is REQUIRED
   if the DID being resolved has used a [SMT Beacon] to publish a [BTCR2 Update].
 
+<!-- todo: there is a question regarding if we need to set the @context within each
+mapUpdate element, or if their definition is handled by the top leavel @context for
+the sidecar data struct. -->
+
 {% set hide_text = `` %}
 {% set ex_sidecar_data =
 `
