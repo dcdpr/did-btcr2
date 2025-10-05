@@ -272,14 +272,6 @@ A [SMT Proof] data structure contains the following properties:
 - `path`: array of Hashes representing the sibling SMT Nodes from the root to the leaf containing the hash of the [BTCR2 Signed Update] or the "zero identity".
 - `collapsed`: bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
 
-## DID Resolution Result { #did-resolution-result }
-
-<!-- todo: add this section for completeness
-  didResolutionMetadata: {},
-  didDocument: {},
-  didDocumentMetadata: {}
-} -->
-
 ## DID Resolution Metadata { #did-resolution-metadata }
 
 A data structure returned as part of the DID Resolution Result data structure that may contain the following properties:
@@ -287,7 +279,7 @@ A data structure returned as part of the DID Resolution Result data structure th
 - `contentType`: OPTIONAL media type of the returned DID document. <!-- todo: what is our contentType? application/ld+json? -->
 - `error`: REQUIRED if an error occurs during DID resolution.
 
-See [DID RESOLUTION] for more details on other possible properties.
+See {{#cite DID-RESOLUTION}} for more details on other possible properties.
 
 ## DID Document Metadata { #did-document-metadata }
 
