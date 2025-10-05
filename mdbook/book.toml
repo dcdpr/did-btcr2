@@ -17,9 +17,19 @@ css = "../theme/references.css"
 [preprocessor.tera]
 after = ["bib"]
 
+[preprocessor.pagetoc]
+
 [output.html]
-additional-js = ["src/assets/mermaid.min.js", "src/assets/mermaid-init.js", "src/assets/tabs.js"]
-additional-css = ["src/assets/tabs.css"]
+additional-js = [
+  "src/assets/mermaid.min.js",
+  "src/assets/mermaid-init.js",
+  "src/assets/tabs.js",
+  "theme/pagetoc.js",
+]
+additional-css = [
+  "src/assets/tabs.css",
+  "theme/pagetoc.css",
+]
 git-repository-url = "https://github.com/dcdpr/did-btcr2"
 preferred-dark-theme = "coal"
 smart-punctuation = true
