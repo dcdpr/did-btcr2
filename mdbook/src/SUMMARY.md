@@ -2,6 +2,8 @@
 
 [did:btcr2 DID Method](index.md)
 
+---
+
 - [Introduction and Motivation](intro.md)
 - [Conformance](conformance.md)
 - [Terminology](terminology.md)
@@ -16,3 +18,5 @@
 - [Algorithms](algorithms.md)
 - [Errors](errors.md)
 - [Appendix](appendix.md)
+
+---
