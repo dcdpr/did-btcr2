@@ -1,8 +1,7 @@
 [book]
-authors = ["Daniel X. Pape"]
-language = "en"
-src = "src"
 title = "did:btcr2 DID Method Specification"
+authors = ["Jintek LLC", "Jay Oster", "Daniel X. Pape"]
+description = "did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin blockchain as a Verifiable Data Registry to announce changes to the DID document."
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
@@ -21,8 +20,10 @@ after = ["bib"]
 [output.html]
 additional-js = ["src/assets/mermaid.min.js", "src/assets/mermaid-init.js", "src/assets/tabs.js"]
 additional-css = ["src/assets/tabs.css"]
+git-repository-url = "https://github.com/dcdpr/did-btcr2"
 preferred-dark-theme = "coal"
 smart-punctuation = true
 
 [output.html.search]
-limit-results = 10
+expand = false
+use-boolean-and = true
