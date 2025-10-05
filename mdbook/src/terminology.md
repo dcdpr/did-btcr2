@@ -11,7 +11,7 @@ Aggregate Beacon.
 
 ## Authorized Beacon Signal { #authorized-beacon=signal }
 
-An Authorized Beacon Signal is a [Beacon Signal] from a [BTCR2 Beacon] with a [BTCR2 Beacon] address
+An Authorized Beacon Signal is a [Beacon Signal] from a [BTCR2 Beacon] with a [Beacon Address]
 in a then-current DID document.
 
 ## Beacon Address { #beacon-address }
@@ -43,14 +43,14 @@ to partially authorize spends from a [Beacon Address].
 
 ## Beacon Signal { #beacon-signal }
 
-Beacon Signals are Bitcoin transactions that spend from a [BTCR2 Beacon] address and include a
-transaction output of the format `[OP_RETURN, OP_PUSH_BYTES, <32_bytes>]`. Beacon Signals announce
-one or more [BTCR2 Updates][BTCR2 Update] and provide a means for these updates to be validated
-against the Beacon Signal.
+Beacon Signals are Bitcoin transactions that spend from a [Beacon Address] and include a
+transaction output of the format defined in [Signal Bytes]. Beacon Signals announce one or more
+[BTCR2 Updates][BTCR2 Update] and provide a means for these updates to be validated against the
+Beacon Signal.
 
 The type of the [BTCR2 Beacon] determines how these Beacon Signals are constructed and processed to
-validate a set of [BTCR2 Updates][BTCR2 Update] against the 32 bytes contained within the Beacon
-Signal.
+validate a set of [BTCR2 Updates][BTCR2 Update] against the [Signal Bytes] contained within the
+Beacon Signal.
 
 ## Beacon Type { #beacon-type }
 
@@ -62,7 +62,7 @@ can be validated against the [Beacon Signal].
 ## BTCR2 Beacon { #btcr2-beacon }
 
 A service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the
-DID. It must be either a [Singleton Beacon], [SMT Beacon], or a [Map Beacon].
+DID. It MUST be either a [Singleton Beacon], [SMT Beacon], or a [Map Beacon].
 
 ## BTCR2 Update { #btcr2-update }
 
@@ -214,8 +214,9 @@ Data transmitted via [Sidecar].
 ## Signal Bytes { #signal-bytes }
 
 The 32 bytes of information that are included within the last transaction output of a
-[Beacon Signal]. The script of this transaction output has the following form
-`[OP_RETURN, OP_PUSH_BYTES, <32 signal bytes>]`.
+[Beacon Signal]. The script of this transaction output has the following form:
+
+`[OP_RETURN, OP_PUSH_BYTES, <signal_bytes>]`
 
 ## Singleton Beacon { #singleton-beacon }
 
