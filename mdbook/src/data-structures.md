@@ -198,7 +198,7 @@ RECOMMENDED to use ZCAP-LD for capability invocations {{#cite ZCAP-LD}}.
 
 The Root Capability MUST be a map containing only the following fields:
 
-- `@context`: The string `"https://w3id.org/zcap/v1"`
+- `@context`: The context string `"https://w3id.org/zcap/v1"`
 - `id`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(DID)}`
 - `invocationTarget`: The `DID`.
 - `controller`: The `DID`.
@@ -236,6 +236,7 @@ The following optional properties could be set:
 
 The [Sidecar Data] contains optional properties:
 
+- `@context`: The context string `"https://btcr2.dev/context/v1"`
 - `genesisDocument`: OPTIONAL [Genesis Document]. It is REQUIRED when resolving **did:btcr2**
   identifiers with `x` HRP.
 - `updates`: OPTIONAL array of [BTCR2 Signed Updates][BTCR2 Signed Update]. It is REQUIRED
@@ -244,10 +245,6 @@ The [Sidecar Data] contains optional properties:
   if the DID being resolved has used a [Map Beacon] to publish a [BTCR2 Update].
 - `smtProofs`: OPTIONAL array of [SMT Proofs][SMT Proof (data structure)]. It is REQUIRED
   if the DID being resolved has used a [SMT Beacon] to publish a [BTCR2 Update].
-
-<!-- todo: there is a question regarding if we need to set the @context within each
-mapUpdate element, or if their definition is handled by the top leavel @context for
-the sidecar data struct. -->
 
 {% set hide_text = `` %}
 {% set ex_sidecar_data =
@@ -296,8 +293,36 @@ A data structure returned as part of the DID Resolution Result data structure th
 
 ## Map Announcement { #map-announcement }
 
-This is a JSON object that maps DIDs to hashed [BTCR2 Signed Updates][BTCR2 Signed Update]. It MUST
-be hashed with [JSON Document Hashing]. This object will be published to a CAS.
+A data structure that maps DIDs to hashed [BTCR2 Signed Updates][BTCR2 Signed Update]. It MUST be
+hashed with the [JSON Document Hashing] algorithm to produce the [Signal Bytes] for a
+[Beacon Signal]. The concrete representation of this data structure will be published to a [CAS].
+
+<!--
+  TODO: This _probably_ needs a JSON-LD `@context`, but it needs to be structured in a way that can
+  be defined in JSON-LD. For instance, it _might_ require a top-level named property that informs
+  processors how to handle the DID properties (and their base64url-encoded hash values).
+-->
+
+This data structure MUST contain the following properties:
+
+- `@context`: The context string `"https://btcr2.dev/context/v1"`
+
+{% set hide_text = `` %}
+{% set ex_map_announcement_data =
+`
+~~~json
+{{#include example-data/map-announcement.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="map-announcement-example",
+  example=ex_map_announcement_data,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 ## Example type system things
 
