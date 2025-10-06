@@ -18,9 +18,9 @@ function listenActive() {
 const getPagetoc = () => document.querySelector(".pagetoc") || autoCreatePagetoc();
 
 function autoCreatePagetoc() {
-  const active_li = document.querySelector("mdbook-sidebar-scrollbox ol > li:has(> a.active)");
-  if (active_li) {
-    active_li.insertAdjacentHTML("afterend", '<li class="expanded"><ol class="pagetoc section"></ol></li>');
+  const activeLi = document.querySelector("mdbook-sidebar-scrollbox ol > li:has(> a.active)");
+  if (activeLi) {
+    activeLi.insertAdjacentHTML("afterend", '<li class="expanded"><ol class="pagetoc section"></ol></li>');
   }
 
   return document.querySelector(".pagetoc");
@@ -59,53 +59,52 @@ function updateFunction() {
 
 function headersIntoTree(headers) {
   const tree = [];
-  let last_level = 1;
-  let last_section = null;
+  let lastLevel = 1;
+  let lastSection = null;
 
   headers.forEach(header => {
     const level = parseInt(header.parentElement.tagName.substring(1) - 1);
     if (level > 0) {
       // TODO: This logic isn't correct. It doesn't create a tree.
-      if (level != last_level) {
-        if (last_section) {
-          tree.push(last_section);
+      if (level != lastLevel) {
+        if (lastSection) {
+          tree.push(lastSection);
         }
-        last_level = level;
-        last_section = [];
+        lastLevel = level;
+        lastSection = [];
       }
 
-      (last_section || tree).push(header);
+      (lastSection || tree).push(header);
     }
   });
 
-  if (last_section) {
-    tree.push(last_section);
+  if (lastSection) {
+    tree.push(lastSection);
   }
 
   return tree;
 }
 
-function createSection(list_root, chapter_number, tree) {
+function createSection(listRoot, chapterNumber, tree) {
   tree.forEach((header, i) => {
     if (Array.isArray(header)) {
-      const list_item = Object.assign(document.createElement("li"), {
+      const listItem = Object.assign(document.createElement("li"), {
         className: "chapter-item expanded",
       });
       const ordered_list = Object.assign(document.createElement("ol"), {
         className: "section",
       });
-      list_item.appendChild(ordered_list);
-      createSection(ordered_list, `${chapter_number}${i}.`, header);
-      list_root.appendChild(list_item);
+      listItem.appendChild(ordered_list);
+      createSection(ordered_list, `${chapterNumber}${i}.`, header);
+      listRoot.appendChild(listItem);
     } else {
-      console.log("header: ", header);
       const parent = header.parentElement
       if (!parent.classList.contains("toc-ignore")) {
-        const list_item = Object.assign(document.createElement("li"), {
+        const listItem = Object.assign(document.createElement("li"), {
           className: "chapter-item expanded",
         });
         const section_number = Object.assign(document.createElement("strong"), {
-          textContent: `${chapter_number}${i + 1}. `,
+          textContent: `${chapterNumber}${i + 1}. `,
           ariaHidden: "true",
         });
         const link = Object.assign(document.createElement("a"), {
@@ -113,8 +112,8 @@ function createSection(list_root, chapter_number, tree) {
           href: header.href,
         });
         link.insertAdjacentElement("afterbegin", section_number);
-        list_item.appendChild(link);
-        list_root.appendChild(list_item);
+        listItem.appendChild(link);
+        listRoot.appendChild(listItem);
       }
     }
   });
@@ -123,9 +122,9 @@ function createSection(list_root, chapter_number, tree) {
 window.addEventListener('load', () => {
   const pagetoc = getPagetoc();
   if (!pagetoc) return;
-  const chapter_number = getChapterNumber();
+  const chapterNumber = getChapterNumber();
   const tree = headersIntoTree([...document.getElementsByClassName("header")]);
-  createSection(pagetoc, chapter_number, tree);
+  createSection(pagetoc, chapterNumber, tree);
 
   updateFunction();
   listenActive();
