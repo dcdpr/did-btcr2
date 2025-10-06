@@ -34,13 +34,15 @@ function getChapterNumber() {
 
 function updateFunction() {
   if (scrollTimeout) return; // Skip updates if within the cooldown period from a click
+  const menubarHeight = parseFloat(window.getComputedStyle(document.querySelector("#menu-bar .menu-title")).height);
   const headers = [...document.getElementsByClassName("header")];
   const scrolledY = window.scrollY;
   let lastHeader = null;
 
   // Find the last header that is above the current scroll position
   for (let i = headers.length - 1; i >= 0; i--) {
-    if (scrolledY >= headers[i].offsetTop) {
+    let marginTop = menubarHeight + headers[i].computedStyleMap().get("font-size").value / 2;
+    if (scrolledY >= headers[i].offsetTop - marginTop) {
       lastHeader = headers[i];
       break;
     }
