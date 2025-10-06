@@ -37,21 +37,31 @@ processed in the following manner:
 * Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` using the [JSON Document
   Hashing] algorithm.
   * Transform the `updates` array into a Map that can be used for looking up each [BTCR2 Signed
-    Update (data structure)] by its hash.
+    Update (data structure)] by its hash. The transformed Map is called the `update_lookup_table`.
 * Hash each [Map Announcement (data structure)] in `sidecar.mapUpdates` using the [JSON Document
   Hashing] algorithm.
   * Transform the `mapUpdates` array into a Map that can be used for looking up each
-    [Map Announcement (data structure)] by its hash.
+    [Map Announcement (data structure)] by its hash. The transformed Map is called the
+    `cas_lookup_table`.
 * Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof
-  (data structure)] by its `id`.
+  (data structure)] by its `id`. The transformed Map is called the `smt_lookup_table`.
 
 If the HRP on `did` is "x" ([Genesis Document]-based **did:btcr2** identifier) the
 `sidecar.genesisDocument` MUST be hashed with the [JSON Document Hashing] algorithm and an
 `InvalidDid` error MUST be raised if the computed hash does not match the hash within the `did`.
 
+
 ## Establish Initial DID Document
 
-### For Key-based did:btcr2 Identifiers
+Resolution begins with an [Initial Did Document] which will be iteratively patched with
+[BTCR2 Signed Updates][BTCR2 Signed Update] announced by
+[Authorized Beacon Signals][Authorized Beacon Signal].
+
+Establishing the [Initial DID Document] MUST be done depending on the HRP value from the decoded
+`did`.
+
+
+### If HRP is "k"
 
 If the HRP on `did` is "k" (key-based **did:btcr2** identifier), the [Initial DID Document] template
 below MUST be filled out with the required template variables. The resulting rendered template is
@@ -89,7 +99,8 @@ the [Initial DID Document].
 The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1
 {{#cite DID-CORE}}.
 
-### For Genesis Document-based did:btcr2 Identifiers
+
+### If HRP is "x"
 
 If the HRP on `did` is "x" ([Genesis Document]-based **did:btcr2** identifier), the
 [Genesis Document] included in `sidecar.genesisDocument` MUST be processed by replacing the
@@ -98,6 +109,61 @@ replacement would be a suitable processor.
 
 The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1
 {{#cite DID-CORE}}.
+
+
+## Processing Beacon Signals
+
+Using the [Initial DID Document], iterate through its `service` array to discover the
+[BTCR2 Beacons][BTCR2 Beacon]. Parse each [Beacon Address] in the `serviceEndpoint`
+for each [Beacon Type] and find all Bitcoin transactions that spend at least one
+UTXO controlled by those [Beacon Addresses][Beacon Address].
+
+Filter each Bitcoin transaction containing a [Beacon Signal] where the last
+transaction output is a script containing [Signal Bytes]. Collect [BTCR2 Signed Updates][BTCR2 Signed Update] by processing each transaction's [Signal Bytes] according to the [Beacon Type]:
+
+### Singleton Beacon
+
+* Let `update_hash` be [Signal Bytes].
+* Return [BTCR2 Signed Update] by looking up `update_hash` in the `update_lookup_table`.
+
+<!-- todo: ... or retrieve from CAS -->
+
+### CAS Beacon
+
+<!-- TODO: Rename "Map Beacon" (and "Map Announcement" etc.) to "CAS ..." -->
+
+* Let `map_update_hash` be [Signal Bytes].
+* Look up `map_update_hash` in the `cas_lookup_table` to retrieve a [Map Announcement (data structure)].
+* Let `update_hash` be the result of looking up `did` in the [Map Announcement (data structure)].
+* Return [BTCR2 Signed Update] by looking up `update_hash` in the `update_lookup_table`.
+
+<!--
+  TODO: This section used to say this. Is it better or worse than the imperative looking list?
+
+Use [Signal Bytes] as a lookup key to retrieve the [Map Announcement (data structure)] from the CAS `update_lookup_table`. Use the DID as a lookup key in the [Map Announcement (data structure)] and use that value as the Update hash. Use the Update hash to look up the [BTCR2 Update] object from the `update_lookup_table`.
+-->
+
+<!-- todo: ... or retrieve from CAS -->
+
+### SMT Beacon
+
+* Let `smt_root` be [Signal Bytes].
+* Look up `smt_proof` in the `smt_lookup_table` to retrieve a [SMT Proof (data structure)].
+* Check the `smt_proof` by frobnicating the whatchamacallit. <!-- TODO: Make the check real -->
+* Return [BTCR2 Signed Update] by looking up `smt_proof.updateId` in the `update_lookup_table`.
+
+<!-- todo: ... or retrieve from CAS -->
+
+
+## Applying the Updates
+
+Sort the collected [BTCR2 Signed Updates][BTCR2 Signed Update] array by `targetVersionId`.
+
+<!-- TODO: Draw the rest of the owl. -->
+
+----
+
+
 
 # TODO: Describe what this operations does:
 

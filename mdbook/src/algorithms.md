@@ -98,10 +98,11 @@ unencoded data bytes. Parse the unencoded data bytes according to
 [Table 2: Unencoded Data Bytes](#unencoded-data-bytes) to retrieve the `version`, `network`, HRP,
 and [Genesis Bytes].
 
-* `version` MUST be `0`. `version` MUST be returned to the caller as `1`.
-* The value of `network` is described in the [DID-BTCR2 Identifier Encoding] algorithm. `network`
-  SHOULD include additional type information using symbolic names that can be represented as
-  integer values.
+* `version` MUST be `0`. `version` MUST be returned to the caller as a type that can be represented
+  as the value `1`.
+* `network` MUST be one of the values in [table 1: Network Values](#network-values). `network`
+  SHOULD include additional type information using symbolic names that can be represented as integer
+  values.
 * The HRP MUST be either "k" or "x".
 
 If the HRP is "k" (key-based **btcr2:did** identifier), the [Genesis Bytes] MUST be a 33-byte SEC
