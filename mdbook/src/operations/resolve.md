@@ -1,3 +1,5 @@
+{% import "macros.tera" as ui %}
+
 # Resolve
 
 DID resolution is defined by {{#cite DID-RESOLUTION}}.
@@ -21,7 +23,77 @@ Outputs:
 - `didDocumentMetadata`: [DID document metadata (data structure)].
 
 
-TODO: Describe what this operations does:
+## Processing Sidecar Data
+
+`resolutionOptions` contains a `sidecar` property ([Sidecar Data (data structure)]) which SHOULD be
+processed in the following manner:
+
+* Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` using the [JSON Document
+  Hashing] algorithm.
+  * Transform the `updates` array into a Map that can be used for looking up each [BTCR2 Signed
+    Update (data structure)] by its hash.
+* Hash each [Map Announcement (data structure)] in `sidecar.mapUpdates` using the [JSON Document
+  Hashing] algorithm.
+  * Transform the `mapUpdates` array into a Map that can be used for looking up each
+    [Map Announcement (data structure)] by its hash.
+* Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof
+  (data structure)] by its `id`.
+
+If the HRP on `did` is "x" ([Genesis Document]-based **btcr2:did** identifier) the
+`sidecar.genesisDocument` MUST be hashed with the [JSON Document Hashing] algorithm and an
+`InvalidDid` error MUST be raised if the computed hash does not match the hash within the `did`.
+
+## Establish Initial DID Document
+
+### For Key-based did:btcr2 Identifiers
+
+If the HRP on `did` is "k" (key-based **btcr2:did** identifier), the [Initial DID Document] template
+below MUST be filled out with the required template variables. The resulting rendered template is
+the [Initial DID Document].
+
+* `did`: The DID.
+* `public-key-multikey`: Multikey format representation {{#cite BIP340-Cryptosuite}} of the public
+  key within the decoded DID.
+* `p2pkh-bitcoin-address`: A Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public
+  key within the decoded DID. The address MUST use the Bitcoin URI Scheme {{#cite BIP321}}.
+* `p2wpkh-bitcoin-address`: A Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from
+  the public key within the decoded DID. The address MUST use the Bitcoin URI Scheme
+  {{#cite BIP321}}.
+* `p2tr-bitcoin-address`: A Pay-to-Taproot (P2PKH) Bitcoin address produced from the public key
+  within the decoded DID. The address MUST use the Bitcoin URI Scheme {{#cite BIP321}}.
+
+{% set hide_text = `` %}
+{% set initial_did_document_template =
+`
+~~~hbs
+{{#include ../example-data/key-based-initial-did-document-template.hbs}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="initial-did-document-template",
+  example=initial_did_document_template,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Template",
+  hide_label="Hide"
+) }}
+
+
+The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1
+{{#cite DID-CORE}}.
+
+### For Genesis Document-based did:btcr2 Identifiers
+
+If the HRP on `did` is "x" ([Genesis Document]-based **btcr2:did** identifier), the
+[Genesis Document] included in `sidecar.genesisDocument` MUST be processed by replacing the
+identifier placeholder (`"did:btcr2:_"`) with the `did`. A string replacement or regular expression
+replacement would be a suitable processor.
+
+The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1
+{{#cite DID-CORE}}.
+
+# TODO: Describe what this operations does:
 
 * What the resolutionOptions looks like (its "schema"). Especially resolutionOptions.sidecar.
   * And critically, *what to do with resolutionOptions.sidecar* to make the resolution work correctly, namely:

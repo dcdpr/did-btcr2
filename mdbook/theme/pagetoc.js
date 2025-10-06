@@ -41,7 +41,7 @@ function updateFunction() {
 
   // Find the last header that is above the current scroll position
   for (let i = headers.length - 1; i >= 0; i--) {
-    let marginTop = menubarHeight + headers[i].computedStyleMap().get("font-size").value / 2;
+    let marginTop = menubarHeight + parseFloat(window.getComputedStyle(headers[i])["font-size"]) / 2;
     if (scrolledY >= headers[i].offsetTop - marginTop) {
       lastHeader = headers[i];
       break;
