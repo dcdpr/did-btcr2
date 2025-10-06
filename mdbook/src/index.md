@@ -1,11 +1,5 @@
 # `did:btrc2` DID Method
 
-<style>
-table {
-    margin: 1em;
-}
-</style>
-
 WARNING This specification is still under active development and may be subject to breaking changes.
 
 ## Authors
