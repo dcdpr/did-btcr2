@@ -29,7 +29,7 @@ function autoCreatePagetoc() {
 function getChapterNumber() {
   const chapter_label_number = document.querySelector("mdbook-sidebar-scrollbox ol > li > a.active > strong");
 
-  return chapter_label_number.textContent;
+  return chapter_label_number?.textContent || "";
 }
 
 function updateFunction() {
