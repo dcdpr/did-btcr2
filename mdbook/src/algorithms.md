@@ -1,3 +1,5 @@
+{% import "macros.tera" as ui %}
+
 # Algorithms
 
 <style>
@@ -40,9 +42,46 @@ Genesis Bytes are then appended to the first byte.
 |:---------|:---------|:----------------|
 | 4 bits   | 4 bits   | 32 or 33 bytes  |
 
-Use a Bech32 encoding function to encode this data. Use "k" as the HRP
-for key-based creation and "x" as the HRP for [Genesis Document]-based
-creation. See {{#cite BIP173}} and {{#cite BIP350}} for details.
+Encode the bytes with Bech32m {{#cite BIP350}} to produce the final encoding. Use "k" as the HRP for
+key-based creation and "x" as the HRP for [Genesis Document]-based creation.
+
+
+{% set hide_text = `` %}
+{% set ex_identifier_encoding =
+"
+Example input:
+
+* `version`: `1`
+* `network`: `0`
+* `bytes (hex encoded)`: `171d59dd2d274011cbb090acc5a168dc98f303790ffce8f54779baed81890c1b00`
+
+Example output:
+~~~text
+did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q
+~~~
+
+" %}
+
+{{ ui::show_example_tabs(
+  group_id="identifier-encoding-example",
+  example=ex_identifier_encoding,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
+
+## DID-BTCR2 Identifier Decoding
+
+For any other errors encountered during the decoding algorithm, raise an `"INVALID_DID"` error.
+
+The scheme and DID method of the identifier (i.e., the first 10 chars) MUST be exactly `"did:btcr2:"`.
+
+The data following `"did:btcr2:"` MUST be a Bech32m encoded string {{#cite BIP350}}. Decode the bech32m encoded string to retrieve the HRP and the [Genesis Bytes]. The HRP MUST be either "k" or "x".
+
+If the HRP is "k" (key-based **btcr2:did** identifier), the [Genesis Bytes] are a secp256k1 public key.
+
+If the HRP is "x" (), the [Genesis Bytes] are a 32-byte SHA256 hash of a [Genesis Document].
 
 ## JSON Document Hashing
 
@@ -50,12 +89,15 @@ creation. See {{#cite BIP173}} and {{#cite BIP350}} for details.
 - Hash the encoded document with SHA-256, {{#cite SHA256}}.
 
 ## Transforming Genesis Document into Initial Document
+
 This is the process of hashing the Genesis Document and replacing the DID placeholder values with a new DID constructed from the hash.
 
 ## Processing Sidecar Documents and SMT Proofs
+
 See the "Resolve" operation for details.
 
 ## Signing and verifying a BTCR2 Update
+
 Maybe? This might not be much of an algorithm, either. Signing and verification are only used in one place each.
 
 ## Prior "Algorithms" that we need to either rule out or flesh out

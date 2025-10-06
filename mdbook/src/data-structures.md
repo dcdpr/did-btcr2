@@ -59,7 +59,7 @@ placeholder value (`did:btcr2:_`).
   hide_label="Hide"
 ) }}
 
-## Initial DID Document { #initial-did-document }
+## Initial DID Document { #initial-document }
 
 An [Initial DID Document] is a conformant [DID document (data structure)].
 

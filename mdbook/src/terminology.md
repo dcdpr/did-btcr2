@@ -130,7 +130,7 @@ to a [BTCR2 Signed Update]. See {{#cite BIP340-Cryptosuite}}
 ## Genesis Bytes { #genesis-bytes }
 
 The bytes used to generate a did:btcr2 identifier. These bytes are either a 33-byte compressed SEC
-encoded sec256k1 public key or a 32-byte SHA256 hash of a [Genesis Document].
+encoded secp256k1 public key or a 32-byte SHA256 hash of a [Genesis Document].
 
 ## Genesis Document { #genesis-document }
 
@@ -143,7 +143,7 @@ Example: [Genesis Document (data structure)].
 
 The canonical, conformant version 1 of a DID document for a specific **did:btcr2** identifier.
 
-Example: [Initial Document (data structure)].
+Example: [Initial document (data structure)].
 
 ## Late Publishing { #late-publishing }
 
