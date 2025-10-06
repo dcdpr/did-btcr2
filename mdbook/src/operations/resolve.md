@@ -2,7 +2,7 @@
 
 # Resolve
 
-DID resolution is defined by {{#cite DID-RESOLUTION}}.
+DID resolution is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
 
 The resolve operation has the following function signature:
 
@@ -23,6 +23,12 @@ Outputs:
 - `didDocumentMetadata`: [DID document metadata (data structure)].
 
 
+## Decoding the DID
+
+The `did` MUST be parsed with the [DID-BTCR2 Identifier Decoding] algorithm to retrieve the
+`method-specific-id`. An `INVALID_DID` error MUST be raised in response to any errors raised while
+decoding.
+
 ## Processing Sidecar Data
 
 `resolutionOptions` contains a `sidecar` property ([Sidecar Data (data structure)]) which SHOULD be
@@ -39,7 +45,7 @@ processed in the following manner:
 * Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof
   (data structure)] by its `id`.
 
-If the HRP on `did` is "x" ([Genesis Document]-based **btcr2:did** identifier) the
+If the HRP on `did` is "x" ([Genesis Document]-based **did:btcr2** identifier) the
 `sidecar.genesisDocument` MUST be hashed with the [JSON Document Hashing] algorithm and an
 `InvalidDid` error MUST be raised if the computed hash does not match the hash within the `did`.
 
@@ -47,7 +53,7 @@ If the HRP on `did` is "x" ([Genesis Document]-based **btcr2:did** identifier) t
 
 ### For Key-based did:btcr2 Identifiers
 
-If the HRP on `did` is "k" (key-based **btcr2:did** identifier), the [Initial DID Document] template
+If the HRP on `did` is "k" (key-based **did:btcr2** identifier), the [Initial DID Document] template
 below MUST be filled out with the required template variables. The resulting rendered template is
 the [Initial DID Document].
 
@@ -85,7 +91,7 @@ The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.
 
 ### For Genesis Document-based did:btcr2 Identifiers
 
-If the HRP on `did` is "x" ([Genesis Document]-based **btcr2:did** identifier), the
+If the HRP on `did` is "x" ([Genesis Document]-based **did:btcr2** identifier), the
 [Genesis Document] included in `sidecar.genesisDocument` MUST be processed by replacing the
 identifier placeholder (`"did:btcr2:_"`) with the `did`. A string replacement or regular expression
 replacement would be a suitable processor.

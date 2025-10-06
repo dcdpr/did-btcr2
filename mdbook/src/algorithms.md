@@ -6,55 +6,74 @@ These algorithms are referenced throughout this specification.
 
 ## DID-BTCR2 Identifier Encoding
 
-A did:btcr2 identifier is created from three values: 'version', 'network' and
-'Genesis Bytes'.
+Any errors encountered during this algorithm MUST raise an `INVALID_DID` error.
 
-Currently, the only valid value for 'version' is 1. The 'network' value
-declares which Bitcoin network anchors the identifier and is selected
-from the following table:
+A **did:btcr2** identifier is created from three values: `version`, `network` and
+`genesis_bytes` ([Genesis Bytes]).
 
-| Network           | Value  |
-|:------------------|:-------|
-| bitcoin           | 0      |
-| signet            | 1      |
-| regtest           | 2      |
-| testnet3          | 3      |
-| testnet4          | 4      |
-| mutinynet         | 5      |
-| reserved          | 6-B    |
-| custom network 1  | C      |
-| custom network 2  | D      |
-| custom network 3  | E      |
-| custom network 4  | F      |
+`genesis_bytes` MUST be one of the supported [Genesis Bytes] types defined in the Terminology
+chapter. Implementations SHOULD require `genesis_bytes` to include additional type information that
+clearly distinguishes between the supported [Genesis Bytes] types. This type information determines
+how the identifier is encoded.
 
-Combine these values in the following way: The first byte of the data
-contains the 'version' and the 'network', with 'version' - 1 in the high
-nibble and the value from the network table in the low nibble. The
-Genesis Bytes are then appended to the first byte.
+The `version` value MUST be `1`, declaring the encoding follows this specification.
 
-| Version  | Network  | Genesis Bytes   |
-|:---------|:---------|:----------------|
-| 4 bits   | 4 bits   | 32 or 33 bytes  |
+The `network` value declares which Bitcoin network anchors the identifier. Implementations SHOULD
+require `network` to include additional type information using symbolic names that can be
+represented as integer values. `network` MUST be either one of the supported symbolic network names
+or integer values listed in the following table:
 
-Encode the bytes with Bech32m {{#cite BIP350}} to produce the final encoding. Use "k" as the HRP for
-key-based creation and "x" as the HRP for [Genesis Document]-based creation.
+### Table 1: Network Values { #network-values }
+
+| Network           | Value      |
+|:------------------|:-----------|
+| `bitcoin`         | `0`        |
+| `signet`          | `1`        |
+| `regtest`         | `2`        |
+| `testnet3`        | `3`        |
+| `testnet4`        | `4`        |
+| `mutinynet`       | `5`        |
+| Reserved          | `6`..`11`  |
+| Custom networks   | `12`..`14` |
+
+Combine the `version` and `network` values into a single byte value with `version - 1` (i.e., `0`)
+in the low [^1] nibble and `network` in the high [^1] nibble.
+
+[^1]: Little Endian.
+
+Append `genesis_bytes` to the first byte to produce the unencoded data bytes. Its format is:
+
+### Table 2: Unencoded Data Bytes { #unencoded-data-bytes }
+
+|             | `version` | `network` | `genesis_bytes` |
+|:------------|:----------|:----------|:----------------|
+| Size:       | 4 bits    | 4 bits    | 32 or 33 bytes  |
+| Index [^2]: | 0         | 4         | 8               |
+
+[^2]: The "Index" is a Little Endian bit count starting from `0` on the left and ending in `263` or
+`271` on the right (inclusive).
+
+Encode the unencoded data bytes with Bech32m {{#cite BIP350}} to produce the `method-specific-id`.
+Use "k" as the HRP for key-based [Genesis Bytes] and "x" as the HRP for [Genesis Document]-based
+[Genesis Bytes].
+
+Prefix the `method-specific-id` with the string `"did:btcr2:"` to produce the final **did:btcr2**
+identifier.
 
 
 {% set hide_text = `` %}
 {% set ex_identifier_encoding =
-"
+'
 Example input:
 
 * `version`: `1`
-* `network`: `0`
-* `bytes (hex encoded)`: `171d59dd2d274011cbb090acc5a168dc98f303790ffce8f54779baed81890c1b00`
+* `network`: `bitcoin` (`0`)
+* `genesis_bytes`: SEC encoded secp256k1 public key
+  `171d59dd2d274011cbb090acc5a168dc98f303790ffce8f54779baed81890c1b00`
 
 Example output:
-~~~text
-did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q
-~~~
 
-" %}
+* `did`: `"did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q"`' %}
 
 {{ ui::show_example_tabs(
   group_id="identifier-encoding-example",
@@ -65,22 +84,60 @@ did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q
   hide_label="Hide"
 ) }}
 
+
 ## DID-BTCR2 Identifier Decoding
 
-For any other errors encountered during the decoding algorithm, raise an `"INVALID_DID"` error.
+Any errors encountered during this algorithm MUST raise an `INVALID_DID` error.
 
-The scheme and DID method of the identifier (i.e., the first 10 chars) MUST be exactly `"did:btcr2:"`.
+A **did:btcr2** identifier MUST be processed according to the DID Resolution Algorithm
+{{#cite DID-RESOLUTION}} to retrieve the **did:btcr2** DID Method-specific ID `method-specific-id`.
+(I.e., the first 10 characters in the string MUST be exactly `"did:btcr2:"`.)
 
-The data following `"did:btcr2:"` MUST be a Bech32m encoded string {{#cite BIP350}}. Decode the bech32m encoded string to retrieve the HRP and the [Genesis Bytes]. The HRP MUST be either "k" or "x".
+Decode the `method-specific-id` as a Bech32m encoded string {{#cite BIP350}} to retrieve the
+unencoded data bytes. Parse the unencoded data bytes according to
+[Table 2: Unencoded Data Bytes](#unencoded-data-bytes) to retrieve the `version`, `network`, HRP,
+and [Genesis Bytes].
 
-If the HRP is "k" (key-based **btcr2:did** identifier), the [Genesis Bytes] are a secp256k1 public key.
+* `version` MUST be `0`. `version` MUST be returned to the caller as `1`.
+* The value of `network` is described in the [DID-BTCR2 Identifier Encoding] algorithm. `network`
+  SHOULD include additional type information using symbolic names that can be represented as
+  integer values.
+* The HRP MUST be either "k" or "x".
 
-If the HRP is "x" (), the [Genesis Bytes] are a 32-byte SHA256 hash of a [Genesis Document].
+If the HRP is "k" (key-based **btcr2:did** identifier), the [Genesis Bytes] MUST be a 33-byte SEC
+encoded secp256k1 public key.
+
+If the HRP is "x" ([Genesis Document]-based **btcr2:did** identifier), the [Genesis Bytes] MUST be a
+32-byte SHA-256 hash of a [Genesis Document].
+
+
+{% set hide_text = `` %}
+{% set ex_identifier_decoding =
+'
+Example input:
+
+* `did`: `"did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"`
+
+Example output:
+
+* `version`: `1`
+* `network`: `mutinynet` (`0`)
+* `genesis_bytes`: SHA-256 hash `e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8`' %}
+
+{{ ui::show_example_tabs(
+  group_id="identifier-decoding-example",
+  example=ex_identifier_decoding,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
+
 
 ## JSON Document Hashing
 
-- Encode the document using JCS, {{#cite RFC8785}}.
-- Hash the encoded document with SHA-256, {{#cite SHA256}}.
+- Encode the document using JCS {{#cite RFC8785}}.
+- Hash the encoded document with SHA-256 {{#cite SHA256}}.
 
 ## Transforming Genesis Document into Initial Document
 
