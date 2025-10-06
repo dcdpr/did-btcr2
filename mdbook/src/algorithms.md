@@ -121,7 +121,7 @@ Example input:
 Example output:
 
 * `version`: `1`
-* `network`: `mutinynet` (`0`)
+* `network`: `mutinynet` (`5`)
 * `genesis_bytes`: SHA-256 hash `e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8`' %}
 
 {{ ui::show_example_tabs(
