@@ -59,28 +59,26 @@ function updateFunction() {
 
 function headersIntoTree(headers) {
   const tree = [];
+  const stack = [];
+  let items = tree;
   let lastLevel = 1;
-  let lastSection = null;
 
   headers.forEach(header => {
     const level = parseInt(header.parentElement.tagName.substring(1) - 1);
     if (level > 0) {
-      // TODO: This logic isn't correct. It doesn't create a tree.
-      if (level != lastLevel) {
-        if (lastSection) {
-          tree.push(lastSection);
-        }
+      if (level > lastLevel) {
         lastLevel = level;
-        lastSection = [];
+        stack.push(items);
+        items.push([]);
+        items = items.slice(-1)[0];
+      } else if (level < lastLevel) {
+        lastLevel = level;
+        items = stack.pop();
       }
 
-      (lastSection || tree).push(header);
+      items.push(header);
     }
   });
-
-  if (lastSection) {
-    tree.push(lastSection);
-  }
 
   return tree;
 }
@@ -88,9 +86,7 @@ function headersIntoTree(headers) {
 function createSection(listRoot, chapterNumber, tree) {
   tree.forEach((header, i) => {
     if (Array.isArray(header)) {
-      const listItem = Object.assign(document.createElement("li"), {
-        className: "chapter-item expanded",
-      });
+      const listItem = document.createElement("li");
       const ordered_list = Object.assign(document.createElement("ol"), {
         className: "section",
       });
