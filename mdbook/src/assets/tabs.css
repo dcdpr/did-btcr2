@@ -3,42 +3,73 @@
     margin: 1rem 0 2rem;
 }
 
-/* Tab list */
-.tabs .tablist {
-    display: flex;
-    gap: .25rem;
-    border-bottom: 1px solid var(--sidebar-bg, #e5e7eb);
-    margin-bottom: .75rem;
-    flex-wrap: wrap;
+@media screen {
+    /* Tab list */
+    .tabs .tablist {
+        display: flex;
+        gap: .25rem;
+        border-bottom: 1px solid var(--sidebar-bg, #e5e7eb);
+        margin-bottom: .75rem;
+        flex-wrap: wrap;
+    }
+
+    /* Tab buttons */
+    .tabs [role="tab"] {
+        appearance: none;
+        border: none;
+        background: transparent;
+        padding: .5rem .9rem;
+        font: inherit;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+    }
+
+    .tabs [role="tab"]:focus-visible {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+    }
+
+    /* Active tab */
+    .tabs [role="tab"].is-active {
+        border-bottom-color: var(--links, #2563eb);
+        font-weight: 600;
+    }
+
+    /* Panels */
+    .tabs [role="tabpanel"] {
+        padding: .25rem 0;
+    }
+
+    .tabs [role="tabpanel"][hidden] {
+        display: none;
+    }
+
+    .tabs [role="tabpanel"] > label {
+        display: none;
+    }
 }
 
-/* Tab buttons */
-.tabs [role="tab"] {
-    appearance: none;
-    border: none;
-    background: transparent;
-    padding: .5rem .9rem;
-    font: inherit;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-}
+@media print {
+    /* Tab list */
+    .tabs .tablist {
+        display: none;
+    }
 
-.tabs [role="tab"]:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
-}
+    /* Panels */
+    .tabs [role="tabpanel"] {
+        page-break-inside: avoid;
+    }
 
-/* Active tab */
-.tabs [role="tab"].is-active {
-    border-bottom-color: var(--links, #2563eb);
-    font-weight: 600;
-}
+    .tabs [role="tabpanel"][hidden] {
+        display: block;
+    }
 
-/* Panels */
-.tabs [role="tabpanel"] {
-    padding: .25rem 0;
-}
+    .tabs [role="tabpanel"] > label:not(:has(+ *)) {
+        display: none;
+    }
 
-.tabs [role="tabpanel"][hidden] {
-    display: none;
+    .tabs [role="tabpanel"] > label + pre,
+    .tabs [role="tabpanel"] > label + pre code {
+        page-break-inside: auto;
+    }
 }
