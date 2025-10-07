@@ -38,6 +38,7 @@ Let `didDocument` be the value of `contemporary_document` at the end of the foll
     1. ... until any of these conditions are met:
         * [Process `updates` Array](#process-updates) exited early with a resolved `didDocument`.
         * `contemporary_version_id` equals the integer representation of `resolutionOptions.versionId`.
+        * An error is raised.
 
 
 ## Decode the DID { #decode-the-did }
