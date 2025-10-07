@@ -26,6 +26,7 @@
            role="tabpanel"
            aria-labelledby="{{ group_id }}-tab-hide"
            {% if start_show %}hidden{% endif %}>
+    <label>{{ hide_label }}</label>
 {{ hide | safe }}
   </section>
 
@@ -33,6 +34,7 @@
            role="tabpanel"
            aria-labelledby="{{ group_id }}-tab-show"
            {% if not start_show %}hidden{% endif %}>
+    <label>{{ show_label }}</label>
 {{ example | safe }}
   </section>
 </div>
