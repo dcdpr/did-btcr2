@@ -97,6 +97,21 @@ is defined by the [Beacon Type].
 
 ## Contemporary DID Document { #contemporary-did-document }
 
+<!--
+  TODO: This was identified to be no longer true because update announcements can be included in the
+  blockchain out of order. This uncontrolled ordering means that a DID document is NOT "contemporary
+  with a Bitcoin block at a specific block-height".
+
+  In fact, a single block MAY contain multiple updates for a single DID document.
+
+  I think that "contemporary" is not a great word for something which means "the state of the DID
+  document while applying updates during DID document resolution". But maybe that's just me!
+
+  A better term might be "Incremental DID Document"? "Updated DID Document"?
+  "Augmented DID Document"? "Enriched DID Document"? "Hydrated DID Document"?
+  Do we need to name it, anyway?
+-->
+
 The DID document that is contemporary with a Bitcoin block at a specific block-height. The
 Contemporary DID Document changes as a resolver traverses the blockchain and applies the relevant
 [BTCR2 Updates][BTCR2 Update] announced by [Authorized Beacon Signals][Authorized Beacon Signal] it
@@ -153,8 +168,9 @@ after Late Publishing to never have been valid. Late Publishing breaks [Non-Repu
 
 ## Map Beacon { #map-beacon }
 
-A type of [BTCR2 Beacon] which aggregates multiple [BTCR2 Update Announcements]. A [Beacon Signal]
-from a Map Beacon commits to a [Beacon Announcement Map].
+A type of [BTCR2 Beacon] which aggregates multiple
+[BTCR2 Update Announcements][BTCR2 Update Announcement]. A [Beacon Signal] from a Map Beacon commits
+to a [Beacon Announcement Map].
 
 ## Merkle Tree { #merkle-tree }
 
@@ -221,7 +237,7 @@ The 32 bytes of information that are included within the last transaction output
 ## Singleton Beacon { #singleton-beacon }
 
 A type of [BTCR2 Beacon] whose [Beacon Signals][Beacon Signal] each contain a single [BTCR2 Update
-Announcement]. See [Singleton Beacon] for more.
+Announcement].
 
 ## SMT Beacon { #smt-beacon }
 
