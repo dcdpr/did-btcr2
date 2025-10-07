@@ -39,9 +39,3 @@
   </section>
 </div>
 {% endmacro %}
-
-{% macro md_links(root="") %}
-{% include "includes/algorithm-links.md" %}
-{% include "includes/data-structures-links.md" %}
-{% include "includes/terminology-links.md" %}
-{% endmacro %}

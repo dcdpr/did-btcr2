@@ -1,3 +1,8 @@
+{% import "includes/links.tera" as links %}
+
+{{ links::include(root="../") }}
+
+
 # Create
 
 A **did:btcr2** identifier encodes a few pieces of information: an indicator
@@ -28,5 +33,3 @@ identifier from a [Genesis Document] allows for the creation of a more
 complex [Initial DID Document], including the ability to include service
 endpoints and [BTCR2 Beacons][BTCR2 Beacon] that support aggregation. Any
 active btcr2 DID can be updated later with new key material and service endpoints.
-
-{{#include ./includes/includes.md}}

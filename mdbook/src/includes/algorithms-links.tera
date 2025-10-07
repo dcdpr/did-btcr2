@@ -1,0 +1,3 @@
+[DID-BTCR2 Identifier Encoding]: {{ root }}algorithms.md#did-btcr2-identifier-encoding
+[DID-BTCR2 Identifier Decoding]: {{ root }}algorithms.md#did-btcr2-identifier-decoding
+[JSON Document Hashing]: {{ root }}algorithms.md#json-document-hashing

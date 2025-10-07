@@ -1,4 +1,8 @@
-{% import "macros.tera" as ui %}
+{% import "includes/ui.tera" as ui %}
+{% import "includes/links.tera" as links %}
+
+{{ links::include(root="../") }}
+
 
 # Resolve
 
@@ -24,21 +28,31 @@ Outputs:
 
 Input arguments are processed by [Decoding the DID](#decode-the-did) and [Processing Sidecar Data](#process-sidecar-data).
 
-Let `didDocument` be the value of `contemporary_document` at the end of the following process:
+Let `didDocument` be the value of `current_document` at the end of the following process:
 
 * Initialize state needed for DID document resolution:
     1. Let `updates` be an empty array of update tuples. Each update tuple consists of:
         * A Bitcoin block-time.
         * A [BTCR2 Signed Update (data structure)].
-    1. Let `contemporary_version_id` be `1`.
-    1. [Establish `contemporary_document`](#establish-current-document).
+    1. Let `current_version_id` be `1`.
+    1. Let `update_hash_history` be an empty array of [BTCR2 Unsigned Update] hashes.
+    1. [Establish `current_document`](#establish-current-document).
 * Repeat the following steps ...
-    1. [Process Beacon Signals](#process-beacon-signals) for `contemporary_document` to populate the `updates` array.
-    1. [Process `updates` Array](#process-updates) to update `contemporary_docuemnt` and `contemporary_version_id`.
+    1. [Process Beacon Signals](#process-beacon-signals) for `current_document` to populate the `updates` and `update_hash_history` arrays.
+    1. [Process `updates` Array](#process-updates) to update `current_document` and `current_version_id`.
     1. ... until any of these conditions are met:
         * [Process `updates` Array](#process-updates) exited early with a resolved `didDocument`.
-        * `contemporary_version_id` equals the integer representation of `resolutionOptions.versionId`.
+        * `current_version_id` equals the integer representation of `resolutionOptions.versionId`.
         * An error is raised.
+
+Let `didResolutionMetadata` be a [DID Resolution Metadata (data structure)] that MAY be empty.
+
+Let `didDocumentMetadata` be a [DID Document Metadata (data structure)] with the following REQUIRED properties:
+* `versionId`: The version number of the resolved DID document as an ASCII string.
+* `confirmations`: The number of confirmations for the Bitcoin block that contains the most recently applied unique [^1] update that yielded the resolved DID document, as an ASCII string. <!-- TODO: Need to track block-confirmations in addition to block-time with the `update` tuples. -->
+* `deactivated`: Boolean indicating whether the resolved DID document has been deactivated.
+
+[^1]: "Unique" in this sense is a reference to handling potentially duplicated updates. The requirement for `confirmations` is that the lowest block height is used when deduplicating.
 
 
 ## Decode the DID { #decode-the-did }
@@ -67,11 +81,11 @@ If `genesis_bytes` is a SHA-256 hash, the `sidecar.genesisDocument` MUST be hash
 not match `genesis_bytes`.
 
 
-## Establish `contemporary_document` { #establish-current-document }
+## Establish `current_document` { #establish-current-document }
 
-Resolution begins by creating an [Initial Did Document] called `contemporary_document` ([Contemporary DID Document]). The `contemporary_document` is iteratively patched with [BTCR2 Signed Updates][BTCR2 Signed Update] announced by [Authorized Beacon Signals][Authorized Beacon Signal].
+Resolution begins by creating an [Initial Did Document] called `current_document` ([current DID Document]). The `current_document` is iteratively patched with [BTCR2 Signed Updates][BTCR2 Signed Update] announced by [Authorized Beacon Signals][Authorized Beacon Signal].
 
-Establishing the `contemporary_document` MUST be done depending on the type of `genesis_bytes` retrieved from the decoded `did`:
+Establishing the `current_document` MUST be done depending on the type of `genesis_bytes` retrieved from the decoded `did`:
 
 
 ### If `genesis_bytes` is a SHA-256 Hash
@@ -80,7 +94,7 @@ The [Genesis Document] provided in `sidecar.genesisDocument` MUST be processed b
 identifier placeholder (`"did:btcr2:_"`) with the `did`. A string replacement or regular expression
 replacement is a suitable processor.
 
-Let `contemporary_document` be the result of parsing the processed string as JSON. The resulting
+Let `current_document` be the result of parsing the processed string as JSON. The resulting
 [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
 
@@ -112,13 +126,13 @@ addresses MUST use the Bitcoin URI Scheme {{#cite BIP321}}.
   hide_label="Hide"
 ) }}
 
-Let `contemporary_document` be the result of parsing the rendered template as JSON. The
+Let `current_document` be the result of parsing the rendered template as JSON. The
 resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
 
 ## Process Beacon Signals { #process-beacon-signals }
 
-Iterate through the `contemporary_document` ([DID Document (data structure)]) `service` array to
+Iterate through the `current_document` ([DID Document (data structure)]) `service` array to
 discover the [BTCR2 Beacons][BTCR2 Beacon] by matching the service `type` against
 [Beacons Table 1: Beacon Types].
 
@@ -163,74 +177,80 @@ For each transaction:
 
 ## Process `updates` Array { #process-updates }
 
-Sort the `updates` array by [BTCR2 Signed Update (data structure)] `targetVersionId`, lowest first. Pop the first element from the front of the `updates` array. If the element's block-time is greater than the integer representation of `resolutionOptions.versionTime`, `contemporary_document` MUST be returned as the final resolved `didDocument`.
+Sort the `updates` array by [BTCR2 Signed Update (data structure)] `targetVersionId`, lowest first. Pop the first element from the front of the `updates` array.
 
-Otherwise, let `update` be the element's [BTCR2 Signed Update (data structure)] and [Apply `update`](#apply-update) to `contemporary_document`.
+If the element's block-time is greater than the integer representation of `resolutionOptions.versionTime`, `current_document` MUST be returned as the final resolved `didDocument`.
 
-Increment `contemporary_version_id`.
+Otherwise, let `update` be the element's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
+
+Increment `current_version_id`.
+
+If `current_version_id` >= `resolutionOptions.versionId`, return `current_document` as the resolved `didDocument`.
+
+
+### Check `update.targetVersionId` { #check-update-version }
+
+Compare `update.targetVersionId` to `current_version_id`. Only one of three possible conditions may occur:
+
+1. `update.targetVersionId <= current_version_id`:
+    * Let `unsigned_update` be the `update` with the `proof` property removed
+    * Pass `unsigned_update` and `update_hash_history` to [Confirm Duplicate Update](#confirm-duplicate-update).
+2. `update.targetVersionId == current_version_id + 1`:
+    * Pass `update` to [Apply `update`](#apply-update).
+3. `update.targetVersionId > current_version_id + 1`:
+    * [`LATE_PUBLISHING`] error MUST be raised.
+
+
+### Confirm Duplicate Update { #confirm-duplicate-update }
+
+This ensures that the update is in fact a duplicate since the `update.targetVersionId` is lower than expected.
+
+Inputs:
+
+* `unsigned_update`: the [BTCR2 Unsigned Update] with a lower-than-expected
+  `targetVersionId`
+* `update_hash_history`: an array of hashes of all previously applied
+  [BTCR2 Unsigned Updates][BTCR2 Unsigned Update]
+
+Hash the `unsigned_update` with the [JSON Document Hashing] algorithm.
+
+Compare the computed hash to `update_hash_history[unsigned_update.targetVersionId - 2]`. If these do not match, a [`LATE_PUBLISHING`] error MUST be raised.
 
 
 ### Apply `update` { #apply-update }
 
-<!--
-  TODO: There are three conditions to check:
+Hash `current_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.sourceHash`.
 
-  1. `update.targetVersionId <= `contemporary_version_id`
-    - Check Duplicate `update`.
-  2. `update.targetVersionId == `contemporary_version_id + 1`
-    - Compare `contemporary_document` hash to `update.sourceHash`.
-    - Check `update.proof`.
-    - Apply `update.patch`.
-    - Compare `contemporary_document` hash to `update.targetHash`.
-    - Increment `contemporary_version_id`
-    - If `contemporary_version_id` >= `resolutionOptions.versionId`, return `contemporary_document`.
-  3. `update.targetVersionId > `contemporary_version_id + 1`
-    - Return `LATE_PUBLISHING_ERROR`.
--->
+[Check `update.proof`](#check-update-proof).
 
-If `update.targetVersionId` is less than or equal to `contemporary_version_id`, [confirm duplicate `update`](#confirm-duplicate-update).
+Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `current_document`.
 
-Hash `contemporary_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.sourceHash`.
+Verify that the `current_document` is conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
-Check the `update.proof` by frobnicating the whatchamacallit. <!-- TODO: Make this real, too! -->
-
-Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `contemporary_document`.
-
-Hash the patched `contemporary_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.targetHash`.
-
-Look for late publishing errors by frobnicating the whatchamacallit. <!-- TODO: This is just a version number comparison. -->
+Hash the patched `current_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.targetHash`.
 
 
-### Confirm Duplicate `update` { #confirm-duplicate-update }
+### Check `update.proof` { #check-update-proof }
 
 <!--
-  TODO: Needs an array of hashes and the `update`. The hash of `update` is compared against the
-  array of hashes ...
+  TODO: This is where ZCAP-LD comes into play. It is intentionally omitted.
 
-  Wait, how is this even supposed to work? The array of hashes is a mix of the
-  `contemporary_document` hash before each `update` is applied and the `update` hash after the
-  update is applied. The `update` hash will NEVER be equal to the `contemporary_document` hash!
+  This is sound because `update.proof.verificationMethod` is REQUIRED to be both a valid
+  `verificationMethod` and `capabilityInvocation` in the current document. This is enough to imply
+  the one and only capability required by this spec ("Write").
 
-  This is a specification bug with the "Confirm Duplicate Update algorithm" (since removed in
-  the "feature-rewrite" branch. There is no corresponding "Algo" for it). I believe the bug was
-  introduced in https://github.com/dcdpr/did-btcr2/issues/121
-
-  The bug corrupts the array of hashes which will cause the "Confirm Duplicate Update algorithm" to
-  fail after the second duplicate update check.
-
-  It isn't clear from the discussion what the intended use for the `contemporary_document` hash was.
-  https://github.com/dcdpr/did-btcr2/commit/50e3b5f0407c96b454cf29deff6dfb67fcb914a2 is the
-  earliest commit that introduces the "Confirm Duplicate Update algorithm" (and the "TODO" comment
-  noted in Issue #121 -- removed in https://github.com/dcdpr/did-btcr2/pull/145).
-
-  NOTE: The reason this exists in the first place is to handle an edge case where duplicate update
-  announcements are allowed to go out for the same update (with different signatures).
-  https://github.com/dcdpr/did-btcr2/issues/76 describes this edge case. The PR that closed Issue
-  #76 was https://github.com/dcdpr/did-btcr2/pull/83.
-
-  The removal of duplicate update detection in the "feature-rewrite" branch regresses the handling
-  of the edge case.
+  It should probably be mentioned for completeness as a soft RECOMMENDATION, referencing
+  [Root Capability (data structure)].
 -->
+
+Find `publicKeyMultibase` within the `current_document.verificationMethod` Set which matches the `id` referenced by `update.proof.verificationMethod`. If not found, MUST raise an [`INVALID_DID_UPDATE`] error.
+
+Ensure that an element of the `current_document.capabilityInvocation` Set matches `update.proof.verificationMethod`, else MUST raise [`INVALID_DID_UPDATE`] error.
+
+Instantiate a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance using `publicKeyMultibase` and `"bip340-jcs-2025"` cryptosuite.
+
+Pass `update` to the instantiated BIP340 Cryptosuite `verifyProof` method. If the result's `verified` property is `false`, an [`INVALID_DID_UPDATE`] error MUST be raised.
+
 
 <!-- TODO: Draw the rest of the owl. -->
 
@@ -339,6 +359,3 @@ A valid DID update (from version x \-\> x+1) is:
 * announced in an authorized beacon signal
 * proven by inclusion in the OP\_RETURN directly, inclusion in the Map, or an SMT proof
 * signed with data integrity
-
-
-{{#include ./includes/includes.md}}

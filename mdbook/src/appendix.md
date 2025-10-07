@@ -1,3 +1,8 @@
+{% import "includes/links.tera" as links %}
+
+{{ links::include() }}
+
+
 # Appendix
 
 ## Aggregation
@@ -7,6 +12,3 @@
 ## Security Considerations
 
 ## Optimized Sparse Merkle Tree Implementation
-
-
-{{#include ./includes/includes.md}}

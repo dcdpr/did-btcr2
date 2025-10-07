@@ -1,4 +1,6 @@
+{% import "includes/links.tera" as links %}
+
+{{ links::include() }}
+
+
 # Conformance
-
-
-{{#include ./includes/includes.md}}

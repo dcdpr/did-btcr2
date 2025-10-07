@@ -1,4 +1,8 @@
-{% import "macros.tera" as ui %}
+{% import "includes/ui.tera" as ui %}
+{% import "includes/links.tera" as links %}
+
+{{ links::include() }}
+
 
 # Algorithms
 
@@ -140,20 +144,21 @@ Example output:
 
 ## JSON Document Hashing
 
-- Encode the document using JCS {{#cite RFC8785}}.
-- Hash the encoded document with SHA-256 {{#cite SHA256}}.
+* Encode the document using JCS {{#cite RFC8785}}.
+* Hash the encoded document with SHA-256 {{#cite SHA256}}.
+
 
 ## Transforming Genesis Document into Initial Document
 
 This is the process of hashing the Genesis Document and replacing the DID placeholder values with a new DID constructed from the hash.
 
+
 ## Processing Sidecar Documents and SMT Proofs
 
 See the "Resolve" operation for details.
 
-## Signing and verifying a BTCR2 Update
 
-Maybe? This might not be much of an algorithm, either. Signing and verification are only used in one place each.
+----
 
 ## Prior "Algorithms" that we need to either rule out or flesh out
 
@@ -177,6 +182,3 @@ Maybe? This might not be much of an algorithm, either. Signing and verification 
 ### Algo 21. Aggregate & Request Signal Confirmation (Aggregator)
 ### Algo 22. Confirm Signal (Participant)
 ### Algo 23. Broadcast Aggregated Signal (Aggregator)
-
-
-{{#include ./includes/includes.md}}

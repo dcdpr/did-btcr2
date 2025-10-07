@@ -1,0 +1,2 @@
+[`INVALID_DID_UPDATE`]: {{ root }}errors.md#invalid_did_update
+[`LATE_PUBLISHING`]: {{ root }}errors.md#late_publishing

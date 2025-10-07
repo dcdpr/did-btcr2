@@ -116,6 +116,7 @@ function createSection(listRoot, chapterNumber, tree) {
 }
 
 window.addEventListener('load', () => {
+  if (location.pathname.endsWith('/bibliography.html')) return;
   const pagetoc = getPagetoc();
   if (!pagetoc) return;
   const chapterNumber = getChapterNumber();

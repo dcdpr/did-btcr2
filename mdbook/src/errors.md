@@ -1,3 +1,8 @@
+{% import "includes/links.tera" as links %}
+
+{{ links::include() }}
+
+
 # Errors
 
 All errors are assumed to be fatal. Etc. etc. Make sure this is very clear on what it means
@@ -8,5 +13,4 @@ to "raise an error" when an implementation performs operations.
 
 <!-- TODO: Elaborate on what this error means -->
 
-
-{{#include ./includes/includes.md}}
+## `LATE_PUBLISHING` { #late_publishing }
