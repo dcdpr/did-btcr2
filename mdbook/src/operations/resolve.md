@@ -22,61 +22,77 @@ Outputs:
 - `didDocument`: [DID document (data structure)].
 - `didDocumentMetadata`: [DID document metadata (data structure)].
 
+Input arguments are processed by [Decoding the DID](#decode-the-did) and [Processing Sidecar Data](#process-sidecar-data).
 
-## Decoding the DID
+Let `didDocument` be the value of `contemporary_document` at the end of the following process:
 
-The `did` MUST be parsed with the [DID-BTCR2 Identifier Decoding] algorithm to retrieve the
-`method-specific-id`. An `INVALID_DID` error MUST be raised in response to any errors raised while
-decoding.
+* Initialize state needed for DID document resolution:
+    1. Let `updates` be an empty array of update tuples. Each update tuple consists of:
+        * A Bitcoin block-time.
+        * A [BTCR2 Signed Update (data structure)].
+    1. Let `contemporary_version_id` be `1`.
+    1. [Establish `contemporary_document`](#establish-current-document).
+* Repeat the following steps ...
+    1. [Process Beacon Signals](#process-beacon-signals) for `contemporary_document` to populate the `updates` array.
+    1. [Process `updates` Array](#process-updates) to update `contemporary_docuemnt` and `contemporary_version_id`.
+    1. ... until any of these conditions are met:
+        * [Process `updates` Array](#process-updates) exited early with a resolved `didDocument`.
+        * `contemporary_version_id` equals the integer representation of `resolutionOptions.versionId`.
 
-## Processing Sidecar Data
+
+## Decode the DID { #decode-the-did }
+
+The `did` MUST be parsed with the [DID-BTCR2 Identifier Decoding] algorithm to retrieve `version`,
+`network`, and `genesis_bytes`. An `INVALID_DID` error MUST be raised in response to any errors
+raised while decoding.
+
+
+## Process Sidecar Data { #process-sidecar-data }
 
 `resolutionOptions` contains a `sidecar` property ([Sidecar Data (data structure)]) which SHOULD be
 processed in the following manner:
 
-* Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` using the [JSON Document
-  Hashing] algorithm.
-  * Transform the `updates` array into a Map that can be used for looking up each [BTCR2 Signed
-    Update (data structure)] by its hash. The transformed Map is called the `update_lookup_table`.
-* Hash each [Map Announcement (data structure)] in `sidecar.mapUpdates` using the [JSON Document
-  Hashing] algorithm.
-  * Transform the `mapUpdates` array into a Map that can be used for looking up each
-    [Map Announcement (data structure)] by its hash. The transformed Map is called the
-    `cas_lookup_table`.
-* Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof
-  (data structure)] by its `id`. The transformed Map is called the `smt_lookup_table`.
+* Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` using the [JSON Document Hashing] algorithm.
+  * Transform the `sidecar.updates` array into a Map that can be used for looking up each [BTCR2 Signed Update (data structure)] by its hash.
+  * Let `update_lookup_table` be the transformed Map.
+* Hash each [Map Announcement (data structure)] in `sidecar.mapUpdates` using the [JSON Document Hashing] algorithm.
+  * Transform the `sidecar.mapUpdates` array into a Map that can be used for looking up each [Map Announcement (data structure)] by its hash.
+  * Let `cas_lookup_table` be the transformed Map.
+* Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof (data structure)] by its `id`.
+  * Let `smt_lookup_table` be the transformed Map.
 
-If the HRP on `did` is "x" ([Genesis Document]-based **did:btcr2** identifier) the
-`sidecar.genesisDocument` MUST be hashed with the [JSON Document Hashing] algorithm and an
-`InvalidDid` error MUST be raised if the computed hash does not match the hash within the `did`.
+If `genesis_bytes` is a SHA-256 hash, the `sidecar.genesisDocument` MUST be hashed with the
+[JSON Document Hashing] algorithm. An `INVALID_DID` error MUST be raised if the computed hash does
+not match `genesis_bytes`.
 
 
-## Establish Initial DID Document
+## Establish `contemporary_document` { #establish-current-document }
 
-Resolution begins with an [Initial Did Document] which will be iteratively patched with
-[BTCR2 Signed Updates][BTCR2 Signed Update] announced by
-[Authorized Beacon Signals][Authorized Beacon Signal].
+Resolution begins by creating an [Initial Did Document] called `contemporary_document` ([Contemporary DID Document]). The `contemporary_document` is iteratively patched with [BTCR2 Signed Updates][BTCR2 Signed Update] announced by [Authorized Beacon Signals][Authorized Beacon Signal].
 
-Establishing the [Initial DID Document] MUST be done depending on the HRP value from the decoded
-`did`.
+Establishing the `contemporary_document` MUST be done depending on the type of `genesis_bytes` retrieved from the decoded `did`:
 
 
-### If HRP is "k"
+### If `genesis_bytes` is a SHA-256 Hash
 
-If the HRP on `did` is "k" (key-based **did:btcr2** identifier), the [Initial DID Document] template
-below MUST be filled out with the required template variables. The resulting rendered template is
-the [Initial DID Document].
+The [Genesis Document] provided in `sidecar.genesisDocument` MUST be processed by replacing the
+identifier placeholder (`"did:btcr2:_"`) with the `did`. A string replacement or regular expression
+replacement is a suitable processor.
 
-* `did`: The DID.
-* `public-key-multikey`: Multikey format representation {{#cite BIP340-Cryptosuite}} of the public
-  key within the decoded DID.
-* `p2pkh-bitcoin-address`: A Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public
-  key within the decoded DID. The address MUST use the Bitcoin URI Scheme {{#cite BIP321}}.
-* `p2wpkh-bitcoin-address`: A Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from
-  the public key within the decoded DID. The address MUST use the Bitcoin URI Scheme
-  {{#cite BIP321}}.
-* `p2tr-bitcoin-address`: A Pay-to-Taproot (P2PKH) Bitcoin address produced from the public key
-  within the decoded DID. The address MUST use the Bitcoin URI Scheme {{#cite BIP321}}.
+Let `contemporary_document` be the result of parsing the processed string as JSON. The resulting
+[DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
+
+
+### If `genesis_bytes` is a secp256k1 Public Key
+
+Fill the [Initial DID Document] template below with the required template variables. All Bitcoin
+addresses MUST use the Bitcoin URI Scheme {{#cite BIP321}}.
+
+* `did`: The `did`.
+* `public-key-multikey`: Multikey format representation {{#cite BIP340-Cryptosuite}} of the public key.
+* `p2pkh-bitcoin-address`: A Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public key.
+* `p2wpkh-bitcoin-address`: A Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from the public key.
+* `p2tr-bitcoin-address`: A Pay-to-Taproot (P2PKH) Bitcoin address produced from the public key.
 
 {% set hide_text = `` %}
 {% set initial_did_document_template =
@@ -95,69 +111,125 @@ the [Initial DID Document].
   hide_label="Hide"
 ) }}
 
-
-The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1
-{{#cite DID-CORE}}.
-
-
-### If HRP is "x"
-
-If the HRP on `did` is "x" ([Genesis Document]-based **did:btcr2** identifier), the
-[Genesis Document] included in `sidecar.genesisDocument` MUST be processed by replacing the
-identifier placeholder (`"did:btcr2:_"`) with the `did`. A string replacement or regular expression
-replacement would be a suitable processor.
-
-The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1
-{{#cite DID-CORE}}.
+Let `contemporary_document` be the result of parsing the rendered template as JSON. The
+resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
 
-## Processing Beacon Signals
+## Process Beacon Signals { #process-beacon-signals }
 
-Using the [Initial DID Document], iterate through its `service` array to discover the
-[BTCR2 Beacons][BTCR2 Beacon]. Parse each [Beacon Address] in the `serviceEndpoint`
-for each [Beacon Type] and find all Bitcoin transactions that spend at least one
-UTXO controlled by those [Beacon Addresses][Beacon Address].
+Iterate through the `contemporary_document` ([DID Document (data structure)]) `service` array to
+discover the [BTCR2 Beacons][BTCR2 Beacon] by matching the service `type` against
+[Beacons Table 1: Beacon Types].
 
-Filter each Bitcoin transaction containing a [Beacon Signal] where the last
-transaction output is a script containing [Signal Bytes]. Collect [BTCR2 Signed Updates][BTCR2 Signed Update] by processing each transaction's [Signal Bytes] according to the [Beacon Type]:
+Parse `serviceEndpoint` for each [BTCR2 Beacon] as a [Beacon Address]. Use those
+[Beacon Addresses][Beacon Address] to find all Bitcoin transactions containing a [Beacon Signal]
+where the last transaction output is a script containing [Signal Bytes].
 
-### Singleton Beacon
+Implementations are RECOMMENDED to find transactions by querying an indexed Bitcoin blockchain RPC
+service like [electrs](https://github.com/romanz/electrs) or
+[Esplora](https://github.com/Blockstream/esplora). Implementations MAY find all transactions by
+traversing each block on the blockchain beginning from the genesis block. Implementations SHOULD
+cache [Beacon Addresses][Beacon Address] to avoid duplicate transaction lookups.
 
-* Let `update_hash` be [Signal Bytes].
-* Return [BTCR2 Signed Update] by looking up `update_hash` in the `update_lookup_table`.
+For each transaction:
 
-<!-- todo: ... or retrieve from CAS -->
+* Process the transaction's [Signal Bytes] according to the [Beacon Type]:
+  * Singleton Beacon: Let `update_hash` be [Signal Bytes].
+  * CAS Beacon: [Process CAS Beacon](#process-cas-beacon).
+  * SMT Beacon: [Process SMT Beacon](#process-smt-beacon).
+* Let `update_tuple` be a tuple of:
+  * The transaction's block-time.
+  * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`. <!-- TODO: ... or retrieve from CAS -->
+* Push `update_tuple` to the `updates` array.
 
-### CAS Beacon
+
+### Process CAS Beacon { #process-cas-beacon }
 
 <!-- TODO: Rename "Map Beacon" (and "Map Announcement" etc.) to "CAS ..." -->
 
 * Let `map_update_hash` be [Signal Bytes].
 * Look up `map_update_hash` in the `cas_lookup_table` to retrieve a [Map Announcement (data structure)].
 * Let `update_hash` be the result of looking up `did` in the [Map Announcement (data structure)].
-* Return [BTCR2 Signed Update] by looking up `update_hash` in the `update_lookup_table`.
 
-<!--
-  TODO: This section used to say this. Is it better or worse than the imperative looking list?
 
-Use [Signal Bytes] as a lookup key to retrieve the [Map Announcement (data structure)] from the CAS `update_lookup_table`. Use the DID as a lookup key in the [Map Announcement (data structure)] and use that value as the Update hash. Use the Update hash to look up the [BTCR2 Update] object from the `update_lookup_table`.
--->
-
-<!-- todo: ... or retrieve from CAS -->
-
-### SMT Beacon
+### Process SMT Beacon { #process-smt-beacon }
 
 * Let `smt_root` be [Signal Bytes].
 * Look up `smt_proof` in the `smt_lookup_table` to retrieve a [SMT Proof (data structure)].
 * Check the `smt_proof` by frobnicating the whatchamacallit. <!-- TODO: Make the check real -->
-* Return [BTCR2 Signed Update] by looking up `smt_proof.updateId` in the `update_lookup_table`.
-
-<!-- todo: ... or retrieve from CAS -->
+* Let `update_hash` be `smt_proof.updateId`.
 
 
-## Applying the Updates
+## Process `updates` Array { #process-updates }
 
-Sort the collected [BTCR2 Signed Updates][BTCR2 Signed Update] array by `targetVersionId`.
+Sort the `updates` array by [BTCR2 Signed Update (data structure)] `targetVersionId`, lowest first. Pop the first element from the front of the `updates` array. If the element's block-time is greater than the integer representation of `resolutionOptions.versionTime`, `contemporary_document` MUST be returned as the final resolved `didDocument`.
+
+Otherwise, let `update` be the element's [BTCR2 Signed Update (data structure)] and [Apply `update`](#apply-update) to `contemporary_document`.
+
+Increment `contemporary_version_id`.
+
+
+### Apply `update` { #apply-update }
+
+<!--
+  TODO: There are three conditions to check:
+
+  1. `update.targetVersionId <= `contemporary_version_id`
+    - Check Duplicate `update`.
+  2. `update.targetVersionId == `contemporary_version_id + 1`
+    - Compare `contemporary_document` hash to `update.sourceHash`.
+    - Check `update.proof`.
+    - Apply `update.patch`.
+    - Compare `contemporary_document` hash to `update.targetHash`.
+    - Increment `contemporary_version_id`
+    - If `contemporary_version_id` >= `resolutionOptions.versionId`, return `contemporary_document`.
+  3. `update.targetVersionId > `contemporary_version_id + 1`
+    - Return `LATE_PUBLISHING_ERROR`.
+-->
+
+If `update.targetVersionId` is less than or equal to `contemporary_version_id`, [confirm duplicate `update`](#confirm-duplicate-update).
+
+Hash `contemporary_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.sourceHash`.
+
+Check the `update.proof` by frobnicating the whatchamacallit. <!-- TODO: Make this real, too! -->
+
+Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `contemporary_document`.
+
+Hash the patched `contemporary_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.targetHash`.
+
+Look for late publishing errors by frobnicating the whatchamacallit. <!-- TODO: This is just a version number comparison. -->
+
+
+### Confirm Duplicate `update` { #confirm-duplicate-update }
+
+<!--
+  TODO: Needs an array of hashes and the `update`. The hash of `update` is compared against the
+  array of hashes ...
+
+  Wait, how is this even supposed to work? The array of hashes is a mix of the
+  `contemporary_document` hash before each `update` is applied and the `update` hash after the
+  update is applied. The `update` hash will NEVER be equal to the `contemporary_document` hash!
+
+  This is a specification bug with the "Confirm Duplicate Update algorithm" (since removed in
+  the "feature-rewrite" branch. There is no corresponding "Algo" for it). I believe the bug was
+  introduced in https://github.com/dcdpr/did-btcr2/issues/121
+
+  The bug corrupts the array of hashes which will cause the "Confirm Duplicate Update algorithm" to
+  fail after the second duplicate update check.
+
+  It isn't clear from the discussion what the intended use for the `contemporary_document` hash was.
+  https://github.com/dcdpr/did-btcr2/commit/50e3b5f0407c96b454cf29deff6dfb67fcb914a2 is the
+  earliest commit that introduces the "Confirm Duplicate Update algorithm" (and the "TODO" comment
+  noted in Issue #121 -- removed in https://github.com/dcdpr/did-btcr2/pull/145).
+
+  NOTE: The reason this exists in the first place is to handle an edge case where duplicate update
+  announcements are allowed to go out for the same update (with different signatures).
+  https://github.com/dcdpr/did-btcr2/issues/76 describes this edge case. The PR that closed Issue
+  #76 was https://github.com/dcdpr/did-btcr2/pull/83.
+
+  The removal of duplicate update detection in the "feature-rewrite" branch regresses the handling
+  of the edge case.
+-->
 
 <!-- TODO: Draw the rest of the owl. -->
 
@@ -165,14 +237,14 @@ Sort the collected [BTCR2 Signed Updates][BTCR2 Signed Update] array by `targetV
 
 
 
-# TODO: Describe what this operations does:
+# TODO: Describe what this operation does:
 
 * What the resolutionOptions looks like (its "schema"). Especially resolutionOptions.sidecar.
   * And critically, *what to do with resolutionOptions.sidecar* to make the resolution work correctly, namely:
   * Hash the documents in the resolutionOptions.sidecar.documents array to construct a mapping of hashes to documents.
     * Don't forget to [parse (don't validate)](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/) each document to ensure it is conformant **before** performing any network I/O.
   * Optimization: Reorganize the resolutionOptions.sidecar.smtProofs array into a mapping of SMT roots to SMT proofs while parsing each proof to enable O(1) lookups by SMT root.
-* Pre-update verifications (e.g., ensure the DID identifier decodes properly, check the Genesis Document hash for "x" HRP DIDs, etc.)
+* Pre-update verifications (e.g., ensure the DID identifier decodes properly, check the Genesis Document hash for `"x"` `hrp` DIDs, etc.)
 * What to look for on the blockchain.
 * What to do with the Signal Bytes in the Bitcoin transaction.
 * Retrieving the BTCR2 Signed Update by Signal Bytes.

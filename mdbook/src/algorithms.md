@@ -54,8 +54,8 @@ Append `genesis_bytes` to the first byte to produce the unencoded data bytes. It
 `271` on the right (inclusive).
 
 Encode the unencoded data bytes with Bech32m {{#cite BIP350}} to produce the `method-specific-id`.
-Use "k" as the HRP for key-based [Genesis Bytes] and "x" as the HRP for [Genesis Document]-based
-[Genesis Bytes].
+Use `"k"` as the `hrp` for key-based `genesis_bytes` and `"x"` as the `hrp` for [Genesis Document]-based
+`genesis_bytes`.
 
 Prefix the `method-specific-id` with the string `"did:btcr2:"` to produce the final **did:btcr2**
 identifier.
@@ -89,27 +89,30 @@ Example output:
 
 Any errors encountered during this algorithm MUST raise an `INVALID_DID` error.
 
+Parsing a **did:btcr2** identifier produces three values: `version`, `network`, and `genesis_bytes`
+([Genesis Bytes]).
+
 A **did:btcr2** identifier MUST be processed according to the DID Resolution Algorithm
 {{#cite DID-RESOLUTION}} to retrieve the **did:btcr2** DID Method-specific ID `method-specific-id`.
 (I.e., the first 10 characters in the string MUST be exactly `"did:btcr2:"`.)
 
 Decode the `method-specific-id` as a Bech32m encoded string {{#cite BIP350}} to retrieve the
 unencoded data bytes. Parse the unencoded data bytes according to
-[Table 2: Unencoded Data Bytes](#unencoded-data-bytes) to retrieve the `version`, `network`, HRP,
-and [Genesis Bytes].
+[Table 2: Unencoded Data Bytes](#unencoded-data-bytes) to retrieve the `version`, `network`, `hrp`,
+and `genesis_bytes`. <!-- TODO: These should be given alternate identifiers. These values are not returned directly by the algorithm. They are just raw numbers. The algorithm suggests that returned values SHOULD include additional type information. Clear up this ambiguity caused by reusing the identifiers. -->
 
 * `version` MUST be `0`. `version` MUST be returned to the caller as a type that can be represented
   as the value `1`.
-* `network` MUST be one of the values in [table 1: Network Values](#network-values). `network`
-  SHOULD include additional type information using symbolic names that can be represented as integer
-  values.
-* The HRP MUST be either "k" or "x".
+* `network` MUST be one of the values in [Table 1: Network Values](#network-values). `network`
+  SHOULD be returned to the caller including additional type information using symbolic names that
+  can be represented as integer values.
+* The `hrp` MUST be either `"k"` or `"x"`.
 
-If the HRP is "k" (key-based **btcr2:did** identifier), the [Genesis Bytes] MUST be a 33-byte SEC
-encoded secp256k1 public key.
+If the `hrp` is `"k"` (key-based **btcr2:did** identifier), the `genesis_bytes` MUST be a 33-byte
+SEC encoded secp256k1 public key.
 
-If the HRP is "x" ([Genesis Document]-based **btcr2:did** identifier), the [Genesis Bytes] MUST be a
-32-byte SHA-256 hash of a [Genesis Document].
+If the `hrp` is `"x"` ([Genesis Document]-based **btcr2:did** identifier), the `genesis_bytes` MUST
+be a 32-byte SHA-256 hash of a [Genesis Document].
 
 
 {% set hide_text = `` %}

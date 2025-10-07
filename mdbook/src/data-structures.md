@@ -21,7 +21,7 @@ The following properties MUST be included:
 - `@context`: A context array containing the following context URLs:
   - `"https://www.w3.org/TR/did-1.1"`
   - `"https://btcr2.dev/context/v1"`
-- `id`: The `DID`.
+- `id`: The `did`.
 
 It can optionally include one or more of the following properties:
 
@@ -31,6 +31,8 @@ It can optionally include one or more of the following properties:
 - `capabilityInvocation`: A set of references to verification methods or embedded verification
   method objects to be used for capability invocations.
 - `service`: An array of service objects.
+  - [BTCR2 Beacons][BTCR2 Beacon] are declared as DID services using the service `type` specified in
+    [Beacons Table 1: Beacon Types].
 
 In order for this DID document to be updatable, controllers must include at least one
 verification method with a capability invocation verification relationship and at least one
@@ -59,6 +61,7 @@ placeholder value (`did:btcr2:_`).
   hide_label="Hide"
 ) }}
 
+
 ## Initial DID Document { #initial-document }
 
 An [Initial DID Document] is a conformant [DID document (data structure)].
@@ -82,9 +85,10 @@ An [Initial DID Document] is a conformant [DID document (data structure)].
   hide_label="Hide"
 ) }}
 
+
 ## BTCR2 Unsigned Update { #btcr2-unsigned-update }
 
-A [BTCR2 Unsigned Update] is a map data structure with the following properties:
+A [BTCR2 Unsigned Update] is a Map data structure with the following properties:
 
 - `@context`: A context array containing the following context URLs:
   - `"https://w3id.org/zcap/v1"`
@@ -94,8 +98,8 @@ A [BTCR2 Unsigned Update] is a map data structure with the following properties:
 - `patch`: A JSON Patch {{#cite RFC6902}} object that defines a set of transformations to be
   applied to a DID document. The result of applying the patch MUST be a conformant DID document
   according to the DID core v1.1 specification {{#cite DID-CORE}}.
-- `targetVersionId`: The versionId of the DID document after the patch has been applied. The
-  targetVersionId MUST be one more than the versionId of the DID document being updated.
+- `targetVersionId`: The `versionId` of the DID document after the patch has been applied. The
+  targetVersionId MUST be one more than the `versionId` of the DID document being updated.
 - `sourceHash`: A SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST
   be produced by the [JSON Document Hashing] algorithm.
 - `targetHash`: A SHA-256 hash of the DID document that results from applying the patch to the
@@ -121,8 +125,10 @@ A [BTCR2 Unsigned Update] is a map data structure with the following properties:
 
 ## BTCR2 Signed Update { #btcr2-signed-update }
 
-A [BTCR2 Signed Update] is a map data structure with the same properties as [BTCR2 Unsigned Update]
-and one additional property, `proof`: a [Data Integrity Proof (data structure)].
+A [BTCR2 Signed Update] is a Map data structure with the same properties as
+[BTCR2 Unsigned Update (data structure)] and one additional property:
+
+- `proof`: A [Data Integrity Proof (data structure)].
 
 {% set hide_text = `` %}
 {% set ex_btcr2_signed_update =
@@ -173,7 +179,6 @@ The following properties MUST be included in the Data Integrity proof:
 - `proofValue`: MUST be a detached Schnorr signature produced according to {{#cite BIP340}}, encoded
   using the `"base64url"` {{#cite RFC4648}} encoding.
 
-
 {% set hide_text = `` %}
 {% set ex_di_proof =
 `
@@ -190,46 +195,6 @@ The following properties MUST be included in the Data Integrity proof:
   show_label="Show Example",
   hide_label="Hide"
 ) }}
-
-## Root Capability { #root-capability }
-
-A Root Capability is an Object Capability used to authorize updates to a DID document. It is
-RECOMMENDED to use ZCAP-LD for capability invocations {{#cite ZCAP-LD}}.
-
-The Root Capability MUST be a map containing only the following fields:
-
-- `@context`: The context string `"https://w3id.org/zcap/v1"`
-- `id`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(DID)}`
-- `invocationTarget`: The `DID`.
-- `controller`: The `DID`.
-
-{% set hide_text = `` %}
-{% set ex_root_capability =
-`
-~~~json
-{{#include example-data/root-capability.json}}
-~~~
-` %}
-
-{{ ui::show_example_tabs(
-  group_id="root-capability-example",
-  example=ex_root_capability,
-  hide=hide_text,
-  default="hide",
-  show_label="Show Example",
-  hide_label="Hide"
-) }}
-
-## Resolution Options { #resolution-options }
-
-Resolution Options is a map data structure that contains input options for the DID Resolution
-process {{#cite DID-RESOLUTION}}.
-
-The following optional properties could be set:
-
-- `versionId`: Identifies a specific version of a DID document to be resolved.
-- `versionTime`: Identifies a certain version timestamp of a DID document to be resolved.
-- `sidecar`: [Sidecar Data (data structure)]
 
 
 ## Sidecar Data { #sidecar-data }
@@ -263,6 +228,7 @@ The [Sidecar Data] contains optional properties:
   hide_label="Hide"
 ) }}
 
+
 ## SMT Proof { #smt-proof }
 
 A [SMT Proof] data structure contains the following properties:
@@ -273,23 +239,40 @@ A [SMT Proof] data structure contains the following properties:
 - `path`: array of Hashes representing the sibling SMT Nodes from the root to the leaf containing the hash of the [BTCR2 Signed Update] or the "zero identity".
 - `collapsed`: bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
 
+
+## DID Resolution Options { #did-resolution-options }
+
+This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+
+Resolution options MAY contain the following properties:
+
+- `versionId`: OPTIONAL ASCII string representation of the specific version of a DID document to be resolved.
+- `versionTime`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID before the specified `versionTime`.
+- `sidecar`: [Sidecar Data (data structure)].
+
+
 ## DID Resolution Metadata { #did-resolution-metadata }
 
-A data structure returned as part of the DID Resolution Result data structure that may contain the following properties:
+This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+
+Resolution metadata MAY contain the following properties:
 
 - `contentType`: OPTIONAL media type of the returned DID document. <!-- todo: what is our contentType? application/ld+json? -->
 - `error`: REQUIRED if an error occurs during DID resolution.
 
 See {{#cite DID-RESOLUTION}} for more details on other possible properties.
 
+
 ## DID Document Metadata { #did-document-metadata }
 
-A data structure returned as part of the DID Resolution Result data structure that may contain the following properties:
+This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
 
-- `created`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the Create operation execution for the resolved DID document.
-- `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the document version which was resolved.
-- `deactivated`: REQUIRED boolean if the DID being resolved have been deactivated.
-- `versionId`: OPTIONAL ASCII string of the version of the last Update operation for the document version that was resolved.
+Document metadata MAY contain the following properties:
+
+- `deactivated`: REQUIRED boolean that represents whether the resolved DID document has been deactivated.
+- `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.
+- `versionId`: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.
+
 
 ## Map Announcement { #map-announcement }
 
@@ -324,7 +307,38 @@ This data structure MUST contain the following properties:
   hide_label="Hide"
 ) }}
 
-## Example type system things
+
+## Root Capability { #root-capability }
+
+A Root Capability is an Object Capability used to authorize updates to a DID document. It is
+RECOMMENDED to use ZCAP-LD for capability invocations {{#cite ZCAP-LD}}.
+
+The Root Capability MUST be a map containing only the following fields:
+
+- `@context`: The context string `"https://w3id.org/zcap/v1"`
+- `id`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`
+- `invocationTarget`: The `did`.
+- `controller`: The `did`.
+
+{% set hide_text = `` %}
+{% set ex_root_capability =
+`
+~~~json
+{{#include example-data/root-capability.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="root-capability-example",
+  example=ex_root_capability,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
+
+
+# Example type system things
 
 ```rust
 ResolutionOptions {
@@ -347,7 +361,8 @@ SidecarDataGeneric {
 }
 ```
 
-## Discussion
+
+# Discussion
 
 The cas_manifest is an optimization so that the resolver can start network round trips immediately.
 
