@@ -1,3 +1,8 @@
+{% import "includes/links.tera" as links %}
+
+{{ links::include() }}
+
+
 # Abstract
 
 did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin
@@ -78,6 +83,3 @@ additional Sidecar Data - a Genesis Document - must be used to create
 the Initial DID document. Offline creation allows unlimited DID creation
 and use without requiring any on-chain or online interactions, making it
 suitable for a wide range of high-volume, low cost use cases.
-
-
-{{#include ./includes/includes.md}}

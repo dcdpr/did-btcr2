@@ -1,3 +1,8 @@
+{% import "includes/links.tera" as links %}
+
+{{ links::include(root="../") }}
+
+
 # Update
 
 Updating a **did:btcr2** identifier is a matter of constructing a [BTCR2 Signed Update] then
@@ -8,6 +13,3 @@ part of an aggregation cohort to minimize on-chain costs, using either [Map Beac
 
 Fundamentally, two steps are involved. First, create an update to the DID document. Second,
 announce and anchor the update on-chain by broadcasting a [Beacon Signal] to the Bitcoin network.
-
-
-{{#include ./includes/includes.md}}

@@ -1,4 +1,8 @@
-{% import "macros.tera" as ui %}
+{% import "includes/ui.tera" as ui %}
+{% import "includes/links.tera" as links %}
+
+{{ links::include() }}
+
 
 # Data Structures
 
@@ -365,6 +369,3 @@ SidecarDataGeneric {
 # Discussion
 
 The cas_manifest is an optimization so that the resolver can start network round trips immediately.
-
-
-{{#include ./includes/includes.md}}

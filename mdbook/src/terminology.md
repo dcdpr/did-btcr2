@@ -1,3 +1,8 @@
+{% import "includes/links.tera" as links %}
+
+{{ links::include() }}
+
+
 # Terminology
 
 ## Aggregate Beacon { #aggregate-beacon }
@@ -95,25 +100,10 @@ a DID's then-[Authorized Beacon Signal]. [Beacon Signals][Beacon Signal] can opt
 one or more BTCR2 Update Announcements. How [Beacon Signals][Beacon Signal] aggregate announcements
 is defined by the [Beacon Type].
 
-## Contemporary DID Document { #contemporary-did-document }
+## Current DID Document { #current-did-document }
 
-<!--
-  TODO: This was identified to be no longer true because update announcements can be included in the
-  blockchain out of order. This uncontrolled ordering means that a DID document is NOT "contemporary
-  with a Bitcoin block at a specific block-height".
-
-  In fact, a single block MAY contain multiple updates for a single DID document.
-
-  I think that "contemporary" is not a great word for something which means "the state of the DID
-  document while applying updates during DID document resolution". But maybe that's just me!
-
-  A better term might be "Incremental DID Document"? "Updated DID Document"?
-  "Augmented DID Document"? "Enriched DID Document"? "Hydrated DID Document"?
-  Do we need to name it, anyway?
--->
-
-The DID document that is contemporary with a Bitcoin block at a specific block-height. The
-Contemporary DID Document changes as a resolver traverses the blockchain and applies the relevant
+The transient state of the DID document during DID Resolution. The
+Current DID Document is iteratively updated as a resolver traverses the blockchain and applies the relevant
 [BTCR2 Updates][BTCR2 Update] announced by [Authorized Beacon Signals][Authorized Beacon Signal] it
 identifies in specific Bitcoin blocks.
 
@@ -279,6 +269,3 @@ spent, within another Bitcoin transaction.
 ## UTXO { #utxo }
 
 [Unspent Transaction Output]
-
-
-{{#include ./includes/includes.md}}

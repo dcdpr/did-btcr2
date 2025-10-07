@@ -32,6 +32,6 @@ WARNING This specification is still under active development and may be subject 
 
 [Mozilla Public License Version 2.0](https://github.com/dcdpr/did-btcr2/blob/main/LICENSE)
 
-### Copyright
+## Copyright
 
 &copy; 2024-2025 Digital Contract Design
