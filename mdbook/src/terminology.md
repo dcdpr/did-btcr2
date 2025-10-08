@@ -8,7 +8,7 @@
 ## Aggregate Beacon { #aggregate-beacon }
 
 A collection of [BTCR2 Updates][BTCR2 Update] can optionally be aggregated into a single
-[Beacon Signal] by a [Beacon Aggregate Service] for multiple entities (possibly controlling
+[Beacon Signal] by a [Beacon Aggregator Service] for multiple entities (possibly controlling
 multiple DIDs and possibly posting multiple updates).
 
 There can only ever be one [BTCR2 Update] per **did:btcr2** DID in a [Beacon Signal] from an
