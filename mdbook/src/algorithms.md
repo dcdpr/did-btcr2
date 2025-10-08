@@ -162,17 +162,6 @@ See the "Resolve" operation for details.
 
 ## Prior "Algorithms" that we need to either rule out or flesh out
 
-### Algo 4. Process Resolution Inputs
-### Algo 5. Deterministically Generate Initial DID Document
-### Algo 6. Retrieve Genesis Document
-### Algo 7. Verify Genesis Document
-### Algo 8. Process Beacon Signals
-### Algo 9. Process Singleton Beacon Signal
-### Algo 10. Process Map Beacon Signal
-### Algo 11. Process SMT Beacon Signal
-### Algo 12. Derive Root Capability
-### Algo 13. Apply BTCR2 Update
-### Algo 14. Construct Resolution Result
 ### Algo 15. Create Singleton Beacon Service
 ### Algo 16. Join Cohort and Establish Aggregate Beacon Service
 ### Algo 17. Create Canonical BTCR2 Update
