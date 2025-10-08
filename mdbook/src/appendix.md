@@ -5,10 +5,10 @@
 
 # Appendix
 
-## Aggregation
+## Aggregation { #aggregation }
 
-## Privacy Considerations
+## Privacy Considerations { #privacy-considerations }
 
-## Security Considerations
+## Security Considerations { #security-considerations }
 
-## Optimized Sparse Merkle Tree Implementation
+## Optimized Sparse Merkle Tree Implementation { #smt-implementation }
