@@ -34,6 +34,9 @@ git-repository-url = "https://github.com/dcdpr/did-btcr2"
 preferred-dark-theme = "coal"
 smart-punctuation = true
 
+[output.html.playground]
+runnable = false
+
 [output.html.search]
 expand = false
 use-boolean-and = true
