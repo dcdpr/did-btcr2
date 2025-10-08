@@ -293,15 +293,14 @@ hashed with the [JSON Document Hashing] algorithm to produce the [Signal Bytes] 
 
 ## Root Capability { #root-capability }
 
-A Root Capability is an Object Capability used to authorize updates to a DID document. It is
-RECOMMENDED to use ZCAP-LD for capability invocations {{#cite ZCAP-LD}}.
+A Root Capability is an Object Capability used to authorize updates to a DID document. Implementation MAY use ZCAP-LD for capability invocations {{#cite ZCAP-LD}}.
 
-The Root Capability MUST be a map containing only the following fields:
+The Root Capability MUST be a map containing only the following properties:
 
-- `@context`: The context string `"https://w3id.org/zcap/v1"`
-- `id`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`
-- `invocationTarget`: The `did`.
-- `controller`: The `did`.
+- `@context`: MUST be the context string `"https://w3id.org/zcap/v1"`
+- `id`: MUST be a URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`
+- `invocationTarget`: MUST be the `did`.
+- `controller`: MUST be the `did`.
 
 {% set hide_text = `` %}
 {% set ex_root_capability =

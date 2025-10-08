@@ -6,6 +6,8 @@
 
 # Resolve
 
+Resolving a **did:btcr2** identifier iteratively builds a DID document by applying [BTCR2 Updates][BTCR2 Update] to an [Initial DID Document] that have been committed to the Bitcoin blockchain by [Authorized Beacon Signals][Authorized Beacon Signal]. The [Initial DID Document] is either deterministically created from the DID or provided by [Sidecar Data].
+
 DID resolution is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
 
 The resolve operation has the following function signature:
@@ -26,7 +28,10 @@ Outputs:
 - `didDocument`: [DID document (data structure)].
 - `didDocumentMetadata`: [DID document metadata (data structure)].
 
-Input arguments are processed by [Decoding the DID](#decode-the-did) and [Processing Sidecar Data](#process-sidecar-data).
+
+## Process
+
+Input arguments MUST be processed by [Decoding the DID](#decode-the-did) and [Processing Sidecar Data](#process-sidecar-data).
 
 Let `didDocument` be the value of `current_document` at the end of the following process:
 
@@ -95,7 +100,7 @@ Let `didResolutionMetadata` be a [DID Resolution Metadata (data structure)] that
 
 Let `didDocumentMetadata` be a [DID Document Metadata (data structure)] with the following REQUIRED properties:
 * `versionId`: The value of `current_version_id` as an ASCII string.
-* `confirmations`: The value of `block_confirmations` as an ASCII string. [^1] <!-- TODO: This is our own property, we don't have to make it a string. I chose it for consistency with `versionId` which MUST be a string. :\ -->
+* `confirmations`: The value of `block_confirmations` as an integer. [^1]
 * `deactivated`: The value of `current_document.deactivated`.
 
 [^1]: The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. "Unique" in this context is a reference to handling potentially duplicated updates. The requirement for `confirmations` is that the lowest block height is used when deduplicating.
@@ -110,7 +115,7 @@ return {
   didDocument: self.current_document,
   didDocumentMetadata: {
     versionId: self.current_document.versionId.to_string(),
-    confirmations: self.block_confirmations.to_string(),
+    confirmations: self.block_confirmations,
     deactivated: self.current_document.deactivated,
   },
 };
@@ -139,10 +144,10 @@ raised while decoding.
 `resolutionOptions` contains a `sidecar` property ([Sidecar Data (data structure)]) which SHOULD be
 processed in the following manner:
 
-* Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` using the [JSON Document Hashing] algorithm.
+* Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` with the [JSON Document Hashing] algorithm.
   * Transform the `sidecar.updates` array into a Map that can be used for looking up each [BTCR2 Signed Update (data structure)] by its hash.
   * Let `update_lookup_table` be the transformed Map.
-* Hash each [CAS Announcement (data structure)] in `sidecar.casUpdates` using the [JSON Document Hashing] algorithm.
+* Hash each [CAS Announcement (data structure)] in `sidecar.casUpdates` with the [JSON Document Hashing] algorithm.
   * Transform the `sidecar.casUpdates` array into a Map that can be used for looking up each [CAS Announcement (data structure)] by its hash.
   * Let `cas_lookup_table` be the transformed Map.
 * Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof (data structure)] by its `id`.
@@ -224,7 +229,9 @@ For each transaction:
   * SMT Beacon: [Process SMT Beacon](#process-smt-beacon).
 * Let `update_tuple` be a tuple of:
   * The transaction's block-height, block-time, and block-confirmations.
-  * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`. <!-- TODO: ... or retrieve from CAS -->
+  * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
+    * The [BTCR2 Signed Update (data structure)] MUST be retrieved from [CAS] if the [BTCR2 Signed Update] is not found in the `update_lookup_table` Map.
+    * A [`MISSING_UPDATE_DATA`] error MUST be raised if the [BTCR2 Signed Update] is also not found in [CAS].
 * Push `update_tuple` to the `updates` array.
 
 
@@ -289,11 +296,11 @@ let update_hash = smt_proof.updateId;
 
 Sort the `updates` array by [BTCR2 Signed Update (data structure)] `targetVersionId`, lowest first, using block-height as a tie breaker. Pop the first tuple element from the front of the `updates` array.
 
-Assign `block_confirmations` to the tuple element's block-confirmations.
+Set `block_confirmations` to the tuple element's block-confirmations.
 
-`current_document` MUST be returned as the final resolved `didDocument` if the tuple element's block-time is more recent than `resolutionOptions.versionTime`.
+`current_document` MUST be returned as the final resolved `didDocument` if the tuple element's block-time is more recent than `resolutionOptions.versionTime`. This early resolution exit condition MUST be skipped if `resolutionOptions.versionTime` was not provided.
 
-Assign `update` to the element's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
+Set `update` to the element's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 
 Increment `current_version_id`.
 
@@ -325,36 +332,27 @@ Hash the `unsigned_update` with the [JSON Document Hashing] algorithm. Compare t
 
 ### Apply `update` { #apply-update }
 
-Hash `current_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.sourceHash`.
+Hash `current_document` with the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.sourceHash`.
 
 [Check `update.proof`](#check-update-proof).
 
 Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `current_document`.
 
-Verify that the `current_document` is conformant to DID Core v1.1 {{#cite DID-CORE}}.
+Verify that the `current_document` is conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `current_document.id` is not equal to `did`.
 
-Hash the patched `current_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.targetHash`.
+Hash the patched `current_document` with the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.targetHash`.
 
 Let `unsigned_update` be a copy of `update` with the `proof` property removed. Hash the `unsigned_update` with the [JSON Document Hashing] algorithm. Push the computed hash to the `update_hash_history` array.
 
 
 ### Check `update.proof` { #check-update-proof }
 
-<!--
-  TODO: This is where ZCAP-LD comes into play. It is intentionally omitted.
-
-  This is sound because `update.proof.verificationMethod` is REQUIRED to be both a valid
-  `verificationMethod` and `capabilityInvocation` in the current document. This is enough to imply
-  the one and only capability required by this spec ("Write").
-
-  It should probably be mentioned for completeness as a soft RECOMMENDATION, referencing
-  [Root Capability (data structure)].
--->
+Implementations MAY derive a [Root Capability (data structure)] from `update.proof` and invoke it according to Authorization Capabilities for Linked Data v0.3 {{#cite ZCAP-LD}}.
 
 Find `publicKeyMultibase` within the `current_document.verificationMethod` Set which matches the `id` referenced by `update.proof.verificationMethod`. An [`INVALID_DID_UPDATE`] error MUST be raised if no matching `id` is found.
 
 An [`INVALID_DID_UPDATE`] error MUST be raised if the `current_document.capabilityInvocation` Set does not contain `update.proof.verificationMethod`.
 
-Instantiate a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance using `publicKeyMultibase` and `"bip340-jcs-2025"` cryptosuite.
+Instantiate a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `publicKeyMultibase` and `"bip340-jcs-2025"` cryptosuite.
 
 Pass `update` to the instantiated BIP340 Cryptosuite `verifyProof` method. An [`INVALID_DID_UPDATE`] error MUST be raised if the result's `verified` property is `false`.
