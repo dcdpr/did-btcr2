@@ -67,7 +67,7 @@ can be validated against the [Beacon Signal].
 ## BTCR2 Beacon { #btcr2-beacon }
 
 A service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the
-DID. It MUST be either a [Singleton Beacon], [SMT Beacon], or a [Map Beacon].
+DID. It MUST be either a [Singleton Beacon], [SMT Beacon], or a [CAS Beacon].
 
 ## BTCR2 Update { #btcr2-update }
 
@@ -103,6 +103,12 @@ Example: [BTCR2 Signed Update (data structure)].
 ## CAS { #cas }
 
 [Content Addressable Storage]
+
+## CAS Beacon { #cas-beacon }
+
+A type of [BTCR2 Beacon] which aggregates multiple
+[BTCR2 Update Announcements][BTCR2 Update Announcement]. A [Beacon Signal] from a CAS Beacon commits
+to a [Beacon Announcement Map].
 
 ## CID { #cid }
 
@@ -157,12 +163,6 @@ Example: [Initial document (data structure)].
 Late Publishing is the ability for DID updates to be revealed at a later point in time, which alters
 the history of a DID document such that a state, that appeared valid before the reveal, appears
 after Late Publishing to never have been valid. Late Publishing breaks [Non-Repudiation].
-
-## Map Beacon { #map-beacon }
-
-A type of [BTCR2 Beacon] which aggregates multiple
-[BTCR2 Update Announcements][BTCR2 Update Announcement]. A [Beacon Signal] from a Map Beacon commits
-to a [Beacon Announcement Map].
 
 ## Merkle Tree { #merkle-tree }
 

@@ -13,6 +13,7 @@
 [BTCR2 Update Announcement]: {{ root }}terminology.md#btcr2-update-announcement
 [BTCR2 Signed Update]: {{ root }}terminology.md#btcr2-signed-update
 [CAS]: {{ root }}terminology.md#cas
+[CAS Beacon]: {{ root }}terminology.md#cas-beacon
 [CID]: {{ root }}terminology.md#cid
 [Content Addressable Storage]: {{ root }}terminology.md#content-addressable-storage
 [Content Identifier]: {{ root }}terminology.md#content-identifier
@@ -22,7 +23,6 @@
 [Genesis Document]: {{ root }}terminology.md#genesis-document
 [Initial DID Document]: {{ root }}terminology.md#initial-did-document
 [Late Publishing]: {{ root }}terminology.md#late-publishing
-[Map Beacon]: {{ root }}terminology.md#map-beacon
 [Merkle Tree]: {{ root }}terminology.md#merkle-tree
 [Non-Repudiation]: {{ root }}terminology.md#non-repudiation
 [Offline Creation]: {{ root }}terminology.md#offline-creation

@@ -203,8 +203,8 @@ The [Sidecar Data] contains optional properties:
   identifiers with `x` HRP.
 - `updates`: OPTIONAL array of [BTCR2 Signed Updates][BTCR2 Signed Update]. It is REQUIRED
   if the DID being resolved has ever had a published [BTCR2 Update].
-- `mapUpdates`: OPTIONAL array of [Map Announcements][Map Announcement (data structure)]. It is REQUIRED
-  if the DID being resolved has used a [Map Beacon] to publish a [BTCR2 Update].
+- `casUpdates`: OPTIONAL array of [CAS Announcements][CAS Announcement (data structure)]. It is REQUIRED
+  if the DID being resolved has used a [CAS Beacon] to publish a [BTCR2 Update].
 - `smtProofs`: OPTIONAL array of [SMT Proofs][SMT Proof (data structure)]. It is REQUIRED
   if the DID being resolved has used a [SMT Beacon] to publish a [BTCR2 Update].
 
@@ -237,7 +237,7 @@ A [SMT Proof] data structure contains the following properties:
 - `collapsed`: bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
 
 
-## DID Resolution Options { #did-resolution-options }
+## Resolution Options { #resolution-options }
 
 This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
 
@@ -269,33 +269,23 @@ Document metadata MAY contain the following properties:
 - `versionId`: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.
 
 
-## Map Announcement { #map-announcement }
+## CAS Announcement { #cas-announcement }
 
 A data structure that maps DIDs to hashed [BTCR2 Signed Updates][BTCR2 Signed Update]. It MUST be
 hashed with the [JSON Document Hashing] algorithm to produce the [Signal Bytes] for a
 [Beacon Signal]. The concrete representation of this data structure will be published to a [CAS].
 
-<!--
-  TODO: This _probably_ needs a JSON-LD `@context`, but it needs to be structured in a way that can
-  be defined in JSON-LD. For instance, it _might_ require a top-level named property that informs
-  processors how to handle the DID properties (and their base64url-encoded hash values).
--->
-
-This data structure MUST contain the following properties:
-
-- `@context`: The context string `"https://btcr2.dev/context/v1"`
-
 {% set hide_text = `` %}
-{% set ex_map_announcement_data =
+{% set ex_cas_announcement_data =
 `
 ~~~json
-{{#include example-data/map-announcement.json}}
+{{#include example-data/cas-announcement.json}}
 ~~~
 ` %}
 
 {{ ui::show_example_tabs(
-  group_id="map-announcement-example",
-  example=ex_map_announcement_data,
+  group_id="cas-announcement-example",
+  example=ex_cas_announcement_data,
   hide=hide_text,
   default="hide",
   show_label="Show Example",
