@@ -18,3 +18,9 @@ The algorithms described in this specification raise the specific errors listed 
 <!-- TODO: Elaborate on what this error means -->
 
 ## `LATE_PUBLISHING` { #late_publishing }
+
+<!-- TODO: Elaborate on what this error means -->
+
+## `MISSING_UPDATE_DATA` { #missing_update_data }
+
+<!-- TODO: Elaborate on what this error means -->
