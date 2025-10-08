@@ -78,7 +78,6 @@ loop {
 }
 
 return self.current_document;
-
 ~~~
 ` %}
 
