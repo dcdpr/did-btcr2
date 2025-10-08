@@ -143,8 +143,8 @@ processed in the following manner:
 * Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` using the [JSON Document Hashing] algorithm.
   * Transform the `sidecar.updates` array into a Map that can be used for looking up each [BTCR2 Signed Update (data structure)] by its hash.
   * Let `update_lookup_table` be the transformed Map.
-* Hash each [Map Announcement (data structure)] in `sidecar.mapUpdates` using the [JSON Document Hashing] algorithm.
-  * Transform the `sidecar.mapUpdates` array into a Map that can be used for looking up each [Map Announcement (data structure)] by its hash.
+* Hash each [CAS Announcement (data structure)] in `sidecar.casUpdates` using the [JSON Document Hashing] algorithm.
+  * Transform the `sidecar.casUpdates` array into a Map that can be used for looking up each [CAS Announcement (data structure)] by its hash.
   * Let `cas_lookup_table` be the transformed Map.
 * Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof (data structure)] by its `id`.
   * Let `smt_lookup_table` be the transformed Map.
@@ -231,11 +231,9 @@ For each transaction:
 
 ### Process CAS Beacon { #process-cas-beacon }
 
-<!-- TODO: Rename "Map Beacon" (and "Map Announcement" etc.) to "CAS ..." -->
-
 * Let `map_update_hash` be [Signal Bytes].
-* Look up `map_update_hash` in the `cas_lookup_table` to retrieve a [Map Announcement (data structure)].
-* Let `update_hash` be the result of looking up `did` in the [Map Announcement (data structure)].
+* Look up `map_update_hash` in the `cas_lookup_table` to retrieve a [CAS Announcement (data structure)].
+* Let `update_hash` be the result of looking up `did` in the [CAS Announcement (data structure)].
 
 
 {% set hide_text = `` %}
