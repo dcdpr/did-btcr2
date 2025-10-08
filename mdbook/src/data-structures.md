@@ -9,7 +9,7 @@
 For the purposes of interoperability, this specification defines data structures using the data
 model defined by the DID core v1.1 specification {{#cite DID-CORE}}.
 
-Concrete representations of these data structures MUST conform to {{#cite JSON-LD}}.
+Concrete representations of these data structures MUST conform to the JSON-LD 1.1 specification {{#cite JSON-LD}}.
 
 All SHA-256 hashes {{#cite SHA256}} that appear in concrete representations of these data structures
 MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
@@ -165,16 +165,14 @@ The following properties MUST be included in the Data Integrity proof:
   - `"https://w3id.org/zcap/v1"`
   - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://btcr2.dev/context/v1"`
-- `type`: The string `"DataIntegrityProof"`
-- `cryptosuite`: The string `"bip340-jcs-2025"`
-- `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID
-  document
-- `proofPurpose`: The string `"capabilityInvocation"`
-- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(DID)}`
+- `type`: The string `"DataIntegrityProof"`.
+- `cryptosuite`: The string `"bip340-jcs-2025"`.
+- `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID document.
+- `proofPurpose`: The string `"capabilityInvocation"`.
+- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(DID)}`.
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
-- `proofValue`: MUST be a detached Schnorr signature produced according to {{#cite BIP340}}, encoded
-  using the `"base64url"` {{#cite RFC4648}} encoding.
+- `proofValue`: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 {{#cite BIP340}}, encoded using the `"base64url"` {{#cite RFC4648}} encoding.
 
 {% set hide_text = `` %}
 {% set ex_di_proof =
