@@ -13,23 +13,27 @@ encoded using the [DID-BTCR2 Identifier Encoding] algorithm.
 The [Genesis Bytes] can be created in two ways: from an secp256k1 public key
 or from a [Genesis Document].
 
-## secp256k1 public key
+## secp256k1 Public Key
 
-An secp256k1 public key can be used as the [Genesis Bytes]. The key must be
+An secp256k1 public key can be used as the [Genesis Bytes]. The key MUST be
 in its compressed SEC format: a 33-byte representation consisting of a
-single prefix byte (0x02 or 0x03) followed by the 32-byte x-coordinate of
-the elliptic curve point. See Section 2.3.3 in {{#cite SEC}}.
+single prefix byte (`0x02` or `0x03`) followed by the 32-byte x-coordinate of
+the elliptic curve point.
+Reference Section 2.3.3 in SEC 1: Elliptic Curve Cryptography {{#cite SEC}}.
 
-## Hash of [Genesis Document]
+## Hash of Genesis Document
 
-A [Genesis Document] can be used as the [Genesis Bytes], but must be hashed
+A [Genesis Document] can be used as the [Genesis Bytes], but MUST be hashed
 to 32 bytes using the [JSON Document Hashing] algorithm.
 
-## Discussion
+----
+
+# Discussion
 
 Creating a **did:btcr2** identifier from an secp256k1 public key will result
 in an [Initial DID Document] when first resolved. Creating a **did:btcr2**
 identifier from a [Genesis Document] allows for the creation of a more
 complex [Initial DID Document], including the ability to include service
 endpoints and [BTCR2 Beacons][BTCR2 Beacon] that support aggregation. Any
-active btcr2 DID can be updated later with new key material and service endpoints.
+active **did:btcr2** DID document can be updated later with new key material
+and service endpoints.
