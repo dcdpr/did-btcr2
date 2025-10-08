@@ -302,6 +302,8 @@ Increment `current_version_id`.
 
 `current_document` MUST be returned as the final resolved `didDocument` if `current_version_id` is greater than or equal to the integer representation of `resolutionOptions.versionId`.
 
+`current_document` MUST be returned as the final resolved `didDocument` if `current_document.deactivated` is `true`.
+
 
 ### Check `update.targetVersionId` { #check-update-version }
 
