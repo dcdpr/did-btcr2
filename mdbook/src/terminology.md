@@ -75,18 +75,6 @@ A data structure used for transforming a source DID document into a target DID d
 a JSON Patch {{#cite RFC6902}} object, a version number for the target DID document, and SHA256
 hashes for the source and target DID documents.
 
-## BTCR2 Signed Update { #btcr2-signed-update }
-
-A [BTCR2 Update] with a proof attached to it.
-
-<!-- todo: I want to remove this notion of capability invocation. -->
-
-A capability invocation secured using Data Integrity {{#cite VC-DATA-INTEGRITY}} that invokes an authorization capability to
-update a specific **did:btcr2** DID document. This capability invocation Data Integrity proof
-secures the [BTCR2 Unsigned Update] document.
-
-Example: [BTCR2 Signed Update (data structure)].
-
 ## BTCR2 Unsigned Update { #btcr2-unsigned-update }
 
 A [BTCR2 Update] without a proof attached to it.
@@ -100,12 +88,25 @@ a DID's then-[Authorized Beacon Signal]. [Beacon Signals][Beacon Signal] can opt
 one or more BTCR2 Update Announcements. How [Beacon Signals][Beacon Signal] aggregate announcements
 is defined by the [Beacon Type].
 
-## Current DID Document { #current-did-document }
+## BTCR2 Signed Update { #btcr2-signed-update }
 
-The transient state of the DID document during DID Resolution. The
-Current DID Document is iteratively updated as a resolver traverses the blockchain and applies the relevant
-[BTCR2 Updates][BTCR2 Update] announced by [Authorized Beacon Signals][Authorized Beacon Signal] it
-identifies in specific Bitcoin blocks.
+A [BTCR2 Update] with a proof attached to it.
+
+<!-- todo: I want to remove this notion of capability invocation. -->
+
+A capability invocation secured using Data Integrity {{#cite VC-DATA-INTEGRITY}} that invokes an authorization capability to
+update a specific **did:btcr2** DID document. This capability invocation Data Integrity proof
+secures the [BTCR2 Unsigned Update] document.
+
+Example: [BTCR2 Signed Update (data structure)].
+
+## CAS { #cas }
+
+[Content Addressable Storage]
+
+## CID { #cid }
+
+[Content Identifier]
 
 ## Content Addressable Storage { #content-addressable-storage }
 
@@ -113,19 +114,18 @@ Content Addressable Storage (CAS) is a data storage system where content is addr
 [Content Identifiers][Content Identifier] (CIDs). The InterPlanetary File System (IPFS) is an
 example of CAS.
 
-## CAS { #cas }
-
-[Content Addressable Storage]
-
 ## Content Identifier (CID) { #content-identifier }
 
 An identifier for some digital content (e.g., a file) generated from the content itself such that
 for any given content and CID generation algorithm there is a single, unique, collision-resistant
 identifier. This is typically done through some hashing function.
 
-## CID { #cid }
+## Current DID Document { #current-did-document }
 
-[Content Identifier]
+The transient state of the DID document during DID Resolution. The
+Current DID Document is iteratively updated as a resolver traverses the blockchain and applies the relevant
+[BTCR2 Updates][BTCR2 Update] announced by [Authorized Beacon Signals][Authorized Beacon Signal] it
+identifies in specific Bitcoin blocks.
 
 ## Data Integrity Proof { #data-integrity-proof }
 
@@ -229,6 +229,10 @@ The 32 bytes of information that are included within the last transaction output
 A type of [BTCR2 Beacon] whose [Beacon Signals][Beacon Signal] each contain a single [BTCR2 Update
 Announcement].
 
+## SMT { #smt }
+
+[Sparse Merkle Tree]
+
 ## SMT Beacon { #smt-beacon }
 
 A type of [BTCR2 Beacon] which aggregates multiple [BTCR2 Update Announcements][BTCR2 Update
@@ -237,6 +241,11 @@ Announcement] using an optimized [Sparse Merkle Tree].
 A [Beacon Signal] from an SMT Beacon contains the root of an optimized [Sparse Merkle Tree]. See
 [SMT Beacon] for more.
 
+## SMT Proof { #smt-proof }
+
+A set of SHA256 hashes for nodes in a [Sparse Merkle Tree] that together form a path from a leaf in
+the tree to the Merkle root, proving that the leaf is in the tree.
+
 ## Sparse Merkle Tree { #sparse-merkle-tree }
 
 A [Merkle Tree] data structure where each data point included at the leaf of the tree is indexed.
@@ -244,15 +253,6 @@ A [Merkle Tree] data structure where each data point included at the leaf of the
 This data structure enables proofs of both inclusion and non-inclusion of data at a given index. The
 instantiation in this specification has 2^256 leaves that are indexed by the SHA256 hash of
 a **did:btcr2** identifier.
-
-## SMT { #smt }
-
-[Sparse Merkle Tree]
-
-## SMT Proof { #smt-proof }
-
-A set of SHA256 hashes for nodes in a [Sparse Merkle Tree] that together form a path from a leaf in
-the tree to the Merkle root, proving that the leaf is in the tree.
 
 ## Unsigned Beacon Signal { #unsigned-beacon-signal }
 

@@ -8,10 +8,10 @@
 [Beacon Signal]: {{ root }}terminology.md#beacon-signal
 [Beacon Type]: {{ root }}terminology.md#beacon-type
 [BTCR2 Beacon]: {{ root }}terminology.md#btcr2-beacon
-[BTCR2 Signed Update]: {{ root }}terminology.md#btcr2-signed-update
 [BTCR2 Unsigned Update]: {{ root }}terminology.md#btcr2-unsigned-update
 [BTCR2 Update]: {{ root }}terminology.md#btcr2-update
 [BTCR2 Update Announcement]: {{ root }}terminology.md#btcr2-update-announcement
+[BTCR2 Signed Update]: {{ root }}terminology.md#btcr2-signed-update
 [CAS]: {{ root }}terminology.md#cas
 [CID]: {{ root }}terminology.md#cid
 [Content Addressable Storage]: {{ root }}terminology.md#content-addressable-storage
@@ -32,10 +32,10 @@
 [Sidecar Data]: {{ root }}terminology.md#sidecar-data
 [Signal Bytes]: {{ root }}terminology.md#signal-bytes
 [Singleton Beacon]: {{ root }}terminology.md#singleton-beacon
-[SMT Beacon]: {{ root }}terminology.md#smt-beacon
-[Sparse Merkle Tree]: {{ root }}terminology.md#sparse-merkle-tree
 [SMT]: {{ root }}terminology.md#smt
+[SMT Beacon]: {{ root }}terminology.md#smt-beacon
 [SMT Proof]: {{ root }}terminology.md#smt-proof
+[Sparse Merkle Tree]: {{ root }}terminology.md#sparse-merkle-tree
 [Unsigned Beacon Signal]: {{ root }}terminology.md#unsigned-beacon-signal
 [Unspent Transaction Output]: {{ root }}terminology.md#unspent-transaction-output
 [UTXO]: {{ root }}terminology.md#utxo
