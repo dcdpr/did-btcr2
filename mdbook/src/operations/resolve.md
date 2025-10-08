@@ -30,35 +30,102 @@ Input arguments are processed by [Decoding the DID](#decode-the-did) and [Proces
 
 Let `didDocument` be the value of `current_document` at the end of the following process:
 
-<!--
-  TODO: There is a way to describe this process without resorting to a bulleted and numbered list.
-
-  I do not currently know what that way is. :)
--->
-
 * Initialize state needed for DID document resolution:
     1. Let `updates` be an empty array of update tuples. Each update tuple consists of:
         * Bitcoin block information: block-height, block-time, and block-confirmations.
         * A [BTCR2 Signed Update (data structure)].
     1. Let `current_version_id` be `1`.
     1. Let `update_hash_history` be an empty array of [BTCR2 Unsigned Update] hashes.
+    1. Let `block_confirmations` be `0`.
     1. [Establish `current_document`](#establish-current-document).
 * Repeat the following steps ...
-    1. [Process Beacon Signals](#process-beacon-signals) for `current_document` to populate the `updates` and `update_hash_history` arrays.
-    1. [Process `updates` Array](#process-updates) to update `current_document` and `current_version_id`.
+    1. [Process Beacon Signals](#process-beacon-signals) for `current_document` to populate the `updates` array.
+    1. [Process `updates` Array](#process-updates) to update `current_document` and `block_confirmations`.
     1. ... until any of these conditions are met:
         * [Process `updates` Array](#process-updates) exited early with a resolved `didDocument`.
         * `current_version_id` equals the integer representation of `resolutionOptions.versionId`.
         * An error is raised.
 
+
+{% set hide_text = `` %}
+{% set pseudocode_init =
+`
+~~~rust
+let (version, network, genesis_bytes) = decode_did(did);
+
+self.lookup_tables = process_sidecar_data(genesis_bytes, resolutionOptions.sidecar);
+
+self.updates = [];
+self.current_version_id = 1;
+self.update_hash_history = [];
+self.block_confirmations = 0;
+self.current_document = establish_current_document(
+  genesis_bytes,
+  resolutionOptions.sidecar,
+);
+
+loop {
+  let resolution_complete = self.process_beacon_signals()?;
+  if resolution_complete {
+    break;
+  }
+
+  self.process_updates()?;
+
+  if self.current_version_id == resolutionOptions.versionId.as_int() {
+    break;
+  }
+}
+
+return self.current_document;
+
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="init-pseudocode",
+  example=pseudocode_init,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Pseudocode",
+  hide_label="Hide"
+) }}
+
+
 Let `didResolutionMetadata` be a [DID Resolution Metadata (data structure)] that MAY be empty.
 
 Let `didDocumentMetadata` be a [DID Document Metadata (data structure)] with the following REQUIRED properties:
-* `versionId`: The version number of the resolved DID document as an ASCII string.
-* `confirmations`: The number of confirmations for the Bitcoin block that contains the most recently applied unique [^1] update that yielded the resolved DID document, as an ASCII string.
-* `deactivated`: Boolean indicating whether the resolved DID document has been deactivated.
+* `versionId`: The value of `current_version_id` as an ASCII string.
+* `confirmations`: The value of `block_confirmations` as an ASCII string. [^1] <!-- TODO: This is our own property, we don't have to make it a string. I chose it for consistency with `versionId` which MUST be a string. :\ -->
+* `deactivated`: The value of `current_document.deactivated`.
 
-[^1]: "Unique" in this sense is a reference to handling potentially duplicated updates. The requirement for `confirmations` is that the lowest block height is used when deduplicating.
+[^1]: The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. "Unique" in this context is a reference to handling potentially duplicated updates. The requirement for `confirmations` is that the lowest block height is used when deduplicating.
+
+
+{% set hide_text = `` %}
+{% set pseudocode_return =
+`
+~~~rust
+return {
+  didResolutionMetadata: {},
+  didDocument: self.current_document,
+  didDocumentMetadata: {
+    versionId: self.current_document.versionId.to_string(),
+    confirmations: self.block_confirmations.to_string(),
+    deactivated: self.current_document.deactivated,
+  },
+};
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="return-pseudocode",
+  example=pseudocode_return,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Pseudocode",
+  hide_label="Hide"
+) }}
 
 
 ## Decode the DID { #decode-the-did }
@@ -82,9 +149,7 @@ processed in the following manner:
 * Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof (data structure)] by its `id`.
   * Let `smt_lookup_table` be the transformed Map.
 
-If `genesis_bytes` is a SHA-256 hash, the `sidecar.genesisDocument` MUST be hashed with the
-[JSON Document Hashing] algorithm. An `INVALID_DID` error MUST be raised if the computed hash does
-not match `genesis_bytes`.
+Hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm if `genesis_bytes` is a SHA-256 hash. An `INVALID_DID` error MUST be raised if the computed hash does not match `genesis_bytes`.
 
 
 ## Establish `current_document` { #establish-current-document }
@@ -172,12 +237,24 @@ For each transaction:
 * Look up `map_update_hash` in the `cas_lookup_table` to retrieve a [Map Announcement (data structure)].
 * Let `update_hash` be the result of looking up `did` in the [Map Announcement (data structure)].
 
-Pseudocode:
 
-```rust
+{% set hide_text = `` %}
+{% set pseudocode_process_cas_beacon =
+`
+~~~rust
 let map_update_hash = <Signal Bytes>;
 let update_hash = cas_lookup_table[map_update_hash][did];
-```
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="process-cas-beacon-pseudocode",
+  example=pseudocode_process_cas_beacon,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Pseudocode",
+  hide_label="Hide"
+) }}
 
 
 ### Process SMT Beacon { #process-smt-beacon }
@@ -187,32 +264,48 @@ let update_hash = cas_lookup_table[map_update_hash][did];
 * Check the `smt_proof` by frobnicating the whatchamacallit. <!-- TODO: Make the check real. Needs an SMT Proof algorithm. -->
 * Let `update_hash` be `smt_proof.updateId`.
 
-Pseudocode:
 
-```rust
+{% set hide_text = `` %}
+{% set pseudocode_process_smt_beacon =
+`
+~~~rust
 let smt_root = <Signal Bytes>;
 let smt_proof = smt_lookup_table[smt_root];
 smt_proof.frobnicate();
 let update_hash = smt_proof.updateId;
-```
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="process-smt-beacon-pseudocode",
+  example=pseudocode_process_smt_beacon,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Pseudocode",
+  hide_label="Hide"
+) }}
 
 
 ## Process `updates` Array { #process-updates }
 
-Sort the `updates` array by [BTCR2 Signed Update (data structure)] `targetVersionId`, lowest first, using block-height as a tie breaker. Pop the first element from the front of the `updates` array.
+`current_document` MUST be returned as the final resolved `didDocument` if the `updates` array is empty.
 
-If the element's block-time is greater than the integer representation of `resolutionOptions.versionTime`, `current_document` MUST be returned as the final resolved `didDocument` with block-confirmations as `didResolutionMetadata.confirmations`.
+Sort the `updates` array by [BTCR2 Signed Update (data structure)] `targetVersionId`, lowest first, using block-height as a tie breaker. Pop the first tuple element from the front of the `updates` array.
 
-Otherwise, let `update` be the element's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
+Assign `block_confirmations` to the tuple element's block-confirmations.
+
+`current_document` MUST be returned as the final resolved `didDocument` if the tuple element's block-time is more recent than `resolutionOptions.versionTime`.
+
+Assign `update` to the element's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 
 Increment `current_version_id`.
 
-If `current_version_id` >= `resolutionOptions.versionId`, return `current_document` as the resolved `didDocument` and block-confirmations as `didResolutionMetadata.confirmations`.
+`current_document` MUST be returned as the final resolved `didDocument` if `current_version_id` is greater than or equal to the integer representation of `resolutionOptions.versionId`.
 
 
 ### Check `update.targetVersionId` { #check-update-version }
 
-Compare `update.targetVersionId` to `current_version_id`. Only one of three possible conditions may occur:
+Compare `update.targetVersionId` to `current_version_id`. Only one of three possible conditions will occur:
 
 * `update.targetVersionId <= current_version_id`:
   * [Confirm Duplicate Update](#confirm-duplicate-update).
@@ -228,9 +321,7 @@ This ensures that the update is in fact a duplicate since the `update.targetVers
 
 Let `unsigned_update` be a copy of `update` with the `proof` property removed.
 
-Hash the `unsigned_update` with the [JSON Document Hashing] algorithm.
-
-Compare the computed hash to `update_hash_history[unsigned_update.targetVersionId - 2]`. If these do not match, a [`LATE_PUBLISHING`] error MUST be raised.
+Hash the `unsigned_update` with the [JSON Document Hashing] algorithm. Compare the computed hash to `update_hash_history[update.targetVersionId - 2]`. A [`LATE_PUBLISHING`] error MUST be raised if these do not match.
 
 
 ### Apply `update` { #apply-update }
@@ -244,6 +335,8 @@ Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `current_document`.
 Verify that the `current_document` is conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
 Hash the patched `current_document` using the [JSON Document Hashing] algorithm. An [`INVALID_DID_UPDATE`] error MUST be raised if the computed hash does not match the decoded `update.targetHash`.
+
+Let `unsigned_update` be a copy of `update` with the `proof` property removed. Hash the `unsigned_update` with the [JSON Document Hashing] algorithm. Push the computed hash to the `update_hash_history` array.
 
 
 ### Check `update.proof` { #check-update-proof }
@@ -259,10 +352,10 @@ Hash the patched `current_document` using the [JSON Document Hashing] algorithm.
   [Root Capability (data structure)].
 -->
 
-Find `publicKeyMultibase` within the `current_document.verificationMethod` Set which matches the `id` referenced by `update.proof.verificationMethod`. If not found, MUST raise an [`INVALID_DID_UPDATE`] error.
+Find `publicKeyMultibase` within the `current_document.verificationMethod` Set which matches the `id` referenced by `update.proof.verificationMethod`. An [`INVALID_DID_UPDATE`] error MUST be raised if no matching `id` is found.
 
-Ensure that an element of the `current_document.capabilityInvocation` Set matches `update.proof.verificationMethod`, else MUST raise [`INVALID_DID_UPDATE`] error.
+An [`INVALID_DID_UPDATE`] error MUST be raised if the `current_document.capabilityInvocation` Set does not contain `update.proof.verificationMethod`.
 
 Instantiate a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance using `publicKeyMultibase` and `"bip340-jcs-2025"` cryptosuite.
 
-Pass `update` to the instantiated BIP340 Cryptosuite `verifyProof` method. If the result's `verified` property is `false`, an [`INVALID_DID_UPDATE`] error MUST be raised.
+Pass `update` to the instantiated BIP340 Cryptosuite `verifyProof` method. An [`INVALID_DID_UPDATE`] error MUST be raised if the result's `verified` property is `false`.
