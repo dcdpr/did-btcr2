@@ -169,13 +169,6 @@ The following properties MUST be included in the Data Integrity proof:
 - `cryptosuite`: The string `"bip340-jcs-2025"`
 - `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID
   document
-  <!--
-    TODO: It SEEMS that the `verificationMethod` also needs to be included in the
-    `capabilityInvocation` set within the DID document. Otherwise, it is possible to invoke a
-    capability using a verification method that does not have a linked verification relationship
-    according to https://www.w3.org/TR/cid-1.0/#capability-invocation
-    AND the verifier (e.g. resolver) needs to make this assertion before applying the update.
-  -->
 - `proofPurpose`: The string `"capabilityInvocation"`
 - `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(DID)}`
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
@@ -263,8 +256,6 @@ Resolution metadata MAY contain the following properties:
 
 - `contentType`: OPTIONAL media type of the returned DID document. <!-- todo: what is our contentType? application/ld+json? -->
 - `error`: REQUIRED if an error occurs during DID resolution.
-
-See {{#cite DID-RESOLUTION}} for more details on other possible properties.
 
 
 ## DID Document Metadata { #did-document-metadata }
