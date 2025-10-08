@@ -130,7 +130,9 @@ identifies in specific Bitcoin blocks.
 ## Data Integrity Proof { #data-integrity-proof }
 
 A digital signature added to a [BTCR2 Unsigned Update] in order to convert
-to a [BTCR2 Signed Update]. See {{#cite BIP340-Cryptosuite}}
+to a [BTCR2 Signed Update].
+
+The algorithm is specified in BIP340 Cryptosuites v0.1 {{#cite BIP340-Cryptosuite}} and Verifiable Credential Data Integrity 1.0 {{#cite VC-DATA-INTEGRITY}}.
 
 ## Genesis Bytes { #genesis-bytes }
 
