@@ -238,8 +238,7 @@ Announcement].
 A type of [BTCR2 Beacon] which aggregates multiple [BTCR2 Update Announcements][BTCR2 Update
 Announcement] using an optimized [Sparse Merkle Tree].
 
-A [Beacon Signal] from an SMT Beacon contains the root of an optimized [Sparse Merkle Tree]. See
-[SMT Beacon] for more.
+A [Beacon Signal] from an SMT Beacon contains the root of an optimized [Sparse Merkle Tree].
 
 ## SMT Proof { #smt-proof }
 
