@@ -1,5 +1,6 @@
 {% macro include(root="./") %}
 {% include "includes/algorithms-links.tera" %}
+{% include "includes/appendix-links.tera" %}
 {% include "includes/beacons-links.tera" %}
 {% include "includes/data-structures-links.tera" %}
 {% include "includes/errors-links.tera" %}
