@@ -92,7 +92,7 @@ function createSection(listRoot, chapterNumber, tree) {
         className: "section",
       });
       listItem.appendChild(ordered_list);
-      createSection(ordered_list, `${chapterNumber}${i - 1}.`, header);
+      createSection(ordered_list, chapterNumber ? `${chapterNumber}${i - 1}.` : "", header);
       listRoot.appendChild(listItem);
     } else {
       const parent = header.parentElement
@@ -101,7 +101,7 @@ function createSection(listRoot, chapterNumber, tree) {
           className: "chapter-item expanded",
         });
         const section_number = Object.assign(document.createElement("strong"), {
-          textContent: `${chapterNumber}${i}. `,
+          textContent: chapterNumber ? `${chapterNumber}${i}. ` : "",
           ariaHidden: "true",
         });
         const link = Object.assign(document.createElement("a"), {
