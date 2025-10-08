@@ -84,14 +84,15 @@ function headersIntoTree(headers) {
 }
 
 function createSection(listRoot, chapterNumber, tree) {
-  tree.forEach((header, i) => {
+  let i = 1;
+  tree.forEach(header => {
     if (Array.isArray(header)) {
       const listItem = document.createElement("li");
       const ordered_list = Object.assign(document.createElement("ol"), {
         className: "section",
       });
       listItem.appendChild(ordered_list);
-      createSection(ordered_list, `${chapterNumber}${i}.`, header);
+      createSection(ordered_list, `${chapterNumber}${i - 1}.`, header);
       listRoot.appendChild(listItem);
     } else {
       const parent = header.parentElement
@@ -100,7 +101,7 @@ function createSection(listRoot, chapterNumber, tree) {
           className: "chapter-item expanded",
         });
         const section_number = Object.assign(document.createElement("strong"), {
-          textContent: `${chapterNumber}${i + 1}. `,
+          textContent: `${chapterNumber}${i}. `,
           ariaHidden: "true",
         });
         const link = Object.assign(document.createElement("a"), {
@@ -110,6 +111,8 @@ function createSection(listRoot, chapterNumber, tree) {
         link.insertAdjacentElement("afterbegin", section_number);
         listItem.appendChild(link);
         listRoot.appendChild(listItem);
+
+        i += 1;
       }
     }
   });
