@@ -3,6 +3,7 @@
 [Initial document (data structure)]: {{ root }}data-structures.md#initial-document
 [BTCR2 Unsigned Update (data structure)]: {{ root }}data-structures.md#btcr2-unsigned-update
 [BTCR2 Signed Update (data structure)]: {{ root }}data-structures.md#btcr2-signed-update
+[Data Integrity Config (data structure)]: {{ root }}data-structures.md#data-integrity-config
 [Data Integrity Proof (data structure)]: {{ root }}data-structures.md#data-integrity-proof
 [Sidecar Data (data structure)]: {{ root }}data-structures.md#sidecar-data
 [SMT Proof (data structure)]: {{ root }}data-structures.md#smt-proof

@@ -152,13 +152,11 @@ A [BTCR2 Signed Update] is a Map data structure with the same properties as
 ) }}
 
 
-## Data Integrity Proof { #data-integrity-proof }
+## Data Integrity Config { #data-integrity-config }
 
-A Data Integrity {{#cite VC-DATA-INTEGRITY}} proof with the `proofPurpose` set to
-`"capabilityInvocation"`. This proof MUST be a valid invocation of the capability to update the DID
-document of the **did:btcr2** identifier being resolved.
+A Data Integrity {{#cite VC-DATA-INTEGRITY}} proof with the `proofPurpose` set to `"capabilityInvocation"` and `proofValue` omitted.
 
-The following properties MUST be included in the Data Integrity proof:
+The following properties MUST be included in the Data Integrity Config:
 
 - `@context`: A context array containing the follow context URLs:
   - `"https://w3id.org/security/v2"`
@@ -169,10 +167,18 @@ The following properties MUST be included in the Data Integrity proof:
 - `cryptosuite`: The string `"bip340-jcs-2025"`.
 - `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID document.
 - `proofPurpose`: The string `"capabilityInvocation"`.
-- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(DID)}`.
+- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`.
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
-- `proofValue`: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 {{#cite BIP340}}, encoded using the `"base64url"` {{#cite RFC4648}} encoding.
+
+
+## Data Integrity Proof { #data-integrity-proof }
+
+A [Data Integrity Proof] with the `proofPurpose` set to `"capabilityInvocation"`. This proof MUST be a valid invocation of the capability to update a **did:btcr2** DID document.
+
+This data structure is a Map data structure with the same properties as [Data Integrity Config (data structure)] and one additional property:
+
+- `proofValue`: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 {{#cite BIP340}}, as a Multibase `"base-58-btc"` {{#cite CID}} encoded string.
 
 {% set hide_text = `` %}
 {% set ex_di_proof =
@@ -228,11 +234,11 @@ The [Sidecar Data] contains optional properties:
 
 A [SMT Proof] data structure contains the following properties:
 
-- `id`: hash of the root node.
-- `nonce`: OPTIONAL 256-bit nonce generated for each update.
-- `updateId`: hash of the [BTCR2 Signed Update].
-- `path`: array of Hashes representing the sibling SMT Nodes from the root to the leaf containing the hash of the [BTCR2 Signed Update] or the "zero identity".
-- `collapsed`: bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
+- `id`: SHA-256 hash of the root node.
+- `nonce`: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
+- `updateId`: The OPTIONAL [BTCR2 Signed Update (data structure)] hashed with the [JSON Document Hashing] algorithm.
+- `path`: Array of SHA-256 hashes representing the sibling [SMT] nodes from the root to the leaf containing the SHA-256 hash of the [BTCR2 Signed Update] or the "zero identity".
+- `collapsed`: Bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
 
 
 ## Resolution Options { #resolution-options }
@@ -269,9 +275,7 @@ Document metadata MAY contain the following properties:
 
 ## CAS Announcement { #cas-announcement }
 
-A data structure that maps DIDs to hashed [BTCR2 Signed Updates][BTCR2 Signed Update]. It MUST be
-hashed with the [JSON Document Hashing] algorithm to produce the [Signal Bytes] for a
-[Beacon Signal]. The concrete representation of this data structure will be published to a [CAS].
+A data structure that maps DIDs to [BTCR2 Signed Update] hashes. All [BTCR2 Signed Updates (data structure)][BTCR2 Signed Update (data structure)] MUST be hashed with the [JSON Document Hashing] algorithm. The concrete representation of this data structure will be published to a [CAS].
 
 {% set hide_text = `` %}
 {% set ex_cas_announcement_data =

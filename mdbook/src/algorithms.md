@@ -162,9 +162,7 @@ See the "Resolve" operation for details.
 
 ## Prior "Algorithms" that we need to either rule out or flesh out
 
-### Algo 15. Create Singleton Beacon Service
 ### Algo 16. Join Cohort and Establish Aggregate Beacon Service
-### Algo 17. Create Canonical BTCR2 Update
 ### Algo 18. Create & Announce Singleton Beacon Signal
 ### Algo 19. Advertise Update Opportunity (Aggregator)
 ### Algo 20. Prepare & Submit Opportunity Response (Participant)
