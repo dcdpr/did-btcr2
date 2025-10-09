@@ -86,6 +86,8 @@ resulting [BTCR2 Unsigned Update (data structure)] MUST be conformant to this sp
 
 This process constructs a [BTCR2 Signed Update (data structure)] from `update`, a [BTCR2 Unsigned Update (data structure)].
 
+<!-- what happens if the patches wipe out or replace all the verificationMethod and/or the capabilityInvocation sets from the didSourceDocument? can we still do this update? Maybe this is another kind of update that would invalidate the DID document and should be banned? -->
+
 An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.verificationMethod` Set does not contain an `id` matching `verificationMethodId`.
 
 An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.capabilityInvocation` Set does not contain `verificationMethodId`.
@@ -116,7 +118,7 @@ Fill the Data Integrity {{#cite VC-DATA-INTEGRITY}} template below with the requ
   hide_label="Hide"
 ) }}
 
-let `proofConfig` be the result of parsing the rendered template as JSON. The
+Let `proofConfig` be the result of parsing the rendered template as JSON. The
 resulting [Data Integrity Config (data structure)] MUST be conformant to Verifiable Credentials Data Integrity 1.0 {{#cite VC-DATA-INTEGRITY}}.
 
 Pass `update` and `proofConfig` to the `cryptosuite.createProof` method and set `update.proof` to the resulting [Data Integrity Proof (data structure)].
@@ -125,3 +127,18 @@ Pass `update` and `proofConfig` to the `cryptosuite.createProof` method and set 
 ## Announce DID Update
 
 <!-- TODO: announce -->
+
+[BTCR2 Signed Updates][BTCR2 Signed Update] are announced to the Bitcoin blockchain in three different ways depending on the [Beacon Type], denoted by the `type` value of the `service` identified by `beaconServiceId`.
+
+
+### Announcing to a Singleton Beacon
+
+A [BTCR2 Update Announcement] for a Singleton Beacon is the SHA256 hash of the [BTCR2 Signed Update] hashed with the [JSON Document Hashing] algorithm. This hash is used as the [Signal Bytes] when constructing a [Beacon Signal] bitcoin transaction. The [Beacon Signal] can then be signed by the private key that controls the [Beacon Address] and broadcast to the Bitcoin network. <!-- todo: constructing/signing/broadcasting Bitcoin transactions are low-level Bitcoin operations. Do we need to give more details? -->
+
+
+### Announcing to an Aggregate Beacon
+
+Aggregating and announcing updates for multiple **btcr2:did**s to an [Aggregate Beacon] ([CAS Beacon] or [SMT Beacon]) requires a five-step process that guarantees all [Beacon Participant][Beacon Participants] in the [Beacon Cohort] have confirmed every [Beacon Signal] that gets announced on the Bitcoin blockchain.
+
+(copy pasta) First, the [Aggregate Beacon] advertises the update opportunity using ~~~Algo 19. Advertise Update Opportunity (Aggregator)~~~. Then, each [Beacon Participant] prepares a response to that opportunity using ~~~Algo 20. Prepare & Submit Opportunity Response (Participant)~~~. Once all responses are received, the [Aggregate Beacon] combines those responses into a [Beacon Signal] and requests confirmation by all [Beacon Participants][Beacon Participant] using ~~~Algo 21. Aggregate & Request Signal Confirmation (Aggregator)~~~. To confirm that signal, each [Beacon Participant] uses ~~~Algo 22. Confirm Signal (Participant)~~~ to sign and submit their MuSig2 partially signed Bitcoin transaction. Finally, the [Aggregate Beacon] combines all partial signatures from the confirmations to finalize the transaction and posts the [Beacon Signal] to the Bitcoin blockchain using ~~~Algo 23. Broadcast Aggregated Signal (Aggregator)~~~.
+
