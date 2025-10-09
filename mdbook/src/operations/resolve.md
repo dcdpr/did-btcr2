@@ -179,7 +179,7 @@ Fill the [Initial DID Document] template below with the required template variab
 addresses MUST use the Bitcoin URI Scheme {{#cite BIP321}}.
 
 * `did`: The `did`.
-* `public-key-multikey`: Multikey format representation {{#cite BIP340-Cryptosuite}} of the public key.
+* `public-key-multikey`: Public key as a Multibase `"base-58-btc"` {{#cite CID}} encoded string.
 * `p2pkh-bitcoin-address`: A Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public key.
 * `p2wpkh-bitcoin-address`: A Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from the public key.
 * `p2tr-bitcoin-address`: A Pay-to-Taproot (P2PKH) Bitcoin address produced from the public key.
