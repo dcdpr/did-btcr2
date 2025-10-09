@@ -20,7 +20,7 @@ fn update(
   jsonPatches,
   targetVersionId,
   beaconServiceId,
-  verificationMethod,
+  verificationMethodId,
   privateKey,
 ) ->
   signedUpdate
@@ -29,12 +29,12 @@ fn update(
 Input arguments:
 
 - `didSourceDocument`: The source DID document.
-- `jsonPatches`: An array of JSON patch documents {{#cite RFC6902}} detailing the updates to be made to the source DID document.
+- `jsonPatches`: An array of JSON patch documents {{#cite RFC6902}} with the changes to be made to the source DID document.
 - `targetVersionId`: The `versionId` of the target DID document that the new [BTCR2 Signed Update] will yield.
 - `beaconServiceId`: The `service` index for the [BTCR2 Beacon] within the source DID document used for announcing the update.
-- `verificationMethod`: The `verificationMethod` ID used for signing the [BTCR2 Update]. The `verificationMethod` MUST be listed in the source DID document's `verificationMethod` Set and MUST be included in the source DID document's `capabilityInvocation` Set.
-- `privateKey`: Private key associated with the `verificationMethod`.
-  - An implementation MAY retrieve the private key from a key material manager with the `verificationMethod`.
+- `verificationMethodId`: The `verificationMethod` ID used for signing the [BTCR2 Update].
+- `privateKey`: Private key associated with the `verificationMethodId`.
+  - An implementation MAY use the `verificationMethodId` ID to retrieve the private key from a key material manager.
 
 Outputs:
 
@@ -45,16 +45,21 @@ Outputs:
 
 Updating a **did:btcr2** DID document is a matter of constructing a [BTCR2 Signed Update] then announcing that update via one or more [BTCR2 Beacons][BTCR2 Beacon] listed in the DID document. The update announcement process varies depending on the [Beacon Type].
 
-## Construct BTCR2 Signed Update
+Constructing a [BTCR2 Signed Update] is a two-step process. First, a [BTCR2 Unsigned Update] is constructed. Then the update is signed with a private key to construct the [BTCR2 Signed Update].
 
-Apply all JSON patches to `didSourceDocument` to create `didTargetDocument`. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
-Fill the [BTCR2 Unsigned Update] template below with the required template variables.
+## Construct BTCR2 Unsigned Update
+
+This process constructs a [BTCR2 Unsigned Update (data structure)].
+
+Apply all JSON patches in `jsonPatches` to `didSourceDocument` to create `didTargetDocument`. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `didSourceDocument.id`.
+
+Fill the [BTCR2 Unsigned Update (data structure)] template below with the required template variables.
 
 * `array-of-patches`: `jsonPatches` serialized to a JSON string.
 * `source-hash`: `didSourceDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-hash`: `didTargetDocument` hashed with the [JSON Document Hashing] algorithm.
-* `target-version-id`: `targetVersionId`
+* `target-version-id`: The value of `targetVersionId`.
 
 {% set hide_text = `` %}
 {% set btcr2_unsigned_update_template =
@@ -76,11 +81,47 @@ hide_label="Hide"
 Let `update` be the result of parsing the rendered template as JSON. The
 resulting [BTCR2 Unsigned Update (data structure)] MUST be conformant to this specification.
 
-Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `publicKeyMultibase` and `"bip340-jcs-2025"` cryptosuite.
+
+## Construct BTCR2 Signed Update
+
+This process constructs a [BTCR2 Signed Update (data structure)] from `update`, a [BTCR2 Unsigned Update (data structure)].
+
+An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.verificationMethod` Set does not contain an `id` matching `verificationMethodId`.
+
+An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.capabilityInvocation` Set does not contain `verificationMethodId`.
+
+Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `privateKey` and `"bip340-jcs-2025"` cryptosuite.
 
 <!-- todo: should we just pull in the stuff we want from the cryptosuite spec and not have to refer to it? -->
 
-Pass `update` to the `cryptosuite.createProof` method and set `update.proof` to the resulting [Data Integrity Proof (data structure)].
+Fill the Data Integrity {{#cite VC-DATA-INTEGRITY}} template below with the required template variables.
 
+* `verification-method`: The value of `verificationMethodId`.
+* `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}`.
+
+{% set hide_text = `` %}
+{% set data_integrity_config_template =
+`
+~~~hbs
+{{#include ../example-data/data-integrity-config.hbs}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="data-integrity-config-template",
+  example=data_integrity_config_template,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Template",
+  hide_label="Hide"
+) }}
+
+let `proofConfig` be the result of parsing the rendered template as JSON. The
+resulting [Data Integrity Config (data structure)] MUST be conformant to Verifiable Credentials Data Integrity 1.0 {{#cite VC-DATA-INTEGRITY}}.
+
+Pass `update` and `proofConfig` to the `cryptosuite.createProof` method and set `update.proof` to the resulting [Data Integrity Proof (data structure)].
+
+
+## Announce DID Update
 
 <!-- TODO: announce -->
