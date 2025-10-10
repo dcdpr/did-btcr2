@@ -133,7 +133,7 @@ Pass `update` and `proofConfig` to the `cryptosuite.createProof` method and set 
 
 ### Announcing to a Singleton Beacon
 
-A [BTCR2 Update Announcement] for a Singleton Beacon is the SHA256 hash of the [BTCR2 Signed Update] hashed with the [JSON Document Hashing] algorithm. This hash is used as the [Signal Bytes] when constructing a [Beacon Signal] bitcoin transaction. The [Beacon Signal] can then be signed by the private key that controls the [Beacon Address] and broadcast to the Bitcoin network. <!-- todo: constructing/signing/broadcasting Bitcoin transactions are low-level Bitcoin operations. Do we need to give more details? -->
+A [BTCR2 Update Announcement] for a [Singleton Beacon] is the [BTCR2 Signed Update] hashed with the [JSON Document Hashing] algorithm. This hash is used as the [Signal Bytes] when constructing a [Beacon Signal] Bitcoin transaction. The [Beacon Signal] is signed by the private key that controls the [Beacon Address] and broadcast to the Bitcoin network. <!-- todo: Delegate Bitcoin operations to normative specifications. -->
 
 
 ### Announcing to an Aggregate Beacon
