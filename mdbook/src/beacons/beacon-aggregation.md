@@ -19,7 +19,7 @@ DID controllers that wish to join a [Beacon Cohort] and become a [Beacon Partici
 
 The aggregator coordinates the construction of an n-of-n Pay-to-Taproot address as the [Beacon Address], where each [Beacon Participant's][Beacon Participant] public key is one of the n keys. This ensures that all on-chain [Beacon Signals][Beacon Signal] are cryptographically signed by every [Beacon Participant], while the aggregator remains minimally trusted.
 
-A given cohort may fail because other participants stop participating or the aggregator is compromised; however, the consequences are limited to the failure of the [Aggregate Beacon] to broadcast [Beacon Signals] that announce [BTCR2 Updates][BTCR2 Update].
+A given cohort may fail because other participants stop participating or the aggregator is compromised; however, the consequences are limited to the failure of the [Aggregate Beacon] to broadcast [Beacon Signals][Beacon Signal] that announce [BTCR2 Updates][BTCR2 Update].
 
 The aggregator decides when to finalize the membership of the [Beacon Cohort]. Once finalized, the aggregator MUST compute an n-of-n Pay-to-Taproot address from the public keys the [Beacon Participants][Beacon Participant] provided. This is the [Beacon Address] and MUST be sent to all participants, along with the set of keys used to construct this address. [Beacon Participants][Beacon Participant] SHOULD verify the address for themselves, and confirm that the key they provided is in the set of keys used to construct the address.
 
