@@ -86,7 +86,8 @@ Example: [BTCR2 Unsigned Update (data structure)].
 A 32-byte SHA256 hash committing to a [BTCR2 Update] that has been broadcast by a [BTCR2 Beacon] in
 a DID's then-[Authorized Beacon Signal]. [Beacon Signals][Beacon Signal] can optionally aggregate
 one or more BTCR2 Update Announcements. How [Beacon Signals][Beacon Signal] aggregate announcements
-is defined by the [Beacon Type].
+is defined by the [Beacon Type]. <!-- todo: is the BTCR2 Update Announcement just referring to the hash itself? Or is it the things that is hashed into the hash? -->
+
 
 ## BTCR2 Signed Update { #btcr2-signed-update }
 
