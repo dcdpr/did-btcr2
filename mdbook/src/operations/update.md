@@ -6,9 +6,7 @@
 
 # Update
 
-**did:btcr2** DID documents can be updated by anchoring [BTCR2 Updates][BTCR2 Update] to Bitcoin transactions.
-
-Updates are either announced independently using [Singleton Beacons][Singleton Beacon], or announced as part of an aggregation cohort to minimize on-chain costs, using either [CAS Beacons][CAS Beacon] or [SMT Beacons][SMT Beacon].
+**did:btcr2** DID documents can be updated by anchoring [BTCR2 Updates][BTCR2 Update] to Bitcoin transactions. These transactions MAY be published to the Bitcoin network.
 
 Any property in the DID document may be updated except the `id`. Doing so would invalidate the DID document.
 
@@ -19,7 +17,6 @@ fn update(
   didSourceDocument,
   jsonPatches,
   targetVersionId,
-  beaconServiceId,
   verificationMethodId,
   privateKey,
 ) ->
@@ -31,7 +28,6 @@ Input arguments:
 - `didSourceDocument`: The source DID document.
 - `jsonPatches`: An array of JSON patch documents {{#cite RFC6902}} with the changes to be made to the source DID document.
 - `targetVersionId`: The `versionId` of the target DID document that the new [BTCR2 Signed Update] will yield.
-- `beaconServiceId`: The `service` index for the [BTCR2 Beacon] within the source DID document used for announcing the update.
 - `verificationMethodId`: The `verificationMethod` ID used for signing the [BTCR2 Update].
 - `privateKey`: Private key associated with the `verificationMethodId`.
   - An implementation MAY use the `verificationMethodId` ID to retrieve the private key from a key material manager.
@@ -86,15 +82,11 @@ resulting [BTCR2 Unsigned Update (data structure)] MUST be conformant to this sp
 
 This process constructs a [BTCR2 Signed Update (data structure)] from `update`, a [BTCR2 Unsigned Update (data structure)].
 
-<!-- what happens if the patches wipe out or replace all the verificationMethod and/or the capabilityInvocation sets from the didSourceDocument? can we still do this update? Maybe this is another kind of update that would invalidate the DID document and should be banned? -->
-
 An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.verificationMethod` Set does not contain an `id` matching `verificationMethodId`.
 
 An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.capabilityInvocation` Set does not contain `verificationMethodId`.
 
 Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `privateKey` and `"bip340-jcs-2025"` cryptosuite.
-
-<!-- todo: should we just pull in the stuff we want from the cryptosuite spec and not have to refer to it? -->
 
 Fill the Data Integrity {{#cite VC-DATA-INTEGRITY}} template below with the required template variables.
 
@@ -126,18 +118,16 @@ Pass `update` and `proofConfig` to the `cryptosuite.createProof` method and set 
 
 ## Announce DID Update
 
-<!-- TODO: announce -->
 
-[BTCR2 Signed Updates][BTCR2 Signed Update] are announced to the Bitcoin blockchain in three different ways depending on the [Beacon Type], denoted by the `type` value of the `service` identified by `beaconServiceId`.
+[BTCR2 Signed Updates][BTCR2 Signed Update] are announced to the Bitcoin blockchain depending on the [Beacon Type].
 
 
 ### Announcing to a Singleton Beacon
 
-A [BTCR2 Update Announcement] for a [Singleton Beacon] is the [BTCR2 Signed Update] hashed with the [JSON Document Hashing] algorithm. This hash is used as the [Signal Bytes] when constructing a [Beacon Signal] Bitcoin transaction. The [Beacon Signal] is signed by the private key that controls the [Beacon Address] and broadcast to the Bitcoin network. <!-- todo: Delegate Bitcoin operations to normative specifications. -->
+A [BTCR2 Update Announcement] for a [Singleton Beacon] is the [BTCR2 Signed Update] hashed with the [JSON Document Hashing] algorithm. This hash is used as the [Signal Bytes] when constructing a [Beacon Signal] Bitcoin transaction. The [Beacon Signal] is signed by the private key that controls the [Beacon Address] and broadcast to the Bitcoin network. <!-- todo: Delegate Bitcoin operations to normative specifications. What reference to use? -->
 
 
 ### Announcing to an Aggregate Beacon
 
-Aggregating and announcing updates for multiple **btcr2:did** identifiers to an [Aggregate Beacon]([CAS Beacon] or [SMT Beacon]) requires a five-step process that guarantees all [Beacon Participants][Beacon Participant] in the [Beacon Cohort] have confirmed every [Beacon Signal] that gets announced on the Bitcoin blockchain.
-
+Aggregating and announcing updates for multiple **btcr2:did** identifiers is the responsibility of the [Beacon Aggregator Service].
 

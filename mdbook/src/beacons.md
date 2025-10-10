@@ -64,3 +64,4 @@ An [SMT Beacon] creates a [Beacon Signal] that commits to multiple [BTCR2 Update
 An [SMT Beacon] provides maximum privacy for the DID controller, as the DID controller never has to reveal their DIDs or [BTCR2 Updates] to the aggregator.
 
 The `type` of a `service` defining an [SMT Beacon] in a DID document is `"SMTBeacon"`.
+
