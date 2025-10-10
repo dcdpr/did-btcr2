@@ -38,13 +38,12 @@ which **did:btcr2** identifier.
 
 ## Beacon Cohort { #beacon-cohort }
 
-The set of unique DIDs participating in a [BTCR2 Beacon]. [Beacon Participants][Beacon Participant]
-are required to authorize spends from the [Beacon Address].
+The set of [Beacon Participants][Beacon Participant] within an [Aggregate Beacon].
 
 ## Beacon Participant { #beacon-participant }
 
-A member of a [Beacon Cohort], typically a DID controller, that controls cryptographic keys required
-to partially authorize spends from a [Beacon Address].
+A member of a [Beacon Cohort], typically a DID controller, that controls cryptographic keys
+required to partially authorize spends from a [Beacon Address].
 
 ## Beacon Signal { #beacon-signal }
 
