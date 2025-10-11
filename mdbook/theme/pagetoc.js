@@ -1,3 +1,8 @@
+// Configure header numbering scheme.
+// const numberedHeader = (n) => n; // Identity: No transformation (ambiguous with sub-chapters).
+// const numberedHeader = romanNumeral;
+const numberedHeader = base26;
+
 let scrollTimeout;
 
 function listenActive() {
@@ -18,9 +23,34 @@ function listenActive() {
 const getPagetoc = () => document.querySelector(".pagetoc") || autoCreatePagetoc();
 
 function autoCreatePagetoc() {
-  const activeLi = document.querySelector("mdbook-sidebar-scrollbox ol > li:has(> a.active)");
-  if (activeLi) {
-    activeLi.insertAdjacentHTML("afterend", '<li class="expanded"><ol class="pagetoc section"></ol></li>');
+  const chapterList = document.querySelector("mdbook-sidebar-scrollbox ol");
+  if (chapterList) {
+    let activeLink = chapterList.querySelector("li > a.active");
+    if (activeLink) {
+      chapterList.insertAdjacentHTML("afterend", `
+        <ol id="header-tree" class="chapter">
+          <li class="spacer"></li>
+          <li class="chapter-item expanded">
+            <a href="${activeLink.href}">
+              <strong>${getChapterNumber()}</strong> ${activeLink.lastChild.textContent}
+            </a>
+            <a class="toggle">
+              <div>❱</div>
+            </a>
+          </li>
+          <li>
+            <ol class="pagetoc section"></ol>
+          </li>
+        </ol>
+      `);
+
+      function toggleSection(ev) {
+        ev.currentTarget.parentElement.classList.toggle("expanded");
+      }
+
+      const toggleButton = document.querySelector("#header-tree a.toggle");
+      toggleButton.addEventListener("click", toggleSection);
+    }
   }
 
   return document.querySelector(".pagetoc");
@@ -83,7 +113,7 @@ function headersIntoTree(headers) {
   return tree;
 }
 
-function createSection(listRoot, chapterNumber, tree) {
+function createSection(listRoot, chapterNumber, tree, depth) {
   let i = 1;
   tree.forEach(header => {
     if (Array.isArray(header)) {
@@ -92,7 +122,7 @@ function createSection(listRoot, chapterNumber, tree) {
         className: "section",
       });
       listItem.appendChild(ordered_list);
-      createSection(ordered_list, chapterNumber ? `${chapterNumber}${i - 1}.` : "", header);
+      createSection(ordered_list, chapterNumber ? `${chapterNumber}${depth === 0 ? numberedHeader(i - 1) : i}.` : "", header, depth + 1);
       listRoot.appendChild(listItem);
     } else {
       const parent = header.parentElement
@@ -101,7 +131,7 @@ function createSection(listRoot, chapterNumber, tree) {
           className: "chapter-item expanded",
         });
         const section_number = Object.assign(document.createElement("strong"), {
-          textContent: chapterNumber ? `${chapterNumber}${i}. ` : "",
+          textContent: chapterNumber ? `${chapterNumber}${depth === 0 ? numberedHeader(i) : i}. ` : "",
           ariaHidden: "true",
         });
         const link = Object.assign(document.createElement("a"), {
@@ -118,13 +148,42 @@ function createSection(listRoot, chapterNumber, tree) {
   });
 }
 
+function base26(n) {
+  let out = '';
+  while (n > 0) {
+    n--; // shift to 0-based for bijective base-26
+    out = String.fromCharCode(97 + (n % 26)) + out;
+    n = Math.floor(n / 26);
+  }
+  return out;
+}
+
+function romanNumeral(n) {
+  const map = [
+    [1000, 'm'], [900, 'cm'], [500, 'd'], [400, 'cd'],
+    [100, 'c'],  [90,  'xc'], [50,  'l'], [40,  'xl'],
+    [10,  'x'],  [9,   'ix'], [5,   'v'], [4,   'iv'],
+    [1,   'i']
+  ];
+  let out = '';
+  for (const [value, symbol] of map) {
+    if (n === 0) break;
+    const count = Math.floor(n / value);
+    if (count) {
+      out += symbol.repeat(count);
+      n -= value * count;
+    }
+  }
+  return out;
+}
+
 window.addEventListener('load', () => {
   if (location.pathname.endsWith('/bibliography.html')) return;
   const pagetoc = getPagetoc();
   if (!pagetoc) return;
   const chapterNumber = getChapterNumber();
   const tree = headersIntoTree([...document.getElementsByClassName("header")]);
-  createSection(pagetoc, chapterNumber, tree);
+  createSection(pagetoc, chapterNumber, tree, 0);
 
   updateFunction();
   listenActive();
