@@ -19,5 +19,3 @@
 - [Algorithms](algorithms.md)
 - [Errors](errors.md)
 - [Appendix](appendix.md)
-
----
