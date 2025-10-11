@@ -25,7 +25,7 @@ const getPagetoc = () => document.querySelector(".pagetoc") || autoCreatePagetoc
 function autoCreatePagetoc() {
   const chapterList = document.querySelector("mdbook-sidebar-scrollbox ol");
   if (chapterList) {
-    let activeLink = chapterList.querySelector("li > a.active");
+    const activeLink = chapterList.querySelector("li > a.active");
     if (activeLink) {
       chapterList.insertAdjacentHTML("afterend", `
         <ol id="header-tree" class="chapter">
