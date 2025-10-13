@@ -15,18 +15,17 @@ The coordination protocol between an aggregator and [Beacon Participants][Beacon
 
 ## Bikeshed Header Title (Join Cohort and Establish Aggregate Beacon Service)
 
-DID controllers that wish to join a [Beacon Cohort] and become a [Beacon Participant] MUST provide the aggregator with a Schnorr public key.
+The coordination protocol between an aggregator and [Beacon Participants][Beacon Participant] is out of scope.  However, we can provide a RECOMMENDED example for illustrative purposes.  In one implementaion, centered on Schnorr signatures and allowing all cohort participants to veto any beacon signal for which their own proof data does not match the proposed OP_RETURN data, DID controllers that wish to join a [Beacon Cohort] and become a [Beacon Participant] would need to provide the aggregator with a Schnorr public key.
 
 The aggregator coordinates the construction of an n-of-n Pay-to-Taproot address as the [Beacon Address], where each [Beacon Participant's][Beacon Participant] public key is one of the n keys. This ensures that all on-chain [Beacon Signals][Beacon Signal] are cryptographically signed by every [Beacon Participant], while the aggregator remains minimally trusted.
 
 A given cohort may fail because other participants stop participating or the aggregator is compromised; however, the consequences are limited to the failure of the [Aggregate Beacon] to broadcast [Beacon Signals][Beacon Signal] that announce [BTCR2 Updates][BTCR2 Update].
 
-The aggregator decides when to finalize the membership of the [Beacon Cohort]. Once finalized, the aggregator MUST compute an n-of-n Pay-to-Taproot address from the public keys the [Beacon Participants][Beacon Participant] provided. This is the [Beacon Address] and MUST be sent to all participants, along with the set of keys used to construct this address. [Beacon Participants][Beacon Participant] SHOULD verify the address for themselves, and confirm that the key they provided is in the set of keys used to construct the address.
+The aggregator decides when to finalize the membership of the [Beacon Cohort]. Once finalized, the aggregator would need to compute an n-of-n Pay-to-Taproot address from the public keys the [Beacon Participants][Beacon Participant] provided. This is the [Beacon Address] and would need to be sent to all participants, along with the set of keys used to construct this address. [Beacon Participants][Beacon Participant] would want to verify the address for themselves, and confirm that the key they provided is in the set of keys used to construct the address.
 
-Once DID controllers have verified the [Beacon Address], they MAY construct the `service` object that can be included within their DID document's service array.
+Once the cohort's DID controllers have verified the newly formed [Beacon Address], they can construct the `service` object that can be included within their DID document's service array.
 
 
 ## Bikeshed Header Title (Announce DID Update)
 
-This protocol ensures that NEITHER the [Beacon Aggregator Service] NOR other [Beacon Participants][Beacon Participant] are able to compromise or invalidate a **did:btcr2** identifier.
-
+This RECOMMENDED way of setting up the [Beacon Aggregator Service] ensures that NEITHER the [Beacon Aggregator Service] NOR other [Beacon Participants][Beacon Participant] are able to compromise or invalidate a **did:btcr2** identifier of another [Beacon Participants][Beacon Participant] in the cohort.
