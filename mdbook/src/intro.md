@@ -24,18 +24,17 @@ motivated by the following considerations:
 
 ## Anti-censorship
 
-Bitcoin is the world’s oldest and most reliable censorship-resistant
-network. Our primary motivation is to leverage the anti-censorship
-capability of Bitcoin to enable individuals to control decentralized
-identifiers without interference by centralized players. That means
-creating a W3C conformant DID method capable of creating identifiers
-usable for a range of verifiable interactions, including issuing
-Verifiable Credentials and proving that the current presenter is the
-subject of a Verifiable Credential. This DID method gives organizations
-and states the ability to anchor private attestations to identifiers
-under individuals’ direct control, giving humans an unprecedented
-ability to participate in digital interactions on their own terms, using
-the identifiers they choose, when they choose.
+Our primary motivation is to leverage the anti-censorship capability
+of Bitcoin to enable individuals to control decentralized identifiers
+without interference by centralized players. That means creating a W3C
+conformant DID method capable of creating identifiers usable for a
+range of verifiable interactions, including issuing Verifiable
+Credentials and proving that the current presenter is the subject of a
+Verifiable Credential. This DID method gives organizations and states
+the ability to anchor private attestations to identifiers under
+individuals’ direct control, giving humans an unprecedented ability to
+participate in digital interactions on their own terms, using the
+identifiers they choose, when they choose.
 
 ## Privacy
 
