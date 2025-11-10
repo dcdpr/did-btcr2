@@ -7,6 +7,17 @@
   abstract     = {BCP 14 is the Best Current Practice that defines and clarifies the usage of requirement-level keywords (MUST, SHOULD, MAY, etc.) in IETF documents. It comprises RFC 2119 (defining the keywords) and RFC 8174 (clarifying that only uppercase usage carries the defined semantics).}
 }
 
+@misc{Bitcoin-Core,
+  title = {Bitcoin Core},
+  author = {Bitcoin Core Developers},
+  howpublished = {Online},
+  year = {2025},
+  month = {August},
+  url = {https://github.com/bitcoin/bitcoin},
+  note = {Bitcoin-Core},
+  abstract = {Bitcoin Core is the reference implementation of the Bitcoin protocol. It is a full node implementation that validates all transactions and blocks according to the Bitcoin consensus rules.}
+}
+
 @misc{BIP321,
   title = {URI Scheme},
   author = {Matt Corallo},
@@ -16,6 +27,17 @@
   url = {https://github.com/bitcoin/bips/blob/master/bip-0321.mediawiki},
   note = {BIP-0321},
   abstract = {This document proposes a URI scheme for describing Bitcoin payment instructions.}
+}
+
+@misc{BIP327,
+  title = {MuSig2 for BIP340-compatible Multi-Signatures},
+  author = {Jonas Nick, Tim Ruffing, Elliott Jin},
+  howpublished = {Bitcoin Improvement Proposal 327},
+  year = {2022},
+  month = {March},
+  url = {https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki},
+  note = {BIP-0327},
+  abstract = {This document proposes a standard for the MuSig2 multi-signature scheme. The standard is compatible with BIP340 public keys and signatures. It supports tweaking, which allows deriving BIP32 child keys from aggregate public keys and creating BIP341 Taproot outputs with key and script paths.}
 }
 
 @misc{BIP340,
@@ -102,17 +124,6 @@ This document specifies the algorithms and guidelines for resolving DIDs and der
 This specification describes a superset of the features defined in JSON-LD 1.0 and, except where noted, documents created using the 1.0 version of this specification remain compatible with JSON-LD 1.1.}
 }
 
-@techreport{RFC2119,
-  author       = {Scott Bradner},
-  title        = {Key words for use in RFCs to Indicate Requirement Levels},
-  howpublished = {RFC 2119, Best Current Practice 14, Internet Engineering Task Force},
-  month        = Mar,
-  year         = 1997,
-  note         = {Updated by RFC 8174; errata exist},
-  url          = {https://www.rfc-editor.org/rfc/rfc2119},
-  abstract     = {Defines standard key words (MUST, SHOULD, MAY, etc.) used in technical specifications to indicate requirement levels, establishing consistent terminology across Internet standards.}
-}
-
 @techreport{RFC4648,
   title = {The Base16, Base32, and Base64 Data Encodings},
   author = {Josefsson, S.},
@@ -135,17 +146,6 @@ This specification describes a superset of the features defined in JSON-LD 1.0 a
   month = {April},
   url = {https://datatracker.ietf.org/doc/html/rfc6902},
   abstract = {JSON Patch defines a JSON document structure for expressing a sequence of operations to apply to a JavaScript Object Notation (JSON) document; it is suitable for use with the HTTP PATCH method. The "application/json-patch+json" media type is used to identify such patch documents.}
-}
-
-@techreport{RFC8174,
-  author       = {Barry Leiba},
-  title        = {Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words},
-  howpublished = {RFC 8174, Best Current Practice 14, Internet Engineering Task Force},
-  month        = May,
-  year         = 2017,
-  note         = {Updates RFC 2119; errata exist} ,
-  url          = {https://www.rfc-editor.org/rfc/rfc8174},
-  abstract     = {Clarifies that the requirement key words defined in RFC 2119 apply only when written in uppercase, resolving ambiguity about mixed-case usage in RFCs.}
 }
 
 @techreport{RFC8785,
@@ -213,15 +213,4 @@ The schemes are intended for general application within computer and communicati
   url = {https://w3c-ccg.github.io/zcap-spec/},
   note = {ZCAP-LD},
   abstract = {Authorization Capabilities for Linked Data (ZCAP-LD for short) provides a secure way for linked data systems to grant and express authority utilizing the object capability model. Capabilities are represented as linked data objects which are signed with Linked Data Proofs. ZCAP-LD supports delegating authority to other entities on the network by chaining together capability documents. "Caveats" may be attached to capability documents which may be used to restrict the scope of their use, for example to restrict the actions which may be used or providing a mechanism by which the capability may be later revoked.}
-}
-
-@misc{Bitcoin-Core,
-  title = {Bitcoin Core},
-  author = {Bitcoin Core Developers},
-  howpublished = {Online},
-  year = {2025},
-  month = {August},
-  url = {https://github.com/bitcoin/bitcoin},
-  note = {Bitcoin-Core},
-  abstract = {Bitcoin Core is the reference implementation of the Bitcoin protocol. It is a full node implementation that validates all transactions and blocks according to the Bitcoin consensus rules.}
 }

@@ -128,6 +128,6 @@ A [BTCR2 Update Announcement] for a [Singleton Beacon] is the [BTCR2 Signed Upda
 
 ### Announcing to an Aggregate Beacon
 
-Aggregating and announcing updates for multiple **did:btcr2** identifiers is the responsibility of the [Beacon Aggregator Service].
-The main responsibilities include establishing a protocol for one or more rounds of secure group communications amongst [Beacon Participants][Beacon Participant], advertising available [Beacon Cohorts][Beacon Cohort] to [Beacon Participants][Beacon Participant] including the creation, management, timing and scheduling of those [Beacon Cohorts][Beacon Cohort], and broadcasting a Bitcoin transaction to the Bitcoin network that includes signatures from all [Beacon Participants][Beacon Participant] in a given [Beacon Cohort].
+Aggregating and announcing updates for multiple **did:btcr2** identifiers is the responsibility of the [Aggregation Service].
+The main responsibilities include establishing a protocol for one or more rounds of secure group communications amongst [Aggregation Participants][Aggregation Participant], advertising available [Aggregation Cohorts][Aggregation Cohort] to [Aggregation Participants][Aggregation Participant] including the creation, management, timing and scheduling of those [Aggregation Cohorts][Aggregation Cohort], and broadcasting a Bitcoin transaction to the Bitcoin network that includes signatures from all [Aggregation Participants][Aggregation Participant] in a given [Aggregation Cohort].
 
