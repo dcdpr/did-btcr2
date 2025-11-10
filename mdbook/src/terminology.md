@@ -8,11 +8,26 @@
 ## Aggregate Beacon { #aggregate-beacon }
 
 A collection of [BTCR2 Updates][BTCR2 Update] can optionally be aggregated into a single
-[Beacon Signal] by a [Beacon Aggregator Service] for multiple entities (possibly controlling
+[Beacon Signal] by an [Aggregation Service] for multiple entities (possibly controlling
 multiple DIDs and possibly posting multiple updates).
 
 There can only ever be one [BTCR2 Update] per **did:btcr2** DID in a [Beacon Signal] from an
 Aggregate Beacon.
+
+## Aggregation Cohort { #aggregation-cohort }
+
+The set of [Aggregation Participants][Aggregation Participant] within an [Aggregate Beacon].
+
+## Aggregation Participant { #aggregation-participant }
+
+A member of an [Aggregation Cohort], typically a DID controller, that controls cryptographic keys
+required to partially authorize spends from a [Beacon Address].
+
+## Aggregation Service { #aggregation-service }
+
+The entity that coordinates the protocols of an [Aggregate Beacon] in order to establish a
+[Aggregation Cohort] and aggregate [BTCR2 Update Announcements][BTCR2 Update Announcement] in a
+[Beacon Signal].
 
 ## Authorized Beacon Signal { #authorized-beacon=signal }
 
@@ -24,26 +39,11 @@ in a then-current DID document.
 The Bitcoin address of a [BTCR2 Beacon]. Spends of [UTXO] controlled by this address are identified
 as [Beacon Signals][Beacon Signal].
 
-## Beacon Aggregator Service { #beacon-aggregator-service }
-
-The entity that coordinates the protocols of an aggregate [BTCR2 Beacon] in order to establish a
-[Beacon Cohort] and aggregate [BTCR2 Update Announcements][BTCR2 Update Announcement] in a
-[Beacon Signal].
-
 ## Beacon Announcement Map { #beacon-announcement-map }
 
 A document that maps **did:btcr2** identifiers to [BTCR2 Update Announcements][BTCR2 Update
 Announcement]. This is used to distinguish which [BTCR2 Update Announcement] applies to
 which **did:btcr2** identifier.
-
-## Beacon Cohort { #beacon-cohort }
-
-The set of [Beacon Participants][Beacon Participant] within an [Aggregate Beacon].
-
-## Beacon Participant { #beacon-participant }
-
-A member of a [Beacon Cohort], typically a DID controller, that controls cryptographic keys
-required to partially authorize spends from a [Beacon Address].
 
 ## Beacon Signal { #beacon-signal }
 

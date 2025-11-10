@@ -9,7 +9,7 @@
 - [Terminology](terminology.md)
 - [Update Data Distribution](update-data-distribution.md)
 - [Beacons](beacons.md)
-  - [Beacon Aggregation](beacons/beacon-aggregation.md)
+  - [Aggregate Beacons](beacons/aggregate-beacons.md)
 - [Data Structures](data-structures.md)
 - [Operations](operations.md)
   - [Create](operations/create.md)

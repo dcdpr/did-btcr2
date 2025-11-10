@@ -1,10 +1,10 @@
 [Aggregate Beacon]: {{ root }}terminology.md#aggregate-beacon
+[Aggregation Cohort]: {{ root }}terminology.md#aggregation-cohort
+[Aggregation Participant]: {{ root }}terminology.md#aggregation-participant
+[Aggregation Service]: {{ root }}terminology.md#aggregation-service
 [Authorized Beacon Signal]: {{ root }}terminology.md#authorized-beacon-signal
 [Beacon Address]: {{ root }}terminology.md#beacon-address
-[Beacon Aggregator Service]: {{ root }}terminology.md#beacon-aggregator-service
 [Beacon Announcement Map]: {{ root }}terminology.md#beacon-announcement-map
-[Beacon Cohort]: {{ root }}terminology.md#beacon-cohort
-[Beacon Participant]: {{ root }}terminology.md#beacon-participant
 [Beacon Signal]: {{ root }}terminology.md#beacon-signal
 [Beacon Type]: {{ root }}terminology.md#beacon-type
 [BTCR2 Beacon]: {{ root }}terminology.md#btcr2-beacon

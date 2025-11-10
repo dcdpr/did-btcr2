@@ -39,7 +39,7 @@ All **did:btcr2** DID resolvers MUST support the [Beacon Types] defined in this 
 
 ## Singleton Beacon
 
-A [Singleton Beacon] is a [BTCR2 Beacon] that can be used to announce commitments to a single [BTCR2 Update] targeting a single DID document. It creates a [Beacon Signal] that commits to a single [BTCR2 Update Announcement]. This is typically done directly by the DID controller, as there is no [Beacon Cohort].
+A [Singleton Beacon] is a [BTCR2 Beacon] that can be used to announce commitments to a single [BTCR2 Update] targeting a single DID document. It creates a [Beacon Signal] that commits to a single [BTCR2 Update Announcement]. This is typically done directly by the DID controller, as there is no [Aggregation Cohort].
 
 If the [BTCR2 Update] committed to by the [BTCR2 Update Announcement] is not publicly discoverable (i.e., is not published to a CAS under its hash), the only parties that are aware of it are the DID controller and any parties provided it by the DID controller.
 

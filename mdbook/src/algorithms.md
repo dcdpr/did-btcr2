@@ -156,16 +156,3 @@ This is the process of hashing the Genesis Document and replacing the DID placeh
 ## Processing Sidecar Documents and SMT Proofs
 
 See the "Resolve" operation for details.
-
-
-----
-
-## Prior "Algorithms" that we need to either rule out or flesh out
-
-### Algo 16. Join Cohort and Establish Aggregate Beacon Service
-### Algo 18. Create & Announce Singleton Beacon Signal
-### Algo 19. Advertise Update Opportunity (Aggregator)
-### Algo 20. Prepare & Submit Opportunity Response (Participant)
-### Algo 21. Aggregate & Request Signal Confirmation (Aggregator)
-### Algo 22. Confirm Signal (Participant)
-### Algo 23. Broadcast Aggregated Signal (Aggregator)
