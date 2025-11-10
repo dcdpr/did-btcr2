@@ -121,13 +121,13 @@ Pass `update` and `proofConfig` to the `cryptosuite.createProof` method and set 
 [BTCR2 Signed Updates][BTCR2 Signed Update] are announced to the Bitcoin blockchain depending on the [Beacon Type].
 
 
-### Announcing with a Singleton Beacon
+### Announcing to a Singleton Beacon
 
 A [BTCR2 Update Announcement] for a [Singleton Beacon] is the [BTCR2 Signed Update] hashed with the [JSON Document Hashing] algorithm. This 32-byte SHA256 hash is used as the [Signal Bytes] when constructing a [Beacon Signal] Bitcoin transaction. The [Beacon Signal] is signed by the private key that controls the [Beacon Address] and broadcast to the Bitcoin network. To broadcast signed Bitcoin transactions, see the {{#cite Bitcoin-Core}} source code.
 
 
-### Announcing with an Aggregate Beacon
+### Announcing to an Aggregate Beacon
 
 Aggregating and announcing updates for multiple **did:btcr2** identifiers is the responsibility of the [Beacon Aggregator Service].
-The main responsibilities include establishing a protocol for one or more rounds of secure group communications amongst [Beacon Participants][Beacon Participant], advertising available [Beacon Cohorts][Beacon Cohort] to [Beacon Participants][Beacon Participant] including the creation, management, timing and scheduling of those [Beacon Cohorts][Beacon Cohort], and broadcasting an Bitcoin transaction to the Bitcoin network that includes signatures from all [Beacon Participants][Beacon Participant] in a given [Beacon Cohorts][Beacon Cohort].
+The main responsibilities include establishing a protocol for one or more rounds of secure group communications amongst [Beacon Participants][Beacon Participant], advertising available [Beacon Cohorts][Beacon Cohort] to [Beacon Participants][Beacon Participant] including the creation, management, timing and scheduling of those [Beacon Cohorts][Beacon Cohort], and broadcasting a Bitcoin transaction to the Bitcoin network that includes signatures from all [Beacon Participants][Beacon Participant] in a given [Beacon Cohort].
 
