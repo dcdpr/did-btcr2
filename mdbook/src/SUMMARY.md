@@ -19,3 +19,6 @@
 - [Algorithms](algorithms.md)
 - [Errors](errors.md)
 - [Appendix](appendix.md)
+  - [Privacy Considerations](appendix/privacy-considerations.md)
+  - [Security Considerations](appendix/security-considerations.md)
+  - [Optimized Sparse Merkle Tree Implementation](appendix/optimized-smt.md)

@@ -25,7 +25,7 @@ A [Beacon Signal] commits to, and anchors in a Bitcoin block, 32 bytes of inform
 
 The current, active, [BTCR2 Beacons][BTCR2 Beacon] of a DID document are specified in the document's `service` property. By updating the DID document, a DID controller can change the set of [BTCR2 Beacons][BTCR2 Beacon] they use to broadcast updates to their DID document over time. Resolution of a DID MUST process signals from all [BTCR2 Beacons][BTCR2 Beacon] identified in the [Current DID Document] and apply them in the order determined by the `targetVersionId` declared in the [BTCR2 Signed Update (data structure)].
 
-All **did:btcr2** DID resolvers MUST support the [Beacon Types] defined in this specification.
+All **did:btcr2** DID resolvers MUST support the [Beacon Types][Beacon Type] defined in this specification.
 
 
 ## Table 1: Beacon Types { #beacon-types }
@@ -61,7 +61,6 @@ The `type` of a `service` defining a [CAS Beacon] in a DID document is `"CASBeac
 
 An [SMT Beacon] creates a [Beacon Signal] that commits to multiple [BTCR2 Update Announcements][BTCR2 Update Announcement], each identified by a **did:btcr2** identifier. To do so, it constructs an optimized [Sparse Merkle Tree] as defined in [Appendix: Optimized Sparse Merkle Tree Implementation] and publishes the Merkle root.
 
-An [SMT Beacon] provides maximum privacy for the DID controller, as the DID controller never has to reveal their DIDs or [BTCR2 Updates] to the aggregator.
+An [SMT Beacon] provides maximum privacy for the DID controller, as the DID controller never has to reveal their DIDs or [BTCR2 Updates][BTCR2 Update] to the aggregator.
 
 The `type` of a `service` defining an [SMT Beacon] in a DID document is `"SMTBeacon"`.
-

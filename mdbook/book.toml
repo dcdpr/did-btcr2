@@ -28,6 +28,7 @@ additional-js = [
 ]
 additional-css = [
   "src/assets/tabs.css",
+  "theme/custom.css",
   "theme/pagetoc.css",
 ]
 git-repository-url = "https://github.com/dcdpr/did-btcr2"
