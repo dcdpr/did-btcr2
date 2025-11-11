@@ -1,0 +1,41 @@
+{% import "includes/links.tera" as links %}
+
+{{ links::include(root="../") }}
+
+# Security Considerations { #security-considerations }
+
+## Late Publishing
+
+did:btcr2 was designed to avoid Late Publishing such that, independent of when a resolution occurs, the Decentralized Identifier (DID) document history and provenance are guaranteed to be invariant. This is achieved through requiring strict ordering of DID updates and complete coverage of all relevant Beacon Signals. Resolvers MUST process all relevant Beacon Signals and enforce strict ordering.
+
+Additionally, when resolvers are passed resolution options specifying a versionId they MUST process the full history of the signals up to the current time in order to check for Late Publishing. Any update that specifies the same versionId but contains different update operations MUST trigger a Late Publishing error. This is not the case for versionTime. When a resolver is passed a versionTime option then the state of the DID document can be returned once the all the signals in the blocks before this timestamp have been processed.
+
+## Invalidation Attacks
+
+Invalidation attacks are where adversaries are able to publish Beacon Signals that claim to contain updates for DIDs they do not control. Due to the requirement for complete coverage, if these updates cannot be retrieved by a resolver, the DID MUST be considered invalid. To prevent these attacks, all Beacon Signals SHOULD be authorized by all cohort participants using an n-of-n multi-signature. That way DID controllers can verify the updates announced within a Beacon Signal before authorizing it.
+
+## Deployment Considerations
+
+### Data Retention
+
+did:btcr2 requires resolvers to have complete coverage of all relevant Beacon Signals and the associated updates for a specific did:btcr2 to prevent Late Publishing. This means that the updates MUST be available to resolver at the time of resolution. It is the responsibility of DID controllers to persist this data, otherwise the consequence is that the DID MAY not be resolvable (depending on data accessibility from the perspective of the resolver). DID controllers MAY store BTCR2 Updates on a Content Addressable Storage (CAS) system. DID controllers SHOULD consider that in some constrained environments it is preferable to discard a DID and replace it with a newly issued DID, rather than rotating a key.
+
+### Aggregate Beacon Address Verification
+
+A Beacon Address of an Aggregate Beacon SHOULD be an n-of-n Pay-to-Taproot (P2TR) address, with a cohort key contributed to the n by each of the Beacon Participants. DID controllers participating in a Beacon Cohort SHOULD verify the Beacon Address is an n-of-n and that one of the n keys is the cohort key they provided to the Beacon Aggregator. This can be achieved only by constructing the address for themselves from the set of cohort keys which the aggregator SHOULD provide.
+
+### Aggregate Beacon Signal Verification
+
+Beacon Signals from Beacon Aggregators that a DID controller is a participant of will either announce an update for their DID or will contain no update for their DID. The DID controller SHOULD verify that the Beacon Signal announces the update they expect (or no update) for all Beacon Signals broadcast by Aggregators before authorizing them. If they do not, then invalidation attacks become possible where a Beacon Signal announces an update for a DID that cannot be retrieved, causing the DID to be invalidated.
+
+### Key Compromise
+
+In did:btcr2, cryptographic keys authorize both DID updates and Beacon Signals. Should these keys get compromised without the DID controller’s knowledge, it would be possible for an adversary to take control of a DID by submitting a BTCR2 Update to a BTCR2 Beacon that replaces key material and BTCR2 Beacons in the DID document for ones under the adversary’s control. Such an attack would be detectable by the DID controller, as they would see a valid spend from a BTCR2 Beacon that they did not authorize. Additionally, if the DID relied on Sidecar Data, without access to this data the DID would be useless to the adversary as they would be unable to demonstrate a valid complete history of the DID during resolution.
+
+### Cryptographic Compromise
+
+The security of did:btcr2 identifiers depends on the security of Schnorr Signatures over the secp256k1 curve. It is this signature scheme that is used to secure both the Beacon Signals and BTCR2 Updates. Should vulnerabilities be discovered in this scheme or if advancements in quantum computing compromise its cryptographic foundations, the did:btcr2 method would become obsolete.
+
+### Bitcoin Blockchain Compromise
+
+The security of did:btcr2 identifiers depends on the security of the Bitcoin blockchain. Should the Bitcoin blockchain become compromised such that its history could be rewritten, for example through a 51% attack, then Beacon Signals that were once part of the blockchain could be removed or replaced–although the longer these Beacon Signals have been included in the blockchain the more difficult this becomes. A 51% attack could prevent future Beacon Signals from being included within the network, however this would require the 51% attack to remain indefinitely enforced. Furthermore, without Key Compromise related to a specific DID, the compromise of the Bitcoin blockchain would not enable adversarial parties to take control of a DID.

@@ -1,0 +1,11 @@
+table {
+  margin: 1em !important;
+}
+
+a:not(.header) {
+  filter: brightness(150%) contrast(40%);
+}
+
+.sidebar a {
+  filter: none;
+}
