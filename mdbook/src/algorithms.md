@@ -151,8 +151,3 @@ Example output:
 ## Transforming Genesis Document into Initial Document
 
 This is the process of hashing the Genesis Document and replacing the DID placeholder values with a new DID constructed from the hash.
-
-
-## Processing Sidecar Documents and SMT Proofs
-
-See the "Resolve" operation for details.
