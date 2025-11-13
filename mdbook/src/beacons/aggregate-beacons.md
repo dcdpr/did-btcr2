@@ -47,10 +47,10 @@ This MAY occur at a regular time interval as specified by the [Aggregation Servi
 
 [Aggregation Participants][Aggregation Participant] must submit a response to all advertisements presented to them by the [Aggregation Service], otherwise the aggregator will be unable to broadcast [Beacon Signals][Beacon Signal]. This response must include:
 
-* The indexes representing the SHA256 hash of the DIDs to be updated. These indexes SHOULD have been previously registered by the [Aggregation Participant] as part of joining the [Aggregation Cohort].
+* The indexes representing the SHA-256 hash of the DIDs to be updated. These indexes SHOULD have been previously registered by the [Aggregation Participant] as part of joining the [Aggregation Cohort].
 * For each index included within the [Beacon Signal], the value of the update MUST be provided. The calculation of the value varies by [Beacon Type].
-    * For a [CAS Beacon] the value is the SHA256 hash of the [BTCR2 Update] canonicalized using JCS. <!-- TODO: What about no update?? Is 0 an appropriate "SHA256 hash"? Or is a negative response expected so that the update may be omitted? -->
-    * For an [SMT Beacon] the value is either the double SHA256 hash of a random nonce if no update is present for the index or the SHA256 hash of the concatenated SHA256 hashes of a random nonce and the canonicalized [BTCR2 Update]. Participants MUST persist their nonce values.
+    * For a [CAS Beacon] the value is the SHA-256 hash of the [BTCR2 Update] canonicalized using JCS. <!-- TODO: What about no update?? Is 0 an appropriate "SHA-256 hash"? Or is a negative response expected so that the update may be omitted? -->
+    * For an [SMT Beacon] the value is either the double SHA-256 hash of a random nonce if no update is present for the index or the SHA-256 hash of the concatenated SHA-256 hashes of a random nonce and the canonicalized [BTCR2 Update]. Participants MUST persist their nonce values.
     * Participants of [SMT Beacons][SMT Beacon] MUST provide an update for all indexes they registered with the [Aggregation Service].
 * MuSig2 Nonce: A MuSig2 nonce constructed according to the nonce generation algorithm specified in {{#cite BIP327}}.
 
@@ -62,7 +62,7 @@ Once the [Aggregation Service] has received responses to an advertisement from a
 
 Aggregation of updates into a [Beacon Signal] depends on the type of [BTCR2 Beacon].
 
-* For [CAS Beacons][CAS Beacon], the aggregator creates a [Beacon Announcement Map] that maps participant-provided indexes to [BTCR2 Update Announcements][BTCR2 Update Announcement]. The [Signal Bytes] included in a CAS [Beacon Signal] is the SHA256 hash of the [Beacon Announcement Map].
+* For [CAS Beacons][CAS Beacon], the aggregator creates a [Beacon Announcement Map] that maps participant-provided indexes to [BTCR2 Update Announcements][BTCR2 Update Announcement]. The [Signal Bytes] included in a CAS [Beacon Signal] is the SHA-256 hash of the [Beacon Announcement Map].
 
 * For [SMT Beacons][SMT Beacon], the aggregator constructs a [Sparse Merkle Tree] (SMT). The index provided by a [Aggregation Participant] is the index of a leaf node, with the value of this leaf being the value provided by the participant for that index. All indexes registered with the aggregator MUST have values at their leaves within the SMT. Once constructed, the SMT is optimized and individual [SMT Proofs][SMT Proof] are generated for each index and shared with the [Aggregation Participant] that registered the index. <!-- TODO: Simplify the previous statement. --> The [Signal Bytes] of an SMT [Beacon Signal] is the 32 byte SMT root.
 
@@ -82,7 +82,7 @@ For an [SMT Beacon], the request signal confirmation message contains:
 
 The [Aggregation Participant] must validate the contents of the [Beacon Signal] (partially signed transaction) according to the type of the [BTCR2 Beacon]:
 
-* For a [CAS Beacon], the [Aggregation Participant] validates that all the indexes registered with the [Aggregation Service] have expected values within the [Beacon Announcement Map]. That is, the indexes are only within the map if a [BTCR2 Update] was submitted and the mapped value for those indexes are the same [BTCR2 Update Announcements][BTCR2 Update Announcement] they submitted. [Aggregation Participants][Aggregation Participant] MUST also check that the [Signal Bytes] of the [Beacon Signal] contains the SHA256 hash of the [Beacon Announcement Map].
+* For a [CAS Beacon], the [Aggregation Participant] validates that all the indexes registered with the [Aggregation Service] have expected values within the [Beacon Announcement Map]. That is, the indexes are only within the map if a [BTCR2 Update] was submitted and the mapped value for those indexes are the same [BTCR2 Update Announcements][BTCR2 Update Announcement] they submitted. [Aggregation Participants][Aggregation Participant] MUST also check that the [Signal Bytes] of the [Beacon Signal] contains the SHA-256 hash of the [Beacon Announcement Map].
 
 * For an [SMT Beacon], the [Aggregation Participant] validates that all the indexes registered with the [Aggregation Service] have [SMT Proofs][SMT Proof] and that the [SMT Proofs][SMT Proof] are valid proofs of the values they submitted to the [Aggregation Service]. The [Signal Bytes] in the [Beacon Signal] MUST be used as the SMT root to verify these proofs.
 
