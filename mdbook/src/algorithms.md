@@ -147,7 +147,6 @@ Example output:
 * Encode the document using JCS {{#cite RFC8785}}.
 * Hash the encoded document with SHA-256 {{#cite SHA256}}.
 
-
-## Transforming Genesis Document into Initial Document
-
-This is the process of hashing the Genesis Document and replacing the DID placeholder values with a new DID constructed from the hash.
+<!-- Line breaks to visibly separate the preceding subsection from the chapter footnotes. -->
+<br>
+<br>
