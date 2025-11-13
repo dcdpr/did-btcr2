@@ -2,10 +2,6 @@ table {
   margin: 1em !important;
 }
 
-a:not(.header) {
-  filter: brightness(150%) contrast(40%);
-}
-
-.sidebar a {
-  filter: none;
+.content a:link, a:visited, a > .hljs {
+  color: hsl(from var(--links) h calc(s * 0.4) calc(l * 1.3));
 }

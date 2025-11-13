@@ -135,7 +135,7 @@ return {
 ## Decode the DID { #decode-the-did }
 
 The `did` MUST be parsed with the [DID-BTCR2 Identifier Decoding] algorithm to retrieve `version`,
-`network`, and `genesis_bytes`. An `INVALID_DID` error MUST be raised in response to any errors
+`network`, and `genesis_bytes`. An [`INVALID_DID`](../errors.html) error MUST be raised in response to any errors
 raised while decoding.
 
 
@@ -153,7 +153,7 @@ processed in the following manner:
 * Transform the `sidecar.smtProofs` array into a Map that can be used for looking up each [SMT Proof (data structure)] by its `id`.
   * Let `smt_lookup_table` be the transformed Map.
 
-Hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm if `genesis_bytes` is a SHA-256 hash. An `INVALID_DID` error MUST be raised if the computed hash does not match `genesis_bytes`.
+Hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm if `genesis_bytes` is a SHA-256 hash. An [`INVALID_DID`](../errors.html) error MUST be raised if the computed hash does not match `genesis_bytes`.
 
 
 ## Establish `current_document` { #establish-current-document }
