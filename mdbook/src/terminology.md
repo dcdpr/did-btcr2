@@ -71,7 +71,7 @@ DID. It MUST be either a [Singleton Beacon], [SMT Beacon], or a [CAS Beacon].
 ## BTCR2 Update { #btcr2-update }
 
 A data structure used for transforming a source DID document into a target DID document. It contains
-a JSON Patch {{#cite RFC6902}} object, a version number for the target DID document, and SHA256
+a JSON Patch {{#cite RFC6902}} object, a version number for the target DID document, and SHA-256
 hashes for the source and target DID documents.
 
 ## BTCR2 Unsigned Update { #btcr2-unsigned-update }
@@ -82,7 +82,7 @@ Example: [BTCR2 Unsigned Update (data structure)].
 
 ## BTCR2 Update Announcement { #btcr2-update-announcement }
 
-A 32-byte SHA256 hash committing to a [BTCR2 Update] that has been broadcast by a [BTCR2 Beacon] in
+A 32-byte SHA-256 hash committing to a [BTCR2 Update] that has been broadcast by a [BTCR2 Beacon] in
 a DID's then-[Authorized Beacon Signal]. [Beacon Signals][Beacon Signal] can optionally aggregate
 one or more BTCR2 Update Announcements. How [Beacon Signals][Beacon Signal] aggregate announcements
 is defined by the [Beacon Type]. <!-- todo: is the BTCR2 Update Announcement just referring to the hash itself? Or is it the things that is hashed into the hash? -->
@@ -143,7 +143,7 @@ The algorithm is specified in BIP340 Cryptosuites v0.1 {{#cite BIP340-Cryptosuit
 ## Genesis Bytes { #genesis-bytes }
 
 The bytes used to generate a did:btcr2 identifier. These bytes are either a 33-byte compressed SEC
-encoded secp256k1 public key or a 32-byte SHA256 hash of a [Genesis Document].
+encoded secp256k1 public key or a 32-byte SHA-256 hash of a [Genesis Document].
 
 ## Genesis Document { #genesis-document }
 
@@ -244,7 +244,7 @@ A [Beacon Signal] from an SMT Beacon contains the root of an optimized [Sparse M
 
 ## SMT Proof { #smt-proof }
 
-A set of SHA256 hashes for nodes in a [Sparse Merkle Tree] that together form a path from a leaf in
+A set of SHA-256 hashes for nodes in a [Sparse Merkle Tree] that together form a path from a leaf in
 the tree to the Merkle root, proving that the leaf is in the tree.
 
 ## Sparse Merkle Tree { #sparse-merkle-tree }
@@ -252,7 +252,7 @@ the tree to the Merkle root, proving that the leaf is in the tree.
 A [Merkle Tree] data structure where each data point included at the leaf of the tree is indexed.
 
 This data structure enables proofs of both inclusion and non-inclusion of data at a given index. The
-instantiation in this specification has 2^256 leaves that are indexed by the SHA256 hash of
+instantiation in this specification has 2^256 leaves that are indexed by the SHA-256 hash of
 a **did:btcr2** identifier.
 
 ## Unsigned Beacon Signal { #unsigned-beacon-signal }
