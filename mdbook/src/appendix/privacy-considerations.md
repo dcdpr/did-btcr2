@@ -2,6 +2,7 @@
 
 {{ links::include(root="../") }}
 
+
 # Privacy Considerations
 
 ## Design Considerations
@@ -40,14 +41,12 @@ Those parties most concerned about privacy SHOULD maintain their [BTCR2 Updates]
 
 ### Aggregation Participants Provide DIDs to Aggregation Services
 
-Within [SMT Beacons][SMT Beacon], the DID is used as a path to an [SMT] leaf node. The [Aggregation Service] MUST know these paths to be able to construct the tree and generate the correct proof paths. Within [CAS Beacons][CAS Beacon], the [Aggregation Service] MUST construct a [CAS Announcement]. This means that for both types of [Aggregate Beacons][Aggregate Beacon], the [Aggregation Service] necessarily MUST know all DIDs in the [Aggregation Cohort].
+Within [SMT Beacons][SMT Beacon], the DID is used as a path to an [SMT] leaf node. The [Aggregation Service] MUST know these paths to be able to construct the tree and generate the correct proof paths. Within [CAS Beacons][CAS Beacon], the [Aggregation Service] MUST construct a [CAS Announcement (data structure)]. This means that for both types of [Aggregate Beacons][Aggregate Beacon], the [Aggregation Service] necessarily MUST know all DIDs in the [Aggregation Cohort].
 
-<!-- YOU ARE HERE -->
+### All DIDs are Visible to CAS Beacon Aggregation Cohort
 
-### CAS Beacon Cohort Members Know All DIDs that are Updated
+[Aggregation Cohort] members participating in a [CAS Beacon] learn all DIDs that are updated in each [Beacon Signal] because the contents of a CAS [Beacon Signal] is a JSON object that maps participant **did:btcr2** identifiers to CID values, where each CID value is that DID's respective [BTCR2 Update]. Each DID controller SHOULD independently retrieve and verify the contents of the update bundle to ensure it contains the expected update for their DID before authorizing the [Aggregation Service] creates the [CAS Announcement (data structure)] from the CAS [Beacon Signal] and broadcasts it.
 
-[Aggregation Cohort] members participating in a [CAS Beacon] learn all DIDs that are updated in each Beacon Signal. This is because they SHOULD verify the contents of the Beacon Signal before authorizing it and a CIDAggregate Beacon Signal contains a CID to an update bundle. An update bundle is a JSON object mapping **did:btcr2** identifiers to CID values for individual BTCR2 Updates. Each DID controller SHOULD independently retrieve and verify the contents of the update bundle to ensure it contains the expected update for their DID.
+### Non-Repudiation Reveals DID Document History
 
-### In a System with Non-Repudiation, DID Document History is Revealed
-
-Although it might seem obvious, one of the side effects of using a DID is that a DID controller’s relying party will see their DID Document. In addition, resolving a DID document requires making available to the resolver all prior DID document updates.
+One of the side effects of using a DID is that a DID controller's relying party will see their DID Document. In addition, resolving a DID document requires making available to the resolver all prior DID document updates.

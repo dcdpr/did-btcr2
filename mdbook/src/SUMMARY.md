@@ -7,7 +7,7 @@
 - [Introduction and Motivation](intro.md)
 - [Conformance](conformance.md)
 - [Terminology](terminology.md)
-- [Update Data Distribution](update-data-distribution.md)
+- [BTCR2 Update Data Distribution](update-data-distribution.md)
 - [Beacons](beacons.md)
   - [Aggregate Beacons](beacons/aggregate-beacons.md)
 - [Data Structures](data-structures.md)

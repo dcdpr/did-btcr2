@@ -2,6 +2,7 @@
 
 {{ links::include(root="../") }}
 
+
 # Aggregate Beacons
 
 DID controllers can use a [CAS Beacon], an [SMT Beacon], or both to participate in BTCR2 Update Aggregation. In contrast to a [Singleton Beacon], which only allows for one [BTCR2 Update] per Bitcoin transaction, [Aggregate Beacons][Aggregate Beacon] combine multiple [BTCR2 Updates][BTCR2 Update] into one Bitcoin transaction for any number of DID controllers. In this context (i.e., the aggregate beacon context), DID BTCR2 controllers are called [Aggregation Participants][Aggregation Participant].

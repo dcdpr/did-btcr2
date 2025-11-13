@@ -10,7 +10,7 @@ These algorithms are referenced throughout this specification.
 
 ## DID-BTCR2 Identifier Encoding
 
-Any errors encountered during this algorithm MUST raise an `INVALID_DID` error.
+Any errors encountered during this algorithm MUST raise an [`INVALID_DID`](./errors.html) error.
 
 A **did:btcr2** identifier is created from three values: `version`, `network` and
 `genesis_bytes` ([Genesis Bytes]).
@@ -91,7 +91,7 @@ Example output:
 
 ## DID-BTCR2 Identifier Decoding
 
-Any errors encountered during this algorithm MUST raise an `INVALID_DID` error.
+Any errors encountered during this algorithm MUST raise an [`INVALID_DID`](./errors.html) error.
 
 Parsing a **did:btcr2** identifier produces three values: `version`, `network`, and `genesis_bytes`
 ([Genesis Bytes]).

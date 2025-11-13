@@ -5,22 +5,19 @@
 
 # Errors
 
-The algorithms described in this specification raise the specific errors listed below. Additional error types defined in Section 10 of DID Resolution v0.3 {{#cite DID-RESOLUTION}} may also be raised.
+The algorithms described in this specification can raise the specific errors listed below. Additional error types defined in Section 10 of DID Resolution v0.3 {{#cite DID-RESOLUTION}} may also be raised.
 
-<!--
-  TODO: All errors are assumed to be fatal. Etc. etc. Make sure this is very clear on what it means
-  to "raise an error" when an implementation performs operations.
--->
+These errors are assumed to be fatal and all **did:btcr2** operations must abort when one of these errors are raised.
 
 
 ## `INVALID_DID_UPDATE` { #invalid_did_update }
 
-<!-- TODO: Elaborate on what this error means -->
+An error was found when creating or applying a [BTCR2 Update].
 
 ## `LATE_PUBLISHING` { #late_publishing }
 
-<!-- TODO: Elaborate on what this error means -->
+An error was found when processing the full history of [BTCR2 Updates][BTCR2 Update] announced by all relevant [Beacon Signals][Beacon Signal]. See [Late Publishing].
 
 ## `MISSING_UPDATE_DATA` { #missing_update_data }
 
-<!-- TODO: Elaborate on what this error means -->
+[BTCR2 Update] data can not be found in either the provided [Sidecar Data] nor in [CAS].
