@@ -2,6 +2,7 @@
 
 {{ links::include(root="../") }}
 
+
 # Optimized Sparse Merkle Tree Implementation { #smt-implementation }
 
 From [Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree):
@@ -111,27 +112,24 @@ flowchart TD
     Hash1111 --> DataBlock1111[("Data Block 1111")]:::dataBlock
 ```
 
-To use Merkle trees to signal commitments in BTCR2 Beacons:
+To use Merkle trees to signal commitments in [BTCR2 Beacons][BTCR2 Beacon]:
 
 * The index (the identification of the leaf node) is the hash of the DID with the hash byte stream converted to an integer using big-endian conversion, i.e., `index = int(hash(did))`.
     * Each DID is therefore associated with one and only one leaf node.
     * Binding the index to the DID ensures that no other index can be used by a nefarious actor to post an update to the DID.
-    * This produces a data structure with lots of unused leaves, making it a sparse Merkle tree.
-* The value stored at a leaf node is the hash of a 256-bit nonce, concatenated with the hash of the BTCR2 Update (the BTCR2 Update Announcement) if available, with the resulting stream hashed again, i.e., `value = hash(hash(nonce) + hash(btcr2Update))` if there is a BTCR2 Update or `value = hash(hash(nonce))` if there is not.
+    * This produces a data structure with lots of unused leaves, making it a [Sparse Merkle Tree].
+* The value stored at a leaf node is the hash of a 256-bit nonce, concatenated with the hash of the [BTCR2 Update] (the [BTCR2 Update Announcement]) if available, then the resulting stream is hashed again. I.e., `value = hash(hash(nonce) + hash(btcr2Update))` if there is a [BTCR2 Update] or `value = hash(hash(nonce))` if there is not.
     * Provided that it is unique per DID and per signal, the use of a nonce ensures that updates and non-updates are indistinguishable to outside parties (aggregators, other DID controllers, verifiers) unless explicitly informed by the DID controller.
     * The hashing of the nonce ensures that verifiers with limited input validation deal only with a 256-bit result.
-* A parent with two empty children is itself empty.
-* The value of a parent with one empty child and one non-empty child is the value of the non-empty child.
+* A node with two empty children is itself empty.
+* The value of a node with one empty child and one non-empty child is the value of the non-empty child.
     * This limits work to only those points in the tree where non-empty indexes diverge.
-* The value of a parent with two non-empty children is the hash of the concatenation of the left value (bit 0) and the right value (bit 1), i.e., `parent_value = hash(left_value + right_value)`.
-* The only thing published in the Beacon Signal is the root hash (the Merkle root).
+* The value of a node with two non-empty children is the hash of the concatenation of the left value (bit 0) and the right value (bit 1), i.e., `node_value = hash(left_value + right_value)`.
+* The only thing published in the [Beacon Signal] is the root hash (the Merkle root).
 
-Let's assume that:
+Let's assume that indexes 0 (`0000`), 2 (`0010`), 5 (`0101`), 9 (`1001`), 13 (`1101`), and 14 (`1110`) have DIDs associated with them; and a signal includes updates for DIDs 2, 9, and 13 and non-updates for all others.
 
-* indexes 0 (0000), 2 (0010), 5 (0101), 9 (1001), 13 (1101), and 14 (1110) have DIDs associated with them; and
-* a signal includes updates for DIDs 2, 9, and 13 and non-updates for all others.
-
-The collapsed tree, where empty branches have been trimmed and single-child parents have been removed, looks like this (note that the positions of nodes Hash1001 and Hash11 are reversed due to the Mermaid layout algorithm):
+The collapsed tree, where empty branches have been trimmed and single-child nodes have been removed, looks like this (note that the positions of nodes `Hash 1001` and `Hash 11` are reversed due to the Mermaid layout algorithm):
 
 ```mermaid
 flowchart TD
@@ -173,14 +171,12 @@ flowchart TD
     Hash1101 --> DataBlock1101[("Data Block 1101")]:::dataBlock
 ```
 
-The DID controller has to prove that there is either an update or a non-update in the Beacon Signal. To prove an update, the DID controller provides the nonce and either the BTCR2 Update or the hash; to prove a non-update, the DID controller provides the nonce. In addition, the DID controller provides the list of collapsed parents and hashes of each peer in the tree necessary to recalculate the root hash against which to compare with the value in the Beacon Signal.
+The DID controller has to prove that there is either an update or a non-update in the [Beacon Signal]. To prove an update, the DID controller provides the nonce and either the [BTCR2 Update] or the hash; to prove a non-update, the DID controller provides the nonce. In addition, the DID controller provides the list of collapsed nodes and hashes of each peer in the tree necessary to recalculate the root hash against which to compare with the value in the [Beacon Signal].
 
-Assuming that the DID of interest is at index 13 (`int(hash(did)) == int(1101) == 13`), the aggregator (the party responsible for constructing the sparse Merkle tree) must provide the DID controller with:
+Assuming that the DID of interest is at index 13 (`int(hash(did)) == int(1101) == 13`), the [Aggregation Service] (the party responsible for constructing the [Sparse Merkle Tree]) must provide the DID controller with a list of collapsed nodes above leaf node 13 and a list of hashes of the peers for uncollapsed nodes.
 
-* a list of collapsed parents above leaf node 13; and
-* a list of hashes of the peers at the parents that have not been collapsed.
+The [Aggregation Service] has the full [Sparse Merkle Tree] and can construct [SMT Proofs][SMT Proof]. DID controllers request the [SMT Proofs][SMT Proof] from the [Aggregation Service] and give them to verifiers. An example proof may be:
 
-With the additional information from the aggregator, the DID controller can now provide a verifier with the following proof:
 
 ```json
 {
@@ -196,7 +192,7 @@ With the additional information from the aggregator, the DID controller can now 
 }
 ```
 
-The verifier has everything necessary to process the Beacon Signal. Assuming that the verifier can match the root hash in the Beacon Signal to `proof.id` and the BTCR2 Update to `proof.updateId`, the proof is verified as follows:
+With an [SMT Proof], the verifier has everything necessary to verify that the [BTCR2 Update] is included or not. Assuming that the verifier can match the root hash in the [Beacon Signal] to `proof.id` and the [BTCR2 Update] to `proof.updateId`, the proof is verified as follows:
 
 ```javascript
 index = int(hash(did)) // 1101
