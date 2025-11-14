@@ -5,9 +5,11 @@
 
 # Appendix
 
-<!-- TODO: Some filler texts that provides basic context for this overall section -->
+The appendix contains privacy and security considerations made by the developers of this specification. This section is designed to complement the main specification and provide additional rationale, edge-case analyses, and guidance intended to help implementers understand subtle aspects of the BTCR2 design.
 
 ## BTCR2 Update Aggregation
+
+Below are two design considerations regarding how BTCR2 handles the update aggregation. It outlines the trust assumptions, describes how multi-party signing preserves the controller's authority, and discusses the expected behavior and failure modes inherent in aggregated beacon-based updates.
 
 ### No Privileged Role
 

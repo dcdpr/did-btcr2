@@ -7,21 +7,21 @@
 
 ## Late Publishing
 
-**did:btcr2** was designed to avoid [Late Publishing] such that, independent of when a resolution occurs, the DID document history and provenance are guaranteed to be invariant. This is achieved through requiring strict ordering of [BTCR2 Updates][BTCR2 Update] and complete coverage of all relevant [Beacon Signals][Beacon Signal]. Resolvers MUST process all relevant [Beacon Signals][Beacon Signal] and enforce strict ordering.
+**did:btcr2** was designed to avoid [Late Publishing] such that, independent of when a resolution occurs, the DID document history and provenance are guaranteed to be invariant. Resolvers MUST enforce strict ordering of the [BTCR2 Updates][BTCR2 Update] and process all relevant [Beacon Signals][Beacon Signal].
 
 ## Invalidation Attacks
 
-Invalidation attacks are where adversaries are able to publish [Beacon Signals][Beacon Signal] that claim to contain updates for DIDs they do not control. Due to the requirement for complete coverage, if these updates cannot be retrieved by a resolver, the DID MUST be considered invalid. To prevent these attacks, all [Beacon Signals][Beacon Signal] SHOULD be authorized by signatures: either from the DID controller when using a [Singleton Beacon] or with a `n-of-n` multisignature from all `n` members of an [Aggregation Cohort] when using an [Aggregate Beacon]. DID controllers SHOULD verify the updates announced within a [Beacon Signal] before authorizing it.
+Invalidation attacks are where adversaries are able to publish [Beacon Signals][Beacon Signal] that claim to contain updates for DIDs they do not control. Due to the requirement for processing all relevant [Beacon Signals][Beacon Signal], if these updates cannot be retrieved by a resolver, the DID MUST be considered invalid. To prevent these attacks, all [Beacon Signals][Beacon Signal] SHOULD be authorized by signatures: either from the DID controller when using a [Singleton Beacon] or with a `n-of-n` multisignature from all `n` members of an [Aggregation Cohort] when using an [Aggregate Beacon]. DID controllers SHOULD verify the updates announced within a [Beacon Signal] before authorizing it.
 
 ## Deployment Considerations
 
 ### Data Retention
 
-**did:btcr2** requires resolvers to have complete coverage <!-- TODO: I don't like "complete coverage". What does this mean in practice? Fully indexed bitcoin blockchain data? --> of all relevant [Beacon Signals][Beacon Signal] and the associated [BTCR2 Updates][BTCR2 Update] for a specific **did:btcr2** to prevent Late Publishing. This means that the [BTCR2 Updates][BTCR2 Update] MUST be available to resolver at the time of resolution. It is the responsibility of DID controllers to persist this data, otherwise the consequence is that the DID MAY not be resolvable (depending on data accessibility from the perspective of the resolver). DID controllers MAY store [BTCR2 Updates][BTCR2 Update] on a [CAS] system. DID controllers SHOULD consider that in some constrained environments it is preferable to discard a DID and replace it with a newly issued DID, rather than rotating a key.
+[BTCR2 Updates][BTCR2 Update] MUST be available to resolver at the time of resolution. It is the responsibility of DID controllers to persist this data, otherwise the consequence is that the DID MAY not be resolvable (depending on data accessibility from the perspective of the resolver). DID controllers MAY store [BTCR2 Updates][BTCR2 Update] on a [CAS] system. DID controllers SHOULD consider that in some constrained environments it is preferable to discard a DID and replace it with a newly issued DID, rather than rotating a key.
 
 ### Aggregate Beacon Address Verification
 
-A [Beacon Address] of an [Aggregate Beacon] SHOULD be an `n-of-n` Pay-to-Taproot (P2TR) address, with a key contributed to the `n` by each of the participants in an [Aggregation Cohort]. DID controllers participating in a [Aggregation Cohort] SHOULD verify the [Beacon Address] is an `n-of-n` and that one of the `n` keys is the key that they provided to the [Aggregation Service]. This can be achieved only by constructing the [Beacon Address] for themselves using the set of keys from the [Aggregation Cohort] that SHOULD be provided by the [Aggregation Service].
+A [Beacon Address] of an [Aggregate Beacon] SHOULD be an `n-of-n` Pay-to-Taproot (P2TR) address, with a key contributed to the `n` by each of the participants in an [Aggregation Cohort]. DID controllers participating in an [Aggregation Cohort] SHOULD verify the [Beacon Address] is an `n-of-n` and that one of the `n` keys is the key that they provided to the [Aggregation Service]. This can be achieved only by constructing the [Beacon Address] for themselves using the set of keys from the [Aggregation Cohort] that SHOULD be provided by the [Aggregation Service].
 
 ### Aggregate Beacon Signal Verification
 

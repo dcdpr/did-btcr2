@@ -264,7 +264,7 @@ let update_hash = cas_lookup_table[map_update_hash][did];
 ### Process SMT Beacon { #process-smt-beacon }
 
 * Let `smt_root` be [Signal Bytes].
-* Let `smt_proof` be the result of looking up `smt_root` in the `smt_lookup_table` to retrieve a [SMT Proof (data structure)].
+* Let `smt_proof` be the result of looking up `smt_root` in the `smt_lookup_table` to retrieve an [SMT Proof (data structure)].
 * Check the `smt_proof` by frobnicating the whatchamacallit. <!-- TODO: Make the check real. Needs an SMT Proof algorithm. -->
 * Let `update_hash` be `smt_proof.updateId`.
 
@@ -294,7 +294,7 @@ let update_hash = smt_proof.updateId;
 
 `current_document` MUST be returned as the final resolved `didDocument` if the `updates` array is empty.
 
-Sort the `updates` array by [BTCR2 Signed Update (data structure)] `targetVersionId`, lowest first, using block-height as a tie breaker. Pop the first tuple element from the front of the `updates` array.
+Sort the `updates` array by [BTCR2 Signed Update (data structure)] `targetVersionId`, lowest first, using block-height as a tiebreaker. Pop the first tuple element from the front of the `updates` array.
 
 Set `block_confirmations` to the tuple element's block-confirmations.
 

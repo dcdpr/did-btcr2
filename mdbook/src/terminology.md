@@ -85,14 +85,11 @@ Example: [BTCR2 Unsigned Update (data structure)].
 A 32-byte SHA-256 hash committing to a [BTCR2 Update] that has been broadcast by a [BTCR2 Beacon] in
 a DID's then-[Authorized Beacon Signal]. [Beacon Signals][Beacon Signal] can optionally aggregate
 one or more BTCR2 Update Announcements. How [Beacon Signals][Beacon Signal] aggregate announcements
-is defined by the [Beacon Type]. <!-- todo: is the BTCR2 Update Announcement just referring to the hash itself? Or is it the things that is hashed into the hash? -->
-
+is defined by the [Beacon Type].
 
 ## BTCR2 Signed Update { #btcr2-signed-update }
 
 A [BTCR2 Update] with a proof attached to it.
-
-<!-- todo: I want to remove this notion of capability invocation. -->
 
 A capability invocation secured using Data Integrity {{#cite VC-DATA-INTEGRITY}} that invokes an authorization capability to
 update a specific **did:btcr2** DID document. This capability invocation Data Integrity proof

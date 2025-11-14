@@ -70,8 +70,6 @@ placeholder value (`did:btcr2:_`).
 
 An [Initial DID Document] is a conformant [DID document (data structure)].
 
-<!-- todo: Make sure this example is re-done to have a real DID. -->
-
 {% set hide_text = `` %}
 {% set ex_initial_did_document =
 `
@@ -258,7 +256,7 @@ This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
 
 Resolution metadata MAY contain the following properties:
 
-- `contentType`: OPTIONAL media type of the returned DID document. <!-- todo: what is our contentType? application/ld+json? -->
+- `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/ld+json"`.
 - `error`: REQUIRED if an error occurs during DID resolution.
 
 
