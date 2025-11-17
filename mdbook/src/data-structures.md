@@ -169,6 +169,7 @@ The following properties MUST be included in the Data Integrity Config:
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
 
+<!-- todo: add an example -->
 
 ## Data Integrity Proof { #data-integrity-proof }
 
@@ -235,8 +236,26 @@ A [SMT Proof] data structure contains the following properties:
 - `id`: SHA-256 hash of the root node.
 - `nonce`: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
 - `updateId`: The OPTIONAL [BTCR2 Signed Update (data structure)] hashed with the [JSON Document Hashing] algorithm.
-- `path`: Array of SHA-256 hashes representing the sibling [SMT] nodes from the root to the leaf containing the SHA-256 hash of the [BTCR2 Signed Update] or the "zero identity".
 - `collapsed`: Bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
+- `hashes`: Array of SHA-256 hashes representing the sibling [SMT] nodes from the leaf, containing the SHA-256 hash of the [BTCR2 Signed Update] or the "zero identity", to the root.
+
+
+{% set hide_text = `` %}
+{% set ex_sidecar_smt_proof =
+`
+~~~json
+{{#include example-data/sidecar-smt-proof.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="sidecar-smt-proof-example",
+  example=ex_sidecar_smt_proof,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 
 ## Resolution Options { #resolution-options }
@@ -249,6 +268,8 @@ Resolution options MAY contain the following properties:
 - `versionTime`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID before the specified `versionTime`.
 - `sidecar`: [Sidecar Data (data structure)].
 
+<!-- todo: add an example -->
+
 
 ## DID Resolution Metadata { #did-resolution-metadata }
 
@@ -258,6 +279,8 @@ Resolution metadata MAY contain the following properties:
 
 - `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/ld+json"`.
 - `error`: REQUIRED if an error occurs during DID resolution.
+
+<!-- todo: add an example -->
 
 
 ## DID Document Metadata { #did-document-metadata }
@@ -269,6 +292,8 @@ Document metadata MAY contain the following properties:
 - `deactivated`: REQUIRED boolean that represents whether the resolved DID document has been deactivated.
 - `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.
 - `versionId`: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.
+
+<!-- todo: add an example -->
 
 
 ## CAS Announcement { #cas-announcement }
@@ -320,32 +345,3 @@ The Root Capability MUST be a map containing only the following properties:
   show_label="Show Example",
   hide_label="Hide"
 ) }}
-
-
-# Example type system things
-
-```rust
-ResolutionOptions {
-  version_id: u32,
-  version_time: DateTime<Utc>,
-  sidecar_data: SidecarDataGeneric,
-}
-SMTProof {
-  leaf: Hash,
-  nonce: Option<Hash>,
-  path: Vector<Hash>
-}
-MapAnnouncement { Map<DID, Hash> }
-SidecarDataGeneric {
-  cas_manifest   : Option<Vector<Hash>>,
-  genesis_diddoc : Option<IntermediateDiddoc>,
-  updates        : Vector<DocUpdateSigned>,
-  map_updates    : Option<Vector<MapAnnouncement>>,
-  smt_proofs     : Option<Vector<SMTProof>>,
-}
-```
-
-
-# Discussion
-
-The cas_manifest is an optimization so that the resolver can start network round trips immediately.

@@ -124,6 +124,76 @@ Example output:
 * Encode the document using JCS {{#cite RFC8785}}.
 * Hash the encoded document with SHA-256 {{#cite SHA256}}.
 
+## SMT Proof Verification
+
+To verify the inclusion or non-inclusion of a DID in the [SMT Proof], perform the following steps:
+
+Construct a hashed-zero cache. Two zero leaves are hashed together by concatenating the value `0` with itself for the bottom level, and then hashed again with its next sibling, also itself, at each level up the tree. Each computed hash value can be cached in an array.
+
+{% set hide_text = `` %}
+{% set pseudocode_construct_hashed_zero_cache =
+`
+~~~rust
+let cachedZero = [];
+let z = 0;
+for i in 0..=255 {
+  z = hash(concat(z, z));
+  cachedZero[i] = z;
+}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+group_id="construct_hashed_zero_cache",
+example=pseudocode_construct_hashed_zero_cache,
+hide=hide_text,
+default="hide",
+show_label="Show Pseudocode",
+hide_label="Hide"
+) }}
+
+
+The [SMT Proof (data structure)] is verified by walking the tree starting from the leaf node value, given by `hash(hash(proof.nonce) + proof.updateId)`, to the root `proof.id`. Walking the tree means hashing sibling hashes from `proof.hashes` concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by `hash(did)`) informs the algorithm which side of the concatenation operation the sibling hash belongs on: 0 for left, 1 for right.
+
+The tree is "optimized" by collapsing empty nodes. (See [Appendix: Optimized Sparse Merkle Tree Implementation] for definition of "optimized".) Each bit within `proof.collapsed` informs the algorithm whether to take the next sibling hash from `proof.hashes` (0) or use a hashed zero from the current height of the tree (1).
+
+The last step is asserting that the computed candidate hash is equivalent to `proof.id` (the Merkle root).
+
+{% set hide_text = `` %}
+{% set pseudocode_smt_proof_verification =
+`
+~~~rust
+let candidateHash = hash(concat(hash(proof.nonce), proof.updateId))
+let index = hash(did)
+for n in 0..=255 {
+  let i = 255 - n;
+
+  let siblingHash = if proof.collapsed[i] == 1 {
+    cachedZero[n]
+  } else {
+    proof.hashes.pop_front()
+  };
+
+  if index[i] == 1 {
+    candidateHash = hash(concat(siblingHash, candidateHash));
+  } else {
+    candidateHash = hash(concat(candidateHash, siblingHash));
+  }
+}
+
+return candidateHash == proof.id;
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+group_id="pseudocode_smt_proof_verification",
+example=pseudocode_smt_proof_verification,
+hide=hide_text,
+default="hide",
+show_label="Show Pseudocode",
+hide_label="Hide"
+) }}
+
 <!-- Line breaks to visibly separate the preceding subsection from the chapter footnotes. -->
 <br>
 <br>

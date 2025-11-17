@@ -265,7 +265,7 @@ let update_hash = cas_lookup_table[map_update_hash][did];
 
 * Let `smt_root` be [Signal Bytes].
 * Let `smt_proof` be the result of looking up `smt_root` in the `smt_lookup_table` to retrieve an [SMT Proof (data structure)].
-* Check the `smt_proof` by frobnicating the whatchamacallit. <!-- TODO: Make the check real. Needs an SMT Proof algorithm. -->
+* Check the `smt_proof` with the [SMT Proof Verification] algorithm.
 * Let `update_hash` be `smt_proof.updateId`.
 
 
