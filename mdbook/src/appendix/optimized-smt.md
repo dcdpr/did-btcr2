@@ -206,17 +206,17 @@ candidateHash = hash(hash(proof.nonce) + proof.updateId)
 // Next collapsed bit from right is 0, so index bit applies.
 // Next index bit from right is 0.
 // Candidate hash goes to the left against the next listed hash.
-candidateHash = hash(candidateHash, "Hash 1110")
+candidateHash = hash(candidateHash + "Hash 1110")
 
 // Next collapsed bit from right is 0, so index bit applies.
 // Next index bit from right is 1.
 // Candidate hash goes to the right against the next listed hash.
-candidateHash = hash("Hash 1001", candidateHash)
+candidateHash = hash("Hash 1001" + candidateHash)
 
 // Next collapsed bit from right is 0, so index bit applies.
 // Next index bit from right is 1.
 // Candidate hash goes to the right against the next listed hash.
-candidateHash = hash("Hash 0", candidateHash)
+candidateHash = hash("Hash 0" + candidateHash)
 
 // Hashes exhausted.
 // Candidate hash must equal root hash.
