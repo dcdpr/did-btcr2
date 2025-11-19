@@ -7,8 +7,6 @@
 
 DID controllers can use a [CAS Beacon], an [SMT Beacon], or both to participate in BTCR2 Update Aggregation. In contrast to a [Singleton Beacon], which only allows for one [BTCR2 Update] per Bitcoin transaction, [Aggregate Beacons][Aggregate Beacon] combine multiple [BTCR2 Updates][BTCR2 Update] into one Bitcoin transaction for any number of DID controllers. In this context (i.e., the aggregate beacon context), DID BTCR2 controllers are called [Aggregation Participants][Aggregation Participant].
 
-<!-- todo: maybe a nice little diagram -->
-
 ## BTCR2 Update Aggregation
 
 BTCR2 Update Aggregation is the specific coordination and communications protocol used by an [Aggregation Service] and [Aggregation Participants][Aggregation Participant] to perform aggregation. A precisely specified coordination and communications protocol is deemed "out of scope" for this specification. However, this specification provides a RECOMMENDED example for illustrative purposes.
@@ -35,26 +33,61 @@ The actors involved in aggregation are as follows.
 * [Aggregation Service] - A single entity who coordinates the protocols and is ultimately responsible for broadcasting the [Beacon Signal] formed as a result of BTCR2 Update Aggregation.
 * Verifier - A party verifying a **did:btcr2** identifier presentation.
 
-### Step 1: Aggregation Service Advertisement
+### Step 1: Create Aggregation Cohort
 
-The [Aggregation Service] MUST advertise over some communications channel to any potential [Aggregation Participants][Aggregation Participant] that a [Aggregation Cohort] is available to be joined for aggregating [BTCR2 Updates][BTCR2 Update].
+Creating an [Aggregation Cohort] requires that the [Aggregation Service] define the conditions for it, advertise it, and accept enrollment by [Aggregation Participants][Aggregation Participant].
 
-This MAY occur at a regular time interval as specified by the [Aggregation Service] or it MAY be through a message sent to all [Aggregation Participants][Aggregation Participant]. The means of advertising to the participants are outside the scope of this specification. The only requirement is that all [Aggregation Participants][Aggregation Participant] are made aware of the advertisement.
+When defining an [Aggregation Cohort], the [Aggregation Service] can define conditions such as:
 
-#### Respond to Advertisement
+* Beacon type (CAS or SMT).
+* Minimum and/or maximum number of [Aggregation Participants][Aggregation Participant].
+* Minimum and/or maximum number of DIDs per [Aggregation Participant].
+* Cost of enrollment.
+* Cost per announcement per DID or [Aggregation Participant].
+* Minimum and/or maximum time between announcements.
+* Number of pending updates that trigger an announcements.
 
-<!-- TODO: Why must participants respond to advertisements? -->
+Advertising [Aggregation Cohorts][Aggregation Cohort] to participants could be done, for example, with nostr or DIDComm.
 
-[Aggregation Participants][Aggregation Participant] must submit a response to all advertisements presented to them by the [Aggregation Service], otherwise the aggregator will be unable to broadcast [Beacon Signals][Beacon Signal]. This response must include:
+Enrolling in an [Aggregation Cohort] involves the exchange of data between the [Aggregation Service] and [Aggregation Participants][Aggregation Participant], most notably the DIDs or indexes (hashes of DIDs) involved and the public keys for creating the n-of-n MuSig2 Bitcoin address.
 
-* The indexes representing the SHA-256 hash of the DIDs to be updated. These indexes SHOULD have been previously registered by the [Aggregation Participant] as part of joining the [Aggregation Cohort].
-* For each index included within the [Beacon Signal], the value of the update MUST be provided. The calculation of the value varies by [Beacon Type].
-    * For a [CAS Beacon] the value is the SHA-256 hash of the [BTCR2 Update] canonicalized using JCS. <!-- TODO: What about no update?? Is 0 an appropriate "SHA-256 hash"? Or is a negative response expected so that the update may be omitted? -->
-    * For an [SMT Beacon] the value is either the double SHA-256 hash of a random nonce if no update is present for the index or the SHA-256 hash of the concatenated SHA-256 hashes of a random nonce and the canonicalized [BTCR2 Update]. Participants MUST persist their nonce values.
-    * Participants of [SMT Beacons][SMT Beacon] MUST provide an update for all indexes they registered with the [Aggregation Service].
-* MuSig2 Nonce: A MuSig2 nonce constructed according to the nonce generation algorithm specified in {{#cite BIP327}}.
+### Step 2: Announcing Update Opportunities
+
+Now that a [Aggregation Cohort] is created, there are two main flows for presenting and engaging with update opportunities, which an [Aggregation Service] MAY choose:
+
+1. Pull Flow: [Aggregation Service] periodically announces update opportunities to [Aggregation Participants][Aggregation Participant]
+2. Push Flow: [Aggregation Participants][Aggregation Participant] send updates to the [Aggregation Service] when ready
+
+The flow-type used for update opportunities varies depending on the cohort. The details that specify this are found in the advertisement.
+
+The only requirement is that all [Aggregation Participants][Aggregation Participant] are made aware of the opportunity because all [Aggregation Participants][Aggregation Participant] are required to respond.
+
+#### Respond to Update Opportunities
+
+[Aggregation Participants][Aggregation Participant] must submit a response to all update opportunities announced by the [Aggregation Service], otherwise the [Aggregation Service] will be unable to broadcast [Beacon Signals][Beacon Signal]. This response must include:
+
+* For a [CAS Beacon]:
+    * Either a negative acknowledgement (for no update to be included)
+    * Or ...
+        * `did`: The DID to be updated.
+        * `updateHash`: The SHA-256 hash of the [BTCR2 Update] to be included, created with the [JSON Document Hashing] algorithm. (I.e., `json_document_hash(update)`)
+    * MuSig2 Nonce: A MuSig2 nonce constructed according to the nonce generation algorithm specified in {{#cite BIP327}}.
+
+* For an [SMT Beacon]:
+    * `didIndex`: The SHA-256 hash of the DID to be updated.
+    * `updateHash`:
+        * If there is an update:
+            * If a `nonce` is used: `hash(hash(nonce) + json_document_hash(update))`
+            * If a `nonce` is not used: `json_document_hash(update)`
+        * If there is not an update:
+            * If a `nonce` is used: `hash(hash(nonce))`
+            * If a `nonce` is not used: `0`
+    * Participants MUST persist their `nonce` values.
+    * MuSig2 Nonce: A MuSig2 nonce constructed according to the nonce generation algorithm specified in {{#cite BIP327}}.
 
 This response SHOULD be sent over a secure communication channel and MAY be signed.
+
+<!-- TODO: YOU ARE HERE -->
 
 ### Step 2: Aggregate & Request Signal Confirmation
 
