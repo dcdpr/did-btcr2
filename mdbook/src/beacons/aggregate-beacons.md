@@ -87,17 +87,17 @@ The only requirement is that all [Aggregation Participants][Aggregation Particip
 
 This response SHOULD be sent over a secure communication channel and MAY be signed.
 
-<!-- TODO: YOU ARE HERE -->
+Once responses for an advertisement are collected, the [Aggregation Service] can prepare a candidate [Beacon Signal] for confirmation by the cohort.
 
-### Step 2: Aggregate & Request Signal Confirmation
+### Step 3: Aggregate & Request Signal Confirmation
 
-Once the [Aggregation Service] has received responses to an advertisement from all [Aggregation Participants][Aggregation Participant] <!-- TODO: Why must participants respond to advertisements? --> in the [Aggregation Cohort] they can proceed to aggregate the update announcements into a [Unsigned Beacon Signal]. They then send this signal, along with the information required to confirm its construction, to each of the participants. Additionally, aggregators aggregate the MuSig2 nonces from each [Aggregation Participant] following the nonce aggregation algorithm in {{#cite BIP327}}.
+Once the [Aggregation Service] has received responses to an advertisement from all [Aggregation Participants][Aggregation Participant] in the [Aggregation Cohort] they can aggregate the update announcements into a [Unsigned Beacon Signal]. All participants MUST respond to each advertisement because the aggregator needs every submitted update/no-update decision and every MuSig2 nonce to construct the complete signal payloads and the `n-of-n` aggregated nonce. They then send this signal, along with the information required to confirm its construction, to each of the participants. Additionally, aggregators aggregate the MuSig2 nonces from each [Aggregation Participant] following the nonce aggregation algorithm in {{#cite BIP327}}.
 
 Aggregation of updates into a [Beacon Signal] depends on the type of [BTCR2 Beacon].
 
 * For [CAS Beacons][CAS Beacon], the aggregator creates a [Beacon Announcement Map] that maps participant-provided indexes to [BTCR2 Update Announcements][BTCR2 Update Announcement]. The [Signal Bytes] included in a CAS [Beacon Signal] is the SHA-256 hash of the [Beacon Announcement Map].
 
-* For [SMT Beacons][SMT Beacon], the aggregator constructs a [Sparse Merkle Tree] (SMT). The index provided by a [Aggregation Participant] is the index of a leaf node, with the value of this leaf being the value provided by the participant for that index. All indexes registered with the aggregator MUST have values at their leaves within the SMT. Once constructed, the SMT is optimized and individual [SMT Proofs][SMT Proof] are generated for each index and shared with the [Aggregation Participant] that registered the index. <!-- TODO: Simplify the previous statement. --> The [Signal Bytes] of an SMT [Beacon Signal] is the 32 byte SMT root.
+* For [SMT Beacons][SMT Beacon], the aggregator constructs a [Sparse Merkle Tree] (SMT) whose leaves pair each registered index with the value submitted for that index. Every registered index MUST appear as a leaf. After constructing the SMT, the aggregator optimizes the tree and generates [SMT Proofs][SMT Proof] for each index to share with the corresponding [Aggregation Participant]. The [Signal Bytes] of an SMT [Beacon Signal] is the 32 byte SMT root.
 
 For a [CAS Beacon], the request signal confirmation message contains:
 
@@ -126,7 +126,7 @@ Once the [Aggregation Participant] is satisfied that the [Beacon Signal] only an
 * For CAS [Beacon Signals][Beacon Signal], this means persisting the [Beacon Announcement Map] and the [BTCR2 Updates][BTCR2 Update] announced within that map for indexes that they control.
 * For SMT [Beacon Signals][Beacon Signal], [Aggregation Participants][Aggregation Participant] must persist the [BTCR2 Updates][BTCR2 Update], nonce values, and [SMT Proofs][SMT Proof] for each index they control.
 
-### Step 3: Broadcast Aggregated Signal
+### Step 4: Broadcast Aggregated Signal
 
 Once the [Aggregation Service] has received confirmation of the [Beacon Signal] from all [Aggregation Participants][Aggregation Participant] within the [Aggregation Cohort] they finalize the signature on the [Beacon Signal]. Signal confirmations contain partial signatures from each participant, these are aggregated together to create a final signature that spends the [UTXO] controlled by the [Beacon Address] included an an input into the [Beacon Signal].
 

@@ -1,0 +1,14 @@
+{
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "type": "DataIntegrityProof",
+  "cryptosuite": "bip340-jcs-2025",
+  "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+  "proofPurpose": "capabilityInvocation",
+  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "capabilityAction": "Write"
+}
