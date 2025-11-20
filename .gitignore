@@ -1,7 +1,2 @@
 /.idea/
-/node_modules/
-/_site/
-/package-lock.json
-.ipynb_checkpoints
-__pycache__
-venv
+*~
