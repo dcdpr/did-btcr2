@@ -169,7 +169,22 @@ The following properties MUST be included in the Data Integrity Config:
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
 
-<!-- todo: add an example -->
+{% set hide_text = `` %}
+{% set ex_di_config =
+`
+~~~json
+{{#include example-data/data-integrity-config.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="data-integrity-config-example",
+  example=ex_di_config,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 ## Data Integrity Proof { #data-integrity-proof }
 
@@ -268,7 +283,22 @@ Resolution options MAY contain the following properties:
 - `versionTime`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID before the specified `versionTime`.
 - `sidecar`: [Sidecar Data (data structure)].
 
-<!-- todo: add an example -->
+{% set hide_text = `` %}
+{% set ex_resolution_options =
+`
+~~~json
+{{#include example-data/resolution-options.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="resolution-options-example",
+  example=ex_resolution_options,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 
 ## DID Resolution Metadata { #did-resolution-metadata }
@@ -280,7 +310,22 @@ Resolution metadata MAY contain the following properties:
 - `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/ld+json"`.
 - `error`: REQUIRED if an error occurs during DID resolution.
 
-<!-- todo: add an example -->
+{% set hide_text = `` %}
+{% set ex_did_resolution_metadata =
+`
+~~~json
+{{#include example-data/did-resolution-metadata.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="did-resolution-metadata-example",
+  example=ex_did_resolution_metadata,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 
 ## DID Document Metadata { #did-document-metadata }
@@ -293,7 +338,22 @@ Document metadata MAY contain the following properties:
 - `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.
 - `versionId`: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.
 
-<!-- todo: add an example -->
+{% set hide_text = `` %}
+{% set ex_did_document_metadata =
+`
+~~~json
+{{#include example-data/did-document-metadata.json}}
+~~~
+` %}
+
+{{ ui::show_example_tabs(
+  group_id="did-document-metadata-example",
+  example=ex_did_document_metadata,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 
 ## CAS Announcement { #cas-announcement }

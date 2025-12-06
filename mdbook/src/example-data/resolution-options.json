@@ -1,0 +1,35 @@
+{
+  "versionId": "4",
+  "versionTime": "2025-01-05T12:00:00Z",
+  "sidecar": {
+    "@context": "https://btcr2.dev/context/v1",
+    "genesisDocument": {
+      "@context": [
+        "https://www.w3.org/TR/did-1.1",
+        "https://btcr2.dev/context/v1"
+      ],
+      "id": "did:btcr2:_",
+      "verificationMethod": [
+        {
+          "id": "did:btcr2:_#initialKey",
+          "type": "Multikey",
+          "controller": "did:btcr2:_",
+          "publicKeyMultibase": "zQ3shb8PoGykqRtHb9bXNKrXG7PHMjDrECcgLeSqawMERFACj"
+        }
+      ],
+      "capabilityInvocation": [
+        "did:btcr2:_#initialKey"
+      ],
+      "service": [
+        {
+          "type": "SingletonBeacon",
+          "id": "did:btcr2:_#initialP2TR",
+          "serviceEndpoint": "bitcoin:tb1p6efm2xk7mpfmh733qyu3k7cgk05gmyynp49srgn7u5uqxsr8avssj4rdlc"
+        }
+      ]
+    },
+    "updates": [],
+    "casUpdates": [],
+    "smtProofs": []
+  }
+}
