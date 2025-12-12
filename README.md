@@ -11,21 +11,17 @@ The full specification may be viewed at https://dcdpr.github.io/did-btcr2/.
 
 ## Compiling the Specification Locally
 
-1. Install 'pandoc' locally - https://pandoc.org/getting-started.html.
-2. Install 'npm' locally - http://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+On my mac:
 
-* Note: Mac users can get both with homebrew: ```brew install npm pandoc``` 
+```zsh
+> cargo install mdbook mdbook-mermaid mdbook-bib mdbook-tera mdbook-pagetoc
 
-3. Run the following commands
+> cd mdbook
+> mdbook serve --open
+```
 
-* ```cd did-btcr2```
-* ```npm install```
-* ```npm run pandoc-spec```
-
-The specification will be compiled and available in the `_site/index.html` file.
-
-After editing the markdown files for the specification, see the `chapters` folder, 
-you will need to rerun the script `npm run pandoc-spec` to see the changes.
+The specification will be compiled and available in the `book/` folder and will
+be served via http://localhost:3000.
 
 # History and Evolution of the did:btcr2 DID method
 
@@ -51,10 +47,9 @@ timeline
       bip340-2025 cryptosuite adopted (CCG Work Item) : Aug 2025
 ```
 
-
 ## Jupyter Notebooks
 
-Included under the `notebooks` folder are a set of Jupyter notebooks that implement the
+Included under the `old-spec/notebooks` folder are a set of Jupyter notebooks that implement the
 various features of the **did:btcr2** specification. These are included as helpful reference
 material for those intending to implement the specification. To run the notebooks locally see
-the `notebooks/README.md`.
+the `old-spec/notebooks/README.md`.
