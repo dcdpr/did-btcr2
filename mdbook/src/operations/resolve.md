@@ -123,7 +123,7 @@ For each transaction found:
   * CAS Beacon: use [Process CAS Beacon](#process-cas-beacon).
   * SMT Beacon: use [Process SMT Beacon](#process-smt-beacon).
 * Build a tuple with:
-  * The transaction's block-height, block-time, and block-confirmations.
+  * The transaction's block metadata (height, time, and confirmations).
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
     * If the update is not in `update_lookup_table`, retrieve it from [CAS].
     * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
@@ -146,9 +146,9 @@ Return `current_document` as the resolved `didDocument` if `updates` is empty.
 
 Otherwise:
 
-1. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with block-height as a tiebreaker. Take the first tuple.
-2. Set `block_confirmations` to the tuple's block-confirmations.
-3. If `resolutionOptions.versionTime` is provided and the tuple's block-time is more recent, return `current_document` as the resolved `didDocument`.
+1. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Take the first tuple.
+2. Set `block_confirmations` to the tuple's block confirmations.
+3. If `resolutionOptions.versionTime` is provided and the tuple's block time is more recent, return `current_document` as the resolved `didDocument`.
 4. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 5. Increment `current_version_id`.
 6. If `current_version_id` is greater than or equal to the integer form of `resolutionOptions.versionId`, return `current_document`.
