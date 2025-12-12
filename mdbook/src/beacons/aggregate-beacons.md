@@ -35,7 +35,7 @@ The actors involved in aggregation are as follows.
 
 ### Step 1: Create Aggregation Cohort
 
-Creating an [Aggregation Cohort] requires that the [Aggregation Service] define the conditions for it, advertise it, and accept enrollment by [Aggregation Participants][Aggregation Participant].
+Creating an [Aggregation Cohort] requires that the [Aggregation Service] define the conditions for it, advertise the new cohort to prospective [Aggregation Participants][Aggregation Participant], and accept enrollment.
 
 When defining an [Aggregation Cohort], the [Aggregation Service] can define conditions such as:
 
@@ -58,7 +58,7 @@ After the [Aggregation Cohort] is created, an [Aggregation Service] MAY choose b
 1. Pull Flow: [Aggregation Service] periodically announces update opportunities to [Aggregation Participants][Aggregation Participant]
 2. Push Flow: [Aggregation Participants][Aggregation Participant] send updates to the [Aggregation Service] when ready
 
-The cohort advertisement states which flow applies.
+The cohort definition states which flow applies.
 
 All [Aggregation Participants][Aggregation Participant] must be made aware of each opportunity because every participant must respond.
 
@@ -87,11 +87,11 @@ All [Aggregation Participants][Aggregation Participant] must be made aware of ea
 
 This response SHOULD be sent over a secure communication channel and MAY be signed.
 
-Once responses for an advertisement are collected, the [Aggregation Service] can prepare a candidate [Beacon Signal] for confirmation by the cohort.
+Once responses to an update opportunity are collected, the [Aggregation Service] can prepare a candidate [Beacon Signal] for confirmation by the cohort.
 
 ### Step 3: Aggregate & Request Signal Confirmation
 
-Once the [Aggregation Service] has received responses to an advertisement from all [Aggregation Participants][Aggregation Participant] in the [Aggregation Cohort], it aggregates the update announcements into an [Unsigned Beacon Signal]. All [Aggregation Participants][Aggregation Participant] MUST respond. The [Aggregation Service] needs every update/no-update decision and every MuSig2 nonce to build the complete signal payloads and the `n-of-n` aggregated nonce. It then sends this signal, along with the information required to confirm its construction, to each [Aggregation Participant]. The [Aggregation Service] also combines the MuSig2 nonces from each [Aggregation Participant] following the nonce aggregation algorithm in {{#cite BIP327}}.
+Once the [Aggregation Service] has received responses to an update opportunity from all [Aggregation Participants][Aggregation Participant] in the [Aggregation Cohort], it aggregates the update announcements into an [Unsigned Beacon Signal]. All [Aggregation Participants][Aggregation Participant] MUST respond. The [Aggregation Service] needs every update/no-update decision and every MuSig2 nonce to build the complete signal payloads and the `n-of-n` aggregated nonce. It then sends this signal, along with the information required to confirm its construction, to each [Aggregation Participant]. The [Aggregation Service] also combines the MuSig2 nonces from each [Aggregation Participant] following the nonce aggregation algorithm in {{#cite BIP327}}.
 
 Aggregation of updates into a [Beacon Signal] depends on the type of [BTCR2 Beacon].
 
