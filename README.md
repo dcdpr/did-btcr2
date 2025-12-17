@@ -11,7 +11,6 @@ The full specification may be viewed at https://dcdpr.github.io/did-btcr2/.
 
 ## Compiling the Specification Locally
 
-On my mac:
 
 ```zsh
 > cargo install mdbook mdbook-mermaid mdbook-bib mdbook-tera mdbook-pagetoc
