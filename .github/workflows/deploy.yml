@@ -19,6 +19,34 @@ jobs:
         with:
           mdbook-version: '0.4.52'
 
+      - name: Install mdbook-bib
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-bib
+          version: '=0.0.7'
+          locked: true
+
+      - name: Install mdbook-mermaid
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-mermaid
+          version: '=0.16.0'
+          locked: true
+
+      - name: Install mdbook-pagetoc
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-pagetoc
+          version: '=0.2.2'
+          locked: true
+
+      - name: Install mdbook-tera
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: mdbook-tera
+          version: '=0.6.0'
+          locked: true
+
       - name: Build
         run: mdbook build
 
