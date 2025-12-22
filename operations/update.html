@@ -1,0 +1,396 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Update - did:btcr2 DID Method Specification</title>
+
+
+        <!-- Custom HTML head -->
+        <meta name="darkreader-lock"/>
+
+        <meta name="description" content="did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin blockchain as a Verifiable Data Registry to announce changes to the DID document.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/assets/tabs.css">
+        <link rel="stylesheet" href="../theme/custom.css">
+        <link rel="stylesheet" href="../theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">did:btcr2 DID Method Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="update"><a class="header" href="#update">Update</a></h1>
+<p><strong>did:btcr2</strong> DID documents can be updated by anchoring <a href="../terminology.html#btcr2-update">BTCR2 Updates</a> to Bitcoin transactions. These transactions MAY be published to the Bitcoin network.</p>
+<p>Any property in the DID document may be updated except the <code>id</code>. Doing so would invalidate the DID document.</p>
+<p>The update operation has the following function signature:</p>
+<pre><code class="language-rust">fn update(
+  didSourceDocument,
+  jsonPatches,
+  targetVersionId,
+  verificationMethodId,
+  privateKey,
+) -&gt;
+  signedUpdate</code></pre>
+<p>Input arguments:</p>
+<ul>
+<li><code>didSourceDocument</code>: The source DID document.</li>
+<li><code>jsonPatches</code>: An array of JSON patch documents [<a href="../bibliography.html#RFC6902">RFC6902</a>] with the changes to be made to the source DID document.</li>
+<li><code>targetVersionId</code>: The <code>versionId</code> of the target DID document that the new <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> will yield.</li>
+<li><code>verificationMethodId</code>: The <code>verificationMethod</code> ID used for signing the <a href="../terminology.html#btcr2-update">BTCR2 Update</a>.</li>
+<li><code>privateKey</code>: Private key associated with the <code>verificationMethodId</code>.
+<ul>
+<li>An implementation MAY use the <code>verificationMethodId</code> ID to retrieve the private key from a key material manager.</li>
+</ul>
+</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>signedUpdate</code>: A copy of the <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> anchored to the Bitcoin blockchain by a <a href="../terminology.html#btcr2-update-announcement">BTCR2 Update Announcement</a>.</li>
+</ul>
+<h2 id="process"><a class="header" href="#process">Process</a></h2>
+<p>Updating a <strong>did:btcr2</strong> DID document is a matter of constructing a <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> then announcing that update via one or more <a href="../terminology.html#btcr2-beacon">BTCR2 Beacons</a> listed in the DID document. The update announcement process varies depending on the <a href="../terminology.html#beacon-type">Beacon Type</a>.</p>
+<p>Constructing a <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is a two-step process. First, a <a href="../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is constructed. Then the update is signed with a private key to construct the <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a>.</p>
+<h2 id="construct-btcr2-unsigned-update"><a class="header" href="#construct-btcr2-unsigned-update">Construct BTCR2 Unsigned Update</a></h2>
+<p>This process constructs a <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
+<p>Apply all JSON patches in <code>jsonPatches</code> to <code>didSourceDocument</code> to create <code>didTargetDocument</code>. <code>didTargetDocument</code> MUST be conformant to DID Core v1.1 [<a href="../bibliography.html#DID-CORE">DID-CORE</a>]. An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>didTargetDocument.id</code> is not equal to <code>didSourceDocument.id</code>.</p>
+<p>Fill the <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> template below with the required template variables.</p>
+<ul>
+<li><code>array-of-patches</code>: <code>jsonPatches</code> serialized to a JSON string.</li>
+<li><code>source-hash</code>: <code>didSourceDocument</code> hashed with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+<li><code>target-hash</code>: <code>didTargetDocument</code> hashed with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+<li><code>target-version-id</code>: The value of <code>targetVersionId</code>.</li>
+</ul>
+<div class="tabs" id="btcr2-unsigned-update-template">
+  <div class="tablist" role="tablist" aria-label="btcr2-unsigned-update-template">
+    <button role="tab"
+            id="btcr2-unsigned-update-template-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="btcr2-unsigned-update-template-panel-hide"
+            data-tab="btcr2-unsigned-update-template-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="btcr2-unsigned-update-template-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="btcr2-unsigned-update-template-panel-show"
+            data-tab="btcr2-unsigned-update-template-panel-show">
+Show Template
+    </button>
+  </div>
+  <section id="btcr2-unsigned-update-template-panel-hide"
+           role="tabpanel"
+           aria-labelledby="btcr2-unsigned-update-template-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="btcr2-unsigned-update-template-panel-show"
+           role="tabpanel"
+           aria-labelledby="btcr2-unsigned-update-template-tab-show"
+           hidden>
+    <label>Show Template</label>
+<pre><code class="language-hbs">{
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "patch": {{array-of-patches}},
+  "sourceHash": "{{source-hash}}",
+  "targetHash": "{{target-hash}}",
+  "targetVersionId": {{target-version-id}}
+}
+</code></pre>
+  </section>
+</div>
+<p>Let <code>update</code> be the result of parsing the rendered template as JSON. The
+resulting <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> MUST be conformant to this specification.</p>
+<h2 id="construct-btcr2-signed-update"><a class="header" href="#construct-btcr2-signed-update">Construct BTCR2 Signed Update</a></h2>
+<p>This process constructs a <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> from <code>update</code>, a <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
+<p>An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if the <code>didSourceDocument.verificationMethod</code> Set does not contain an <code>id</code> matching <code>verificationMethodId</code>.</p>
+<p>An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if the <code>didSourceDocument.capabilityInvocation</code> Set does not contain <code>verificationMethodId</code>.</p>
+<p>Create <code>cryptosuite</code> as a BIP340 Cryptosuite [<a href="../bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] instance with <code>privateKey</code> and <code>"bip340-jcs-2025"</code> cryptosuite.</p>
+<p>Fill the Data Integrity [<a href="../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] template below with the required template variables.</p>
+<ul>
+<li><code>verification-method</code>: The value of <code>verificationMethodId</code>.</li>
+<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}</code>.</li>
+</ul>
+<div class="tabs" id="data-integrity-config-template">
+  <div class="tablist" role="tablist" aria-label="data-integrity-config-template">
+    <button role="tab"
+            id="data-integrity-config-template-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="data-integrity-config-template-panel-hide"
+            data-tab="data-integrity-config-template-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="data-integrity-config-template-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="data-integrity-config-template-panel-show"
+            data-tab="data-integrity-config-template-panel-show">
+Show Template
+    </button>
+  </div>
+  <section id="data-integrity-config-template-panel-hide"
+           role="tabpanel"
+           aria-labelledby="data-integrity-config-template-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="data-integrity-config-template-panel-show"
+           role="tabpanel"
+           aria-labelledby="data-integrity-config-template-tab-show"
+           hidden>
+    <label>Show Template</label>
+<pre><code class="language-hbs">{
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "type": "DataIntegrityProof",
+  "cryptosuite": "bip340-jcs-2025",
+  "verificationMethod": "{{ verification-method }}",
+  "proofPurpose": "capabilityInvocation",
+  "capability": "{{ capability }}",
+  "capabilityAction": "Write"
+}
+</code></pre>
+  </section>
+</div>
+<p>Let <code>proofConfig</code> be the result of parsing the rendered template as JSON. The
+resulting <a href="../data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> MUST be conformant to Verifiable Credentials Data Integrity 1.0 [<a href="../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>].</p>
+<p>Pass <code>update</code> and <code>proofConfig</code> to the <code>cryptosuite.createProof</code> method and set <code>update.proof</code> to the resulting <a href="../data-structures.html#data-integrity-proof">Data Integrity Proof (data structure)</a>.</p>
+<h2 id="announce-did-update"><a class="header" href="#announce-did-update">Announce DID Update</a></h2>
+<p><a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> are announced to the Bitcoin blockchain depending on the <a href="../terminology.html#beacon-type">Beacon Type</a>.</p>
+<h3 id="announcing-to-a-singleton-beacon"><a class="header" href="#announcing-to-a-singleton-beacon">Announcing to a Singleton Beacon</a></h3>
+<p>A <a href="../terminology.html#btcr2-update-announcement">BTCR2 Update Announcement</a> for a <a href="../terminology.html#singleton-beacon">Singleton Beacon</a> is the <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> hashed with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. This 32-byte SHA-256 hash is used as the <a href="../terminology.html#signal-bytes">Signal Bytes</a> when constructing a <a href="../terminology.html#beacon-signal">Beacon Signal</a> Bitcoin transaction. The <a href="../terminology.html#beacon-signal">Beacon Signal</a> is signed by the private key that controls the <a href="../terminology.html#beacon-address">Beacon Address</a> and broadcast to the Bitcoin network. To broadcast signed Bitcoin transactions, see the [<a href="../bibliography.html#Bitcoin-Core">Bitcoin-Core</a>] source code.</p>
+<h3 id="announcing-to-an-aggregate-beacon"><a class="header" href="#announcing-to-an-aggregate-beacon">Announcing to an Aggregate Beacon</a></h3>
+<p>Aggregating and announcing updates for multiple <strong>did:btcr2</strong> identifiers is the responsibility of the <a href="../terminology.html#aggregation-service">Aggregation Service</a>.
+The main responsibilities include establishing a protocol for one or more rounds of secure group communications amongst <a href="../terminology.html#aggregation-participant">Aggregation Participants</a>, advertising available <a href="../terminology.html#aggregation-cohort">Aggregation Cohorts</a> to <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> including the creation, management, timing and scheduling of those <a href="../terminology.html#aggregation-cohort">Aggregation Cohorts</a>, and broadcasting a Bitcoin transaction to the Bitcoin network that includes signatures from all <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> in a given <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../operations/resolve.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../operations/deactivate.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../operations/resolve.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../operations/deactivate.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../src/assets/mermaid.min.js"></script>
+        <script src="../src/assets/mermaid-init.js"></script>
+        <script src="../src/assets/tabs.js"></script>
+        <script src="../theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

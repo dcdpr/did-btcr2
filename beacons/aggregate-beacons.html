@@ -1,0 +1,367 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Aggregate Beacons - did:btcr2 DID Method Specification</title>
+
+
+        <!-- Custom HTML head -->
+        <meta name="darkreader-lock"/>
+
+        <meta name="description" content="did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin blockchain as a Verifiable Data Registry to announce changes to the DID document.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/assets/tabs.css">
+        <link rel="stylesheet" href="../theme/custom.css">
+        <link rel="stylesheet" href="../theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">did:btcr2 DID Method Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="aggregate-beacons"><a class="header" href="#aggregate-beacons">Aggregate Beacons</a></h1>
+<p>DID controllers can use a <a href="../terminology.html#cas-beacon">CAS Beacon</a>, an <a href="../terminology.html#smt-beacon">SMT Beacon</a>, or both to participate in BTCR2 Update Aggregation. In contrast to a <a href="../terminology.html#singleton-beacon">Singleton Beacon</a>, which only allows for one <a href="../terminology.html#btcr2-update">BTCR2 Update</a> per Bitcoin transaction, <a href="../terminology.html#aggregate-beacon">Aggregate Beacons</a> combine multiple <a href="../terminology.html#btcr2-update">BTCR2 Updates</a> into one Bitcoin transaction for any number of DID controllers. In this context, DID BTCR2 controllers are called <a href="../terminology.html#aggregation-participant">Aggregation Participants</a>.</p>
+<h2 id="btcr2-update-aggregation"><a class="header" href="#btcr2-update-aggregation">BTCR2 Update Aggregation</a></h2>
+<p>BTCR2 Update Aggregation is the coordination protocol used by an <a href="../terminology.html#aggregation-service">Aggregation Service</a> and <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> to perform aggregation. A full protocol definition is out of scope for this specification, but a RECOMMENDED example is provided for illustration.</p>
+<h2 id="example-using-musig2-secp256k1-and-schnorr-signatures"><a class="header" href="#example-using-musig2-secp256k1-and-schnorr-signatures">Example Using Musig2, secp256k1, and Schnorr Signatures</a></h2>
+<p>One implementation, centered on Schnorr signatures, allows all <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> to veto any <a href="../terminology.html#beacon-signal">Beacon Signal</a> for which their own proof data does not match the proposed <code>OP_RETURN</code> data. DID controllers that wish to join an <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a> and become an <a href="../terminology.html#aggregation-participant">Aggregation Participant</a> would need to provide the <a href="../terminology.html#aggregation-service">Aggregation Service</a> with a Schnorr public key.</p>
+<p>The <a href="../terminology.html#aggregation-service">Aggregation Service</a> coordinates the construction of an <code>n-of-n</code> Pay-to-Taproot address as the <a href="../terminology.html#beacon-address">Beacon Address</a>, where each <a href="../terminology.html#aggregation-participant">Aggregation Participant’s</a> public key is one of the <code>n</code> keys. This ensures that all on-chain <a href="../terminology.html#beacon-signal">Beacon Signals</a> are cryptographically signed by every <a href="../terminology.html#aggregation-participant">Aggregation Participant</a>, while the <a href="../terminology.html#aggregation-service">Aggregation Service</a> remains minimally trusted.</p>
+<p>An <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a> may fail if <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> stop participating or the <a href="../terminology.html#aggregation-service">Aggregation Service</a> is compromised. If that happens, the <a href="../terminology.html#aggregate-beacon">Aggregate Beacon</a> simply fails to broadcast <a href="../terminology.html#beacon-signal">Beacon Signals</a> that announce <a href="../terminology.html#btcr2-update">BTCR2 Updates</a>.</p>
+<p>The <a href="../terminology.html#aggregation-service">Aggregation Service</a> decides when to finalize the membership of the <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a>. After it does, it computes an <code>n-of-n</code> Pay-to-Taproot address from the public keys the <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> provided. This <a href="../terminology.html#beacon-address">Beacon Address</a> must be sent to all <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> with the set of keys used to construct it. Each <a href="../terminology.html#aggregation-participant">Aggregation Participant</a> should verify the address and confirm that their key is included.</p>
+<p>Once the <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> have verified the newly formed <a href="../terminology.html#beacon-address">Beacon Address</a>, they can construct the <code>service</code> object that can be included within their DID document’s service array.</p>
+<p>This RECOMMENDED setup ensures that neither the <a href="../terminology.html#aggregation-service">Aggregation Service</a> nor other <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> can compromise or invalidate a <strong>did:btcr2</strong> identifier of another <a href="../terminology.html#aggregation-participant">Aggregation Participant</a> in the cohort.</p>
+<p>The actors involved in aggregation are as follows.</p>
+<ul>
+<li>DID controller - A party that controls one or more <strong>did:btcr2</strong> identifiers.</li>
+<li><a href="../terminology.html#aggregation-participant">Aggregation Participant</a> - A DID controller in the BTCR2 Update Aggregation context after joining an <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a>.</li>
+<li><a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a> - A set of <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> who have submitted cryptographic material to an <a href="../terminology.html#aggregation-service">Aggregation Service</a>.</li>
+<li><a href="../terminology.html#aggregation-service">Aggregation Service</a> - A single entity who coordinates the protocols and is ultimately responsible for broadcasting the <a href="../terminology.html#beacon-signal">Beacon Signal</a> formed as a result of BTCR2 Update Aggregation.</li>
+<li>Verifier - A party verifying a <strong>did:btcr2</strong> identifier presentation.</li>
+</ul>
+<h3 id="step-1-create-aggregation-cohort"><a class="header" href="#step-1-create-aggregation-cohort">Step 1: Create Aggregation Cohort</a></h3>
+<p>Creating an <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a> requires that the <a href="../terminology.html#aggregation-service">Aggregation Service</a> define the conditions for it, advertise the new cohort to prospective <a href="../terminology.html#aggregation-participant">Aggregation Participants</a>, and accept enrollment.</p>
+<p>When defining an <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a>, the <a href="../terminology.html#aggregation-service">Aggregation Service</a> can define conditions such as:</p>
+<ul>
+<li>Beacon type (CAS or SMT).</li>
+<li>Minimum and/or maximum number of <a href="../terminology.html#aggregation-participant">Aggregation Participants</a>.</li>
+<li>Minimum and/or maximum number of DIDs per <a href="../terminology.html#aggregation-participant">Aggregation Participant</a>.</li>
+<li>Cost of enrollment.</li>
+<li>Cost per announcement per DID or <a href="../terminology.html#aggregation-participant">Aggregation Participant</a>.</li>
+<li>Minimum and/or maximum time between announcements.</li>
+<li>Number of pending updates that trigger an announcement.</li>
+</ul>
+<p>Advertising <a href="../terminology.html#aggregation-cohort">Aggregation Cohorts</a> to participants can be done with nostr or DIDComm.</p>
+<p>Enrolling in an <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a> requires exchanging DIDs or indexes (hashes of DIDs) and the public keys used to create the <code>n-of-n</code> MuSig2 Bitcoin address.</p>
+<h3 id="step-2-announcing-update-opportunities"><a class="header" href="#step-2-announcing-update-opportunities">Step 2: Announcing Update Opportunities</a></h3>
+<p>After the <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a> is created, an <a href="../terminology.html#aggregation-service">Aggregation Service</a> MAY choose between two flows for presenting and engaging with update opportunities:</p>
+<ol>
+<li>Pull Flow: <a href="../terminology.html#aggregation-service">Aggregation Service</a> periodically announces update opportunities to <a href="../terminology.html#aggregation-participant">Aggregation Participants</a></li>
+<li>Push Flow: <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> send updates to the <a href="../terminology.html#aggregation-service">Aggregation Service</a> when ready</li>
+</ol>
+<p>The cohort definition states which flow applies.</p>
+<p>All <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> must be made aware of each opportunity because every participant must respond.</p>
+<h4 id="respond-to-update-opportunities"><a class="header" href="#respond-to-update-opportunities">Respond to Update Opportunities</a></h4>
+<p><a href="../terminology.html#aggregation-participant">Aggregation Participants</a> must submit a response to every update opportunity announced by the <a href="../terminology.html#aggregation-service">Aggregation Service</a>; otherwise the <a href="../terminology.html#aggregation-service">Aggregation Service</a> cannot broadcast <a href="../terminology.html#beacon-signal">Beacon Signals</a>. This response must include:</p>
+<ul>
+<li>
+<p>For a <a href="../terminology.html#cas-beacon">CAS Beacon</a>:</p>
+<ul>
+<li>Either a negative acknowledgement (for no update to be included)</li>
+<li>Or …
+<ul>
+<li><code>did</code>: The DID to be updated.</li>
+<li><code>updateHash</code>: The SHA-256 hash of the <a href="../terminology.html#btcr2-update">BTCR2 Update</a> to be included, created with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. (I.e., <code>json_document_hash(update)</code>)</li>
+</ul>
+</li>
+<li>MuSig2 Nonce: A MuSig2 nonce constructed according to the nonce generation algorithm specified in [<a href="../bibliography.html#BIP327">BIP327</a>].</li>
+</ul>
+</li>
+<li>
+<p>For an <a href="../terminology.html#smt-beacon">SMT Beacon</a>:</p>
+<ul>
+<li><code>didIndex</code>: The SHA-256 hash of the DID to be updated.</li>
+<li><code>updateHash</code>:
+<ul>
+<li>If there is an update:
+<ul>
+<li>If a <code>nonce</code> is used: <code>hash(hash(nonce) + json_document_hash(update))</code></li>
+<li>If a <code>nonce</code> is not used: <code>json_document_hash(update)</code></li>
+</ul>
+</li>
+<li>If there is not an update:
+<ul>
+<li>If a <code>nonce</code> is used: <code>hash(hash(nonce))</code></li>
+<li>If a <code>nonce</code> is not used: <code>0</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Participants MUST persist their <code>nonce</code> values.</li>
+<li>MuSig2 Nonce: A MuSig2 nonce constructed according to the nonce generation algorithm specified in [<a href="../bibliography.html#BIP327">BIP327</a>].</li>
+</ul>
+</li>
+</ul>
+<p>This response SHOULD be sent over a secure communication channel and MAY be signed.</p>
+<p>Once responses to an update opportunity are collected, the <a href="../terminology.html#aggregation-service">Aggregation Service</a> can prepare a candidate <a href="../terminology.html#beacon-signal">Beacon Signal</a> for confirmation by the cohort.</p>
+<h3 id="step-3-aggregate--request-signal-confirmation"><a class="header" href="#step-3-aggregate--request-signal-confirmation">Step 3: Aggregate &amp; Request Signal Confirmation</a></h3>
+<p>Once the <a href="../terminology.html#aggregation-service">Aggregation Service</a> has received responses to an update opportunity from all <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> in the <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a>, it aggregates the update announcements into an <a href="../terminology.html#unsigned-beacon-signal">Unsigned Beacon Signal</a>. All <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> MUST respond. The <a href="../terminology.html#aggregation-service">Aggregation Service</a> needs every update/no-update decision and every MuSig2 nonce to build the complete signal payloads and the <code>n-of-n</code> aggregated nonce. It then sends this signal, along with the information required to confirm its construction, to each <a href="../terminology.html#aggregation-participant">Aggregation Participant</a>. The <a href="../terminology.html#aggregation-service">Aggregation Service</a> also combines the MuSig2 nonces from each <a href="../terminology.html#aggregation-participant">Aggregation Participant</a> following the nonce aggregation algorithm in [<a href="../bibliography.html#BIP327">BIP327</a>].</p>
+<p>Aggregation of updates into a <a href="../terminology.html#beacon-signal">Beacon Signal</a> depends on the type of <a href="../terminology.html#btcr2-beacon">BTCR2 Beacon</a>.</p>
+<ul>
+<li>
+<p>For <a href="../terminology.html#cas-beacon">CAS Beacons</a>, the <a href="../terminology.html#aggregation-service">Aggregation Service</a> creates a <a href="../terminology.html#beacon-announcement-map">Beacon Announcement Map</a> that maps <a href="../terminology.html#aggregation-participant">Aggregation Participant</a>-provided indexes to <a href="../terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a>. The <a href="../terminology.html#signal-bytes">Signal Bytes</a> included in a CAS <a href="../terminology.html#beacon-signal">Beacon Signal</a> is the SHA-256 hash of the <a href="../terminology.html#beacon-announcement-map">Beacon Announcement Map</a>.</p>
+</li>
+<li>
+<p>For <a href="../terminology.html#smt-beacon">SMT Beacons</a>, the <a href="../terminology.html#aggregation-service">Aggregation Service</a> constructs a <a href="../terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> (SMT) whose leaves pair each registered index with the value submitted for that index. Every registered index MUST appear as a leaf. After constructing the SMT, the <a href="../terminology.html#aggregation-service">Aggregation Service</a> optimizes the tree and generates <a href="../terminology.html#smt-proof">SMT Proofs</a> for each index to share with the corresponding <a href="../terminology.html#aggregation-participant">Aggregation Participant</a>. The <a href="../terminology.html#signal-bytes">Signal Bytes</a> of an SMT <a href="../terminology.html#beacon-signal">Beacon Signal</a> is the 32 byte SMT root.</p>
+</li>
+</ul>
+<p>For a <a href="../terminology.html#cas-beacon">CAS Beacon</a>, the request signal confirmation message contains:</p>
+<ul>
+<li>The <a href="../terminology.html#beacon-announcement-map">Beacon Announcement Map</a>.</li>
+<li>The <a href="../terminology.html#unsigned-beacon-signal">Unsigned Beacon Signal</a>.</li>
+<li>The MuSig2 aggregated nonce.</li>
+</ul>
+<p>For an <a href="../terminology.html#smt-beacon">SMT Beacon</a>, the request signal confirmation message contains:</p>
+<ul>
+<li>An <a href="../terminology.html#smt-proof">SMT Proof</a> for each index belonging to the <a href="../terminology.html#aggregation-participant">Aggregation Participant</a>.</li>
+<li>The <a href="../terminology.html#unsigned-beacon-signal">Unsigned Beacon Signal</a>.</li>
+<li>The MuSig2 aggregated nonce.</li>
+</ul>
+<h4 id="confirm-signal-request"><a class="header" href="#confirm-signal-request">Confirm Signal Request</a></h4>
+<p>The <a href="../terminology.html#aggregation-participant">Aggregation Participant</a> must validate the contents of the <a href="../terminology.html#beacon-signal">Beacon Signal</a> (partially signed transaction) according to the type of the <a href="../terminology.html#btcr2-beacon">BTCR2 Beacon</a>:</p>
+<ul>
+<li>
+<p>For a <a href="../terminology.html#cas-beacon">CAS Beacon</a>, the <a href="../terminology.html#aggregation-participant">Aggregation Participant</a> checks that every registered index appears only when a <a href="../terminology.html#btcr2-update">BTCR2 Update</a> was submitted and that each mapped value matches the <a href="../terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a> they submitted. <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> MUST also check that the <a href="../terminology.html#signal-bytes">Signal Bytes</a> of the <a href="../terminology.html#beacon-signal">Beacon Signal</a> contains the SHA-256 hash of the <a href="../terminology.html#beacon-announcement-map">Beacon Announcement Map</a>.</p>
+</li>
+<li>
+<p>For an <a href="../terminology.html#smt-beacon">SMT Beacon</a>, the <a href="../terminology.html#aggregation-participant">Aggregation Participant</a> validates that all the indexes registered with the <a href="../terminology.html#aggregation-service">Aggregation Service</a> have <a href="../terminology.html#smt-proof">SMT Proofs</a> and that the <a href="../terminology.html#smt-proof">SMT Proofs</a> are valid proofs of the values they submitted to the <a href="../terminology.html#aggregation-service">Aggregation Service</a>. The <a href="../terminology.html#signal-bytes">Signal Bytes</a> in the <a href="../terminology.html#beacon-signal">Beacon Signal</a> MUST be used as the SMT root to verify these proofs.</p>
+</li>
+</ul>
+<p>Once the <a href="../terminology.html#aggregation-participant">Aggregation Participant</a> is satisfied that the <a href="../terminology.html#beacon-signal">Beacon Signal</a> only announces the <a href="../terminology.html#btcr2-update">BTCR2 Updates</a> they submitted for DIDs they control, they partially sign the Bitcoin transaction according to the signing algorithm specified in [<a href="../bibliography.html#BIP327">BIP327</a>]. <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> use the private key that matches the public key they provided when joining the <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a> and the MuSig2 aggregated nonce provided by the <a href="../terminology.html#aggregation-service">Aggregation Service</a>. Finally, <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> return the partially signed Bitcoin transaction to the <a href="../terminology.html#aggregation-service">Aggregation Service</a>, confirming the <a href="../terminology.html#beacon-signal">Beacon Signal</a>.</p>
+<p><a href="../terminology.html#aggregation-participant">Aggregation Participants</a> SHOULD maintain the set of data required to validate their <a href="../terminology.html#btcr2-update">BTCR2 Updates</a> against the <a href="../terminology.html#beacon-signal">Beacon Signal</a>.</p>
+<ul>
+<li>For CAS <a href="../terminology.html#beacon-signal">Beacon Signals</a>, this means persisting the <a href="../terminology.html#beacon-announcement-map">Beacon Announcement Map</a> and the <a href="../terminology.html#btcr2-update">BTCR2 Updates</a> announced within that map for indexes that they control.</li>
+<li>For SMT <a href="../terminology.html#beacon-signal">Beacon Signals</a>, <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> must persist the <a href="../terminology.html#btcr2-update">BTCR2 Updates</a>, nonce values, and <a href="../terminology.html#smt-proof">SMT Proofs</a> for each index they control.</li>
+</ul>
+<h3 id="step-4-broadcast-aggregated-signal"><a class="header" href="#step-4-broadcast-aggregated-signal">Step 4: Broadcast Aggregated Signal</a></h3>
+<p>After the <a href="../terminology.html#aggregation-service">Aggregation Service</a> receives confirmation of the <a href="../terminology.html#beacon-signal">Beacon Signal</a> from all <a href="../terminology.html#aggregation-participant">Aggregation Participants</a> within the <a href="../terminology.html#aggregation-cohort">Aggregation Cohort</a>, it finalizes the signature on the <a href="../terminology.html#beacon-signal">Beacon Signal</a>. Each confirmation contains a partial signature. The <a href="../terminology.html#aggregation-service">Aggregation Service</a> aggregates these partial signatures to create a final signature that spends the <a href="../terminology.html#utxo">UTXO</a> controlled by the <a href="../terminology.html#beacon-address">Beacon Address</a> input in the <a href="../terminology.html#beacon-signal">Beacon Signal</a>.</p>
+<p>Aggregation of partial signatures is done following the partial signature aggregation algorithm specified in [<a href="../bibliography.html#BIP327">BIP327</a>]. The result is a signed Bitcoin transaction. The <a href="../terminology.html#aggregation-service">Aggregation Service</a> then broadcasts this transaction onto the Bitcoin network.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../beacons.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../data-structures.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../beacons.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../data-structures.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../src/assets/mermaid.min.js"></script>
+        <script src="../src/assets/mermaid-init.js"></script>
+        <script src="../src/assets/tabs.js"></script>
+        <script src="../theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

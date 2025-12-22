@@ -1,0 +1,216 @@
+@misc{BCP14,
+  title        = {Best Current Practice 14: Key words for use in RFCs to Indicate Requirement Levels},
+  howpublished = {IETF BCP 14 (RFC 2119 and RFC 8174)},
+  year         = 2017,
+  note         = {Combines RFC 2119 and RFC 8174; errata exist},
+  url          = {https://www.rfc-editor.org/info/bcp14},
+  abstract     = {BCP 14 is the Best Current Practice that defines and clarifies the usage of requirement-level keywords (MUST, SHOULD, MAY, etc.) in IETF documents. It comprises RFC 2119 (defining the keywords) and RFC 8174 (clarifying that only uppercase usage carries the defined semantics).}
+}
+
+@misc{Bitcoin-Core,
+  title = {Bitcoin Core},
+  author = {Bitcoin Core Developers},
+  howpublished = {Online},
+  year = {2025},
+  month = {August},
+  url = {https://github.com/bitcoin/bitcoin},
+  note = {Bitcoin-Core},
+  abstract = {Bitcoin Core is the reference implementation of the Bitcoin protocol. It is a full node implementation that validates all transactions and blocks according to the Bitcoin consensus rules.}
+}
+
+@misc{BIP321,
+  title = {URI Scheme},
+  author = {Matt Corallo},
+  howpublished = {Bitcoin Improvement Proposal 321},
+  year = {2024},
+  month = {November},
+  url = {https://github.com/bitcoin/bips/blob/master/bip-0321.mediawiki},
+  note = {BIP-0321},
+  abstract = {This document proposes a URI scheme for describing Bitcoin payment instructions.}
+}
+
+@misc{BIP327,
+  title = {MuSig2 for BIP340-compatible Multi-Signatures},
+  author = {Jonas Nick, Tim Ruffing, Elliott Jin},
+  howpublished = {Bitcoin Improvement Proposal 327},
+  year = {2022},
+  month = {March},
+  url = {https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki},
+  note = {BIP-0327},
+  abstract = {This document proposes a standard for the MuSig2 multi-signature scheme. The standard is compatible with BIP340 public keys and signatures. It supports tweaking, which allows deriving BIP32 child keys from aggregate public keys and creating BIP341 Taproot outputs with key and script paths.}
+}
+
+@misc{BIP340,
+  title = {Schnorr Signatures for secp256k1},
+  author = {Pieter Wuille, Jonas Nick, Tim Ruffing},
+  howpublished = {Bitcoin Improvement Proposal 340},
+  year = {2020},
+  month = {January},
+  url = {https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki},
+  note = {BIP-0340},
+  abstract = {This document proposes a standard for 64-byte Schnorr signatures over the elliptic curve secp256k1.}
+}
+
+@misc{BIP340-Cryptosuite,
+  title = {Data Integrity BIP340 Cryptosuites},
+  author = {Will Abramson},
+  howpublished = {Online},
+  year = {2025},
+  month = {August},
+  url = {https://dcdpr.github.io/data-integrity-schnorr-secp256k1/},
+  note = {Cryptosuites},
+  abstract = {This specification describes Data Integrity cryptographic suites for use when creating or verifying a digital signature using the the secp256k1 instantiation of the Schnorr Signature Algorithm as defined in BIP340.}
+}
+
+@misc{BIP350,
+  title = {Bech32m format for v1+ witness addresses},
+  author = {Pieter Wuille},
+  howpublished = {Bitcoin Improvement Proposal 350},
+  year = {2020},
+  month = {December},
+  url = {https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki},
+  note = {BIP-0350},
+  abstract = {This document defines an improved variant of Bech32 called Bech32m, and amends BIP173 to use Bech32m for native segregated witness outputs of version 1 and later. Bech32 remains in use for segregated witness outputs of version 0.}
+}
+
+@misc{CID,
+  title = {Controlled Identifiers v1.0},
+  author = {Dave Longley, Manu Sporny, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen},
+  howpublished = {Online},
+  year = {2025},
+  month = {May},
+  url = {https://www.w3.org/TR/cid-1.0/},
+  note = {CID},
+  abstract = {A controlled identifier document contains cryptographic material and lists service endpoints for the purposes of verifying cryptographic proofs from, and interacting with, the controller of an identifier.}
+}
+
+@misc{DID-CORE,
+  title = {Decentralized Identifiers (DIDs) v1.1},
+  author = {Manu Sporny, Dave Longley, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen},
+  howpublished = {Online},
+  year = {2025},
+  month = {September},
+  url = {https://www.w3.org/TR/did-1.1/},
+  note = {DID-CORE},
+  abstract = {Decentralized identifiers (DIDs) are a new type of identifier that enables verifiable, decentralized digital identity. A DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) as determined by the controller of the DID. In contrast to typical, federated identifiers, DIDs have been designed so that they may be decoupled from centralized registries, identity providers, and certificate authorities. Specifically, while other parties might be used to help enable the discovery of information related to a DID, the design enables the controller of a DID to prove control over it without requiring permission from any other party. DIDs are URIs that associate a DID subject with a DID document allowing trustable interactions associated with that subject.
+
+Each DID document can express cryptographic material, verification methods, or services, which provide a set of mechanisms enabling a DID controller to prove control of the DID. Services enable trusted interactions associated with the DID subject. A DID might provide the means to return the DID subject itself, if the DID subject is an information resource such as a data model.
+
+This document specifies the DID syntax, a common data model, core properties, serialized representations, DID operations, and an explanation of the process of resolving DIDs to the resources that they represent.}
+}
+
+@misc{DID-RESOLUTION,
+  title = {Decentralized Identifier Resolution (DID Resolution) v0.3},
+  author = {Markus Sabadello, Dmitri Zagidulin},
+  howpublished = {Online},
+  year = {2025},
+  month = {September},
+  url = {https://www.w3.org/TR/did-resolution},
+  note = {DID-RESOLUTION},
+  abstract = {Decentralized identifiers (DIDs) are a new type of identifier for verifiable, "self-sovereign" digital identity. DIDs are fully under the control of the DID controller, independent from any centralized registry, identity provider, or certificate authority. DIDs resolve to DID Documents — simple documents that describe how to use that specific DID.
+
+This document specifies the algorithms and guidelines for resolving DIDs and dereferencing DID URLs. Additionally, this document describes the input and output metadata related to the DID resolution processes and further describes the data structures that may be returned from a DID resolution request. This document relies on the core DID specification, Decentralized Identifiers (DIDs) v1.1, which describes the underlying DID architecture in full detail.}
+}
+
+@misc{JSON-LD,
+  title = {JSON-LD 1.1},
+  author = {Manu Sporny, Dave Longley, Gregg Kellogg, Markus Lanthaler, Pierre-Antoine Champin, Niklas Lindström},
+  howpublished = {Online},
+  year = {2020},
+  month = {July},
+  url = {https://www.w3.org/TR/json-ld11/},
+  abstract = {JSON is a useful data serialization and messaging format. This specification defines JSON-LD 1.1, a JSON-based format to serialize Linked Data. The syntax is designed to easily integrate into deployed systems that already use JSON, and provides a smooth upgrade path from JSON to JSON-LD. It is primarily intended to be a way to use Linked Data in Web-based programming environments, to build interoperable Web services, and to store Linked Data in JSON-based storage engines.
+
+This specification describes a superset of the features defined in JSON-LD 1.0 and, except where noted, documents created using the 1.0 version of this specification remain compatible with JSON-LD 1.1.}
+}
+
+@techreport{RFC4648,
+  title = {The Base16, Base32, and Base64 Data Encodings},
+  author = {Josefsson, S.},
+  institution = {Internet Engineering Task Force},
+  type = {RFC},
+  number = {4648},
+  year = {2006},
+  month = {October},
+  url = {https://datatracker.ietf.org/doc/html/rfc4648},
+  abstract = {This document describes the commonly used base 64, base 32, and base 16 encoding schemes.  It also discusses the use of line-feeds in encoded data, use of padding in encoded data, use of non-alphabet characters in encoded data, use of different encoding alphabets, and canonical encodings.}
+}
+
+@techreport{RFC6902,
+  title = {JavaScript Object Notation (JSON) Patch},
+  author = {Bryan, P. and Nottingham, M.},
+  institution = {Internet Engineering Task Force},
+  type = {RFC},
+  number = {6902},
+  year = {2013},
+  month = {April},
+  url = {https://datatracker.ietf.org/doc/html/rfc6902},
+  abstract = {JSON Patch defines a JSON document structure for expressing a sequence of operations to apply to a JavaScript Object Notation (JSON) document; it is suitable for use with the HTTP PATCH method. The "application/json-patch+json" media type is used to identify such patch documents.}
+}
+
+@techreport{RFC8785,
+  title = {JSON Canonicalization Scheme (JCS)},
+  author = {Rundgren, A. and Jordan, B. and Erdtman, S.},
+  institution = {Internet Engineering Task Force},
+  type = {RFC},
+  number = {8785},
+  year = {2020},
+  month = {June},
+  url = {https://datatracker.ietf.org/doc/html/rfc8785},
+  abstract = {Cryptographic operations like hashing and signing need the data to be expressed in an invariant format so that the operations are reliably repeatable. One way to address this is to create a canonical representation of the data. Canonicalization also permits data to be exchanged in its original form on the "wire" while cryptographic operations performed on the canonicalized counterpart of the data in the producer and consumer endpoints generate consistent results.
+
+This document describes the JSON Canonicalization Scheme (JCS). This specification defines how to create a canonical representation of JSON data by building on the strict serialization methods for JSON primitives defined by ECMAScript, constraining JSON data to the Internet JSON (I-JSON) subset, and by using deterministic property sorting.}
+}
+
+@techreport{SEC,
+  title = {Standards for Efficient Cryptography 1 (SEC 1): Elliptic Curve Cryptography},
+  author = {Certicom Research and Daniel R. L. Brown},
+  institution = {Standards for Efficient Cryptography Group (SECG)},
+  number = {Version 2.0},
+  year = {2009},
+  month = {May},
+  url = {https://www.secg.org/sec1-v2.pdf},
+  abstract = {This document specifies public-key cryptographic schemes based on elliptic curve cryptography (ECC). In particular, it specifies:
+
+- signature schemes;
+- encryption and key transport schemes; and
+- key agreement schemes.
+
+It also describes cryptographic primitives which are used to construct the schemes, and ASN.1 syntax for identifying the schemes.
+
+The schemes are intended for general application within computer and communications systems.},
+}
+
+@techreport{SHA256,
+  title = {Secure Hash Standard (SHS)},
+  author = {{National Institute of Standards and Technology}},
+  institution = {NIST},
+  type = {Federal Information Processing Standards Publication},
+  number = {FIPS 180-4},
+  year = {2015},
+  month = {August},
+  url = {https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf},
+  abstract = {This standard specifies hash algorithms that can be used to generate digests of messages. The digests are used to detect whether messages have been changed since the digests were generated.}
+}
+
+@misc{VC-DATA-INTEGRITY,
+  title = {Verifiable Credential Data Integrity 1.0},
+  author = {Dave Longley, Manu Sporny, Ivan Herman},
+  howpublished = {Online},
+  year = {2025},
+  month = {May},
+  url = {https://www.w3.org/TR/vc-data-integrity/},
+  note = {VC-DATA-INTEGRITY},
+  abstract = {This specification describes mechanisms for ensuring the authenticity and integrity of verifiable credentials and similar types of constrained digital documents using cryptography, especially through the use of digital signatures and related mathematical proofs.}
+}
+
+@misc{ZCAP-LD,
+  title = {Authorization Capabilities for Linked Data v0.3},
+  author = {Christine Lemmer-Webber, Manu Sporny, Mark S. Miller},
+  howpublished = {Online},
+  year = {2025},
+  month = {August},
+  url = {https://w3c-ccg.github.io/zcap-spec/},
+  note = {ZCAP-LD},
+  abstract = {Authorization Capabilities for Linked Data (ZCAP-LD for short) provides a secure way for linked data systems to grant and express authority utilizing the object capability model. Capabilities are represented as linked data objects which are signed with Linked Data Proofs. ZCAP-LD supports delegating authority to other entities on the network by chaining together capability documents. "Caveats" may be attached to capability documents which may be used to restrict the scope of their use, for example to restrict the actions which may be used or providing a mechanism by which the capability may be later revoked.}
+}

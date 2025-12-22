@@ -1,0 +1,279 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Beacons - did:btcr2 DID Method Specification</title>
+
+
+        <!-- Custom HTML head -->
+        <meta name="darkreader-lock"/>
+
+        <meta name="description" content="did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin blockchain as a Verifiable Data Registry to announce changes to the DID document.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="src/assets/tabs.css">
+        <link rel="stylesheet" href="theme/custom.css">
+        <link rel="stylesheet" href="theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">did:btcr2 DID Method Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="beacons"><a class="header" href="#beacons">Beacons</a></h1>
+<p>A <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> is a service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the DID. The service properties define a Bitcoin address to watch for <a href="./terminology.html#beacon-signal">Beacon Signals</a>.</p>
+<p>All Beacon Signals broadcast from a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> in the <a href="./terminology.html#current-did-document">Current DID Document</a> MUST be processed as part of DID document resolution. The <a href="./terminology.html#beacon-type">Beacon Type</a> in the service defines how <a href="./terminology.html#beacon-signal">Beacon Signals</a> MUST be processed.</p>
+<p>Any on-chain <a href="./terminology.html#beacon-signal">Beacon Signal</a> that cannot be processed renders the related DID invalid. For this reason, all DID controllers SHOULD ensure the <a href="./terminology.html#beacon-address">Beacon Addresses</a> they include in their DID document require appropriate approval to spend <a href="./terminology.html#utxo">UTXOs</a> controlled by the address, so that only approved <a href="./terminology.html#beacon-signal">Beacon Signals</a> can be posted to Bitcoin. For resilience, BTCR2 DIDs can specify any number of <a href="./terminology.html#btcr2-beacon">Beacons</a> and SHOULD include at least one <a href="./terminology.html#singleton-beacon">Singleton Beacon</a> as a fallback in case all <a href="./terminology.html#aggregate-beacon">Aggregate Beacons</a> fail.</p>
+<p>A <a href="./terminology.html#beacon-signal">Beacon Signal</a> commits to, and anchors in a Bitcoin block, 32 bytes of information. These <a href="./terminology.html#signal-bytes">Signal Bytes</a> represent one of the following:</p>
+<ul>
+<li>A <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcement</a>;</li>
+<li>The hash of a <a href="./terminology.html#beacon-announcement-map">Beacon Announcement Map</a>; or</li>
+<li>The 32 bytes of an optimized <a href="./terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> root, where each leaf node is deterministically selected by a <strong>did:btcr2</strong> identifier and contains a hash associated with the <strong>did:btcr2</strong> identifier.</li>
+</ul>
+<p><strong>did:btcr2</strong> supports different <a href="./terminology.html#beacon-type">Beacon Types</a>, with each type defining a set of algorithms for:</p>
+<ul>
+<li>How a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> can be established and added as a service to a DID document.</li>
+<li>How <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a> are broadcast within <a href="./terminology.html#beacon-signal">Beacon Signals</a>.</li>
+<li>How a resolver processes <a href="./terminology.html#beacon-signal">Beacon Signals</a>, identifying, verifying, and applying the authorized mutations to a DID document for a specific DID.</li>
+</ul>
+<p>The current, active, <a href="./terminology.html#btcr2-beacon">BTCR2 Beacons</a> of a DID document are specified in the document’s <code>service</code> property. By updating the DID document, a DID controller can change the set of <a href="./terminology.html#btcr2-beacon">BTCR2 Beacons</a> they use to broadcast updates to their DID document over time. Resolution of a DID MUST process signals from all <a href="./terminology.html#btcr2-beacon">BTCR2 Beacons</a> identified in the <a href="./terminology.html#current-did-document">Current DID Document</a> and apply them in the order determined by the <code>targetVersionId</code> declared in the <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</p>
+<p>All <strong>did:btcr2</strong> DID resolvers MUST support the <a href="./terminology.html#beacon-type">Beacon Types</a> defined in this specification.</p>
+<h2 id="beacon-types"><a class="header" href="#beacon-types">Table 1: Beacon Types</a></h2>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Service <code>type</code></th><th style="text-align: left">Beacon Type</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>"SingletonBeacon"</code></td><td style="text-align: left"><a href="./terminology.html#singleton-beacon">Singleton Beacon</a></td></tr>
+<tr><td style="text-align: left"><code>"CASBeacon"</code></td><td style="text-align: left"><a href="./terminology.html#cas-beacon">CAS Beacon</a></td></tr>
+<tr><td style="text-align: left"><code>"SMTBeacon"</code></td><td style="text-align: left"><a href="./terminology.html#smt-beacon">SMT Beacon</a></td></tr>
+</tbody></table>
+</div>
+<h2 id="singleton-beacon"><a class="header" href="#singleton-beacon">Singleton Beacon</a></h2>
+<p>A <a href="./terminology.html#singleton-beacon">Singleton Beacon</a> is a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> that can be used to announce commitments to a single <a href="./terminology.html#btcr2-update">BTCR2 Update</a> targeting a single DID document. It creates a <a href="./terminology.html#beacon-signal">Beacon Signal</a> that commits to a single <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcement</a>. This is typically done directly by the DID controller, as there is no <a href="./terminology.html#aggregation-cohort">Aggregation Cohort</a>.</p>
+<p>If the <a href="./terminology.html#btcr2-update">BTCR2 Update</a> committed to by the <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcement</a> is not publicly discoverable (i.e., is not published to a CAS under its hash), the only parties that are aware of it are the DID controller and any parties provided it by the DID controller.</p>
+<p>The <code>type</code> of a <code>service</code> defining a <a href="./terminology.html#singleton-beacon">Singleton Beacon</a> in a DID document is <code>"SingletonBeacon"</code>.</p>
+<h2 id="cas-beacon"><a class="header" href="#cas-beacon">CAS Beacon</a></h2>
+<p>A <a href="./terminology.html#cas-beacon">CAS Beacon</a> creates a <a href="./terminology.html#beacon-signal">Beacon Signal</a> that commits to multiple <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a> through a <a href="./terminology.html#beacon-announcement-map">Beacon Announcement Map</a>. To do so, it constructs a Map where the key is the <strong>did:btcr2</strong> identifier and the value is the hash of the corresponding <a href="./terminology.html#btcr2-update">BTCR2 Update</a>. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> contains a SHA-256 hash of the Map.</p>
+<p>If a <a href="./terminology.html#btcr2-update">BTCR2 Update</a> is not publicly discoverable (i.e., is not published to a CAS under its hash), the only parties with access to the update are the DID controller and any parties they gave it to (etc.).</p>
+<p>For a <a href="./terminology.html#cas-beacon">CAS Beacon</a>, proof of non-inclusion of a <strong>did:btcr2</strong> identifier is simply its absence from the Map.</p>
+<p>The <code>type</code> of a <code>service</code> defining a <a href="./terminology.html#cas-beacon">CAS Beacon</a> in a DID document is <code>"CASBeacon"</code>.</p>
+<h2 id="smt-beacon"><a class="header" href="#smt-beacon">SMT Beacon</a></h2>
+<p>An <a href="./terminology.html#smt-beacon">SMT Beacon</a> creates a <a href="./terminology.html#beacon-signal">Beacon Signal</a> that commits to multiple <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a>, each identified by a <strong>did:btcr2</strong> identifier. To do so, it constructs an optimized <a href="./terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> as defined in <a href="./appendix.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> and publishes the Merkle root.</p>
+<p>An <a href="./terminology.html#smt-beacon">SMT Beacon</a> provides maximum privacy for the DID controller, as the DID controller never has to reveal their DIDs or <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> to the aggregator.</p>
+<p>The <code>type</code> of a <code>service</code> defining an <a href="./terminology.html#smt-beacon">SMT Beacon</a> in a DID document is <code>"SMTBeacon"</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="update-data-distribution.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="beacons/aggregate-beacons.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="update-data-distribution.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="beacons/aggregate-beacons.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="src/assets/mermaid.min.js"></script>
+        <script src="src/assets/mermaid-init.js"></script>
+        <script src="src/assets/tabs.js"></script>
+        <script src="theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

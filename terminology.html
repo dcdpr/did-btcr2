@@ -1,0 +1,405 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Terminology - did:btcr2 DID Method Specification</title>
+
+
+        <!-- Custom HTML head -->
+        <meta name="darkreader-lock"/>
+
+        <meta name="description" content="did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin blockchain as a Verifiable Data Registry to announce changes to the DID document.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="src/assets/tabs.css">
+        <link rel="stylesheet" href="theme/custom.css">
+        <link rel="stylesheet" href="theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">did:btcr2 DID Method Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="terminology"><a class="header" href="#terminology">Terminology</a></h1>
+<h2 id="aggregate-beacon"><a class="header" href="#aggregate-beacon">Aggregate Beacon</a></h2>
+<p>A collection of <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> can optionally be aggregated into a single
+<a href="./terminology.html#beacon-signal">Beacon Signal</a> by an <a href="./terminology.html#aggregation-service">Aggregation Service</a> for multiple entities (possibly controlling
+multiple DIDs and possibly posting multiple updates).</p>
+<p>There can only ever be one <a href="./terminology.html#btcr2-update">BTCR2 Update</a> per <strong>did:btcr2</strong> DID in a <a href="./terminology.html#beacon-signal">Beacon Signal</a> from an
+Aggregate Beacon.</p>
+<h2 id="aggregation-cohort"><a class="header" href="#aggregation-cohort">Aggregation Cohort</a></h2>
+<p>The set of <a href="./terminology.html#aggregation-participant">Aggregation Participants</a> within an <a href="./terminology.html#aggregate-beacon">Aggregate Beacon</a>.</p>
+<h2 id="aggregation-participant"><a class="header" href="#aggregation-participant">Aggregation Participant</a></h2>
+<p>A member of an <a href="./terminology.html#aggregation-cohort">Aggregation Cohort</a>, typically a DID controller, that controls cryptographic keys
+required to partially authorize spends from a <a href="./terminology.html#beacon-address">Beacon Address</a>.</p>
+<h2 id="aggregation-service"><a class="header" href="#aggregation-service">Aggregation Service</a></h2>
+<p>The entity that coordinates the protocols of an <a href="./terminology.html#aggregate-beacon">Aggregate Beacon</a> in order to establish a
+<a href="./terminology.html#aggregation-cohort">Aggregation Cohort</a> and aggregate <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a> in a
+<a href="./terminology.html#beacon-signal">Beacon Signal</a>.</p>
+<h2 id="authorized-beacon=signal"><a class="header" href="#authorized-beacon=signal">Authorized Beacon Signal</a></h2>
+<p>An Authorized Beacon Signal is a <a href="./terminology.html#beacon-signal">Beacon Signal</a> from a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> with a <a href="./terminology.html#beacon-address">Beacon Address</a>
+in a then-current DID document.</p>
+<h2 id="beacon-address"><a class="header" href="#beacon-address">Beacon Address</a></h2>
+<p>The Bitcoin address of a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a>. Spends of <a href="./terminology.html#utxo">UTXO</a> controlled by this address are identified
+as <a href="./terminology.html#beacon-signal">Beacon Signals</a>.</p>
+<h2 id="beacon-announcement-map"><a class="header" href="#beacon-announcement-map">Beacon Announcement Map</a></h2>
+<p>A document that maps <strong>did:btcr2</strong> identifiers to <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a>. This is used to distinguish which <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcement</a> applies to
+which <strong>did:btcr2</strong> identifier.</p>
+<h2 id="beacon-signal"><a class="header" href="#beacon-signal">Beacon Signal</a></h2>
+<p>Beacon Signals are Bitcoin transactions that spend from a <a href="./terminology.html#beacon-address">Beacon Address</a> and include a
+transaction output of the format defined in <a href="./terminology.html#signal-bytes">Signal Bytes</a>. Beacon Signals announce one or more
+<a href="./terminology.html#btcr2-update">BTCR2 Updates</a> and provide a means for these updates to be validated against the
+Beacon Signal.</p>
+<p>The type of the <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> determines how these Beacon Signals are constructed and processed to
+validate a set of <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> against the <a href="./terminology.html#signal-bytes">Signal Bytes</a> contained within the
+Beacon Signal.</p>
+<h2 id="beacon-type"><a class="header" href="#beacon-type">Beacon Type</a></h2>
+<p>The type of a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a>. The Beacon Type defines how <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a> are included within a <a href="./terminology.html#beacon-signal">Beacon Signal</a> broadcast on the Bitcoin network. It also
+defines how the content committed within <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a>
+can be validated against the <a href="./terminology.html#beacon-signal">Beacon Signal</a>.</p>
+<h2 id="btcr2-beacon"><a class="header" href="#btcr2-beacon">BTCR2 Beacon</a></h2>
+<p>A service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the
+DID. It MUST be either a <a href="./terminology.html#singleton-beacon">Singleton Beacon</a>, <a href="./terminology.html#smt-beacon">SMT Beacon</a>, or a <a href="./terminology.html#cas-beacon">CAS Beacon</a>.</p>
+<h2 id="btcr2-update"><a class="header" href="#btcr2-update">BTCR2 Update</a></h2>
+<p>A data structure used for transforming a source DID document into a target DID document. It contains
+a JSON Patch [<a href="bibliography.html#RFC6902">RFC6902</a>] object, a version number for the target DID document, and SHA-256
+hashes for the source and target DID documents.</p>
+<h2 id="btcr2-unsigned-update"><a class="header" href="#btcr2-unsigned-update">BTCR2 Unsigned Update</a></h2>
+<p>A <a href="./terminology.html#btcr2-update">BTCR2 Update</a> without a proof attached to it.</p>
+<p>Example: <a href="./data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
+<h2 id="btcr2-update-announcement"><a class="header" href="#btcr2-update-announcement">BTCR2 Update Announcement</a></h2>
+<p>A 32-byte SHA-256 hash committing to a <a href="./terminology.html#btcr2-update">BTCR2 Update</a> that has been broadcast by a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> in
+a DID’s then-<a href="./terminology.html#authorized-beacon-signal">Authorized Beacon Signal</a>. <a href="./terminology.html#beacon-signal">Beacon Signals</a> can optionally aggregate
+one or more BTCR2 Update Announcements. How <a href="./terminology.html#beacon-signal">Beacon Signals</a> aggregate announcements
+is defined by the <a href="./terminology.html#beacon-type">Beacon Type</a>.</p>
+<h2 id="btcr2-signed-update"><a class="header" href="#btcr2-signed-update">BTCR2 Signed Update</a></h2>
+<p>A <a href="./terminology.html#btcr2-update">BTCR2 Update</a> with a proof attached to it.</p>
+<p>A capability invocation secured using Data Integrity [<a href="bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] that invokes an authorization capability to
+update a specific <strong>did:btcr2</strong> DID document. This capability invocation Data Integrity proof
+secures the <a href="./terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> document.</p>
+<p>Example: <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</p>
+<h2 id="cas"><a class="header" href="#cas">CAS</a></h2>
+<p><a href="./terminology.html#content-addressable-storage">Content Addressable Storage</a></p>
+<h2 id="cas-beacon"><a class="header" href="#cas-beacon">CAS Beacon</a></h2>
+<p>A type of <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> which aggregates multiple
+<a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a>. A <a href="./terminology.html#beacon-signal">Beacon Signal</a> from a CAS Beacon commits
+to a <a href="./terminology.html#beacon-announcement-map">Beacon Announcement Map</a>.</p>
+<h2 id="cid"><a class="header" href="#cid">CID</a></h2>
+<p><a href="./terminology.html#content-identifier">Content Identifier</a></p>
+<h2 id="content-addressable-storage"><a class="header" href="#content-addressable-storage">Content Addressable Storage</a></h2>
+<p>Content Addressable Storage (CAS) is a data storage system where content is addressable using
+<a href="./terminology.html#content-identifier">Content Identifiers</a> (CIDs). The InterPlanetary File System (IPFS) is an
+example of CAS.</p>
+<h2 id="content-identifier"><a class="header" href="#content-identifier">Content Identifier (CID)</a></h2>
+<p>An identifier for some digital content (e.g., a file) generated from the content itself such that
+for any given content and CID generation algorithm there is a single, unique, collision-resistant
+identifier. This is typically done through some hashing function.</p>
+<h2 id="current-did-document"><a class="header" href="#current-did-document">Current DID Document</a></h2>
+<p>The transient state of the DID document during DID Resolution. The
+Current DID Document is iteratively updated as a resolver traverses the blockchain and applies the relevant
+<a href="./terminology.html#btcr2-update">BTCR2 Updates</a> announced by <a href="./terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a> it
+identifies in specific Bitcoin blocks.</p>
+<h2 id="data-integrity-proof"><a class="header" href="#data-integrity-proof">Data Integrity Proof</a></h2>
+<p>A digital signature added to a <a href="./terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> in order to convert
+to a <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a>.</p>
+<p>The algorithm is specified in BIP340 Cryptosuites v0.1 [<a href="bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] and Verifiable Credential Data Integrity 1.0 [<a href="bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>].</p>
+<h2 id="genesis-bytes"><a class="header" href="#genesis-bytes">Genesis Bytes</a></h2>
+<p>The bytes used to generate a did:btcr2 identifier. These bytes are either a 33-byte compressed SEC
+encoded secp256k1 public key or a 32-byte SHA-256 hash of a <a href="./terminology.html#genesis-document">Genesis Document</a>.</p>
+<h2 id="genesis-document"><a class="header" href="#genesis-document">Genesis Document</a></h2>
+<p>An intermediate representation of an <a href="./terminology.html#initial-did-document">Initial DID Document</a> with the identifier set to the
+placeholder value.</p>
+<p>Example: <a href="./data-structures.html#genesis-document">Genesis Document (data structure)</a>.</p>
+<h2 id="initial-did-document"><a class="header" href="#initial-did-document">Initial DID Document</a></h2>
+<p>The canonical, conformant version 1 of a DID document for a specific <strong>did:btcr2</strong> identifier.</p>
+<p>Example: <a href="./data-structures.html#initial-document">Initial document (data structure)</a>.</p>
+<h2 id="late-publishing"><a class="header" href="#late-publishing">Late Publishing</a></h2>
+<p>Late Publishing is the ability for DID updates to be revealed at a later point in time, which alters
+the history of a DID document such that a state, that appeared valid before the reveal, appears
+after Late Publishing to never have been valid. Late Publishing breaks <a href="./terminology.html#non-repudiation">Non-Repudiation</a>.</p>
+<h2 id="merkle-tree"><a class="header" href="#merkle-tree">Merkle Tree</a></h2>
+<p>A tree data structure in which the leaves are a hash of a data block and every node that is not a
+leaf is a hash of its child node values.</p>
+<p>The root of a Merkle Tree is a single hash that is produced by recursively hashing the child nodes
+down to the leaves of the tree. Given the root of a Merkle Tree it is possible to provide a Merkle
+path that proves the inclusion of some data in the tree.</p>
+<h2 id="non-repudiation"><a class="header" href="#non-repudiation">Non-Repudiation</a></h2>
+<p>Non-Repudiation is a feature of DID methods that can clearly state that all data is available to
+present one canonical history for a DID.</p>
+<p>If some data is needed but not available, the DID method MUST NOT allow DID resolution to complete.
+Any changes to the history, such as may occur if a website edits a file, MUST be detected and
+disallowed. The <a href="./terminology.html#late-publishing">Late Publishing</a> problem breaks Non-Repudiation.</p>
+<h2 id="offline-creation"><a class="header" href="#offline-creation">Offline Creation</a></h2>
+<p>Offline Creation refers to when a <strong>did:btcr2</strong> identifier and corresponding initial DID document
+are created without requiring network interactions.</p>
+<p><strong>did:btcr2</strong> supports offline creation in two modes:</p>
+<ul>
+<li>Key Pair Deterministic Creation; and</li>
+<li>DID Document Initiated Creation.</li>
+</ul>
+<h2 id="resolution-time"><a class="header" href="#resolution-time">Resolution Time</a></h2>
+<p>A Coordinated Universal Time (UTC) timestamp set when the resolver receives a resolution request.</p>
+<h2 id="schnorr-signature"><a class="header" href="#schnorr-signature">Schnorr Signature</a></h2>
+<p>An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures with some major
+advantages, such as being able to combine digital signatures from multiple parties to form a single
+digital signature for the composite public key.</p>
+<p>Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same keypairs can be used to
+produce both Schnorr signatures and ECDSA signatures.</p>
+<h2 id="sidecar"><a class="header" href="#sidecar">Sidecar</a></h2>
+<p>A mechanism by which data necessary for resolving a DID is provided alongside the <strong>did:btcr2</strong>
+identifier being resolved, rather than being retrieved through open and standardized means (e.g., by
+retrieving from IPFS).</p>
+<p>To explain the metaphor, a sidecar on a motorcycle brings along a second passenger in a transformed
+vehicle, the same way the DID controller MUST bring along the DID document history to transform the
+situation into one that is verifiable.</p>
+<h2 id="sidecar-data"><a class="header" href="#sidecar-data">Sidecar Data</a></h2>
+<p>Data transmitted via <a href="./terminology.html#sidecar">Sidecar</a>.</p>
+<h2 id="signal-bytes"><a class="header" href="#signal-bytes">Signal Bytes</a></h2>
+<p>The 32 bytes of information that are included within the last transaction output of a
+<a href="./terminology.html#beacon-signal">Beacon Signal</a>. The script of this transaction output has the following form:</p>
+<p><code>[OP_RETURN, OP_PUSH_BYTES, &lt;signal_bytes&gt;]</code></p>
+<h2 id="singleton-beacon"><a class="header" href="#singleton-beacon">Singleton Beacon</a></h2>
+<p>A type of <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> whose <a href="./terminology.html#beacon-signal">Beacon Signals</a> each contain a single <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update
+Announcement</a>.</p>
+<h2 id="smt"><a class="header" href="#smt">SMT</a></h2>
+<p><a href="./terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a></p>
+<h2 id="smt-beacon"><a class="header" href="#smt-beacon">SMT Beacon</a></h2>
+<p>A type of <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> which aggregates multiple <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a> using an optimized <a href="./terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a>.</p>
+<p>A <a href="./terminology.html#beacon-signal">Beacon Signal</a> from an SMT Beacon contains the root of an optimized <a href="./terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a>.</p>
+<h2 id="smt-proof"><a class="header" href="#smt-proof">SMT Proof</a></h2>
+<p>A set of SHA-256 hashes for nodes in a <a href="./terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> that together form a path from a leaf in
+the tree to the Merkle root, proving that the leaf is in the tree.</p>
+<h2 id="sparse-merkle-tree"><a class="header" href="#sparse-merkle-tree">Sparse Merkle Tree</a></h2>
+<p>A <a href="./terminology.html#merkle-tree">Merkle Tree</a> data structure where each data point included at the leaf of the tree is indexed.</p>
+<p>This data structure enables proofs of both inclusion and non-inclusion of data at a given index. The
+instantiation in this specification has 2^256 leaves that are indexed by the SHA-256 hash of
+a <strong>did:btcr2</strong> identifier.</p>
+<h2 id="unsigned-beacon-signal"><a class="header" href="#unsigned-beacon-signal">Unsigned Beacon Signal</a></h2>
+<p>The Bitcoin transaction of the <a href="./terminology.html#beacon-signal">Beacon Signal</a> before its transaction inputs have been signed,
+effectively spending these inputs.</p>
+<h2 id="unspent-transaction-output"><a class="header" href="#unspent-transaction-output">Unspent Transaction Output (UTXO)</a></h2>
+<p>A Bitcoin transaction takes in transaction outputs as inputs and creates new transaction outputs
+potentially controlled by different addresses. An Unspent Transaction Output (UTXO) is a
+transaction output from a Bitcoin transaction that has not yet been included as an input, and hence
+spent, within another Bitcoin transaction.</p>
+<h2 id="utxo"><a class="header" href="#utxo">UTXO</a></h2>
+<p><a href="./terminology.html#unspent-transaction-output">Unspent Transaction Output</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="conformance.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="update-data-distribution.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="conformance.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="update-data-distribution.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="src/assets/mermaid.min.js"></script>
+        <script src="src/assets/mermaid-init.js"></script>
+        <script src="src/assets/tabs.js"></script>
+        <script src="theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

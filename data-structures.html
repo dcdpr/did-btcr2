@@ -1,0 +1,1160 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Data Structures - did:btcr2 DID Method Specification</title>
+
+
+        <!-- Custom HTML head -->
+        <meta name="darkreader-lock"/>
+
+        <meta name="description" content="did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin blockchain as a Verifiable Data Registry to announce changes to the DID document.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="src/assets/tabs.css">
+        <link rel="stylesheet" href="theme/custom.css">
+        <link rel="stylesheet" href="theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">did:btcr2 DID Method Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="data-structures"><a class="header" href="#data-structures">Data Structures</a></h1>
+<p>For the purposes of interoperability, this specification defines data structures using the data
+model defined by the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</p>
+<p>Concrete representations of these data structures MUST conform to the JSON-LD 1.1 specification [<a href="bibliography.html#JSON-LD">JSON-LD</a>].</p>
+<p>All SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] that appear in concrete representations of these data structures
+MUST be encoded as a string using the <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding.</p>
+<h2 id="did-document"><a class="header" href="#did-document">DID Document</a></h2>
+<p>A DID document is a map data structure defined by the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</p>
+<p>The following properties MUST be included:</p>
+<ul>
+<li><code>@context</code>: A context array containing the following context URLs:
+<ul>
+<li><code>"https://www.w3.org/TR/did-1.1"</code></li>
+<li><code>"https://btcr2.dev/context/v1"</code></li>
+</ul>
+</li>
+<li><code>id</code>: The <code>did</code>.</li>
+</ul>
+<p>It can optionally include one or more of the following properties:</p>
+<ul>
+<li><code>verificationMethod</code>: A set of verification method objects.</li>
+<li><code>assertionMethod</code>: A set of references to verification methods or embedded verification method
+objects to be used for assertions.</li>
+<li><code>capabilityInvocation</code>: A set of references to verification methods or embedded verification
+method objects to be used for capability invocations.</li>
+<li><code>service</code>: An array of service objects.
+<ul>
+<li><a href="./terminology.html#btcr2-beacon">BTCR2 Beacons</a> are declared as DID services using the service <code>type</code> specified in
+<a href="./beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>.</li>
+</ul>
+</li>
+</ul>
+<p>In order for this DID document to be updatable, controllers must include at least one
+verification method with a capability invocation verification relationship and at least one
+<a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> service.</p>
+<h2 id="genesis-document"><a class="header" href="#genesis-document">Genesis Document</a></h2>
+<p>A <a href="./terminology.html#genesis-document">Genesis Document</a> is a <a href="./data-structures.html#did-document">DID document (data structure)</a> with the identifier set to the
+placeholder value (<code>did:btcr2:_</code>).</p>
+<div class="tabs" id="genesis-document-example">
+  <div class="tablist" role="tablist" aria-label="genesis-document-example">
+    <button role="tab"
+            id="genesis-document-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="genesis-document-example-panel-hide"
+            data-tab="genesis-document-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="genesis-document-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="genesis-document-example-panel-show"
+            data-tab="genesis-document-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="genesis-document-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="genesis-document-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="genesis-document-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="genesis-document-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "@context": [
+    "https://www.w3.org/TR/did-1.1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "id": "did:btcr2:_",
+  "verificationMethod": [
+    {
+      "id": "did:btcr2:_#key-0",
+      "type": "Multikey",
+      "controller": "did:btcr2:_",
+      "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+    }
+  ],
+  "assertionMethod": [
+    "did:btcr2:_#key-0"
+  ],
+  "capabilityInvocation": [
+    "did:btcr2:_#key-0"
+  ],
+  "service": [
+    {
+      "id": "did:btcr2:_#service-0",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "bitcoin:tb1qtmshuqzeyr7cdh5t2nl6kf3s73fdynpj5apgtx"
+    },
+    {
+      "id": "did:btcr2:_#service-1",
+      "type": "MapBeacon",
+      "serviceEndpoint": "bitcoin:tb1pt97580gtfuge9mnrkvj2upk982alrr08pk4hhmlzkeutc06pt9pqyjqef2"
+    },
+    {
+      "id": "did:btcr2:_#service-2",
+      "type": "SMTBeacon",
+      "serviceEndpoint": "bitcoin:tb1pgrn7wxhtlsakjjelag6usrmzw89h8tnsaq2ly50ty29hujerqu0sk5kv4e"
+    }
+  ]
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="initial-document"><a class="header" href="#initial-document">Initial DID Document</a></h2>
+<p>An <a href="./terminology.html#initial-did-document">Initial DID Document</a> is a conformant <a href="./data-structures.html#did-document">DID document (data structure)</a>.</p>
+<div class="tabs" id="initial-did-document-example">
+  <div class="tablist" role="tablist" aria-label="initial-did-document-example">
+    <button role="tab"
+            id="initial-did-document-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="initial-did-document-example-panel-hide"
+            data-tab="initial-did-document-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="initial-did-document-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="initial-did-document-example-panel-show"
+            data-tab="initial-did-document-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="initial-did-document-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="initial-did-document-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="initial-did-document-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="initial-did-document-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "@context": [
+    "https://www.w3.org/TR/did-1.1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3",
+  "controller": [
+    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3"
+  ],
+  "verificationMethod": [
+    {
+      "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey",
+      "type": "Multikey",
+      "controller": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3",
+      "publicKeyMultibase": "zQ3shb8PoGykqRtHb9bXNKrXG7PHMjDrECcgLeSqawMERFACj"
+    }
+  ],
+  "authentication": [
+    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey"
+  ],
+  "assertionMethod": [
+    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey"
+  ],
+  "capabilityInvocation": [
+    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey"
+  ],
+  "capabilityDelegation": [
+    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey"
+  ],
+  "service": [
+    {
+      "type": "SingletonBeacon",
+      "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialP2PKH",
+      "serviceEndpoint": "bitcoin:mzCTywak2t3ZGf1jMCF8UrsH2jWLwh9zJL"
+    },
+    {
+      "type": "SingletonBeacon",
+      "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialP2WPKH",
+      "serviceEndpoint": "bitcoin:tb1qen45fjp5r57v7x99ww3cpkd9argdkvgadrayfw"
+    },
+    {
+      "type": "SingletonBeacon",
+      "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialP2TR",
+      "serviceEndpoint": "bitcoin:tb1p6efm2xk7mpfmh733qyu3k7cgk05gmyynp49srgn7u5uqxsr8avssj4rdlc"
+    }
+  ]
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="btcr2-unsigned-update"><a class="header" href="#btcr2-unsigned-update">BTCR2 Unsigned Update</a></h2>
+<p>A <a href="./terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is a Map data structure with the following properties:</p>
+<ul>
+<li><code>@context</code>: A context array containing the following context URLs:
+<ul>
+<li><code>"https://w3id.org/zcap/v1"</code></li>
+<li><code>"https://w3id.org/security/data-integrity/v2"</code></li>
+<li><code>"https://w3id.org/json-ld-patch/v1"</code></li>
+<li><code>"https://btcr2.dev/context/v1"</code></li>
+</ul>
+</li>
+<li><code>patch</code>: A JSON Patch [<a href="bibliography.html#RFC6902">RFC6902</a>] object that defines a set of transformations to be
+applied to a DID document. The result of applying the patch MUST be a conformant DID document
+according to the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</li>
+<li><code>targetVersionId</code>: The <code>versionId</code> of the DID document after the patch has been applied. The
+targetVersionId MUST be one more than the <code>versionId</code> of the DID document being updated.</li>
+<li><code>sourceHash</code>: A SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST
+be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+<li><code>targetHash</code>: A SHA-256 hash of the DID document that results from applying the patch to the
+source document. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+</ul>
+<div class="tabs" id="btcr2-unsigned-update-example">
+  <div class="tablist" role="tablist" aria-label="btcr2-unsigned-update-example">
+    <button role="tab"
+            id="btcr2-unsigned-update-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="btcr2-unsigned-update-example-panel-hide"
+            data-tab="btcr2-unsigned-update-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="btcr2-unsigned-update-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="btcr2-unsigned-update-example-panel-show"
+            data-tab="btcr2-unsigned-update-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="btcr2-unsigned-update-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="btcr2-unsigned-update-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="btcr2-unsigned-update-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="btcr2-unsigned-update-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "patch": [
+    {
+      "op": "add",
+      "path": "/verificationMethod/1",
+      "value": {
+        "id": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1",
+        "type": "Multikey",
+        "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+        "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/authentication",
+      "value": [
+        "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1"
+      ]
+    }
+  ],
+  "sourceHash": "8beuAJ8w88YWrms8hsqCnZn2atxBMGsQ7YBFhzPx5b2q",
+  "targetHash": "F2F1pmK9tWAwzf6rKyVCietbswatFctvSJHM4sj1fiAw",
+  "targetVersionId": 2
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="btcr2-signed-update"><a class="header" href="#btcr2-signed-update">BTCR2 Signed Update</a></h2>
+<p>A <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is a Map data structure with the same properties as
+<a href="./data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> and one additional property:</p>
+<ul>
+<li><code>proof</code>: A <a href="./data-structures.html#data-integrity-proof">Data Integrity Proof (data structure)</a>.</li>
+</ul>
+<div class="tabs" id="btcr2-signed-update-example">
+  <div class="tablist" role="tablist" aria-label="btcr2-signed-update-example">
+    <button role="tab"
+            id="btcr2-signed-update-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="btcr2-signed-update-example-panel-hide"
+            data-tab="btcr2-signed-update-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="btcr2-signed-update-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="btcr2-signed-update-example-panel-show"
+            data-tab="btcr2-signed-update-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="btcr2-signed-update-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="btcr2-signed-update-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="btcr2-signed-update-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="btcr2-signed-update-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "patch": [
+    {
+      "op": "add",
+      "path": "/verificationMethod/1",
+      "value": {
+        "id": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1",
+        "type": "Multikey",
+        "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+        "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/authentication",
+      "value": [
+        "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1"
+      ]
+    }
+  ],
+  "sourceHash": "8beuAJ8w88YWrms8hsqCnZn2atxBMGsQ7YBFhzPx5b2q",
+  "targetHash": "F2F1pmK9tWAwzf6rKyVCietbswatFctvSJHM4sj1fiAw",
+  "targetVersionId": 2,
+  "proof": {
+    "@context": [
+      "https://w3id.org/security/v2",
+      "https://w3id.org/zcap/v1",
+      "https://w3id.org/json-ld-patch/v1",
+      "https://btcr2.dev/context/v1"
+    ],
+    "type": "DataIntegrityProof",
+    "cryptosuite": "bip340-jcs-2025",
+    "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+    "proofPurpose": "capabilityInvocation",
+    "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+    "capabilityAction": "Write",
+    "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
+  }
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="data-integrity-config"><a class="header" href="#data-integrity-config">Data Integrity Config</a></h2>
+<p>A Data Integrity [<a href="bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] proof with the <code>proofPurpose</code> set to <code>"capabilityInvocation"</code> and <code>proofValue</code> omitted.</p>
+<p>The following properties MUST be included in the Data Integrity Config:</p>
+<ul>
+<li><code>@context</code>: A context array containing the follow context URLs:
+<ul>
+<li><code>"https://w3id.org/security/v2"</code></li>
+<li><code>"https://w3id.org/zcap/v1"</code></li>
+<li><code>"https://w3id.org/json-ld-patch/v1"</code></li>
+<li><code>"https://btcr2.dev/context/v1"</code></li>
+</ul>
+</li>
+<li><code>type</code>: The string <code>"DataIntegrityProof"</code>.</li>
+<li><code>cryptosuite</code>: The string <code>"bip340-jcs-2025"</code>.</li>
+<li><code>verificationMethod</code>: A valid <code>verificationMethod</code> reference that exists in the most recent DID document.</li>
+<li><code>proofPurpose</code>: The string <code>"capabilityInvocation"</code>.</li>
+<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>.</li>
+<li><code>capabilityAction</code>: A string declaring the action required for the capability invocation. The
+string MUST be set to <code>"Write"</code>.</li>
+</ul>
+<div class="tabs" id="data-integrity-config-example">
+  <div class="tablist" role="tablist" aria-label="data-integrity-config-example">
+    <button role="tab"
+            id="data-integrity-config-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="data-integrity-config-example-panel-hide"
+            data-tab="data-integrity-config-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="data-integrity-config-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="data-integrity-config-example-panel-show"
+            data-tab="data-integrity-config-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="data-integrity-config-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="data-integrity-config-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="data-integrity-config-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="data-integrity-config-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "type": "DataIntegrityProof",
+  "cryptosuite": "bip340-jcs-2025",
+  "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+  "proofPurpose": "capabilityInvocation",
+  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "capabilityAction": "Write"
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="data-integrity-proof"><a class="header" href="#data-integrity-proof">Data Integrity Proof</a></h2>
+<p>A <a href="./terminology.html#data-integrity-proof">Data Integrity Proof</a> with the <code>proofPurpose</code> set to <code>"capabilityInvocation"</code>. This proof MUST be a valid invocation of the capability to update a <strong>did:btcr2</strong> DID document.</p>
+<p>This data structure is a Map data structure with the same properties as <a href="./data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> and one additional property:</p>
+<ul>
+<li><code>proofValue</code>: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 [<a href="bibliography.html#BIP340">BIP340</a>], as a Multibase <code>"base-58-btc"</code> [<a href="bibliography.html#CID">CID</a>] encoded string.</li>
+</ul>
+<div class="tabs" id="data-integrity-proof-example">
+  <div class="tablist" role="tablist" aria-label="data-integrity-proof-example">
+    <button role="tab"
+            id="data-integrity-proof-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="data-integrity-proof-example-panel-hide"
+            data-tab="data-integrity-proof-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="data-integrity-proof-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="data-integrity-proof-example-panel-show"
+            data-tab="data-integrity-proof-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="data-integrity-proof-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="data-integrity-proof-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="data-integrity-proof-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="data-integrity-proof-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "@context": [
+    "https://w3id.org/security/v2",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/json-ld-patch/v1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "type": "DataIntegrityProof",
+  "cryptosuite": "bip340-jcs-2025",
+  "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+  "proofPurpose": "capabilityInvocation",
+  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "capabilityAction": "Write",
+  "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="sidecar-data"><a class="header" href="#sidecar-data">Sidecar Data</a></h2>
+<p>The <a href="./terminology.html#sidecar-data">Sidecar Data</a> contains optional properties:</p>
+<ul>
+<li><code>@context</code>: The context string <code>"https://btcr2.dev/context/v1"</code></li>
+<li><code>genesisDocument</code>: OPTIONAL <a href="./terminology.html#genesis-document">Genesis Document</a>. It is REQUIRED when resolving <strong>did:btcr2</strong>
+identifiers with <code>x</code> HRP.</li>
+<li><code>updates</code>: OPTIONAL array of <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a>. It is REQUIRED
+if the DID being resolved has ever had a published <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
+<li><code>casUpdates</code>: OPTIONAL array of <a href="./data-structures.html#cas-announcement">CAS Announcements</a>. It is REQUIRED
+if the DID being resolved has used a <a href="./terminology.html#cas-beacon">CAS Beacon</a> to publish a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
+<li><code>smtProofs</code>: OPTIONAL array of <a href="./data-structures.html#smt-proof">SMT Proofs</a>. It is REQUIRED
+if the DID being resolved has used a <a href="./terminology.html#smt-beacon">SMT Beacon</a> to publish a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
+</ul>
+<div class="tabs" id="sidecar-data-example">
+  <div class="tablist" role="tablist" aria-label="sidecar-data-example">
+    <button role="tab"
+            id="sidecar-data-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="sidecar-data-example-panel-hide"
+            data-tab="sidecar-data-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="sidecar-data-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="sidecar-data-example-panel-show"
+            data-tab="sidecar-data-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="sidecar-data-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="sidecar-data-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="sidecar-data-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="sidecar-data-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "@context": "https://btcr2.dev/context/v1",
+  "updates": [
+    {
+      "@context": [
+        "https://w3id.org/security/v2",
+        "https://w3id.org/zcap/v1",
+        "https://w3id.org/json-ld-patch/v1"
+      ],
+      "patch": [
+        {
+          "op": "add",
+          "path": "/verificationMethod/1",
+          "value": {
+            "id": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp#key-1",
+            "type": "Multikey",
+            "controller": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp",
+            "publicKeyMultibase": "zQ3shnJ534uiR8xHXZuumXDDeAYwJhkTbiyYcaFSbwWxCnpXT"
+          }
+        }
+      ],
+      "sourceHash": "8SZT2CphokAD389BtLmn5DGY6QUbM5QBSnFqpdzAwdaU",
+      "targetHash": "3YgLJ5dshQzrfy3ZjiH6TFWtwjQP8XGirjzT5ysmTh5m",
+      "targetVersionId": 2,
+      "proof": {
+        "@context": [
+          "https://w3id.org/security/v2",
+          "https://w3id.org/zcap/v1",
+          "https://w3id.org/json-ld-patch/v1"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "bip340-jcs-2025",
+        "verificationMethod": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp#initialKey",
+        "proofPurpose": "capabilityInvocation",
+        "capability": "urn:zcap:root:did%3Abtcr2%3Ak1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp",
+        "capabilityAction": "Write",
+        "proofValue": "z2mEjk9a1cgm9KZyo16heWmuoSV9TZYaQmuKkJMoh4pvFYhQnaz18WAWNv98MQ9xqbWa95rYoMCvEy5c2wc2yaFYg"
+      }
+    },
+    {
+      "@context": [
+        "https://w3id.org/security/v2",
+        "https://w3id.org/zcap/v1",
+        "https://w3id.org/json-ld-patch/v1"
+      ],
+      "patch": [
+        {
+          "op": "add",
+          "path": "/service/3",
+          "value": {
+            "id": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp#service-3",
+            "type": "SingletonBeacon",
+            "serviceEndpoint": "bitcoin:tb1qcs60r4j6ema8x4gf07hgt83x45e650dr97q3qv"
+          }
+        }
+      ],
+      "sourceHash": "3YgLJ5dshQzrfy3ZjiH6TFWtwjQP8XGirjzT5ysmTh5m",
+      "targetHash": "GceTr5Ac4c3LK4uySTtiyBm2W7bmQHAsNCbGKbeNCAgg",
+      "targetVersionId": 3,
+      "proof": {
+        "@context": [
+          "https://w3id.org/security/v2",
+          "https://w3id.org/zcap/v1",
+          "https://w3id.org/json-ld-patch/v1"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "bip340-jcs-2025",
+        "verificationMethod": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp#initialKey",
+        "proofPurpose": "capabilityInvocation",
+        "capability": "urn:zcap:root:did%3Abtcr2%3Ak1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp",
+        "capabilityAction": "Write",
+        "proofValue": "z4WtnwesES1oTXLDPTJdwQEAkvStsWKxW8FFbnKt2SRh6QRdcGFk5DiEdG7QWoVDXqCRX3FpgrrTKhebEnuLHxbrf"
+      }
+    }
+  ],
+  "casUpdates": [
+    {
+      "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp": "a4ayc_80_OGda4BO_1o_V0etpOqiLx1JwB5S3beHW0s",
+      "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54": "1HNeOiZeFu7gP1lxi5tdAwGcB9i2xR-Q2jpmbuwTqzU",
+      "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7": "TgdAhWK-24tgzgXB3s_jrRa3IjCWfeAfZAt-Rym0n84"
+    },
+    {
+      "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp": "SyJ3d9TdH8Ycb4hPSGQdArTRIdP9Moywi1Ux_Kzav4o",
+      "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54": "7y0SfeN7lCuq0GFF5UsMYZofIjJ7LrvPvsePVWSv450"
+    }
+  ]
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="smt-proof"><a class="header" href="#smt-proof">SMT Proof</a></h2>
+<p>A <a href="./terminology.html#smt-proof">SMT Proof</a> data structure contains the following properties:</p>
+<ul>
+<li><code>id</code>: SHA-256 hash of the root node.</li>
+<li><code>nonce</code>: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding.</li>
+<li><code>updateId</code>: The OPTIONAL <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+<li><code>collapsed</code>: Bitmap of zero nodes within the path (see: <a href="https://github.com/hoytech/quadrable#collapsed-leaves">collapsed leaves</a>).</li>
+<li><code>hashes</code>: Array of SHA-256 hashes representing the sibling <a href="./terminology.html#smt">SMT</a> nodes from the leaf, containing the SHA-256 hash of the <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> or the “zero identity”, to the root.</li>
+</ul>
+<div class="tabs" id="sidecar-smt-proof-example">
+  <div class="tablist" role="tablist" aria-label="sidecar-smt-proof-example">
+    <button role="tab"
+            id="sidecar-smt-proof-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="sidecar-smt-proof-example-panel-hide"
+            data-tab="sidecar-smt-proof-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="sidecar-smt-proof-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="sidecar-smt-proof-example-panel-show"
+            data-tab="sidecar-smt-proof-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="sidecar-smt-proof-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="sidecar-smt-proof-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="sidecar-smt-proof-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="sidecar-smt-proof-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "id": "&lt;&lt; Hexadecimal of Root Hash &gt;&gt;",
+  "nonce": "&lt;&lt; Hexadecimal of Nonce 1101 &gt;&gt;",
+  "updateId": "&lt;&lt; Hexadecimal of hash(Data Block 1101) &gt;&gt;",
+  "collapsed": "&lt;&lt; Hexadecimal of 0001 &gt;&gt;",
+  "hashes": [
+      "&lt;&lt; Hexadecimal of Hash 1110 &gt;&gt;",
+      "&lt;&lt; Hexadecimal of Hash 1001 &gt;&gt;",
+      "&lt;&lt; Hexadecimal of Hash 0 &gt;&gt;"
+  ]
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="resolution-options"><a class="header" href="#resolution-options">Resolution Options</a></h2>
+<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>Resolution options MAY contain the following properties:</p>
+<ul>
+<li><code>versionId</code>: OPTIONAL ASCII string representation of the specific version of a DID document to be resolved.</li>
+<li><code>versionTime</code>: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID before the specified <code>versionTime</code>.</li>
+<li><code>sidecar</code>: <a href="./data-structures.html#sidecar-data">Sidecar Data (data structure)</a>.</li>
+</ul>
+<div class="tabs" id="resolution-options-example">
+  <div class="tablist" role="tablist" aria-label="resolution-options-example">
+    <button role="tab"
+            id="resolution-options-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="resolution-options-example-panel-hide"
+            data-tab="resolution-options-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="resolution-options-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="resolution-options-example-panel-show"
+            data-tab="resolution-options-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="resolution-options-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="resolution-options-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="resolution-options-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="resolution-options-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "versionId": "4",
+  "versionTime": "2025-01-05T12:00:00Z",
+  "sidecar": {
+    "@context": "https://btcr2.dev/context/v1",
+    "genesisDocument": {
+      "@context": [
+        "https://www.w3.org/TR/did-1.1",
+        "https://btcr2.dev/context/v1"
+      ],
+      "id": "did:btcr2:_",
+      "verificationMethod": [
+        {
+          "id": "did:btcr2:_#initialKey",
+          "type": "Multikey",
+          "controller": "did:btcr2:_",
+          "publicKeyMultibase": "zQ3shb8PoGykqRtHb9bXNKrXG7PHMjDrECcgLeSqawMERFACj"
+        }
+      ],
+      "capabilityInvocation": [
+        "did:btcr2:_#initialKey"
+      ],
+      "service": [
+        {
+          "type": "SingletonBeacon",
+          "id": "did:btcr2:_#initialP2TR",
+          "serviceEndpoint": "bitcoin:tb1p6efm2xk7mpfmh733qyu3k7cgk05gmyynp49srgn7u5uqxsr8avssj4rdlc"
+        }
+      ]
+    },
+    "updates": [],
+    "casUpdates": [],
+    "smtProofs": []
+  }
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="did-resolution-metadata"><a class="header" href="#did-resolution-metadata">DID Resolution Metadata</a></h2>
+<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>Resolution metadata MAY contain the following properties:</p>
+<ul>
+<li><code>contentType</code>: OPTIONAL media type of the returned DID document. E.g., <code>"application/ld+json"</code>.</li>
+<li><code>error</code>: REQUIRED if an error occurs during DID resolution.</li>
+</ul>
+<div class="tabs" id="did-resolution-metadata-example">
+  <div class="tablist" role="tablist" aria-label="did-resolution-metadata-example">
+    <button role="tab"
+            id="did-resolution-metadata-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="did-resolution-metadata-example-panel-hide"
+            data-tab="did-resolution-metadata-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="did-resolution-metadata-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="did-resolution-metadata-example-panel-show"
+            data-tab="did-resolution-metadata-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="did-resolution-metadata-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="did-resolution-metadata-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="did-resolution-metadata-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="did-resolution-metadata-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "contentType": "application/did+ld+json"
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="did-document-metadata"><a class="header" href="#did-document-metadata">DID Document Metadata</a></h2>
+<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>Document metadata MAY contain the following properties:</p>
+<ul>
+<li><code>deactivated</code>: REQUIRED boolean that represents whether the resolved DID document has been deactivated.</li>
+<li><code>updated</code>: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.</li>
+<li><code>versionId</code>: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.</li>
+</ul>
+<div class="tabs" id="did-document-metadata-example">
+  <div class="tablist" role="tablist" aria-label="did-document-metadata-example">
+    <button role="tab"
+            id="did-document-metadata-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="did-document-metadata-example-panel-hide"
+            data-tab="did-document-metadata-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="did-document-metadata-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="did-document-metadata-example-panel-show"
+            data-tab="did-document-metadata-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="did-document-metadata-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="did-document-metadata-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="did-document-metadata-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="did-document-metadata-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "deactivated": false,
+  "updated": "2025-01-06T16:23:10Z",
+  "versionId": "5"
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="cas-announcement"><a class="header" href="#cas-announcement">CAS Announcement</a></h2>
+<p>A data structure that maps DIDs to <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> hashes. All <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Updates (data structure)</a> MUST be hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. The concrete representation of this data structure will be published to a <a href="./terminology.html#cas">CAS</a>.</p>
+<div class="tabs" id="cas-announcement-example">
+  <div class="tablist" role="tablist" aria-label="cas-announcement-example">
+    <button role="tab"
+            id="cas-announcement-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="cas-announcement-example-panel-hide"
+            data-tab="cas-announcement-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="cas-announcement-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="cas-announcement-example-panel-show"
+            data-tab="cas-announcement-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="cas-announcement-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="cas-announcement-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="cas-announcement-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="cas-announcement-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp": "a4ayc_80_OGda4BO_1o_V0etpOqiLx1JwB5S3beHW0s",
+  "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54": "1HNeOiZeFu7gP1lxi5tdAwGcB9i2xR-Q2jpmbuwTqzU",
+  "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7": "TgdAhWK-24tgzgXB3s_jrRa3IjCWfeAfZAt-Rym0n84"
+}
+</code></pre>
+  </section>
+</div>
+<h2 id="root-capability"><a class="header" href="#root-capability">Root Capability</a></h2>
+<p>A Root Capability is an Object Capability used to authorize updates to a DID document. Implementation MAY use ZCAP-LD for capability invocations [<a href="bibliography.html#ZCAP-LD">ZCAP-LD</a>].</p>
+<p>The Root Capability MUST be a map containing only the following properties:</p>
+<ul>
+<li><code>@context</code>: MUST be the context string <code>"https://w3id.org/zcap/v1"</code></li>
+<li><code>id</code>: MUST be a URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code></li>
+<li><code>invocationTarget</code>: MUST be the <code>did</code>.</li>
+<li><code>controller</code>: MUST be the <code>did</code>.</li>
+</ul>
+<div class="tabs" id="root-capability-example">
+  <div class="tablist" role="tablist" aria-label="root-capability-example">
+    <button role="tab"
+            id="root-capability-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="root-capability-example-panel-hide"
+            data-tab="root-capability-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="root-capability-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="root-capability-example-panel-show"
+            data-tab="root-capability-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="root-capability-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="root-capability-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="root-capability-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="root-capability-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<pre><code class="language-json">{
+  "@context": "https://w3id.org/zcap/v1",
+  "id": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "invocationTarget": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"
+}
+</code></pre>
+  </section>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="beacons/aggregate-beacons.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="operations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="beacons/aggregate-beacons.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="operations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="src/assets/mermaid.min.js"></script>
+        <script src="src/assets/mermaid-init.js"></script>
+        <script src="src/assets/tabs.js"></script>
+        <script src="theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

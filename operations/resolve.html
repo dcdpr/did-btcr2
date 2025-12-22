@@ -1,0 +1,468 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Resolve - did:btcr2 DID Method Specification</title>
+
+
+        <!-- Custom HTML head -->
+        <meta name="darkreader-lock"/>
+
+        <meta name="description" content="did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin blockchain as a Verifiable Data Registry to announce changes to the DID document.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/assets/tabs.css">
+        <link rel="stylesheet" href="../theme/custom.css">
+        <link rel="stylesheet" href="../theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">did:btcr2 DID Method Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="resolve"><a class="header" href="#resolve">Resolve</a></h1>
+<p>Resolving a <strong>did:btcr2</strong> identifier iteratively builds a DID document by applying <a href="../terminology.html#btcr2-update">BTCR2 Updates</a> to an <a href="../terminology.html#initial-did-document">Initial DID Document</a> that have been committed to the Bitcoin blockchain by <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>. The <a href="../terminology.html#initial-did-document">Initial DID Document</a> is either deterministically created from the DID or provided by <a href="../terminology.html#sidecar-data">Sidecar Data</a>.</p>
+<p>DID resolution is defined by DID Resolution v0.3 [<a href="../bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>The resolve operation has the following function signature:</p>
+<pre><code class="language-rust">fn resolve(did, resolutionOptions) -&gt;
+  (didResolutionMetadata, didDocument, didDocumentMetadata)</code></pre>
+<h2 id="process"><a class="header" href="#process">Process</a></h2>
+<p>Input values MUST first go through <a href="#decode-the-did">Decoding the DID</a> and <a href="#process-sidecar-data">Processing Sidecar Data</a>.</p>
+<p>Resolution maintains the following state while building the DID document:</p>
+<ul>
+<li><code>updates</code>: a list of tuples, each containing Bitcoin block metadata (height, time, confirmations) and a <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</li>
+<li><code>current_document</code>: the DID document being assembled.</li>
+<li><code>current_version_id</code>: the version number being processed (starts at <code>1</code>).</li>
+<li><code>update_hash_history</code>: a list of <a href="../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> hashes used to detect duplicates.</li>
+<li><code>block_confirmations</code>: confirmations for the Bitcoin block that contains the most recently applied unique update.</li>
+</ul>
+<p>The resolver:</p>
+<ol>
+<li><a href="#establish-current-document">Establishes <code>current_document</code></a> from the DID or from <a href="../terminology.html#sidecar-data">Sidecar Data</a>.</li>
+<li>Repeats the following loop:
+<ul>
+<li><a href="#process-beacon-signals">Process Beacon Signals</a> to populate <code>updates</code> from the beacon services in <code>current_document</code>.</li>
+<li><a href="#process-updates">Process <code>updates</code> Array</a> to apply updates to <code>current_document</code> and refresh <code>block_confirmations</code>.</li>
+<li>Stops when processing updates returns early with a resolved <code>didDocument</code> or an error occurs.</li>
+</ul>
+</li>
+</ol>
+<p>The resolver returns:</p>
+<ul>
+<li><code>didResolutionMetadata</code>: a <a href="../data-structures.html#did-resolution-metadata">DID Resolution Metadata (data structure)</a> (MAY be empty).</li>
+<li><code>didDocument</code>: the final <a href="../data-structures.html#did-document">DID document (data structure)</a>.</li>
+<li><code>didDocumentMetadata</code>: a <a href="../data-structures.html#did-document-metadata">DID document metadata (data structure)</a> with REQUIRED fields:
+<ul>
+<li><code>versionId</code>: <code>current_version_id</code> as an ASCII string.</li>
+<li><code>confirmations</code>: <code>block_confirmations</code> as an integer. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></li>
+<li><code>deactivated</code>: <code>current_document.deactivated</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
+<p>The <code>did</code> MUST be parsed with the <a href="../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
+<code>network</code>, and <code>genesis_bytes</code>. An <a href="../errors.html"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
+raised while decoding.</p>
+<h2 id="process-sidecar-data"><a class="header" href="#process-sidecar-data">Process Sidecar Data</a></h2>
+<p><code>resolutionOptions</code> contains a <code>sidecar</code> property (<a href="../data-structures.html#sidecar-data">Sidecar Data (data structure)</a>) which SHOULD be prepared as lookup tables:</p>
+<ul>
+<li>Hash each <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> in <code>sidecar.updates</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and build a map from hash to update (<code>update_lookup_table</code>).</li>
+<li>Hash each <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> in <code>sidecar.casUpdates</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and build a map from hash to announcement (<code>cas_lookup_table</code>).</li>
+<li>Build a map from <code>sidecar.smtProofs</code> keyed by proof <code>id</code> (<code>smt_lookup_table</code>).</li>
+</ul>
+<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="../errors.html"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<h2 id="establish-current-document"><a class="header" href="#establish-current-document">Establish <code>current_document</code></a></h2>
+<p>Resolution begins by creating an <a href="../terminology.html#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="../terminology.html#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>
+<p>Choose how to establish <code>current_document</code> based on the type of <code>genesis_bytes</code> retrieved from the decoded <code>did</code>:</p>
+<h3 id="if-genesis_bytes-is-a-sha-256-hash"><a class="header" href="#if-genesis_bytes-is-a-sha-256-hash">If <code>genesis_bytes</code> is a SHA-256 Hash</a></h3>
+<p>Process the <a href="../terminology.html#genesis-document">Genesis Document</a> provided in <code>sidecar.genesisDocument</code> by replacing the identifier placeholder (<code>"did:btcr2:_"</code>) with the <code>did</code>. A simple string replacement is sufficient. Parse the result as JSON to form <code>current_document</code>. The resulting <a href="../data-structures.html#did-document">DID Document (data structure)</a> MUST be conformant to DID Core v1.1 [<a href="../bibliography.html#DID-CORE">DID-CORE</a>].</p>
+<h3 id="if-genesis_bytes-is-a-secp256k1-public-key"><a class="header" href="#if-genesis_bytes-is-a-secp256k1-public-key">If <code>genesis_bytes</code> is a secp256k1 Public Key</a></h3>
+<p>Render the <a href="../terminology.html#initial-did-document">Initial DID Document</a> template with these values (Bitcoin addresses MUST use the Bitcoin URI Scheme [<a href="../bibliography.html#BIP321">BIP321</a>]):</p>
+<ul>
+<li><code>did</code>: The <code>did</code>.</li>
+<li><code>public-key-multikey</code>: Public key as a Multibase <code>"base-58-btc"</code> [<a href="../bibliography.html#CID">CID</a>] encoded string.</li>
+<li><code>p2pkh-bitcoin-address</code>: Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public key.</li>
+<li><code>p2wpkh-bitcoin-address</code>: Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from the public key.</li>
+<li><code>p2tr-bitcoin-address</code>: Pay-to-Taproot Bitcoin address produced from the public key.</li>
+</ul>
+<div class="tabs" id="initial-did-document-template">
+  <div class="tablist" role="tablist" aria-label="initial-did-document-template">
+    <button role="tab"
+            id="initial-did-document-template-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="initial-did-document-template-panel-hide"
+            data-tab="initial-did-document-template-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="initial-did-document-template-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="initial-did-document-template-panel-show"
+            data-tab="initial-did-document-template-panel-show">
+Show Template
+    </button>
+  </div>
+  <section id="initial-did-document-template-panel-hide"
+           role="tabpanel"
+           aria-labelledby="initial-did-document-template-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="initial-did-document-template-panel-show"
+           role="tabpanel"
+           aria-labelledby="initial-did-document-template-tab-show"
+           hidden>
+    <label>Show Template</label>
+<pre><code class="language-hbs">{
+  "@context": [
+    "https://www.w3.org/TR/did-1.1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "id": "{{did}}",
+  "controller": [
+    "{{did}}"
+  ],
+  "verificationMethod": [
+    {
+      "id": "{{did}}#initialKey",
+      "type": "Multikey",
+      "controller": "{{did}}",
+      "publicKeyMultibase": "{{public-key-multikey}}"
+    }
+  ],
+  "authentication": [
+    "{{did}}#initialKey"
+  ],
+  "assertionMethod": [
+    "{{did}}#initialKey"
+  ],
+  "capabilityInvocation": [
+    "{{did}}#initialKey"
+  ],
+  "capabilityDelegation": [
+    "{{did}}#initialKey"
+  ],
+  "service": [
+    {
+      "id": "{{did}}#initialP2PKH",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "{{p2pkh-bitcoin-address}}"
+    },
+    {
+      "id": "{{did}}#initialP2WPKH",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "{{p2wpkh-bitcoin-address}}"
+    },
+    {
+      "id": "{{did}}#initialP2TR",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "{{p2tr-bitcoin-address}}"
+    }
+  ]
+}
+</code></pre>
+  </section>
+</div>
+<p>Parse the rendered template as JSON to form <code>current_document</code>. The resulting <a href="../data-structures.html#did-document">DID Document (data structure)</a> MUST be conformant to DID Core v1.1 [<a href="../bibliography.html#DID-CORE">DID-CORE</a>].</p>
+<h2 id="process-beacon-signals"><a class="header" href="#process-beacon-signals">Process Beacon Signals</a></h2>
+<p>Scan the <code>service</code> entries in <code>current_document</code> (<a href="../data-structures.html#did-document">DID Document (data structure)</a>) and identify <a href="../terminology.html#btcr2-beacon">BTCR2 Beacons</a> by matching service <code>type</code> to <a href="../beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>. Parse each beacon <code>serviceEndpoint</code> as a <a href="../terminology.html#beacon-address">Beacon Address</a>, then use those <a href="../terminology.html#beacon-address">Beacon Addresses</a> to find Bitcoin transactions whose last output script contains <a href="../terminology.html#signal-bytes">Signal Bytes</a>.</p>
+<p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain RPC service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block. Cache <a href="../terminology.html#beacon-address">Beacon Addresses</a> to avoid repeated transaction lookups.</p>
+<p>For each transaction found:</p>
+<ul>
+<li>Derive <code>update_hash</code> from the transaction’s <a href="../terminology.html#signal-bytes">Signal Bytes</a> based on the beacon type:
+<ul>
+<li>Singleton Beacon: <code>update_hash</code> is the <a href="../terminology.html#signal-bytes">Signal Bytes</a>.</li>
+<li>CAS Beacon: use <a href="#process-cas-beacon">Process CAS Beacon</a>.</li>
+<li>SMT Beacon: use <a href="#process-smt-beacon">Process SMT Beacon</a>.</li>
+</ul>
+</li>
+<li>Build a tuple with:
+<ul>
+<li>The transaction’s block metadata (height, time, and confirmations).</li>
+<li>The <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> retrieved from <code>update_lookup_table[update_hash]</code>.
+<ul>
+<li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="../terminology.html#cas">CAS</a>.</li>
+<li>Raise a <a href="../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the update is not available from either source.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Append the tuple to <code>updates</code>.</li>
+</ul>
+<h3 id="process-cas-beacon"><a class="header" href="#process-cas-beacon">Process CAS Beacon</a></h3>
+<p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>map_update_hash</code>. Look up <code>map_update_hash</code> in <code>cas_lookup_table</code> to retrieve a <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> and read <code>update_hash</code> from the announcement entry keyed by <code>did</code>.</p>
+<h3 id="process-smt-beacon"><a class="header" href="#process-smt-beacon">Process SMT Beacon</a></h3>
+<p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="../data-structures.html#smt-proof">SMT Proof (data structure)</a>. Validate the proof with the <a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Use <code>smt_proof.updateId</code> as <code>update_hash</code>.</p>
+<h2 id="process-updates"><a class="header" href="#process-updates">Process <code>updates</code> Array</a></h2>
+<p>Return <code>current_document</code> as the resolved <code>didDocument</code> if <code>updates</code> is empty.</p>
+<p>Otherwise:</p>
+<ol>
+<li>Sort <code>updates</code> by <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> <code>targetVersionId</code> (ascending) with the tuple’s block height as a tiebreaker. Take the first tuple.</li>
+<li>Set <code>block_confirmations</code> to the tuple’s block confirmations.</li>
+<li>If <code>resolutionOptions.versionTime</code> is provided and the tuple’s block time is more recent, return <code>current_document</code> as the resolved <code>didDocument</code>.</li>
+<li>Set <code>update</code> to the tuple’s <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> and <a href="#check-update-version">check <code>update.targetVersionId</code></a>.</li>
+<li>Increment <code>current_version_id</code>.</li>
+<li>If <code>current_version_id</code> is greater than or equal to the integer form of <code>resolutionOptions.versionId</code>, return <code>current_document</code>.</li>
+<li>If <code>current_document.deactivated</code> is <code>true</code>, return <code>current_document</code>.</li>
+</ol>
+<h3 id="check-update-version"><a class="header" href="#check-update-version">Check <code>update.targetVersionId</code></a></h3>
+<p>Compare <code>update.targetVersionId</code> to <code>current_version_id</code>. Only one of three possible conditions will occur:</p>
+<ul>
+<li><code>update.targetVersionId &lt;= current_version_id</code>:
+<ul>
+<li><a href="#confirm-duplicate-update">Confirm Duplicate Update</a>.</li>
+</ul>
+</li>
+<li><code>update.targetVersionId == current_version_id + 1</code>:
+<ul>
+<li><a href="#apply-update">Apply <code>update</code></a>.</li>
+</ul>
+</li>
+<li><code>update.targetVersionId &gt; current_version_id + 1</code>:
+<ul>
+<li><a href="../errors.html#late_publishing"><code>LATE_PUBLISHING</code></a> error MUST be raised.</li>
+</ul>
+</li>
+</ul>
+<h3 id="confirm-duplicate-update"><a class="header" href="#confirm-duplicate-update">Confirm Duplicate Update</a></h3>
+<p>This step confirms that an update with a lower-than-expected <code>targetVersionId</code> is a true duplicate.</p>
+<p>Create <code>unsigned_update</code> by removing the <code>proof</code> property from <code>update</code>. Hash <code>unsigned_update</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and compare it to <code>update_hash_history[update.targetVersionId - 2]</code>. Raise a <a href="../errors.html#late_publishing"><code>LATE_PUBLISHING</code></a> error if the hashes differ.</p>
+<h3 id="apply-update"><a class="header" href="#apply-update">Apply <code>update</code></a></h3>
+<p>Hash <code>current_document</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the result does not match the decoded <code>update.sourceHash</code>.</p>
+<p><a href="#check-update-proof">Check <code>update.proof</code></a>.</p>
+<p>Apply the <code>update.patch</code> JSON Patch [<a href="../bibliography.html#RFC6902">RFC6902</a>] to <code>current_document</code>.</p>
+<p>Verify that <code>current_document</code> conforms to DID Core v1.1 [<a href="../bibliography.html#DID-CORE">DID-CORE</a>] and that <code>current_document.id</code> equals <code>did</code>. Otherwise raise <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a>.</p>
+<p>Hash the patched <code>current_document</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the result does not match the decoded <code>update.targetHash</code>.</p>
+<p>Create <code>unsigned_update</code> by removing the <code>proof</code> property from <code>update</code>, hash it with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm, and append the hash to <code>update_hash_history</code>.</p>
+<h3 id="check-update-proof"><a class="header" href="#check-update-proof">Check <code>update.proof</code></a></h3>
+<p>Implementations MAY derive a <a href="../data-structures.html#root-capability">Root Capability (data structure)</a> from <code>update.proof</code> and invoke it according to Authorization Capabilities for Linked Data v0.3 [<a href="../bibliography.html#ZCAP-LD">ZCAP-LD</a>].</p>
+<p>The resolver must locate <code>publicKeyMultibase</code> in <code>current_document.verificationMethod</code> whose <code>id</code> matches <code>update.proof.verificationMethod</code>. Otherwise raise <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a>. Raise the same error if <code>current_document.capabilityInvocation</code> does not contain <code>update.proof.verificationMethod</code>.</p>
+<p>Use a BIP340 Cryptosuite [<a href="../bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] instance with <code>publicKeyMultibase</code> and the <code>"bip340-jcs-2025"</code> cryptosuite to verify <code>update</code>. Raise <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> if verification fails.</p>
+<!-- Line breaks to visibly separate the preceding subsection from the chapter footnotes. -->
+<br>
+<br>
+<hr>
+<ol class="footnote-definition"><li id="footnote-1">
+<p>The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. “Unique” refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations. <a href="#fr-1-1">↩</a></p>
+</li>
+</ol>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../operations/create.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../operations/update.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../operations/create.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../operations/update.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../src/assets/mermaid.min.js"></script>
+        <script src="../src/assets/mermaid-init.js"></script>
+        <script src="../src/assets/tabs.js"></script>
+        <script src="../theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

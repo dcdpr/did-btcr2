@@ -1,0 +1,478 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Algorithms - did:btcr2 DID Method Specification</title>
+
+
+        <!-- Custom HTML head -->
+        <meta name="darkreader-lock"/>
+
+        <meta name="description" content="did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin blockchain as a Verifiable Data Registry to announce changes to the DID document.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="src/assets/tabs.css">
+        <link rel="stylesheet" href="theme/custom.css">
+        <link rel="stylesheet" href="theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "coal";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">did:btcr2 DID Method Specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="algorithms"><a class="header" href="#algorithms">Algorithms</a></h1>
+<p>These algorithms are referenced throughout this specification.</p>
+<h2 id="did-btcr2-identifier-encoding"><a class="header" href="#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a></h2>
+<p>Any errors encountered during this algorithm MUST raise an <a href="./errors.html"><code>INVALID_DID</code></a> error.</p>
+<p>A <strong>did:btcr2</strong> identifier is created from three arguments: <code>version_number</code>, <code>network_name</code> and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
+<p><code>key_or_hash</code> MUST be one of the supported <a href="./terminology.html#genesis-bytes">Genesis Bytes</a> variants defined in the Terminology chapter and MUST be representable as a 33-byte secp256k1 public key or a 32-byte SHA-256 hash. Implementations SHOULD require <code>key_or_hash</code> to include additional type information that clearly distinguishes between the supported <a href="./terminology.html#genesis-bytes">Genesis Bytes</a> variants. This type information determines how the identifier is encoded.</p>
+<p>The <code>version_number</code> value MUST be <code>1</code>, declaring the encoding follows this specification.</p>
+<p>The <code>network_name</code> value declares which Bitcoin network anchors the identifier. Implementations SHOULD require <code>network_name</code> to include additional type information using symbolic names that MUST be representable as integer values listed in the following table:</p>
+<h3 id="network-values"><a class="header" href="#network-values">Table 1: Network Values</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"><code>network_name</code></th><th style="text-align: left"><code>network_value</code></th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>bitcoin</code></td><td style="text-align: left"><code>0</code></td></tr>
+<tr><td style="text-align: left"><code>signet</code></td><td style="text-align: left"><code>1</code></td></tr>
+<tr><td style="text-align: left"><code>regtest</code></td><td style="text-align: left"><code>2</code></td></tr>
+<tr><td style="text-align: left"><code>testnet3</code></td><td style="text-align: left"><code>3</code></td></tr>
+<tr><td style="text-align: left"><code>testnet4</code></td><td style="text-align: left"><code>4</code></td></tr>
+<tr><td style="text-align: left"><code>mutinynet</code></td><td style="text-align: left"><code>5</code></td></tr>
+<tr><td style="text-align: left">Reserved</td><td style="text-align: left"><code>6</code>..<code>11</code></td></tr>
+<tr><td style="text-align: left">Custom networks</td><td style="text-align: left"><code>12</code>..<code>14</code></td></tr>
+</tbody></table>
+</div>
+<p>Introduce <code>btcr2_version</code> as <code>version_number - 1</code> (i.e., <code>0</code>). Combine <code>btcr2_version</code> in the low <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup> nibble and <code>network_value</code> in the high <sup class="footnote-reference" id="fr-1-2"><a href="#footnote-1">1</a></sup> nibble into a single byte value.</p>
+<p>Append <code>key_or_hash</code> to the first byte to produce the unencoded data bytes. Its format is:</p>
+<h3 id="unencoded-data-bytes"><a class="header" href="#unencoded-data-bytes">Table 2: Unencoded Data Bytes</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"><code>btcr2_version</code></th><th style="text-align: left"><code>network_value</code></th><th style="text-align: left"><code>genesis_bytes</code></th></tr></thead><tbody>
+<tr><td style="text-align: left">Size:</td><td style="text-align: left">4 bits</td><td style="text-align: left">4 bits</td><td style="text-align: left">32 or 33 bytes</td></tr>
+<tr><td style="text-align: left">Index <sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup>:</td><td style="text-align: left">0</td><td style="text-align: left">4</td><td style="text-align: left">8</td></tr>
+</tbody></table>
+</div>
+<p>Encode the unencoded data bytes with Bech32m [<a href="bibliography.html#BIP350">BIP350</a>] to produce the <code>method-specific-id</code>. Use <code>"k"</code> as the <code>hrp</code> for key-based <code>key_or_hash</code> and <code>"x"</code> as the <code>hrp</code> for <a href="./terminology.html#genesis-document">Genesis Document</a>-based <code>key_or_hash</code>.</p>
+<p>Prefix the <code>method-specific-id</code> with the string <code>"did:btcr2:"</code> to produce the final <strong>did:btcr2</strong> identifier.</p>
+<div class="tabs" id="identifier-encoding-example">
+  <div class="tablist" role="tablist" aria-label="identifier-encoding-example">
+    <button role="tab"
+            id="identifier-encoding-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="identifier-encoding-example-panel-hide"
+            data-tab="identifier-encoding-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="identifier-encoding-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="identifier-encoding-example-panel-show"
+            data-tab="identifier-encoding-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="identifier-encoding-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="identifier-encoding-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="identifier-encoding-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="identifier-encoding-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<p>Example input:</p>
+<ul>
+<li><code>version_number</code>: <code>1</code></li>
+<li><code>network_name</code>: <code>bitcoin</code> (<code>network_value</code> = <code>0</code>)</li>
+<li><code>key_or_hash</code>: SEC encoded secp256k1 public key
+<code>171d59dd2d274011cbb090acc5a168dc98f303790ffce8f54779baed81890c1b00</code></li>
+</ul>
+<p>Example output:</p>
+<ul>
+<li><code>did</code>: <code>"did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q"</code></section>
+</li>
+</ul>
+</div>
+<h2 id="did-btcr2-identifier-decoding"><a class="header" href="#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a></h2>
+<p>Any errors encountered during this algorithm MUST raise an <a href="./errors.html"><code>INVALID_DID</code></a> error.</p>
+<p>Parsing a <strong>did:btcr2</strong> identifier produces three values: <code>version_number</code>, <code>network_name</code>, and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
+<p>A <strong>did:btcr2</strong> identifier MUST be processed according to the DID Resolution Algorithm [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>] to retrieve the <strong>did:btcr2</strong> DID Method-specific ID <code>method-specific-id</code>. (I.e., the first 10 characters in the string MUST be exactly <code>"did:btcr2:"</code>.)</p>
+<p>Decode the <code>method-specific-id</code> as a Bech32m encoded string [<a href="bibliography.html#BIP350">BIP350</a>] to retrieve the unencoded data bytes and <code>hrp</code>. Parse the unencoded data bytes according to <a href="#unencoded-data-bytes">Table 2: Unencoded Data Bytes</a> to retrieve the <code>btcr2_version</code>, <code>network_value</code> and <code>genesis_bytes</code>.</p>
+<ul>
+<li><code>btcr2_version</code> MUST be <code>0</code>. Introduce <code>version_number</code> as <code>btcr2_version + 1</code>. I.e., <code>version_number</code> MUST be returned to the caller as a type that can be represented as the value <code>1</code>.</li>
+<li><code>network_value</code> MUST be one of the values in <a href="#network-values">Table 1: Network Values</a>. <code>network_name</code> SHOULD be returned to the caller including additional type information using symbolic names that can be represented as integer values.</li>
+<li>The <code>hrp</code> MUST be either <code>"k"</code> or <code>"x"</code>.</li>
+</ul>
+<p>If the <code>hrp</code> is <code>"k"</code> (key-based <strong>btcr2:did</strong> identifier), <code>key_or_hash</code> MUST be <code>genesis_bytes</code> interpreted as a 33-byte SEC encoded secp256k1 public key.</p>
+<p>If the <code>hrp</code> is <code>"x"</code> (<a href="./terminology.html#genesis-document">Genesis Document</a>-based <strong>btcr2:did</strong> identifier), <code>key_or_hash</code> MUST be <code>genesis_bytes</code> interpreted as a 32-byte SHA-256 hash of a <a href="./terminology.html#genesis-document">Genesis Document</a>.</p>
+<div class="tabs" id="identifier-decoding-example">
+  <div class="tablist" role="tablist" aria-label="identifier-decoding-example">
+    <button role="tab"
+            id="identifier-decoding-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="identifier-decoding-example-panel-hide"
+            data-tab="identifier-decoding-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="identifier-decoding-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="identifier-decoding-example-panel-show"
+            data-tab="identifier-decoding-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="identifier-decoding-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="identifier-decoding-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="identifier-decoding-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="identifier-decoding-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<p>Example input:</p>
+<ul>
+<li><code>did</code>: <code>"did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"</code></li>
+</ul>
+<p>Example output:</p>
+<ul>
+<li><code>version_number</code>: <code>1</code></li>
+<li><code>network_name</code>: <code>mutinynet</code> (<code>network_value</code> = <code>5</code>)</li>
+<li><code>key_or_hash</code>: SHA-256 hash <code>e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8</code></section>
+</li>
+</ul>
+</div>
+<h2 id="json-document-hashing"><a class="header" href="#json-document-hashing">JSON Document Hashing</a></h2>
+<ul>
+<li>Encode the document using JCS [<a href="bibliography.html#RFC8785">RFC8785</a>].</li>
+<li>Hash the encoded document with SHA-256 [<a href="bibliography.html#SHA256">SHA256</a>].</li>
+</ul>
+<h2 id="smt-proof-verification"><a class="header" href="#smt-proof-verification">SMT Proof Verification</a></h2>
+<p>To verify the inclusion or non-inclusion of a DID in the <a href="./terminology.html#smt-proof">SMT Proof</a>, perform the following steps:</p>
+<p>Construct a hashed-zero cache. Two zero leaves are hashed together by concatenating the value <code>0</code> with itself for the bottom level, and then hashed again with its next sibling, also itself, at each level up the tree. Each computed hash value can be cached in an array.</p>
+<div class="tabs" id="construct_hashed_zero_cache">
+  <div class="tablist" role="tablist" aria-label="construct_hashed_zero_cache">
+    <button role="tab"
+            id="construct_hashed_zero_cache-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="construct_hashed_zero_cache-panel-hide"
+            data-tab="construct_hashed_zero_cache-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="construct_hashed_zero_cache-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="construct_hashed_zero_cache-panel-show"
+            data-tab="construct_hashed_zero_cache-panel-show">
+Show Pseudocode
+    </button>
+  </div>
+  <section id="construct_hashed_zero_cache-panel-hide"
+           role="tabpanel"
+           aria-labelledby="construct_hashed_zero_cache-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="construct_hashed_zero_cache-panel-show"
+           role="tabpanel"
+           aria-labelledby="construct_hashed_zero_cache-tab-show"
+           hidden>
+    <label>Show Pseudocode</label>
+<pre><code class="language-rust">let cachedZero = [];
+let z = 0;
+for i in 0..=255 {
+  z = hash(concat(z, z));
+  cachedZero[i] = z;
+}</code></pre>
+  </section>
+</div>
+<p>The <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> is verified by walking the tree starting from the leaf node value, given by <code>hash(hash(proof.nonce) + proof.updateId)</code>, to the root <code>proof.id</code>. Walking the tree means hashing sibling hashes from <code>proof.hashes</code> concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by <code>hash(did)</code>) informs the algorithm which side of the concatenation operation the sibling hash belongs on: 0 for left, 1 for right.</p>
+<p>The tree is “optimized” by collapsing empty nodes. (See <a href="./appendix.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> for definition of “optimized”.) Each bit within <code>proof.collapsed</code> informs the algorithm whether to take the next sibling hash from <code>proof.hashes</code> (0) or use a hashed zero from the current height of the tree (1).</p>
+<p>The last step is asserting that the computed candidate hash is equivalent to <code>proof.id</code> (the Merkle root).</p>
+<div class="tabs" id="pseudocode_smt_proof_verification">
+  <div class="tablist" role="tablist" aria-label="pseudocode_smt_proof_verification">
+    <button role="tab"
+            id="pseudocode_smt_proof_verification-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="pseudocode_smt_proof_verification-panel-hide"
+            data-tab="pseudocode_smt_proof_verification-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="pseudocode_smt_proof_verification-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="pseudocode_smt_proof_verification-panel-show"
+            data-tab="pseudocode_smt_proof_verification-panel-show">
+Show Pseudocode
+    </button>
+  </div>
+  <section id="pseudocode_smt_proof_verification-panel-hide"
+           role="tabpanel"
+           aria-labelledby="pseudocode_smt_proof_verification-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="pseudocode_smt_proof_verification-panel-show"
+           role="tabpanel"
+           aria-labelledby="pseudocode_smt_proof_verification-tab-show"
+           hidden>
+    <label>Show Pseudocode</label>
+<pre><code class="language-rust">let candidateHash = hash(concat(hash(proof.nonce), proof.updateId))
+let index = hash(did)
+for n in 0..=255 {
+  let i = 255 - n;
+
+  let siblingHash = if proof.collapsed[i] == 1 {
+    cachedZero[n]
+  } else {
+    proof.hashes.pop_front()
+  };
+
+  if index[i] == 1 {
+    candidateHash = hash(concat(siblingHash, candidateHash));
+  } else {
+    candidateHash = hash(concat(candidateHash, siblingHash));
+  }
+}
+
+return candidateHash == proof.id;</code></pre>
+  </section>
+</div>
+<!-- Line breaks to visibly separate the preceding subsection from the chapter footnotes. -->
+<br>
+<br>
+<hr>
+<ol class="footnote-definition"><li id="footnote-1">
+<p>Little Endian. <a href="#fr-1-1">↩</a> <a href="#fr-1-2">↩2</a></p>
+</li>
+<li id="footnote-2">
+<p>The “Index” is a Little Endian bit count starting from <code>0</code> on the left and ending in <code>263</code> or <code>271</code> on the right (inclusive). <a href="#fr-2-1">↩</a></p>
+</li>
+</ol>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="operations/deactivate.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="errors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="operations/deactivate.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="errors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="src/assets/mermaid.min.js"></script>
+        <script src="src/assets/mermaid-init.js"></script>
+        <script src="src/assets/tabs.js"></script>
+        <script src="theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

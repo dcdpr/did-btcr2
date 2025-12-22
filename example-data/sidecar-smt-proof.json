@@ -1,0 +1,11 @@
+{
+  "id": "<< Hexadecimal of Root Hash >>",
+  "nonce": "<< Hexadecimal of Nonce 1101 >>",
+  "updateId": "<< Hexadecimal of hash(Data Block 1101) >>",
+  "collapsed": "<< Hexadecimal of 0001 >>",
+  "hashes": [
+      "<< Hexadecimal of Hash 1110 >>",
+      "<< Hexadecimal of Hash 1001 >>",
+      "<< Hexadecimal of Hash 0 >>"
+  ]
+}

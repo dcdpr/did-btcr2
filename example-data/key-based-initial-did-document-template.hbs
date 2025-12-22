@@ -1,0 +1,47 @@
+{
+  "@context": [
+    "https://www.w3.org/TR/did-1.1",
+    "https://btcr2.dev/context/v1"
+  ],
+  "id": "{{did}}",
+  "controller": [
+    "{{did}}"
+  ],
+  "verificationMethod": [
+    {
+      "id": "{{did}}#initialKey",
+      "type": "Multikey",
+      "controller": "{{did}}",
+      "publicKeyMultibase": "{{public-key-multikey}}"
+    }
+  ],
+  "authentication": [
+    "{{did}}#initialKey"
+  ],
+  "assertionMethod": [
+    "{{did}}#initialKey"
+  ],
+  "capabilityInvocation": [
+    "{{did}}#initialKey"
+  ],
+  "capabilityDelegation": [
+    "{{did}}#initialKey"
+  ],
+  "service": [
+    {
+      "id": "{{did}}#initialP2PKH",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "{{p2pkh-bitcoin-address}}"
+    },
+    {
+      "id": "{{did}}#initialP2WPKH",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "{{p2wpkh-bitcoin-address}}"
+    },
+    {
+      "id": "{{did}}#initialP2TR",
+      "type": "SingletonBeacon",
+      "serviceEndpoint": "{{p2tr-bitcoin-address}}"
+    }
+  ]
+}
