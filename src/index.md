@@ -1,4 +1,4 @@
-# `did:btrc2` DID Method
+# `did:btcr2` DID Method
 
 WARNING This specification is still under active development and may be subject to breaking changes.
 
