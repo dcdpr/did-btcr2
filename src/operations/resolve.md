@@ -6,7 +6,7 @@
 
 # Resolve
 
-Resolving a **did:btcr2** identifier iteratively builds a DID document by applying [BTCR2 Updates][BTCR2 Update] to an [Initial DID Document] that have been committed to the Bitcoin blockchain by [Authorized Beacon Signals][Authorized Beacon Signal]. The [Initial DID Document] is either deterministically created from the DID or provided by [Sidecar Data].
+Resolving a **did:btcr2** identifier iteratively builds a DID document by applying [BTCR2 Updates][BTCR2 Update] to an [Initial DID Document] that has been committed to the Bitcoin blockchain by [Authorized Beacon Signals][Authorized Beacon Signal]. The [Initial DID Document] is either deterministically created from the DID or provided by [Sidecar Data].
 
 DID resolution is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
 
@@ -34,7 +34,7 @@ The resolver:
 
 1. [Establishes `current_document`](#establish-current-document) from the DID or from [Sidecar Data].
 2. Repeats the following loop:
-    * [Process Beacon Signals](#process-beacon-signals) to populate `updates` from the beacon services in `current_document`.
+    * [Process Beacon Signals](#process-beacon-signals) to populate `updates` from the Beacon services in `current_document`.
     * [Process `updates` Array](#process-updates) to apply updates to `current_document` and refresh `block_confirmations`.
     * Stops when processing updates returns early with a resolved `didDocument` or an error occurs.
 
@@ -88,7 +88,7 @@ Render the [Initial DID Document] template with these values (Bitcoin addresses 
 * `public-key-multikey`: Public key as a Multibase `"base-58-btc"` {{#cite CID}} encoded string.
 * `p2pkh-bitcoin-address`: Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public key.
 * `p2wpkh-bitcoin-address`: Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from the public key.
-* `p2tr-bitcoin-address`: Pay-to-Taproot Bitcoin address produced from the public key.
+* `p2tr-bitcoin-address`: Pay-to-Taproot (P2TR) Bitcoin address produced from the public key.
 
 {% set hide_text = `` %}
 {% set initial_did_document_template =
@@ -114,14 +114,14 @@ Parse the rendered template as JSON to form `current_document`. The resulting [D
 
 Scan the `service` entries in `current_document` ([DID Document (data structure)]) and identify [BTCR2 Beacons][BTCR2 Beacon] by matching service `type` to [Beacons Table 1: Beacon Types]. Parse each beacon `serviceEndpoint` as a [Beacon Address], then use those [Beacon Addresses][Beacon Address] to find Bitcoin transactions whose last output script contains [Signal Bytes].
 
-Implementations are RECOMMENDED to query an indexed Bitcoin blockchain RPC service such as [electrs](https://github.com/romanz/electrs) or [Esplora](https://github.com/Blockstream/esplora). Implementations MAY instead traverse blocks from the genesis block. Cache [Beacon Addresses][Beacon Address] to avoid repeated transaction lookups.
+Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as [electrs](https://github.com/romanz/electrs) or [Esplora](https://github.com/Blockstream/esplora). Implementations MAY instead traverse blocks from the genesis block. Cache [Beacon Addresses][Beacon Address] to avoid repeated transaction lookups.
 
 For each transaction found:
 
-* Derive `update_hash` from the transaction's [Signal Bytes] based on the beacon type:
-  * Singleton Beacon: `update_hash` is the [Signal Bytes].
-  * CAS Beacon: use [Process CAS Beacon](#process-cas-beacon).
-  * SMT Beacon: use [Process SMT Beacon](#process-smt-beacon).
+* Derive `update_hash` from the transaction's [Signal Bytes] based on the [Beacon Type]:
+  * [Singleton Beacon]: `update_hash` is the [Signal Bytes].
+  * [CAS Beacon]: use [Process CAS Beacon](#process-cas-beacon).
+  * [SMT Beacon]: use [Process SMT Beacon](#process-smt-beacon).
 * Build a tuple with:
   * The transaction's block metadata (height, time, and confirmations).
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
