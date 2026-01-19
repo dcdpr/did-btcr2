@@ -246,7 +246,7 @@ The [Sidecar Data] contains optional properties:
 
 ## SMT Proof { #smt-proof }
 
-A [SMT Proof] data structure contains the following properties:
+An [SMT Proof] data structure contains the following properties:
 
 - `id`: SHA-256 hash of the root node.
 - `nonce`: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
