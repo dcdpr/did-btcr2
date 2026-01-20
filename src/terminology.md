@@ -200,8 +200,7 @@ An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures 
 advantages, such as being able to combine digital signatures from multiple parties to form a single
 digital signature for the composite public key.
 
-Bitcoin Schnorr Signatures are still over the secp256k1 curve, so the same keypairs can be used to
-produce both Schnorr Signatures and ECDSA signatures.
+Bitcoin [Schnorr Signatures][Schnorr Signature] are still over the secp256k1 curve, so the same keypairs can be used to produce both [Schnorr Signatures][Schnorr Signature] and ECDSA signatures.
 
 ## Sidecar { #sidecar }
 
