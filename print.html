@@ -355,7 +355,7 @@ example of CAS.</p>
 for any given content and CID generation algorithm there is a single, unique, collision-resistant
 identifier. This is typically done through some hashing function.</p>
 <h2 id="current-did-document"><a class="header" href="#current-did-document">Current DID Document</a></h2>
-<p>The transient state of the DID document during DID Resolution. The
+<p>The transient state of the DID document during DID resolution. The
 Current DID Document is iteratively updated as a resolver traverses the blockchain and applies the relevant
 <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> announced by <a href="./terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a> it
 identifies in specific Bitcoin blocks.</p>
@@ -364,8 +364,9 @@ identifies in specific Bitcoin blocks.</p>
 to a <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a>.</p>
 <p>The algorithm is specified in BIP340 Cryptosuites v0.1 [<a href="bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] and Verifiable Credential Data Integrity 1.0 [<a href="bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>].</p>
 <h2 id="genesis-bytes"><a class="header" href="#genesis-bytes">Genesis Bytes</a></h2>
-<p>The bytes used to generate a did:btcr2 identifier. These bytes are either a 33-byte compressed SEC
-encoded secp256k1 public key or a 32-byte SHA-256 hash of a <a href="./terminology.html#genesis-document">Genesis Document</a>.</p>
+<p>The bytes used to generate a <strong>did:btcr2</strong> identifier. These bytes are either a 33-byte compressed
+Standards for Efficient Cryptography (SEC) encoded secp256k1 public key or a 32-byte SHA-256 hash
+of a <a href="./terminology.html#genesis-document">Genesis Document</a>.</p>
 <h2 id="genesis-document"><a class="header" href="#genesis-document">Genesis Document</a></h2>
 <p>An intermediate representation of an <a href="./terminology.html#initial-did-document">Initial DID Document</a> with the identifier set to the
 placeholder value.</p>
@@ -390,9 +391,9 @@ present one canonical history for a DID.</p>
 Any changes to the history, such as may occur if a website edits a file, MUST be detected and
 disallowed. The <a href="./terminology.html#late-publishing">Late Publishing</a> problem breaks Non-Repudiation.</p>
 <h2 id="offline-creation"><a class="header" href="#offline-creation">Offline Creation</a></h2>
-<p>Offline Creation refers to when a <strong>did:btcr2</strong> identifier and corresponding initial DID document
+<p>Offline Creation refers to when a <strong>did:btcr2</strong> identifier and corresponding <a href="./terminology.html#initial-did-document">Initial DID Document</a>
 are created without requiring network interactions.</p>
-<p><strong>did:btcr2</strong> supports offline creation in two modes:</p>
+<p><strong>did:btcr2</strong> supports Offline Creation in two modes:</p>
 <ul>
 <li>Key Pair Deterministic Creation; and</li>
 <li>DID Document Initiated Creation.</li>
@@ -403,8 +404,7 @@ are created without requiring network interactions.</p>
 <p>An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures with some major
 advantages, such as being able to combine digital signatures from multiple parties to form a single
 digital signature for the composite public key.</p>
-<p>Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same keypairs can be used to
-produce both Schnorr signatures and ECDSA signatures.</p>
+<p>Bitcoin <a href="./terminology.html#schnorr-signature">Schnorr Signatures</a> are still over the secp256k1 curve, so the same keypairs can be used to produce both <a href="./terminology.html#schnorr-signature">Schnorr Signatures</a> and ECDSA signatures.</p>
 <h2 id="sidecar"><a class="header" href="#sidecar">Sidecar</a></h2>
 <p>A mechanism by which data necessary for resolving a DID is provided alongside the <strong>did:btcr2</strong>
 identifier being resolved, rather than being retrieved through open and standardized means (e.g., by
