@@ -125,7 +125,7 @@ identifier. This is typically done through some hashing function.
 
 ## Current DID Document { #current-did-document }
 
-The transient state of the DID document during DID Resolution. The
+The transient state of the DID document during DID resolution. The
 Current DID Document is iteratively updated as a resolver traverses the blockchain and applies the relevant
 [BTCR2 Updates][BTCR2 Update] announced by [Authorized Beacon Signals][Authorized Beacon Signal] it
 identifies in specific Bitcoin blocks.
@@ -139,8 +139,9 @@ The algorithm is specified in BIP340 Cryptosuites v0.1 {{#cite BIP340-Cryptosuit
 
 ## Genesis Bytes { #genesis-bytes }
 
-The bytes used to generate a did:btcr2 identifier. These bytes are either a 33-byte compressed SEC
-encoded secp256k1 public key or a 32-byte SHA-256 hash of a [Genesis Document].
+The bytes used to generate a **did:btcr2** identifier. These bytes are either a 33-byte compressed 
+Standards for Efficient Cryptography (SEC) encoded secp256k1 public key or a 32-byte SHA-256 hash 
+of a [Genesis Document].
 
 ## Genesis Document { #genesis-document }
 
@@ -181,10 +182,10 @@ disallowed. The [Late Publishing] problem breaks Non-Repudiation.
 
 ## Offline Creation { #offline-creation }
 
-Offline Creation refers to when a **did:btcr2** identifier and corresponding initial DID document
+Offline Creation refers to when a **did:btcr2** identifier and corresponding [Initial DID Document]
 are created without requiring network interactions.
 
-**did:btcr2** supports offline creation in two modes:
+**did:btcr2** supports Offline Creation in two modes:
 
 * Key Pair Deterministic Creation; and
 * DID Document Initiated Creation.
@@ -199,8 +200,7 @@ An alternative to Elliptic Curve Digital Signature Algorithm (ECDSA) signatures 
 advantages, such as being able to combine digital signatures from multiple parties to form a single
 digital signature for the composite public key.
 
-Bitcoin Schnorr signatures are still over the secp256k1 curve, so the same keypairs can be used to
-produce both Schnorr signatures and ECDSA signatures.
+Bitcoin [Schnorr Signatures][Schnorr Signature] are still over the secp256k1 curve, so the same keypairs can be used to produce both [Schnorr Signatures][Schnorr Signature] and ECDSA signatures.
 
 ## Sidecar { #sidecar }
 
