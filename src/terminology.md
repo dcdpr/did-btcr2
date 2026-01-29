@@ -140,7 +140,7 @@ The algorithm is specified in BIP340 Cryptosuites v0.1 {{#cite BIP340-Cryptosuit
 ## Genesis Bytes { #genesis-bytes }
 
 The bytes used to generate a **did:btcr2** identifier. These bytes are either a 33-byte compressed 
-Standards for Efficient Cryptography ({{#cite SEC2}}) encoded secp256k1 public key or a 32-byte SHA-256 hash 
+Standards for Efficient Cryptography ({{#cite SEC}}) encoded secp256k1 public key or a 32-byte SHA-256 hash 
 of a [Genesis Document].
 
 ## Genesis Document { #genesis-document }
