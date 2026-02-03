@@ -125,8 +125,7 @@ For each transaction found:
 * Build a tuple with:
   * The transaction's block metadata (height, time, and confirmations).
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
-    * If the update is not in `update_lookup_table`, retrieve it from [CAS].
-    * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
+    * If the update is not in `update_lookup_table`, raise a [`MISSING_UPDATE_DATA`] error.
 * Append the tuple to `updates`.
 
 
