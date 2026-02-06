@@ -1748,8 +1748,7 @@ Show Template
 <li>The transaction’s block metadata (height, time, and confirmations).</li>
 <li>The <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> retrieved from <code>update_lookup_table[update_hash]</code>.
 <ul>
-<li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="operations/../terminology.html#cas">CAS</a>.</li>
-<li>Raise a <a href="operations/../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the update is not available from either source.</li>
+<li>If the update is not in <code>update_lookup_table</code>, raise a <a href="operations/../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error.</li>
 </ul>
 </li>
 </ul>
