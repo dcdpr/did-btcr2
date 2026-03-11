@@ -205,7 +205,7 @@
 <ul>
 <li><a href="#process-beacon-signals">Process Beacon Signals</a> to populate <code>updates</code> from the beacon services in <code>current_document</code>.</li>
 <li><a href="#process-updates">Process <code>updates</code> Array</a> to apply updates to <code>current_document</code> and refresh <code>block_confirmations</code>.</li>
-<li>Stops when processing updates returns early with a resolved <code>didDocument</code> or an error occurs.</li>
+<li>The loop terminates when processing updates resolves <code>didDocument</code> or an error occurs.</li>
 </ul>
 </li>
 </ol>
@@ -357,16 +357,16 @@ Show Template
 <h3 id="process-smt-beacon"><a class="header" href="#process-smt-beacon">Process SMT Beacon</a></h3>
 <p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="../data-structures.html#smt-proof">SMT Proof (data structure)</a>. Validate the proof with the <a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Use <code>smt_proof.updateId</code> as <code>update_hash</code>.</p>
 <h2 id="process-updates"><a class="header" href="#process-updates">Process <code>updates</code> Array</a></h2>
-<p>Return <code>current_document</code> as the resolved <code>didDocument</code> if <code>updates</code> is empty.</p>
+<p>Resolve <code>current_document</code> as <code>didDocument</code> if <code>updates</code> is empty.</p>
 <p>Otherwise:</p>
 <ol>
 <li>Sort <code>updates</code> by <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> <code>targetVersionId</code> (ascending) with the tuple’s block height as a tiebreaker. Take the first tuple.</li>
 <li>Set <code>block_confirmations</code> to the tuple’s block confirmations.</li>
-<li>If <code>resolutionOptions.versionTime</code> is provided and the tuple’s block time is more recent, return <code>current_document</code> as the resolved <code>didDocument</code>.</li>
+<li>If <code>resolutionOptions.versionTime</code> is provided and the tuple’s block time is more recent, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 <li>Set <code>update</code> to the tuple’s <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> and <a href="#check-update-version">check <code>update.targetVersionId</code></a>.</li>
 <li>Increment <code>current_version_id</code>.</li>
-<li>If <code>current_version_id</code> is greater than or equal to the integer form of <code>resolutionOptions.versionId</code>, return <code>current_document</code>.</li>
-<li>If <code>current_document.deactivated</code> is <code>true</code>, return <code>current_document</code>.</li>
+<li>If <code>current_version_id</code> is greater than or equal to the integer form of <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
+<li>If <code>current_document.deactivated</code> is <code>true</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 </ol>
 <h3 id="check-update-version"><a class="header" href="#check-update-version">Check <code>update.targetVersionId</code></a></h3>
 <p>Compare <code>update.targetVersionId</code> to <code>current_version_id</code>. Only one of three possible conditions will occur:</p>
