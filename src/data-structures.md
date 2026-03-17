@@ -102,10 +102,11 @@ A [BTCR2 Unsigned Update] is a Map data structure with the following properties:
   according to the DID core v1.1 specification {{#cite DID-CORE}}.
 - `targetVersionId`: The `versionId` of the DID document after the patch has been applied. The
   targetVersionId MUST be one more than the `versionId` of the DID document being updated.
-- `sourceHash`: A SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST
-  be produced by the [JSON Document Hashing] algorithm.
-- `targetHash`: A SHA-256 hash of the DID document that results from applying the patch to the
-  source document. The hash MUST be produced by the [JSON Document Hashing] algorithm.
+
+SHA-256 hashes (`sourceHash` and `targetHash`) are `"base64url"` {{#cite RFC4648}} encoded.
+
+- `sourceHash`: SHA-256 hash of the DID document that the patch MUST be applied to.
+- `targetHash`: SHA-256 hash of the DID document that results from applying the patch to the source document.
 
 {% set hide_text = `` %}
 {% set ex_btcr2_unsigned_update =
@@ -246,7 +247,9 @@ The [Sidecar Data] contains optional properties:
 
 ## SMT Proof { #smt-proof }
 
-An [SMT Proof] data structure contains the following properties:
+An [SMT Proof] data structure contains the following properties.
+
+SHA-256 hashes (`id`, `updateId`, `hashes`) are `"base64url"` {{#cite RFC4648}} encoded.
 
 - `id`: SHA-256 hash of the root node.
 - `nonce`: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
