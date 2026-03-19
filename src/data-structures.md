@@ -23,7 +23,7 @@ DID-CORE}}.
 The following properties MUST be included:
 
 - `@context`: A context array containing the following context URLs:
-  - `"https://www.w3.org/TR/did-1.1"`
+  - `"https://www.w3.org/ns/did/v1.1"`
   - `"https://btcr2.dev/context/v1"`
 - `id`: The `did`.
 
