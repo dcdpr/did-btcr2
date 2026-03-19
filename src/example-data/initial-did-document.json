@@ -4,9 +4,6 @@
     "https://btcr2.dev/context/v1"
   ],
   "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3",
-  "controller": [
-    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3"
-  ],
   "verificationMethod": [
     {
       "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey",
