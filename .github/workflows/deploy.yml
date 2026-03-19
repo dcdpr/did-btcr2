@@ -21,34 +21,29 @@ jobs:
       - name: Install mdbook
         uses: peaceiris/actions-mdbook@v2
         with:
-          mdbook-version: '0.4.52'
+          mdbook-version: '0.5.2'
 
       - name: Install mdbook-bib
         uses: baptiste0928/cargo-install@v3
         with:
           crate: mdbook-bib
-          version: '=0.0.7'
+          version: '=0.5.2'
           locked: true
 
       - name: Install mdbook-mermaid
         uses: baptiste0928/cargo-install@v3
         with:
           crate: mdbook-mermaid
-          version: '=0.16.0'
-          locked: true
-
-      - name: Install mdbook-pagetoc
-        uses: baptiste0928/cargo-install@v3
-        with:
-          crate: mdbook-pagetoc
-          version: '=0.2.2'
+          git: 'https://github.com/badboy/mdbook-mermaid'
+          rev: '25c2b56daed067db36fc224e1d93054c5ca6531c'
           locked: true
 
       - name: Install mdbook-tera
         uses: baptiste0928/cargo-install@v3
         with:
           crate: mdbook-tera
-          version: '=0.6.0'
+          git: 'https://github.com/stevecheckoway/mdbook-tera'
+          rev: 'cdb9d902b714a5efa5a025a7d263e0924eb4d4d4'
           locked: true
 
       - name: Build

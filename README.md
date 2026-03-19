@@ -13,7 +13,13 @@ The full specification may be viewed at https://dcdpr.github.io/did-btcr2/.
 
 
 ```zsh
-> cargo install mdbook mdbook-mermaid mdbook-bib mdbook-tera mdbook-pagetoc
+> cargo install --force mdbook@0.5.2 mdbook-bib@0.5.2
+> cargo install --force mdbook-mermaid \
+    --git https://github.com/badboy/mdbook-mermaid \
+    --rev 25c2b56daed067db36fc224e1d93054c5ca6531c
+> cargo install --force mdbook-tera \
+    --git https://github.com/stevecheckoway/mdbook-tera \
+    --rev cdb9d902b714a5efa5a025a7d263e0924eb4d4d4
 
 > cd mdbook
 > mdbook serve --open
