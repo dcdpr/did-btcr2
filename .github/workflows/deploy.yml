@@ -28,7 +28,6 @@ jobs:
         with:
           crate: mdbook-bib
           version: '=0.5.2'
-          locked: true
 
       - name: Install mdbook-mermaid
         uses: baptiste0928/cargo-install@v3
@@ -36,7 +35,6 @@ jobs:
           crate: mdbook-mermaid
           git: 'https://github.com/badboy/mdbook-mermaid'
           rev: '25c2b56daed067db36fc224e1d93054c5ca6531c'
-          locked: true
 
       - name: Install mdbook-tera
         uses: baptiste0928/cargo-install@v3
@@ -44,7 +42,6 @@ jobs:
           crate: mdbook-tera
           git: 'https://github.com/stevecheckoway/mdbook-tera'
           rev: 'cdb9d902b714a5efa5a025a7d263e0924eb4d4d4'
-          locked: true
 
       - name: Build
         run: mdbook build
