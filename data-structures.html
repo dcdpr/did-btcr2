@@ -375,6 +375,7 @@ Show Example
 </div>
 <h2 id="btcr2-unsigned-update"><a class="header" href="#btcr2-unsigned-update">BTCR2 Unsigned Update</a></h2>
 <p>A <a href="./terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is a Map data structure with the following properties:</p>
+<p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>targetHash</code> and <code>sourceHash</code>) MUST be produced using the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and MUST be encoded using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>].</p>
 <ul>
 <li><code>@context</code>: A context array containing the following context URLs:
 <ul>
@@ -389,10 +390,8 @@ applied to a DID document. The result of applying the patch MUST be a conformant
 according to the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</li>
 <li><code>targetVersionId</code>: The <code>versionId</code> of the DID document after the patch has been applied. The
 targetVersionId MUST be one more than the <code>versionId</code> of the DID document being updated.</li>
-<li><code>sourceHash</code>: A SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST
-be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
-<li><code>targetHash</code>: A SHA-256 hash of the DID document that results from applying the patch to the
-source document. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+<li><code>sourceHash</code>: SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+<li><code>targetHash</code>: SHA-256 hash of the DID document that results from applying the patch to the source document. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
 </ul>
 <div class="tabs" id="btcr2-unsigned-update-example">
   <div class="tablist" role="tablist" aria-label="btcr2-unsigned-update-example">
@@ -450,8 +449,8 @@ Show Example
       ]
     }
   ],
-  "sourceHash": "8beuAJ8w88YWrms8hsqCnZn2atxBMGsQ7YBFhzPx5b2q",
-  "targetHash": "F2F1pmK9tWAwzf6rKyVCietbswatFctvSJHM4sj1fiAw",
+  "sourceHash": "9UcLe0qX1eqH6WCrRzTdEFMqBLYAOKw2XURnhMTte84",
+  "targetHash": "jdTTyeniCwMEqUFny8D7cJbkEvtQOeoVPK9ugGLI9b8",
   "targetVersionId": 2
 }
 </code></pre>
@@ -519,8 +518,8 @@ Show Example
       ]
     }
   ],
-  "sourceHash": "8beuAJ8w88YWrms8hsqCnZn2atxBMGsQ7YBFhzPx5b2q",
-  "targetHash": "F2F1pmK9tWAwzf6rKyVCietbswatFctvSJHM4sj1fiAw",
+  "sourceHash": "9UcLe0qX1eqH6WCrRzTdEFMqBLYAOKw2XURnhMTte84",
+  "targetHash": "jdTTyeniCwMEqUFny8D7cJbkEvtQOeoVPK9ugGLI9b8",
   "targetVersionId": 2,
   "proof": {
     "@context": [
@@ -726,8 +725,8 @@ Show Example
           }
         }
       ],
-      "sourceHash": "8SZT2CphokAD389BtLmn5DGY6QUbM5QBSnFqpdzAwdaU",
-      "targetHash": "3YgLJ5dshQzrfy3ZjiH6TFWtwjQP8XGirjzT5ysmTh5m",
+      "sourceHash": "51Dqoi01JaRbQUNUlFeJPZZwfV1s3DBTjH_01pOhczA",
+      "targetHash": "VBgY-jPS1sHO8K8zsrceICbGJn1co1-OVVLb8DlUlUI",
       "targetVersionId": 2,
       "proof": {
         "@context": [
@@ -761,8 +760,8 @@ Show Example
           }
         }
       ],
-      "sourceHash": "3YgLJ5dshQzrfy3ZjiH6TFWtwjQP8XGirjzT5ysmTh5m",
-      "targetHash": "GceTr5Ac4c3LK4uySTtiyBm2W7bmQHAsNCbGKbeNCAgg",
+      "sourceHash": "VBgY-jPS1sHO8K8zsrceICbGJn1co1-OVVLb8DlUlUI",
+      "targetHash": "xbIYnaRXtjMH7aR7d0sFWpl_r688CtKYlkEimpH-Zlk",
       "targetVersionId": 3,
       "proof": {
         "@context": [
@@ -797,6 +796,7 @@ Show Example
 </div>
 <h2 id="smt-proof"><a class="header" href="#smt-proof">SMT Proof</a></h2>
 <p>An <a href="./terminology.html#smt-proof">SMT Proof</a> data structure contains the following properties:</p>
+<p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>id</code>, <code>updateId</code>, <code>hashes</code>) MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded.</p>
 <ul>
 <li><code>id</code>: SHA-256 hash of the root node.</li>
 <li><code>nonce</code>: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding.</li>
