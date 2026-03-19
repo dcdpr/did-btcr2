@@ -21,7 +21,6 @@ The full specification may be viewed at https://dcdpr.github.io/did-btcr2/.
     --git https://github.com/stevecheckoway/mdbook-tera \
     --rev cdb9d902b714a5efa5a025a7d263e0924eb4d4d4
 
-> cd mdbook
 > mdbook serve --open
 ```
 
