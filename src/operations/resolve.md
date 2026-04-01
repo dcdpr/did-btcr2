@@ -53,7 +53,7 @@ The resolver returns:
 ## Decode the DID { #decode-the-did }
 
 The `did` MUST be parsed with the [DID-BTCR2 Identifier Decoding] algorithm to retrieve `version`,
-`network`, and `genesis_bytes`. An [`INVALID_DID`](../errors.html) error MUST be raised in response to any errors
+`network`, and `genesis_bytes`. An [`INVALID_DID`] error MUST be raised in response to any errors
 raised while decoding.
 
 
@@ -65,7 +65,9 @@ raised while decoding.
 - Hash each [CAS Announcement (data structure)] in `sidecar.casUpdates` with the [JSON Document Hashing] algorithm and build a map from hash to announcement (`cas_lookup_table`).
 - Build a map from `sidecar.smtProofs` keyed by proof `id` (`smt_lookup_table`).
 
-If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID`](../errors.html) error if the computed hash does not match `genesis_bytes`.
+If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. If `sidecar.genesisDocument` is not provided, retrieve it from [CAS] using `genesis_bytes`. Raise an [`INVALID_DID`] error if the computed hash does not match `genesis_bytes`.
+
+When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
 
 ## Establish `current_document` { #establish-current-document }
@@ -125,7 +127,8 @@ For each transaction found:
 * Build a tuple with:
   * The transaction's block metadata (height, time, and confirmations).
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
-    * If the update is not in `update_lookup_table`, raise a [`MISSING_UPDATE_DATA`] error.
+    * If the update is not in `update_lookup_table`, retrieve it from [CAS].
+    * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
 * Append the tuple to `updates`.
 
 
