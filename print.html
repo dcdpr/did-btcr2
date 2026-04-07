@@ -1623,7 +1623,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 </ul>
 <h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
 <p>The <code>did</code> MUST be parsed with the <a href="operations/../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
-<code>network</code>, and <code>genesis_bytes</code>. An <a href="operations/../errors.html"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
+<code>network</code>, and <code>genesis_bytes</code>. An [<code>INVALID_DID</code>] error MUST be raised in response to any errors
 raised while decoding.</p>
 <h2 id="process-sidecar-data"><a class="header" href="#process-sidecar-data">Process Sidecar Data</a></h2>
 <p><code>resolutionOptions</code> contains a <code>sidecar</code> property (<a href="operations/../data-structures.html#sidecar-data">Sidecar Data (data structure)</a>) which SHOULD be prepared as lookup tables:</p>
@@ -1632,7 +1632,8 @@ raised while decoding.</p>
 <li>Hash each <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> in <code>sidecar.casUpdates</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and build a map from hash to announcement (<code>cas_lookup_table</code>).</li>
 <li>Build a map from <code>sidecar.smtProofs</code> keyed by proof <code>id</code> (<code>smt_lookup_table</code>).</li>
 </ul>
-<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="operations/../errors.html"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>genesis_bytes</code>. Raise an [<code>INVALID_DID</code>] error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<p>When data is not available in <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a>, implementations are RECOMMENDED to retrieve it from a <a href="operations/../terminology.html#cas">Content Addressable Storage</a> (<a href="operations/../terminology.html#cas">CAS</a>) service. To retrieve a document from <a href="operations/../terminology.html#cas">CAS</a>, construct a CID from the document’s SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].</p>
 <h2 id="establish-current-document"><a class="header" href="#establish-current-document">Establish <code>current_document</code></a></h2>
 <p>Resolution begins by creating an <a href="operations/../terminology.html#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="operations/../terminology.html#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="operations/../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>
 <p>Choose how to establish <code>current_document</code> based on the type of <code>genesis_bytes</code> retrieved from the decoded <code>did</code>:</p>
@@ -1742,7 +1743,8 @@ Show Template
 <li>The transaction’s block metadata (height, time, and confirmations).</li>
 <li>The <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> retrieved from <code>update_lookup_table[update_hash]</code>.
 <ul>
-<li>If the update is not in <code>update_lookup_table</code>, raise a <a href="operations/../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error.</li>
+<li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="operations/../terminology.html#cas">CAS</a>.</li>
+<li>Raise a <a href="operations/../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the update is not available from either source.</li>
 </ul>
 </li>
 </ul>
