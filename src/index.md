@@ -1,6 +1,7 @@
 # `did:btcr2` DID Method
 
-WARNING This specification is still under active development and may be subject to breaking changes.
+> [!WARNING]
+> This specification is still under active development and may be subject to breaking changes.
 
 ## Authors
 
@@ -26,7 +27,7 @@ WARNING This specification is still under active development and may be subject 
 
 ## Publication Date
 
-... 2025
+... 2026
 
 ## License
 
