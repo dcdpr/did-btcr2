@@ -12,7 +12,7 @@ model defined by the DID core v1.1 specification {{#cite DID-CORE}}.
 Concrete representations of these data structures MUST conform to the JSON-LD 1.1 specification {{#cite JSON-LD}}.
 
 All SHA-256 hashes {{#cite SHA256}} that appear in concrete representations of these data structures
-MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
+MUST be encoded as a string using `"base64url"` {{#cite RFC4648}} encoding without padding.
 
 
 ## DID Document { #did-document }
@@ -92,7 +92,7 @@ An [Initial DID Document] is a conformant [DID document (data structure)].
 
 A [BTCR2 Unsigned Update] is a Map data structure with the following properties:
 
-SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced using the [JSON Document Hashing] algorithm and MUST be encoded using `"base64url"` {{#cite RFC4648}}.
+SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced using the [JSON Document Hashing] algorithm and MUST be encoded using `"base64url"` {{#cite RFC4648}} without padding.
 
 - `@context`: A context array containing the following context URLs:
   - `"https://w3id.org/zcap/v1"`
@@ -248,10 +248,10 @@ The [Sidecar Data] contains optional properties:
 
 An [SMT Proof] data structure contains the following properties:
 
-SHA-256 hashes {{#cite SHA256}} (`id`, `updateId`, `hashes`) MUST be `"base64url"` {{#cite RFC4648}} encoded.
+SHA-256 hashes {{#cite SHA256}} (`id`, `updateId`, `hashes`) MUST be `"base64url"` {{#cite RFC4648}} encoded without padding.
 
 - `id`: SHA-256 hash of the root node.
-- `nonce`: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
+- `nonce`: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using `"base64url"` {{#cite RFC4648}} encoding without padding.
 - `updateId`: The OPTIONAL [BTCR2 Signed Update (data structure)] hashed with the [JSON Document Hashing] algorithm.
 - `collapsed`: Bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
 - `hashes`: Array of SHA-256 hashes representing the sibling [SMT] nodes from the leaf, containing the SHA-256 hash of the [BTCR2 Signed Update] or the "zero identity", to the root.
