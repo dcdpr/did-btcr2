@@ -92,7 +92,7 @@ An [Initial DID Document] is a conformant [DID document (data structure)].
 
 A [BTCR2 Unsigned Update] is a Map data structure with the following properties:
 
-SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced using the [JSON Document Hashing] algorithm and MUST be encoded using `"base64url"` {{#cite RFC4648}} without padding.
+SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced using the [JSON Document Hashing] algorithm and MUST be encoded using `"base64url"` {{#cite RFC4648}} encoding without padding.
 
 - `@context`: A context array containing the following context URLs:
   - `"https://w3id.org/zcap/v1"`
