@@ -643,7 +643,7 @@ spent, within another Bitcoin transaction.</p>
 model defined by the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</p>
 <p>Concrete representations of these data structures MUST conform to the JSON-LD 1.1 specification [<a href="bibliography.html#JSON-LD">JSON-LD</a>].</p>
 <p>All SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] that appear in concrete representations of these data structures
-MUST be encoded as a string using the <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding.</p>
+MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</p>
 <h2 id="did-document"><a class="header" href="#did-document">DID Document</a></h2>
 <p>A DID document is a map data structure defined by the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</p>
 <p>The following properties MUST be included:</p>
@@ -828,7 +828,7 @@ Show Example
 </div>
 <h2 id="btcr2-unsigned-update"><a class="header" href="#btcr2-unsigned-update">BTCR2 Unsigned Update</a></h2>
 <p>A <a href="./terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is a Map data structure with the following properties:</p>
-<p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>targetHash</code> and <code>sourceHash</code>) MUST be produced using the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and MUST be encoded using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>].</p>
+<p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>targetHash</code> and <code>sourceHash</code>) MUST be produced using the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and MUST be encoded using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</p>
 <ul>
 <li><code>@context</code>: A context array containing the following context URLs:
 <ul>
@@ -1249,10 +1249,10 @@ Show Example
 </div>
 <h2 id="smt-proof"><a class="header" href="#smt-proof">SMT Proof</a></h2>
 <p>An <a href="./terminology.html#smt-proof">SMT Proof</a> data structure contains the following properties:</p>
-<p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>id</code>, <code>updateId</code>, <code>hashes</code>) MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded.</p>
+<p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>id</code>, <code>updateId</code>, <code>hashes</code>) MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</p>
 <ul>
 <li><code>id</code>: SHA-256 hash of the root node.</li>
-<li><code>nonce</code>: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding.</li>
+<li><code>nonce</code>: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</li>
 <li><code>updateId</code>: The OPTIONAL <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
 <li><code>collapsed</code>: Bitmap of zero nodes within the path (see: <a href="https://github.com/hoytech/quadrable#collapsed-leaves">collapsed leaves</a>).</li>
 <li><code>hashes</code>: Array of SHA-256 hashes representing the sibling <a href="./terminology.html#smt">SMT</a> nodes from the leaf, containing the SHA-256 hash of the <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> or the “zero identity”, to the root.</li>
