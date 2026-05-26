@@ -19,8 +19,8 @@ A [Beacon Signal] commits to, and anchors in a Bitcoin block, 32 bytes of inform
 
 **did:btcr2** supports different [Beacon Types][Beacon Type], with each type defining a set of algorithms for:
 
-* How a [BTCR2 Beacon] can be established and added as a service to a DID document;
-* How [BTCR2 Update Announcements][BTCR2 Update Announcement] are broadcast within [Beacon Signals][Beacon Signal]; and
+* How a [BTCR2 Beacon] can be established and added as a service to a DID document.
+* How [BTCR2 Update Announcements][BTCR2 Update Announcement] are broadcast within [Beacon Signals][Beacon Signal].
 * How a resolver processes [Beacon Signals][Beacon Signal], identifying, verifying, and applying the authorized mutations to a DID document for a specific DID.
 
 The current, active, [BTCR2 Beacons][BTCR2 Beacon] of a DID document are specified in the document's `service` property. By updating the DID document, a DID controller can change the set of [BTCR2 Beacons][BTCR2 Beacon] they use to broadcast updates to their DID document over time. Resolution of a DID MUST process signals from all [BTCR2 Beacons][BTCR2 Beacon] identified in the [Current DID Document] and apply them in the order determined by the `targetVersionId` declared in the [BTCR2 Signed Update (data structure)].
