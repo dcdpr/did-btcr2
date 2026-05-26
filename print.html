@@ -1620,7 +1620,7 @@ the elliptic curve point. Reference Section 2.3.3 in SEC 1: Elliptic Curve Crypt
 <p>A <a href="operations/../terminology.html#genesis-document">Genesis Document</a> can be used as the <a href="operations/../terminology.html#genesis-bytes">Genesis Bytes</a>, but MUST be hashed
 to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="resolve"><a class="header" href="#resolve">Resolve</a></h1>
-<p>Resolving a <strong>did:btcr2</strong> identifier iteratively builds a DID document by applying <a href="operations/../terminology.html#btcr2-update">BTCR2 Updates</a> to an <a href="operations/../terminology.html#initial-did-document">Initial DID Document</a> that have been committed to the Bitcoin blockchain by <a href="operations/../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>. The <a href="operations/../terminology.html#initial-did-document">Initial DID Document</a> is either deterministically created from the DID or provided by <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a>.</p>
+<p>Resolving a <strong>did:btcr2</strong> identifier iteratively builds a DID document by applying <a href="operations/../terminology.html#btcr2-update">BTCR2 Updates</a> committed to the Bitcoin blockchain by <a href="operations/../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a> to an <a href="operations/../terminology.html#initial-did-document">Initial DID Document</a>. The <a href="operations/../terminology.html#initial-did-document">Initial DID Document</a> is either deterministically created from the DID or provided by <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a>.</p>
 <p>DID resolution is defined by DID Resolution v0.3 [<a href="operations/../bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <p>The resolve operation has the following function signature:</p>
 <pre><code class="language-rust">fn resolve(did, resolutionOptions) -&gt;
@@ -1683,7 +1683,7 @@ raised while decoding.</p>
 <li><code>public-key-multikey</code>: Public key as a Multibase <code>"base-58-btc"</code> [<a href="operations/../bibliography.html#CID">CID</a>] encoded string.</li>
 <li><code>p2pkh-bitcoin-address</code>: Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public key.</li>
 <li><code>p2wpkh-bitcoin-address</code>: Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from the public key.</li>
-<li><code>p2tr-bitcoin-address</code>: Pay-to-Taproot Bitcoin address produced from the public key.</li>
+<li><code>p2tr-bitcoin-address</code>: Pay-to-Taproot (P2TR) Bitcoin address produced from the public key.</li>
 </ul>
 <div class="tabs" id="initial-did-document-template">
   <div class="tablist" role="tablist" aria-label="initial-did-document-template">
@@ -1765,14 +1765,14 @@ Show Template
 <p>Parse the rendered template as JSON to form <code>current_document</code>. The resulting <a href="operations/../data-structures.html#did-document">DID Document (data structure)</a> MUST be conformant to DID Core v1.1 [<a href="operations/../bibliography.html#DID-CORE">DID-CORE</a>].</p>
 <h2 id="process-beacon-signals"><a class="header" href="#process-beacon-signals">Process Beacon Signals</a></h2>
 <p>Scan the <code>service</code> entries in <code>current_document</code> (<a href="operations/../data-structures.html#did-document">DID Document (data structure)</a>) and identify <a href="operations/../terminology.html#btcr2-beacon">BTCR2 Beacons</a> by matching service <code>type</code> to <a href="operations/../beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>. Parse each beacon <code>serviceEndpoint</code> as a <a href="operations/../terminology.html#beacon-address">Beacon Address</a>, then use those <a href="operations/../terminology.html#beacon-address">Beacon Addresses</a> to find Bitcoin transactions whose last output script contains <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a>.</p>
-<p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain RPC service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block. Cache <a href="operations/../terminology.html#beacon-address">Beacon Addresses</a> to avoid repeated transaction lookups.</p>
+<p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block. Cache <a href="operations/../terminology.html#beacon-address">Beacon Addresses</a> to avoid repeated transaction lookups.</p>
 <p>For each transaction found:</p>
 <ul>
-<li>Derive <code>update_hash</code> from the transaction’s <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a> based on the beacon type:
+<li>Derive <code>update_hash</code> from the transaction’s <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a> based on the <a href="operations/../terminology.html#beacon-type">Beacon Type</a>:
 <ul>
-<li>Singleton Beacon: <code>update_hash</code> is the <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a>.</li>
-<li>CAS Beacon: use <a href="operations/resolve.html#process-cas-beacon">Process CAS Beacon</a>.</li>
-<li>SMT Beacon: use <a href="operations/resolve.html#process-smt-beacon">Process SMT Beacon</a>.</li>
+<li><a href="operations/../terminology.html#singleton-beacon">Singleton Beacon</a>: <code>update_hash</code> is the <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a>.</li>
+<li><a href="operations/../terminology.html#cas-beacon">CAS Beacon</a>: use <a href="operations/resolve.html#process-cas-beacon">Process CAS Beacon</a>.</li>
+<li><a href="operations/../terminology.html#smt-beacon">SMT Beacon</a>: use <a href="operations/resolve.html#process-smt-beacon">Process SMT Beacon</a>.</li>
 </ul>
 </li>
 <li>Build a tuple with:
