@@ -36,7 +36,7 @@ The resolver:
 2. Repeats the following loop:
     * [Process Beacon Signals](#process-beacon-signals) to populate `updates` from the beacon services in `current_document`.
     * [Process `updates` Array](#process-updates) to apply updates to `current_document` and refresh `block_confirmations`.
-    * Stops when processing updates returns early with a resolved `didDocument` or an error occurs.
+    * The loop terminates when processing updates resolves `didDocument` or an error occurs.
 
 The resolver returns:
 
@@ -53,7 +53,7 @@ The resolver returns:
 ## Decode the DID { #decode-the-did }
 
 The `did` MUST be parsed with the [DID-BTCR2 Identifier Decoding] algorithm to retrieve `version`,
-`network`, and `genesis_bytes`. An [`INVALID_DID`](../errors.html) error MUST be raised in response to any errors
+`network`, and `genesis_bytes`. An [`INVALID_DID`] error MUST be raised in response to any errors
 raised while decoding.
 
 
@@ -65,7 +65,9 @@ raised while decoding.
 - Hash each [CAS Announcement (data structure)] in `sidecar.casUpdates` with the [JSON Document Hashing] algorithm and build a map from hash to announcement (`cas_lookup_table`).
 - Build a map from `sidecar.smtProofs` keyed by proof `id` (`smt_lookup_table`).
 
-If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID`](../errors.html) error if the computed hash does not match `genesis_bytes`.
+If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. If `sidecar.genesisDocument` is not provided, retrieve it from [CAS] using `genesis_bytes`. Raise an [`INVALID_DID`] error if the computed hash does not match `genesis_bytes`.
+
+When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
 
 ## Establish `current_document` { #establish-current-document }
@@ -142,17 +144,17 @@ Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to 
 
 ## Process `updates` Array { #process-updates }
 
-Return `current_document` as the resolved `didDocument` if `updates` is empty.
+Resolve `current_document` as `didDocument` if `updates` is empty.
 
 Otherwise:
 
 1. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Take the first tuple.
 2. Set `block_confirmations` to the tuple's block confirmations.
-3. If `resolutionOptions.versionTime` is provided and the tuple's block time is more recent, return `current_document` as the resolved `didDocument`.
+3. If `resolutionOptions.versionTime` is provided and the tuple's block time is more recent, resolve `current_document` as `didDocument`.
 4. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 5. Increment `current_version_id`.
-6. If `current_version_id` is greater than or equal to the integer form of `resolutionOptions.versionId`, return `current_document`.
-7. If `current_document.deactivated` is `true`, return `current_document`.
+6. If `current_version_id` is greater than or equal to the integer form of `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
+7. If `current_document.deactivated` is `true`, resolve `current_document` as `didDocument`.
 
 
 ### Check `update.targetVersionId` { #check-update-version }

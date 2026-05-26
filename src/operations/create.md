@@ -26,11 +26,10 @@ or from a [Genesis Document].
 
 ## secp256k1 Public Key
 
-A secp256k1 public key can be used as the [Genesis Bytes]. The key MUST be
-in its compressed Standards for Efficient Cryptography (SEC) format: a 33-byte 
-representation consisting of asingle prefix byte (`0x02` or `0x03`) followed by 
-the 32-byte x-coordinate ofthe elliptic curve point.
-Reference Section 2.3.3 in SEC 1: Elliptic Curve Cryptography {{#cite SEC}}.
+An secp256k1 public key can be used as the [Genesis Bytes]. The key MUST be
+in its compressed SEC format: a 33-byte representation consisting of a
+single prefix byte (`0x02` or `0x03`) followed by the 32-byte x-coordinate of
+the elliptic curve point. Reference Section 2.3.3 in SEC 1: Elliptic Curve Cryptography {{#cite SEC}}.
 
 ## Genesis Document Hash
 
