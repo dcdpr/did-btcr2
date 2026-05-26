@@ -6,7 +6,7 @@
 
 # Resolve
 
-Resolving a **did:btcr2** identifier iteratively builds a DID document by applying [BTCR2 Updates][BTCR2 Update] to an [Initial DID Document] that has been committed to the Bitcoin blockchain by [Authorized Beacon Signals][Authorized Beacon Signal]. The [Initial DID Document] is either deterministically created from the DID or provided by [Sidecar Data].
+Resolving a **did:btcr2** identifier iteratively builds a DID document by applying [BTCR2 Updates][BTCR2 Update] committed to the Bitcoin blockchain by [Authorized Beacon Signals][Authorized Beacon Signal] to an [Initial DID Document]. The [Initial DID Document] is either deterministically created from the DID or provided by [Sidecar Data].
 
 DID resolution is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
 
