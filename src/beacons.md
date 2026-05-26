@@ -50,7 +50,7 @@ The `type` of a `service` defining a [Singleton Beacon] in a DID document is `"S
 
 A [CAS Beacon] creates a [Beacon Signal] that commits to multiple [BTCR2 Update Announcements][BTCR2 Update Announcement] through a [Beacon Announcement Map]. To do so, it constructs a Map where the key is the **did:btcr2** identifier and the value is the hash of the corresponding [BTCR2 Update]. The [Beacon Signal] contains a SHA-256 hash of the Map.
 
-If a [BTCR2 Update] is not publicly discoverable (i.e., is not published to a [CA]S under its hash), the only parties with access to the update are the DID controller and any parties they gave it to (etc.).
+If a [BTCR2 Update] is not publicly discoverable (i.e., is not published to a [CAS] under its hash), the only parties with access to the update are the DID controller and any parties they gave it to (etc.).
 
 For a [CAS Beacon], proof of non-inclusion of a **did:btcr2** identifier is simply its absence from the Map.
 
