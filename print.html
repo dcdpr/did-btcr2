@@ -210,7 +210,7 @@
 <h2 id="copyright"><a class="header" href="#copyright">Copyright</a></h2>
 <p>© 2024-2025 Digital Contract Design</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="abstract"><a class="header" href="#abstract">Abstract</a></h1>
-<p>did:btcr2 is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin
+<p><strong>did:btcr2</strong> is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin
 blockchain as a Verifiable Data Registry to announce changes to the DID document. It supports
 zero-cost off-chain DID creation; aggregated updates for scalable on-chain update costs; long-term
 identifiers that can support frequent updates; private communication of the DID document; private
@@ -221,17 +221,17 @@ DID resolution; and non-repudiation.</p>
 Good Privacy’s (PGP) foundational legal work in the 1990s. With
 Decentralized Identifiers (DIDs), digital identity can be preserved
 through a rotation of key material, without relying on a centralized
-party. This specification defines did:btcr2, a DID method designed and
+party. This specification defines <strong>did:btcr2</strong>, a DID method designed and
 motivated by the following considerations:</p>
 <h2 id="anti-censorship"><a class="header" href="#anti-censorship">Anti-censorship</a></h2>
 <p>Our primary motivation is to leverage the anti-censorship capability
-of Bitcoin to enable individuals to control decentralized identifiers
-without interference by centralized players. That means creating a W3C
-conformant DID method capable of creating identifiers usable for a
-range of verifiable interactions, including issuing Verifiable
-Credentials and proving that the current presenter is the subject of a
-Verifiable Credential. This DID method gives organizations and states
-the ability to anchor private attestations to identifiers under
+of Bitcoin to enable individuals to control Decentralized Identifiers
+without interference by centralized players. That means creating a
+World Wide Web Consortium (W3C) conformant DID method capable of creating
+identifiers usable for a range of verifiable interactions, including
+issuing Verifiable Credentials and proving that the current presenter
+is the subject of a Verifiable Credential. This DID method gives organizations
+and states the ability to anchor private attestations to identifiers under
 individuals’ direct control, giving humans an unprecedented ability to
 participate in digital interactions on their own terms, using the
 identifiers they choose, when they choose.</p>
@@ -244,10 +244,10 @@ on public DID documents. There has been a presumption that anyone who
 has the DID itself should be able to resolve it to get the current DID
 document. This presumption places more information in the public eye
 than is strictly necessary for securing interactions related to the DID.</p>
-<p>To tackle reliance on public DID documents head-on, this DID method
+<p>To tackle reliance on public DID documents head-on, <strong>did:btcr2</strong>
 introduces private DID documents, in which resolving the DID requires
-additional information delivered either alongside or in a separate
-communication from the DID controller. We call this transfer Sidecar
+additional information delivered either alongside of or in a separate
+communication from the DID controller. We call this transfer <a href="./terminology.html#sidecar">Sidecar</a>
 delivery. Our approach ensures that successful resolution ALWAYS results
 in the same DID document for all parties, so that every party in the
 ecosystem sees the same cryptographically anchored result.</p>
@@ -259,26 +259,26 @@ blockchain is the premiere global network for immutably anchoring
 information to a specific time. This DID method ensures that every BTCR2
 DID is anchored on a single, canonical, immutable history for the
 lifetime of the DID. It is simply not possible for anyone to modify the
-history of the DID. We call this feature Non-Repudiation.</p>
+history of the DID. We call this feature <a href="./terminology.html#non-repudiation">Non-Repudiation</a>.</p>
 <h2 id="offline-creation"><a class="header" href="#offline-creation">Offline Creation</a></h2>
-<p>Finally, we wanted to support the creation of DIDs without requiring
+<p>Finally, we want to support the creation of DIDs without requiring
 on-chain interactions. BTCR creation depended on getting a transaction
 on-chain. BTCR2 supports creating DIDs with sophisticated DID documents
 without registering them on-chain. In fact, all BTCR2 DIDs start with
-offline creation. Only updates to the DID document require on-chain
+<a href="./terminology.html#offline-creation">Offline Creation</a>. Only updates to the DID document require on-chain
 interactions. Our approach supports both key-based deterministic DIDs
 and document-based deterministic DIDs. In key-based DIDs, the DID itself
-contains everything you need to bootstrap an initial DID Document with
+contains everything you need to bootstrap an <a href="./terminology.html#initial-did-document">Initial DID Document</a> with
 usable verification methods suitable for authentication, attestation,
 and capability invocation and delegation. For document-based DIDs,
-additional Sidecar Data - a Genesis Document - must be used to create
-the Initial DID document. Offline creation allows unlimited DID creation
+additional <a href="./terminology.html#sidecar-data">Sidecar Data</a> - a <a href="./terminology.html#genesis-document">Genesis Document</a> - must be used to create
+the <a href="./terminology.html#initial-did-document">Initial DID Document</a>. <a href="./terminology.html#offline-creation">Offline Creation</a> allows unlimited DID creation
 and use without requiring any on-chain or online interactions, making it
 suitable for a wide range of high-volume, low cost use cases.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="conformance"><a class="header" href="#conformance">Conformance</a></h1>
-<p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.</p>
+<p>All sections marked as non-normative, as well as all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.</p>
 <p>The key words MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this document are to be interpreted as described in [<a href="bibliography.html#BCP14">BCP14</a>] when, and only when, they appear in all capitals, as shown here.</p>
-<p>Interoperability of implementations of the <strong>did:btcr2</strong> DID method is tested by evaluating an implementation’s ability to create, update, deactivate, and resolve <strong>did:btcr2</strong> identifiers and DID Documents that conform to this specification. Interoperability for producers and consumers of <strong>did:btcr2</strong> identifier and DID Documents is provided by ensuring the DIDs and DID Documents conform.</p>
+<p>Interoperability of implementations of the <strong>did:btcr2</strong> DID method is tested by evaluating an implementation’s ability to create, resolve, update, and deactivate, <strong>did:btcr2</strong> identifiers and DID documents that conform to this specification. Interoperability for producers and consumers of <strong>did:btcr2</strong> identifiers and DID documents is provided by ensuring the DIDs and DID documents conform.</p>
 <p>Implementations MUST be conformant to all normative statements in Decentralized Identifiers v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] and DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="terminology"><a class="header" href="#terminology">Terminology</a></h1>
 <h2 id="aggregate-beacon"><a class="header" href="#aggregate-beacon">Aggregate Beacon</a></h2>
