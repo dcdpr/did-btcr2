@@ -34,7 +34,7 @@ The resolver:
 
 1. [Establishes `current_document`](#establish-current-document) from the DID or from [Sidecar Data].
 2. Repeats the following loop:
-    * [Process Beacon Signals](#process-beacon-signals) to populate `updates` from the Beacon services in `current_document`.
+    * [Process Beacon Signals](#process-beacon-signals) to populate `updates` from the beacon services in `current_document`.
     * [Process `updates` Array](#process-updates) to apply updates to `current_document` and refresh `block_confirmations`.
     * Stops when processing updates returns early with a resolved `didDocument` or an error occurs.
 
