@@ -352,7 +352,7 @@ Show Template
 <li>Append the tuple to <code>updates</code>.</li>
 </ul>
 <h3 id="process-cas-beacon"><a class="header" href="#process-cas-beacon">Process CAS Beacon</a></h3>
-<p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>map_update_hash</code>. Look up <code>map_update_hash</code> in <code>cas_lookup_table</code> to retrieve a <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> and read <code>update_hash</code> from the announcement entry keyed by <code>did</code>.</p>
+<p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>map_update_hash</code>. Look up <code>map_update_hash</code> in <code>cas_lookup_table</code> to retrieve a <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> and read <code>update_hash</code> from the announcement entry keyed by <code>did</code>. If the <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> is not in <code>cas_lookup_table</code>, retrieve it from <a href="../terminology.html#cas">CAS</a>.</p>
 <h3 id="process-smt-beacon"><a class="header" href="#process-smt-beacon">Process SMT Beacon</a></h3>
 <p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="../data-structures.html#smt-proof">SMT Proof (data structure)</a>. Validate the proof with the <a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Use <code>smt_proof.updateId</code> as <code>update_hash</code>.</p>
 <h2 id="process-updates"><a class="header" href="#process-updates">Process <code>updates</code> Array</a></h2>
