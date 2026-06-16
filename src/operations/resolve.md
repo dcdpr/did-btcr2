@@ -134,7 +134,7 @@ For each transaction found:
 
 ### Process CAS Beacon { #process-cas-beacon }
 
-Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)] and read `update_hash` from the announcement entry keyed by `did`.
+Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)] and read `update_hash` from the announcement entry keyed by `did`. If the [CAS Announcement (data structure)] is not in `cas_lookup_table`, retrieve it from [CAS].
 
 
 ### Process SMT Beacon { #process-smt-beacon }
