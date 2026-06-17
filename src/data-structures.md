@@ -253,8 +253,8 @@ SHA-256 hashes {{#cite SHA256}} (`id`, `updateId`, `hashes`) MUST be `"base64url
 - `id`: SHA-256 hash of the root node.
 - `nonce`: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using `"base64url"` {{#cite RFC4648}} encoding without padding.
 - `updateId`: The OPTIONAL [BTCR2 Signed Update (data structure)] hashed with the [JSON Document Hashing] algorithm.
-- `collapsed`: Bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
-- `hashes`: Array of SHA-256 hashes representing the sibling [SMT] nodes from the leaf, containing the SHA-256 hash of the [BTCR2 Signed Update] or the "zero identity", to the root.
+- `collapsed`: Bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)). MUST be `"base64url"` {{#cite RFC4648}} encoded without padding.
+- `hashes`: Array of SHA-256 hashes representing the sibling [SMT] nodes from the leaf, containing the SHA-256 hash of the [BTCR2 Signed Update] or the "zero identity", to the root. Each hash MUST be `"base64url"` {{#cite RFC4648}} encoded without padding.
 
 
 {% set hide_text = `` %}

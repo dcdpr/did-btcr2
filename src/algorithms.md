@@ -128,6 +128,8 @@ Example output:
 
 To verify the inclusion or non-inclusion of a DID in the [SMT Proof], perform the following steps:
 
+Throughout this section, `hash()` denotes SHA-256 {{#cite SHA256}} over a byte array, and `concat()` (equivalently, the `+` operator) concatenates byte arrays, not strings. The `base64url` {{#cite RFC4648}} encoded fields of an [SMT Proof (data structure)] (`id`, `nonce`, `updateId`, `collapsed`, and the entries of `hashes`) MUST be decoded to their raw bytes before being used in any of these operations.
+
 Construct a hashed-zero cache. Two zero leaves are hashed together by concatenating the value `0` with itself for the bottom level, and then hashed again with its next sibling, also itself, at each level up the tree. Each computed hash value can be cached in an array.
 
 {% set hide_text = `` %}
