@@ -316,6 +316,7 @@ Show Example
 </ul>
 <h2 id="smt-proof-verification"><a class="header" href="#smt-proof-verification">SMT Proof Verification</a></h2>
 <p>To verify the inclusion or non-inclusion of a DID in the <a href="./terminology.html#smt-proof">SMT Proof</a>, perform the following steps:</p>
+<p>Throughout this section, <code>hash()</code> denotes SHA-256 [<a href="bibliography.html#SHA256">SHA256</a>] over a byte array, and <code>concat()</code> (equivalently, the <code>+</code> operator) concatenates byte arrays, not strings. The <code>base64url</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded fields of an <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) MUST be decoded to their raw bytes before being used in any of these operations.</p>
 <p>Construct a hashed-zero cache. Two zero leaves are hashed together by concatenating the value <code>0</code> with itself for the bottom level, and then hashed again with its next sibling, also itself, at each level up the tree. Each computed hash value can be cached in an array.</p>
 <div class="tabs" id="construct_hashed_zero_cache">
   <div class="tablist" role="tablist" aria-label="construct_hashed_zero_cache">

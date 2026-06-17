@@ -1291,8 +1291,8 @@ Show Example
 <li><code>id</code>: SHA-256 hash of the root node.</li>
 <li><code>nonce</code>: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</li>
 <li><code>updateId</code>: The OPTIONAL <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
-<li><code>collapsed</code>: Bitmap of zero nodes within the path (see: <a href="https://github.com/hoytech/quadrable#collapsed-leaves">collapsed leaves</a>).</li>
-<li><code>hashes</code>: Array of SHA-256 hashes representing the sibling <a href="./terminology.html#smt">SMT</a> nodes from the leaf, containing the SHA-256 hash of the <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> or the “zero identity”, to the root.</li>
+<li><code>collapsed</code>: Bitmap of zero nodes within the path (see: <a href="https://github.com/hoytech/quadrable#collapsed-leaves">collapsed leaves</a>). MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
+<li><code>hashes</code>: Array of SHA-256 hashes representing the sibling <a href="./terminology.html#smt">SMT</a> nodes from the leaf, containing the SHA-256 hash of the <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> or the “zero identity”, to the root. Each hash MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
 </ul>
 <div class="tabs" id="sidecar-smt-proof-example">
   <div class="tablist" role="tablist" aria-label="sidecar-smt-proof-example">
@@ -1325,14 +1325,14 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
-  "id": "&lt;&lt; Hexadecimal of Root Hash &gt;&gt;",
-  "nonce": "&lt;&lt; Hexadecimal of Nonce 1101 &gt;&gt;",
-  "updateId": "&lt;&lt; Hexadecimal of hash(Data Block 1101) &gt;&gt;",
-  "collapsed": "&lt;&lt; Hexadecimal of 0001 &gt;&gt;",
+  "id": "&lt;&lt; base64url (no padding) of Root Hash &gt;&gt;",
+  "nonce": "&lt;&lt; base64url (no padding) of Nonce 1101 &gt;&gt;",
+  "updateId": "&lt;&lt; base64url (no padding) of hash(Data Block 1101) &gt;&gt;",
+  "collapsed": "&lt;&lt; base64url (no padding) of 0001 &gt;&gt;",
   "hashes": [
-      "&lt;&lt; Hexadecimal of Hash 1110 &gt;&gt;",
-      "&lt;&lt; Hexadecimal of Hash 1001 &gt;&gt;",
-      "&lt;&lt; Hexadecimal of Hash 0 &gt;&gt;"
+      "&lt;&lt; base64url (no padding) of Hash 111 &gt;&gt;",
+      "&lt;&lt; base64url (no padding) of Hash 10 &gt;&gt;",
+      "&lt;&lt; base64url (no padding) of Hash 0 &gt;&gt;"
   ]
 }
 </code></pre>
@@ -2135,6 +2135,7 @@ Show Example
 </ul>
 <h2 id="smt-proof-verification"><a class="header" href="#smt-proof-verification">SMT Proof Verification</a></h2>
 <p>To verify the inclusion or non-inclusion of a DID in the <a href="./terminology.html#smt-proof">SMT Proof</a>, perform the following steps:</p>
+<p>Throughout this section, <code>hash()</code> denotes SHA-256 [<a href="bibliography.html#SHA256">SHA256</a>] over a byte array, and <code>concat()</code> (equivalently, the <code>+</code> operator) concatenates byte arrays, not strings. The <code>base64url</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded fields of an <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) MUST be decoded to their raw bytes before being used in any of these operations.</p>
 <p>Construct a hashed-zero cache. Two zero leaves are hashed together by concatenating the value <code>0</code> with itself for the bottom level, and then hashed again with its next sibling, also itself, at each level up the tree. Each computed hash value can be cached in an array.</p>
 <div class="tabs" id="construct_hashed_zero_cache">
   <div class="tablist" role="tablist" aria-label="construct_hashed_zero_cache">
@@ -2428,17 +2429,17 @@ return candidateHash == proof.id;</code></pre>
 <li>The hashing of the nonce ensures that verifiers with limited input validation deal only with a 256-bit result.</li>
 </ul>
 </li>
-<li>A node with two empty children is itself empty.</li>
-<li>The value of a node with one empty child and one non-empty child is the value of the non-empty child.
+<li>An unused (empty) leaf takes a fixed <em>zero identity</em> value, defined as <code>hash(0 + 0)</code> (the zero identity hashed with itself). An empty subtree therefore has a fixed, precomputable value at each height of the tree — its <em>cached zero</em> — obtained by hashing the previous height’s cached zero with itself, i.e., <code>cachedZero[0] = hash(0 + 0)</code> and <code>cachedZero[n] = hash(cachedZero[n-1] + cachedZero[n-1])</code>.</li>
+<li>The value of every node is the hash of the concatenation of its left value (bit 0) and its right value (bit 1), i.e., <code>node_value = hash(left_value + right_value)</code>. This holds even when a child is empty: the empty child contributes its cached zero value, so a hash is performed at every level all the way down the tree and no level is skipped.
 <ul>
-<li>This limits work to only those points in the tree where non-empty indexes diverge.</li>
+<li>Because the cached zero values are known to every verifier, the empty siblings along a path need not be transmitted in an <a href="appendix/../terminology.html#smt-proof">SMT Proof</a>; only the non-empty sibling hashes are sent, and the <code>collapsed</code> bitmap marks the positions where a cached zero is substituted. Accounting for every hash operation in this way is what makes the tree “optimized” while ensuring a single set of values cannot produce more than one valid path to the root.</li>
 </ul>
 </li>
-<li>The value of a node with two non-empty children is the hash of the concatenation of the left value (bit 0) and the right value (bit 1), i.e., <code>node_value = hash(left_value + right_value)</code>.</li>
 <li>The only thing published in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a> is the root hash (the Merkle root).</li>
 </ul>
+<p>Throughout this appendix, <code>hash()</code> denotes SHA-256 [<a href="appendix/../bibliography.html#SHA256">SHA256</a>] over a byte array, and the <code>+</code> operator concatenates byte arrays, not strings. The values carried in an <a href="appendix/../data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) are <code>base64url</code> [<a href="appendix/../bibliography.html#RFC4648">RFC4648</a>] encoded without padding and MUST be decoded to their raw bytes before being used in these operations; the quoted <code>Hash …</code> and <code>Nonce …</code> labels in the example below stand in for those decoded byte values.</p>
 <p>Let’s assume that indexes 0 (<code>0000</code>), 2 (<code>0010</code>), 5 (<code>0101</code>), 9 (<code>1001</code>), 13 (<code>1101</code>), and 14 (<code>1110</code>) have DIDs associated with them; and a signal includes updates for DIDs 2, 9, and 13 and non-updates for all others.</p>
-<p>The collapsed tree, where empty branches have been trimmed and single-child nodes have been removed, looks like this (note that the positions of nodes <code>Hash 1001</code> and <code>Hash 11</code> are reversed due to the Mermaid layout algorithm):</p>
+<p>The optimized tree for this signal looks like this. Every node is still hashed from its two children, but each empty subtree contributes its precomputed cached zero value rather than being recomputed or transmitted. Empty leaves take the value <code>z0</code> (<code>cachedZero[0]</code>), and a subtree of two empty leaves takes <code>z1 = hash(z0 + z0)</code> (<code>cachedZero[1]</code>); these cached zeros are shown inline in the node formulas rather than drawn as separate nodes:</p>
 <pre class="mermaid">flowchart TD
     classDef rootHash color:#000000,fill:#fb8500
     classDef nodeHash color:#000000,fill:#219ebc
@@ -2449,46 +2450,65 @@ return candidateHash == proof.id;</code></pre>
     *hash(Hash 0 + Hash 1)*`&quot;]:::rootHash
 
     RootHash --&gt; Hash0[&quot;`Hash 0
-    *hash(Hash 00 + Hash 0101)*`&quot;]:::nodeHash
+    *hash(Hash 00 + Hash 01)*`&quot;]:::nodeHash
     RootHash --&gt; Hash1[&quot;`Hash 1
-    *hash(Hash 1001 + Hash 11)*`&quot;]:::nodeHash
+    *hash(Hash 10 + Hash 11)*`&quot;]:::nodeHash
 
     Hash0 --&gt; Hash00[&quot;`Hash 00
-    *hash(Hash 0000 + Hash 0010)*`&quot;]:::nodeHash
-    Hash0 --&gt; Hash0101[&quot;`Hash 0101
-    *hash(hash(Nonce 0101))*`&quot;]:::leafHash
+    *hash(Hash 000 + Hash 001)*`&quot;]:::nodeHash
+    Hash0 --&gt; Hash01[&quot;`Hash 01
+    *hash(Hash 010 + z1)*`&quot;]:::nodeHash
 
-    Hash1 --&gt; Hash1001[&quot;`Hash 1001
-    *hash(hash(Nonce 1001) + hash(Data Block 1001))*`&quot;]:::leafHash
+    Hash1 --&gt; Hash10[&quot;`Hash 10
+    *hash(Hash 100 + z1)*`&quot;]:::nodeHash
     Hash1 --&gt; Hash11[&quot;`Hash 11
-    *hash(Hash 1101 + Hash 1110)*`&quot;]:::nodeHash
+    *hash(Hash 110 + Hash 111)*`&quot;]:::nodeHash
 
-    Hash00 --&gt; Hash0000[&quot;`Hash 0000
+    Hash00 --&gt; Hash000[&quot;`Hash 000
+    *hash(Hash 0000 + z0)*`&quot;]:::nodeHash
+    Hash00 --&gt; Hash001[&quot;`Hash 001
+    *hash(Hash 0010 + z0)*`&quot;]:::nodeHash
+
+    Hash01 --&gt; Hash010[&quot;`Hash 010
+    *hash(z0 + Hash 0101)*`&quot;]:::nodeHash
+
+    Hash10 --&gt; Hash100[&quot;`Hash 100
+    *hash(z0 + Hash 1001)*`&quot;]:::nodeHash
+
+    Hash11 --&gt; Hash110[&quot;`Hash 110
+    *hash(z0 + Hash 1101)*`&quot;]:::nodeHash
+    Hash11 --&gt; Hash111[&quot;`Hash 111
+    *hash(Hash 1110 + z0)*`&quot;]:::nodeHash
+
+    Hash000 --&gt; Hash0000[&quot;`Hash 0000
     *hash(hash(Nonce 0000))*`&quot;]:::leafHash
-    Hash00 --&gt; Hash0010[&quot;`Hash 0010
+    Hash001 --&gt; Hash0010[&quot;`Hash 0010
     *hash(hash(Nonce 0010) + hash(Data Block 0010))*`&quot;]:::leafHash
-
-    Hash11 --&gt; Hash1101[&quot;`Hash 1101
+    Hash010 --&gt; Hash0101[&quot;`Hash 0101
+    *hash(hash(Nonce 0101))*`&quot;]:::leafHash
+    Hash100 --&gt; Hash1001[&quot;`Hash 1001
+    *hash(hash(Nonce 1001) + hash(Data Block 1001))*`&quot;]:::leafHash
+    Hash110 --&gt; Hash1101[&quot;`Hash 1101
     *hash(hash(Nonce 1101) + hash(Data Block 1101))*`&quot;]:::leafHash
-    Hash11 --&gt; Hash1110[&quot;`Hash 1110
+    Hash111 --&gt; Hash1110[&quot;`Hash 1110
     *hash(hash(Nonce 1110))*`&quot;]:::leafHash
 
     Hash0010 --&gt; DataBlock0010[(&quot;Data Block 0010&quot;)]:::dataBlock
     Hash1001 --&gt; DataBlock1001[(&quot;Data Block 1001&quot;)]:::dataBlock
     Hash1101 --&gt; DataBlock1101[(&quot;Data Block 1101&quot;)]:::dataBlock
 </pre>
-<p>The DID controller has to prove that there is either an update or a non-update in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a>. To prove an update, the DID controller provides the nonce and either the <a href="appendix/../terminology.html#btcr2-update">BTCR2 Update</a> or the hash; to prove a non-update, the DID controller provides the nonce. In addition, the DID controller provides the list of collapsed nodes and hashes of each peer in the tree necessary to recalculate the root hash against which to compare with the value in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a>.</p>
-<p>Assuming that the DID of interest is at index 13 (<code>int(hash(did)) == int(1101) == 13</code>), the <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> (the party responsible for constructing the <a href="appendix/../terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a>) must provide the DID controller with a list of collapsed nodes above leaf node 13 and a list of hashes of the peers for uncollapsed nodes.</p>
+<p>The DID controller has to prove that there is either an update or a non-update in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a>. To prove an update, the DID controller provides the nonce and either the <a href="appendix/../terminology.html#btcr2-update">BTCR2 Update</a> or the hash; to prove a non-update, the DID controller provides the nonce. In addition, the DID controller provides the <code>collapsed</code> bitmap (marking which sibling positions are empty subtrees, recoverable from the cached zeros) and the hashes of the non-empty peers in the tree necessary to recompute the root hash to compare against the value in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a>.</p>
+<p>Assuming that the DID of interest is at index 13 (<code>int(hash(did)) == int(1101) == 13</code>), the <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> (the party responsible for constructing the <a href="appendix/../terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a>) must provide the DID controller with the <code>collapsed</code> bitmap for the path above leaf node 13 and the hashes of the non-empty peers along that path (the empty peers are recovered from the cached zeros).</p>
 <p>The <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> has the full <a href="appendix/../terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> and can construct <a href="appendix/../terminology.html#smt-proof">SMT Proofs</a>. DID controllers request the <a href="appendix/../terminology.html#smt-proof">SMT Proofs</a> from the <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> and give them to verifiers. An example proof may be:</p>
 <pre><code class="language-json">{
-  "id": "&lt;&lt; Hexadecimal of Root Hash &gt;&gt;",
-  "nonce": "&lt;&lt; Hexadecimal of Nonce 1101 &gt;&gt;",
-  "updateId": "&lt;&lt; Hexadecimal of hash(Data Block 1101) &gt;&gt;",
-  "collapsed": "&lt;&lt; Hexadecimal of 0001 &gt;&gt;",
+  "id": "&lt;&lt; base64url (no padding) of Root Hash &gt;&gt;",
+  "nonce": "&lt;&lt; base64url (no padding) of Nonce 1101 &gt;&gt;",
+  "updateId": "&lt;&lt; base64url (no padding) of hash(Data Block 1101) &gt;&gt;",
+  "collapsed": "&lt;&lt; base64url (no padding) of 0001 &gt;&gt;",
   "hashes": [
-      "&lt;&lt; Hexadecimal of Hash 1110 &gt;&gt;",
-      "&lt;&lt; Hexadecimal of Hash 1001 &gt;&gt;",
-      "&lt;&lt; Hexadecimal of Hash 0 &gt;&gt;"
+      "&lt;&lt; base64url (no padding) of Hash 111 &gt;&gt;",
+      "&lt;&lt; base64url (no padding) of Hash 10 &gt;&gt;",
+      "&lt;&lt; base64url (no padding) of Hash 0 &gt;&gt;"
   ]
 }
 </code></pre>
@@ -2497,29 +2517,28 @@ return candidateHash == proof.id;</code></pre>
 
 candidateHash = hash(hash(proof.nonce) + proof.updateId)
 
-// First collapsed bit from right is 1, so index bit doesn't apply.
-// Skip first index bit.
-// Candidate hash is unchanged.
+// First collapsed bit from right is 1, so the sibling subtree is empty;
+// substitute the cached zero for this height. A hash is still performed.
+// First index bit from right is 1, so the candidate hash goes to the right.
+candidateHash = hash(cachedZero[0] + candidateHash)
 
-// Next collapsed bit from right is 0, so index bit applies.
-// Next index bit from right is 0.
-// Candidate hash goes to the left against the next listed hash.
-candidateHash = hash(candidateHash + "Hash 1110")
+// Next collapsed bit from right is 0, so take the next listed hash.
+// Next index bit from right is 0, so the candidate hash goes to the left.
+candidateHash = hash(candidateHash + "Hash 111")
 
-// Next collapsed bit from right is 0, so index bit applies.
-// Next index bit from right is 1.
-// Candidate hash goes to the right against the next listed hash.
-candidateHash = hash("Hash 1001" + candidateHash)
+// Next collapsed bit from right is 0, so take the next listed hash.
+// Next index bit from right is 1, so the candidate hash goes to the right.
+candidateHash = hash("Hash 10" + candidateHash)
 
-// Next collapsed bit from right is 0, so index bit applies.
-// Next index bit from right is 1.
-// Candidate hash goes to the right against the next listed hash.
+// Next collapsed bit from right is 0, so take the next listed hash.
+// Next index bit from right is 1, so the candidate hash goes to the right.
 candidateHash = hash("Hash 0" + candidateHash)
 
-// Hashes exhausted.
+// Listed hashes exhausted; the collapsed level used a cached zero.
 // Candidate hash must equal root hash.
 assert(candidateHash === proof.id)
 </code></pre>
+<p>The walk-through above is a concrete example for index 13; for the general (normative) verification algorithm and pseudocode — including the hashed-zero cache construction — see the <a href="appendix/../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="references"><a class="header" href="#references">References</a></h1>
 <script type="text/javascript">
 function defaultCopyTextToClipboard(text) {

@@ -798,8 +798,8 @@ Show Example
 <li><code>id</code>: SHA-256 hash of the root node.</li>
 <li><code>nonce</code>: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</li>
 <li><code>updateId</code>: The OPTIONAL <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
-<li><code>collapsed</code>: Bitmap of zero nodes within the path (see: <a href="https://github.com/hoytech/quadrable#collapsed-leaves">collapsed leaves</a>).</li>
-<li><code>hashes</code>: Array of SHA-256 hashes representing the sibling <a href="./terminology.html#smt">SMT</a> nodes from the leaf, containing the SHA-256 hash of the <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> or the “zero identity”, to the root.</li>
+<li><code>collapsed</code>: Bitmap of zero nodes within the path (see: <a href="https://github.com/hoytech/quadrable#collapsed-leaves">collapsed leaves</a>). MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
+<li><code>hashes</code>: Array of SHA-256 hashes representing the sibling <a href="./terminology.html#smt">SMT</a> nodes from the leaf, containing the SHA-256 hash of the <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> or the “zero identity”, to the root. Each hash MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
 </ul>
 <div class="tabs" id="sidecar-smt-proof-example">
   <div class="tablist" role="tablist" aria-label="sidecar-smt-proof-example">
@@ -832,14 +832,14 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
-  "id": "&lt;&lt; Hexadecimal of Root Hash &gt;&gt;",
-  "nonce": "&lt;&lt; Hexadecimal of Nonce 1101 &gt;&gt;",
-  "updateId": "&lt;&lt; Hexadecimal of hash(Data Block 1101) &gt;&gt;",
-  "collapsed": "&lt;&lt; Hexadecimal of 0001 &gt;&gt;",
+  "id": "&lt;&lt; base64url (no padding) of Root Hash &gt;&gt;",
+  "nonce": "&lt;&lt; base64url (no padding) of Nonce 1101 &gt;&gt;",
+  "updateId": "&lt;&lt; base64url (no padding) of hash(Data Block 1101) &gt;&gt;",
+  "collapsed": "&lt;&lt; base64url (no padding) of 0001 &gt;&gt;",
   "hashes": [
-      "&lt;&lt; Hexadecimal of Hash 1110 &gt;&gt;",
-      "&lt;&lt; Hexadecimal of Hash 1001 &gt;&gt;",
-      "&lt;&lt; Hexadecimal of Hash 0 &gt;&gt;"
+      "&lt;&lt; base64url (no padding) of Hash 111 &gt;&gt;",
+      "&lt;&lt; base64url (no padding) of Hash 10 &gt;&gt;",
+      "&lt;&lt; base64url (no padding) of Hash 0 &gt;&gt;"
   ]
 }
 </code></pre>
