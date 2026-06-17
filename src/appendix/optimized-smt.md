@@ -126,6 +126,8 @@ To use Merkle trees to signal commitments in [BTCR2 Beacons][BTCR2 Beacon]:
     * Because the cached zero values are known to every verifier, the empty siblings along a path need not be transmitted in an [SMT Proof]; only the non-empty sibling hashes are sent, and the `collapsed` bitmap marks the positions where a cached zero is substituted. Accounting for every hash operation in this way is what makes the tree "optimized" while ensuring a single set of values cannot produce more than one valid path to the root.
 * The only thing published in the [Beacon Signal] is the root hash (the Merkle root).
 
+Throughout this appendix, `hash()` denotes SHA-256 {{#cite SHA256}} over a byte array, and the `+` operator concatenates byte arrays, not strings. The values carried in an [SMT Proof (data structure)] (`id`, `nonce`, `updateId`, `collapsed`, and the entries of `hashes`) are `base64url` {{#cite RFC4648}} encoded without padding and MUST be decoded to their raw bytes before being used in these operations; the quoted `Hash …` and `Nonce …` labels in the example below stand in for those decoded byte values.
+
 Let's assume that indexes 0 (`0000`), 2 (`0010`), 5 (`0101`), 9 (`1001`), 13 (`1101`), and 14 (`1110`) have DIDs associated with them; and a signal includes updates for DIDs 2, 9, and 13 and non-updates for all others.
 
 The optimized tree for this signal looks like this. Every node is still hashed from its two children, but each empty subtree contributes its precomputed cached zero value rather than being recomputed or transmitted. Empty leaves take the value `z0` (`cachedZero[0]`), and a subtree of two empty leaves takes `z1 = hash(z0 + z0)` (`cachedZero[1]`); these cached zeros are shown inline in the node formulas rather than drawn as separate nodes:
@@ -238,3 +240,5 @@ candidateHash = hash("Hash 0" + candidateHash)
 // Candidate hash must equal root hash.
 assert(candidateHash === proof.id)
 ```
+
+The walk-through above is a concrete example for index 13; for the general (normative) verification algorithm and pseudocode — including the hashed-zero cache construction — see the [SMT Proof Verification] algorithm.
