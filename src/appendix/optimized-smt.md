@@ -121,15 +121,14 @@ To use Merkle trees to signal commitments in [BTCR2 Beacons][BTCR2 Beacon]:
 * The value stored at a leaf node is the hash of a 256-bit nonce, concatenated with the hash of the [BTCR2 Update] (the [BTCR2 Update Announcement]) if available, then the resulting stream is hashed again. I.e., `value = hash(hash(nonce) + hash(btcr2Update))` if there is a [BTCR2 Update] or `value = hash(hash(nonce))` if there is not.
     * Provided that it is unique per DID and per signal, the use of a nonce ensures that updates and non-updates are indistinguishable to outside parties (aggregators, other DID controllers, verifiers) unless explicitly informed by the DID controller.
     * The hashing of the nonce ensures that verifiers with limited input validation deal only with a 256-bit result.
-* A node with two empty children is itself empty.
-* The value of a node with one empty child and one non-empty child is the value of the non-empty child.
-    * This limits work to only those points in the tree where non-empty indexes diverge.
-* The value of a node with two non-empty children is the hash of the concatenation of the left value (bit 0) and the right value (bit 1), i.e., `node_value = hash(left_value + right_value)`.
+* An unused (empty) leaf takes a fixed *zero identity* value, defined as `hash(0 + 0)` (the zero identity hashed with itself). An empty subtree therefore has a fixed, precomputable value at each height of the tree — its *cached zero* — obtained by hashing the previous height's cached zero with itself, i.e., `cachedZero[0] = hash(0 + 0)` and `cachedZero[n] = hash(cachedZero[n-1] + cachedZero[n-1])`.
+* The value of every node is the hash of the concatenation of its left value (bit 0) and its right value (bit 1), i.e., `node_value = hash(left_value + right_value)`. This holds even when a child is empty: the empty child contributes its cached zero value, so a hash is performed at every level all the way down the tree and no level is skipped.
+    * Because the cached zero values are known to every verifier, the empty siblings along a path need not be transmitted in an [SMT Proof]; only the non-empty sibling hashes are sent, and the `collapsed` bitmap marks the positions where a cached zero is substituted. Accounting for every hash operation in this way is what makes the tree "optimized" while ensuring a single set of values cannot produce more than one valid path to the root.
 * The only thing published in the [Beacon Signal] is the root hash (the Merkle root).
 
 Let's assume that indexes 0 (`0000`), 2 (`0010`), 5 (`0101`), 9 (`1001`), 13 (`1101`), and 14 (`1110`) have DIDs associated with them; and a signal includes updates for DIDs 2, 9, and 13 and non-updates for all others.
 
-The collapsed tree, where empty branches have been trimmed and single-child nodes have been removed, looks like this (note that the positions of nodes `Hash 1001` and `Hash 11` are reversed due to the Mermaid layout algorithm):
+The optimized tree for this signal looks like this. Every node is still hashed from its two children, but each empty subtree contributes its precomputed cached zero value rather than being recomputed or transmitted. Empty leaves take the value `z0` (`cachedZero[0]`), and a subtree of two empty leaves takes `z1 = hash(z0 + z0)` (`cachedZero[1]`); these cached zeros are shown inline in the node formulas rather than drawn as separate nodes:
 
 ```mermaid
 flowchart TD
@@ -142,28 +141,47 @@ flowchart TD
     *hash(Hash 0 + Hash 1)*`"]:::rootHash
 
     RootHash --> Hash0["`Hash 0
-    *hash(Hash 00 + Hash 0101)*`"]:::nodeHash
+    *hash(Hash 00 + Hash 01)*`"]:::nodeHash
     RootHash --> Hash1["`Hash 1
-    *hash(Hash 1001 + Hash 11)*`"]:::nodeHash
+    *hash(Hash 10 + Hash 11)*`"]:::nodeHash
 
     Hash0 --> Hash00["`Hash 00
-    *hash(Hash 0000 + Hash 0010)*`"]:::nodeHash
-    Hash0 --> Hash0101["`Hash 0101
-    *hash(hash(Nonce 0101))*`"]:::leafHash
+    *hash(Hash 000 + Hash 001)*`"]:::nodeHash
+    Hash0 --> Hash01["`Hash 01
+    *hash(Hash 010 + z1)*`"]:::nodeHash
 
-    Hash1 --> Hash1001["`Hash 1001
-    *hash(hash(Nonce 1001) + hash(Data Block 1001))*`"]:::leafHash
+    Hash1 --> Hash10["`Hash 10
+    *hash(Hash 100 + z1)*`"]:::nodeHash
     Hash1 --> Hash11["`Hash 11
-    *hash(Hash 1101 + Hash 1110)*`"]:::nodeHash
+    *hash(Hash 110 + Hash 111)*`"]:::nodeHash
 
-    Hash00 --> Hash0000["`Hash 0000
+    Hash00 --> Hash000["`Hash 000
+    *hash(Hash 0000 + z0)*`"]:::nodeHash
+    Hash00 --> Hash001["`Hash 001
+    *hash(Hash 0010 + z0)*`"]:::nodeHash
+
+    Hash01 --> Hash010["`Hash 010
+    *hash(z0 + Hash 0101)*`"]:::nodeHash
+
+    Hash10 --> Hash100["`Hash 100
+    *hash(z0 + Hash 1001)*`"]:::nodeHash
+
+    Hash11 --> Hash110["`Hash 110
+    *hash(z0 + Hash 1101)*`"]:::nodeHash
+    Hash11 --> Hash111["`Hash 111
+    *hash(Hash 1110 + z0)*`"]:::nodeHash
+
+    Hash000 --> Hash0000["`Hash 0000
     *hash(hash(Nonce 0000))*`"]:::leafHash
-    Hash00 --> Hash0010["`Hash 0010
+    Hash001 --> Hash0010["`Hash 0010
     *hash(hash(Nonce 0010) + hash(Data Block 0010))*`"]:::leafHash
-
-    Hash11 --> Hash1101["`Hash 1101
+    Hash010 --> Hash0101["`Hash 0101
+    *hash(hash(Nonce 0101))*`"]:::leafHash
+    Hash100 --> Hash1001["`Hash 1001
+    *hash(hash(Nonce 1001) + hash(Data Block 1001))*`"]:::leafHash
+    Hash110 --> Hash1101["`Hash 1101
     *hash(hash(Nonce 1101) + hash(Data Block 1101))*`"]:::leafHash
-    Hash11 --> Hash1110["`Hash 1110
+    Hash111 --> Hash1110["`Hash 1110
     *hash(hash(Nonce 1110))*`"]:::leafHash
 
     Hash0010 --> DataBlock0010[("Data Block 0010")]:::dataBlock
@@ -171,23 +189,23 @@ flowchart TD
     Hash1101 --> DataBlock1101[("Data Block 1101")]:::dataBlock
 ```
 
-The DID controller has to prove that there is either an update or a non-update in the [Beacon Signal]. To prove an update, the DID controller provides the nonce and either the [BTCR2 Update] or the hash; to prove a non-update, the DID controller provides the nonce. In addition, the DID controller provides the list of collapsed nodes and hashes of each peer in the tree necessary to recalculate the root hash against which to compare with the value in the [Beacon Signal].
+The DID controller has to prove that there is either an update or a non-update in the [Beacon Signal]. To prove an update, the DID controller provides the nonce and either the [BTCR2 Update] or the hash; to prove a non-update, the DID controller provides the nonce. In addition, the DID controller provides the `collapsed` bitmap (marking which sibling positions are empty subtrees, recoverable from the cached zeros) and the hashes of the non-empty peers in the tree necessary to recompute the root hash to compare against the value in the [Beacon Signal].
 
-Assuming that the DID of interest is at index 13 (`int(hash(did)) == int(1101) == 13`), the [Aggregation Service] (the party responsible for constructing the [Sparse Merkle Tree]) must provide the DID controller with a list of collapsed nodes above leaf node 13 and a list of hashes of the peers for uncollapsed nodes.
+Assuming that the DID of interest is at index 13 (`int(hash(did)) == int(1101) == 13`), the [Aggregation Service] (the party responsible for constructing the [Sparse Merkle Tree]) must provide the DID controller with the `collapsed` bitmap for the path above leaf node 13 and the hashes of the non-empty peers along that path (the empty peers are recovered from the cached zeros).
 
 The [Aggregation Service] has the full [Sparse Merkle Tree] and can construct [SMT Proofs][SMT Proof]. DID controllers request the [SMT Proofs][SMT Proof] from the [Aggregation Service] and give them to verifiers. An example proof may be:
 
 
 ```json
 {
-  "id": "<< Hexadecimal of Root Hash >>",
-  "nonce": "<< Hexadecimal of Nonce 1101 >>",
-  "updateId": "<< Hexadecimal of hash(Data Block 1101) >>",
-  "collapsed": "<< Hexadecimal of 0001 >>",
+  "id": "<< base64url (no padding) of Root Hash >>",
+  "nonce": "<< base64url (no padding) of Nonce 1101 >>",
+  "updateId": "<< base64url (no padding) of hash(Data Block 1101) >>",
+  "collapsed": "<< base64url (no padding) of 0001 >>",
   "hashes": [
-      "<< Hexadecimal of Hash 1110 >>",
-      "<< Hexadecimal of Hash 1001 >>",
-      "<< Hexadecimal of Hash 0 >>"
+      "<< base64url (no padding) of Hash 111 >>",
+      "<< base64url (no padding) of Hash 10 >>",
+      "<< base64url (no padding) of Hash 0 >>"
   ]
 }
 ```
@@ -199,26 +217,24 @@ index = int(hash(did)) // 1101
 
 candidateHash = hash(hash(proof.nonce) + proof.updateId)
 
-// First collapsed bit from right is 1, so index bit doesn't apply.
-// Skip first index bit.
-// Candidate hash is unchanged.
+// First collapsed bit from right is 1, so the sibling subtree is empty;
+// substitute the cached zero for this height. A hash is still performed.
+// First index bit from right is 1, so the candidate hash goes to the right.
+candidateHash = hash(cachedZero[0] + candidateHash)
 
-// Next collapsed bit from right is 0, so index bit applies.
-// Next index bit from right is 0.
-// Candidate hash goes to the left against the next listed hash.
-candidateHash = hash(candidateHash + "Hash 1110")
+// Next collapsed bit from right is 0, so take the next listed hash.
+// Next index bit from right is 0, so the candidate hash goes to the left.
+candidateHash = hash(candidateHash + "Hash 111")
 
-// Next collapsed bit from right is 0, so index bit applies.
-// Next index bit from right is 1.
-// Candidate hash goes to the right against the next listed hash.
-candidateHash = hash("Hash 1001" + candidateHash)
+// Next collapsed bit from right is 0, so take the next listed hash.
+// Next index bit from right is 1, so the candidate hash goes to the right.
+candidateHash = hash("Hash 10" + candidateHash)
 
-// Next collapsed bit from right is 0, so index bit applies.
-// Next index bit from right is 1.
-// Candidate hash goes to the right against the next listed hash.
+// Next collapsed bit from right is 0, so take the next listed hash.
+// Next index bit from right is 1, so the candidate hash goes to the right.
 candidateHash = hash("Hash 0" + candidateHash)
 
-// Hashes exhausted.
+// Listed hashes exhausted; the collapsed level used a cached zero.
 // Candidate hash must equal root hash.
 assert(candidateHash === proof.id)
 ```
