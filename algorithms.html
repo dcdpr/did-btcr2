@@ -350,13 +350,14 @@ Show Pseudocode
     <label>Show Pseudocode</label>
 <pre><code class="language-rust">let cachedZero = [];
 let z = 0;
-for i in 0..=255 {
+
+for n in 0..=255 {
   z = hash(concat(z, z));
-  cachedZero[i] = z;
+  cachedZero[n] = z;
 }</code></pre>
   </section>
 </div>
-<p>The <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> is verified by walking the tree starting from the leaf node value, given by <code>hash(hash(proof.nonce) + proof.updateId)</code>, to the root <code>proof.id</code>. Walking the tree means hashing sibling hashes from <code>proof.hashes</code> concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by <code>hash(did)</code>) informs the algorithm which side of the concatenation operation the sibling hash belongs on: 0 for left, 1 for right.</p>
+<p>The <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> is verified by walking the tree starting from the leaf node value — given by <code>hash(hash(proof.nonce) + proof.updateId)</code> for update inclusion or <code>hash(hash(proof.nonce))</code> for non-inclusion — to the root <code>proof.id</code>. Walking the tree means hashing sibling hashes from <code>proof.hashes</code> concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by <code>hash(did)</code>) informs the algorithm which side of the concatenation operation the sibling hash belongs on: 0 for left, 1 for right.</p>
 <p>The tree is “optimized” by collapsing empty nodes. (See <a href="./appendix.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> for definition of “optimized”.) Each bit within <code>proof.collapsed</code> informs the algorithm whether to take the next sibling hash from <code>proof.hashes</code> (0) or use a hashed zero from the current height of the tree (1).</p>
 <p>The last step is asserting that the computed candidate hash is equivalent to <code>proof.id</code> (the Merkle root).</p>
 <div class="tabs" id="pseudocode_smt_proof_verification">
@@ -389,18 +390,24 @@ Show Pseudocode
            aria-labelledby="pseudocode_smt_proof_verification-tab-show"
            hidden>
     <label>Show Pseudocode</label>
-<pre><code class="language-rust">let candidateHash = hash(concat(hash(proof.nonce), proof.updateId))
-let index = hash(did)
+<pre><code class="language-rust">let candidateHash = if let Some(updateId) = proof.updateId {
+  hash(concat(hash(proof.nonce), updateId))
+} else {
+  hash(hash(proof.nonce))
+};
+
+let index = hash(did);
+
 for n in 0..=255 {
   let i = 255 - n;
 
-  let siblingHash = if proof.collapsed[i] == 1 {
+  let siblingHash = if proof.collapsed.bitAt(i) == 1 {
     cachedZero[n]
   } else {
     proof.hashes.pop_front()
   };
 
-  if index[i] == 1 {
+  if index.bitAt(i) == 1 {
     candidateHash = hash(concat(siblingHash, candidateHash));
   } else {
     candidateHash = hash(concat(candidateHash, siblingHash));
