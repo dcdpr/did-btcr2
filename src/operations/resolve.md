@@ -152,9 +152,8 @@ Otherwise:
 2. Set `block_confirmations` to the tuple's block confirmations.
 3. If `resolutionOptions.versionTime` is provided and the tuple's block time is more recent, resolve `current_document` as `didDocument`.
 4. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
-5. Increment `current_version_id`.
-6. If `current_version_id` is greater than or equal to the integer form of `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
-7. If `current_document.deactivated` is `true`, resolve `current_document` as `didDocument`.
+5. If `current_version_id` is greater than or equal to the integer form of `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
+6. If `current_document.deactivated` is `true`, resolve `current_document` as `didDocument`.
 
 
 ### Check `update.targetVersionId` { #check-update-version }
@@ -188,7 +187,7 @@ Verify that `current_document` conforms to DID Core v1.1 {{#cite DID-CORE}} and 
 
 Hash the patched `current_document` with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_UPDATE`] error if the result does not match the decoded `update.targetHash`.
 
-Create `unsigned_update` by removing the `proof` property from `update`, hash it with the [JSON Document Hashing] algorithm, and append the hash to `update_hash_history`.
+Create `unsigned_update` by removing the `proof` property from `update`, hash it with the [JSON Document Hashing] algorithm, and append the hash to `update_hash_history`. Increment `current_version_id`.
 
 
 ### Check `update.proof` { #check-update-proof }
