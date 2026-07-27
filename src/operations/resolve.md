@@ -172,6 +172,8 @@ Compare `update.targetVersionId` to `current_version_id`. Only one of three poss
 
 This step confirms that an update with a lower-than-expected `targetVersionId` is a true duplicate.
 
+Raise an [`INVALID_DID_UPDATE`] error if `update.targetVersionId` is less than `2`.
+
 Create `unsigned_update` by removing the `proof` property from `update`. Hash `unsigned_update` with the [JSON Document Hashing] algorithm and compare it to `update_hash_history[update.targetVersionId - 2]`. Raise a [`LATE_PUBLISHING`] error if the hashes differ.
 
 
