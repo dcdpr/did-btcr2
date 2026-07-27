@@ -283,6 +283,7 @@ Resolution options MAY contain the following properties:
 
 - `versionId`: OPTIONAL ASCII string representation of the specific version of a DID document to be resolved.
 - `versionTime`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID before the specified `versionTime`.
+- `minConf`: OPTIONAL positive integer (minimum `1`). The minimum number of Bitcoin block confirmations a [Beacon Signal] transaction requires to count towards resolution. Defaults to `6`.
 - `sidecar`: [Sidecar Data (data structure)].
 
 {% set hide_text = `` %}
