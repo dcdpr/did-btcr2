@@ -189,7 +189,9 @@ Verify that `current_document` conforms to DID Core v1.1 {{#cite DID-CORE}} and 
 
 Hash the patched `current_document` with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_UPDATE`] error if the result does not match the decoded `update.targetHash`.
 
-Create `unsigned_update` by removing the `proof` property from `update`, hash it with the [JSON Document Hashing] algorithm, and append the hash to `update_hash_history`. Increment `current_version_id`.
+Create `unsigned_update` by removing the `proof` property from `update`, hash it with the [JSON Document Hashing] algorithm, and append the hash to `update_hash_history`. 
+
+Increment `current_version_id`.
 
 
 ### Check `update.proof` { #check-update-proof }
