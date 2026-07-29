@@ -1800,7 +1800,6 @@ Show Template
 <li>Set <code>block_confirmations</code> to the tuple’s block confirmations.</li>
 <li>If <code>resolutionOptions.versionTime</code> is provided and the tuple’s block time is more recent, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 <li>Set <code>update</code> to the tuple’s <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> and <a href="operations/resolve.html#check-update-version">check <code>update.targetVersionId</code></a>.</li>
-<li>Increment <code>current_version_id</code>.</li>
 <li>If <code>current_version_id</code> is greater than or equal to the integer form of <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 <li>If <code>current_document.deactivated</code> is <code>true</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 </ol>
@@ -1825,6 +1824,7 @@ Show Template
 </ul>
 <h3 id="confirm-duplicate-update"><a class="header" href="#confirm-duplicate-update">Confirm Duplicate Update</a></h3>
 <p>This step confirms that an update with a lower-than-expected <code>targetVersionId</code> is a true duplicate.</p>
+<p>Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if <code>update.targetVersionId</code> is less than <code>2</code>.</p>
 <p>Create <code>unsigned_update</code> by removing the <code>proof</code> property from <code>update</code>. Hash <code>unsigned_update</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and compare it to <code>update_hash_history[update.targetVersionId - 2]</code>. Raise a <a href="operations/../errors.html#late_publishing"><code>LATE_PUBLISHING</code></a> error if the hashes differ.</p>
 <h3 id="apply-update"><a class="header" href="#apply-update">Apply <code>update</code></a></h3>
 <p>Hash <code>current_document</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the result does not match the decoded <code>update.sourceHash</code>.</p>
@@ -1833,6 +1833,7 @@ Show Template
 <p>Verify that <code>current_document</code> conforms to DID Core v1.1 [<a href="operations/../bibliography.html#DID-CORE">DID-CORE</a>] and that <code>current_document.id</code> equals <code>did</code>. Otherwise raise <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a>.</p>
 <p>Hash the patched <code>current_document</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the result does not match the decoded <code>update.targetHash</code>.</p>
 <p>Create <code>unsigned_update</code> by removing the <code>proof</code> property from <code>update</code>, hash it with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm, and append the hash to <code>update_hash_history</code>.</p>
+<p>Increment <code>current_version_id</code>.</p>
 <h3 id="check-update-proof"><a class="header" href="#check-update-proof">Check <code>update.proof</code></a></h3>
 <p>Implementations MAY derive a <a href="operations/../data-structures.html#root-capability">Root Capability (data structure)</a> from <code>update.proof</code> and invoke it according to Authorization Capabilities for Linked Data v0.3 [<a href="operations/../bibliography.html#ZCAP-LD">ZCAP-LD</a>].</p>
 <p>The resolver must locate <code>publicKeyMultibase</code> in <code>current_document.verificationMethod</code> whose <code>id</code> matches <code>update.proof.verificationMethod</code>. Otherwise raise <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a>. Raise the same error if <code>current_document.capabilityInvocation</code> does not contain <code>update.proof.verificationMethod</code>.</p>
