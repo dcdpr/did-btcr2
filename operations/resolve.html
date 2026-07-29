@@ -329,6 +329,7 @@ Show Template
 <h2 id="process-beacon-signals"><a class="header" href="#process-beacon-signals">Process Beacon Signals</a></h2>
 <p>Scan the <code>service</code> entries in <code>current_document</code> (<a href="../data-structures.html#did-document">DID Document (data structure)</a>) and identify <a href="../terminology.html#btcr2-beacon">BTCR2 Beacons</a> by matching service <code>type</code> to <a href="../beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>. Parse each beacon <code>serviceEndpoint</code> as a <a href="../terminology.html#beacon-address">Beacon Address</a>, then use those <a href="../terminology.html#beacon-address">Beacon Addresses</a> to find Bitcoin transactions whose last output script contains <a href="../terminology.html#signal-bytes">Signal Bytes</a>.</p>
 <p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block. Cache <a href="../terminology.html#beacon-address">Beacon Addresses</a> to avoid repeated transaction lookups.</p>
+<p>A transaction MUST be included in a Bitcoin block and have at least <code>resolutionOptions.minConf</code> confirmations (<code>6</code> when not provided). Unconfirmed mempool transactions MUST NOT be processed. <sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup></p>
 <p>For each transaction found:</p>
 <ul>
 <li>Derive <code>update_hash</code> from the transaction’s <a href="../terminology.html#signal-bytes">Signal Bytes</a> based on the <a href="../terminology.html#beacon-type">Beacon Type</a>:
@@ -407,6 +408,9 @@ Show Template
 <hr>
 <ol class="footnote-definition"><li id="footnote-1">
 <p>The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. “Unique” refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations. <a href="#fr-1-1">↩</a></p>
+</li>
+<li id="footnote-2">
+<p>Six confirmations is the widely accepted industry standard for treating a Bitcoin transaction as settled. Resolution requests can raise or lower <code>minConf</code> to match their own threat and security model; lowering it increases exposure to Bitcoin block reorganizations, which consumers can evaluate from the returned <code>confirmations</code> metadata. <a href="#fr-2-1">↩</a></p>
 </li>
 </ol>
                     </main>
