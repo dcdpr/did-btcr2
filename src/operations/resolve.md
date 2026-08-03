@@ -28,7 +28,7 @@ Resolution maintains the following state while building the DID document:
 * `current_document`: the DID document being assembled.
 * `current_version_id`: the version number being processed (starts at `1`).
 * `update_hash_history`: a list of [BTCR2 Unsigned Update] hashes used to detect duplicates.
-* `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update.
+* `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at `0`).
 
 The resolver:
 

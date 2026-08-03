@@ -335,11 +335,12 @@ Resolution metadata MAY contain the following properties:
 
 This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
 
-Document metadata MAY contain the following properties:
+Document metadata contains the following properties:
 
+- `confirmations`: REQUIRED integer number of confirmations for the Bitcoin block that contains the most recently applied unique update for the resolved DID document. `0` when no [BTCR2 Update] has been applied.
 - `deactivated`: REQUIRED boolean that represents whether the resolved DID document has been deactivated.
 - `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.
-- `versionId`: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.
+- `versionId`: REQUIRED ASCII string representation of the version of the last Update operation for the resolved DID document. `"1"` when no [BTCR2 Update] has been applied.
 
 {% set hide_text = `` %}
 {% set ex_did_document_metadata =
