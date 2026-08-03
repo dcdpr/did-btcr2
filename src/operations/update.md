@@ -91,7 +91,7 @@ Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instan
 Fill the Data Integrity {{#cite VC-DATA-INTEGRITY}} template below with the required template variables.
 
 * `verification-method`: The value of `verificationMethodId`.
-* `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}`.
+* `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 
 {% set hide_text = `` %}
 {% set data_integrity_config_template =

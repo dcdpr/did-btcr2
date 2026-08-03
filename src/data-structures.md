@@ -165,7 +165,7 @@ The following properties MUST be included in the Data Integrity Config:
 - `cryptosuite`: The string `"bip340-jcs-2025"`.
 - `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID document.
 - `proofPurpose`: The string `"capabilityInvocation"`.
-- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`.
+- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
 
@@ -389,7 +389,7 @@ A Root Capability is an Object Capability used to authorize updates to a DID doc
 The Root Capability MUST be a map containing only the following properties:
 
 - `@context`: MUST be the context string `"https://w3id.org/zcap/v1"`
-- `id`: MUST be a URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`
+- `id`: MUST be a URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 - `invocationTarget`: MUST be the `did`.
 - `controller`: MUST be the `did`.
 
