@@ -1,4 +1,4 @@
-[`INVALID_DID`]: https://www.w3.org/TR/did-resolution/#errors
+[`INVALID_DID`]: https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors
 [`INVALID_DID_UPDATE`]: {{ root }}errors.md#invalid_did_update
 [`LATE_PUBLISHING`]: {{ root }}errors.md#late_publishing
 [`MISSING_UPDATE_DATA`]: {{ root }}errors.md#missing_update_data

@@ -5,7 +5,7 @@
 
 # Errors
 
-The algorithms described in this specification can raise the specific errors listed below. Additional error types defined in Section 10 of DID Resolution v0.3 {{#cite DID-RESOLUTION}} may also be raised.
+The algorithms described in this specification can raise the specific errors listed below. Additional error types defined in the Errors section of DID Resolution v1 {{#cite DID-RESOLUTION}} may also be raised.
 
 These errors are assumed to be fatal and all **did:btcr2** operations must abort when one of these errors are raised.
 

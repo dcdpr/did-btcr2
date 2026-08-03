@@ -277,7 +277,7 @@ SHA-256 hashes {{#cite SHA256}} (`id`, `updateId`, `hashes`) MUST be `"base64url
 
 ## Resolution Options { #resolution-options }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 Resolution options MAY contain the following properties:
 
@@ -306,12 +306,14 @@ Resolution options MAY contain the following properties:
 
 ## DID Resolution Metadata { #did-resolution-metadata }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 Resolution metadata MAY contain the following properties:
 
-- `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/ld+json"`.
+- `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/did"`.
 - `error`: REQUIRED if an error occurs during DID resolution.
+
+A **did:btcr2** resolver returning a bare DID document MUST use the media type `"application/did"` {{#cite DID-CORE}}. A resolver returning a full DID resolution result MUST use the media type `"application/did-resolution"` {{#cite DID-RESOLUTION}}. In both cases the `contentType` property records the media type of the DID document itself.
 
 {% set hide_text = `` %}
 {% set ex_did_resolution_metadata =
@@ -333,7 +335,7 @@ Resolution metadata MAY contain the following properties:
 
 ## DID Document Metadata { #did-document-metadata }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 Document metadata contains the following properties:
 
