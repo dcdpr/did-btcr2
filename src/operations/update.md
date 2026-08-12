@@ -48,7 +48,7 @@ Constructing a [BTCR2 Signed Update] is a two-step process. First, a [BTCR2 Unsi
 
 This process constructs a [BTCR2 Unsigned Update (data structure)].
 
-Apply `jsonPatch` to `didSourceDocument` to create `didTargetDocument`. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `didSourceDocument.id`.
+Apply `jsonPatch` to `didSourceDocument` to create `didTargetDocument`. An [`INVALID_DID_UPDATE`] error MUST be raised if `jsonPatch` is malformed or fails to apply. JSON Patch {{#cite RFC6902}} operations are evaluated in order; the first operation that fails, including a failed `test` operation, fails the whole patch. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `didSourceDocument.id`.
 
 Fill the [BTCR2 Unsigned Update (data structure)] template below with the required template variables.
 
