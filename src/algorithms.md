@@ -48,7 +48,9 @@ Append `key_or_hash` to the first byte to produce the unencoded data bytes. Its 
 
 [^2]: The "Index" is a Little Endian bit count starting from `0` on the left and ending in `263` or `271` on the right (inclusive).
 
-Encode the unencoded data bytes with Bech32m {{#cite BIP350}} to produce the `method-specific-id`. Use `"k"` as the `hrp` for key-based `key_or_hash` and `"x"` as the `hrp` for [Genesis Document]-based `key_or_hash`.
+Encode the unencoded data bytes with Bech32m [^3] to produce the `method-specific-id`, which MUST be lowercase. Use `"k"` as the `hrp` for key-based `key_or_hash` and `"x"` as the `hrp` for [Genesis Document]-based `key_or_hash`.
+
+[^3]: The `method-specific-id` MUST be conformant to Bech32m {{#cite BIP350}}, which extends Bech32 {{#cite BIP173}}. On encode, pad the final 5-bit group with zero bits; on decode, an incomplete final group MUST be 4 bits or fewer, MUST be all zeros, and is discarded.
 
 Prefix the `method-specific-id` with the string `"did:btcr2:"` to produce the final **did:btcr2** identifier.
 
@@ -61,11 +63,11 @@ Example input:
 * `version_number`: `1`
 * `network_name`: `bitcoin` (`network_value` = `0`)
 * `key_or_hash`: SEC encoded secp256k1 public key
-  `171d59dd2d274011cbb090acc5a168dc98f303790ffce8f54779baed81890c1b00`
+  `0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798`
 
 Example output:
 
-* `did`: `"did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q"`' %}
+* `did`: `"did:btcr2:k1qqp8n0nx0muaewav2ksx99wwsu9swq5mlndjmn3gm9vl9q2mzmup0xqhmkf96"`' %}
 
 {{ ui::show_example_tabs(
   group_id="identifier-encoding-example",
@@ -85,7 +87,7 @@ Parsing a **did:btcr2** identifier produces three values: `version_number`, `net
 
 A **did:btcr2** identifier MUST be processed according to the DID Resolution Algorithm {{#cite DID-RESOLUTION}} to retrieve the **did:btcr2** DID Method-specific ID `method-specific-id`. (I.e., the first 10 characters in the string MUST be exactly `"did:btcr2:"`.)
 
-Decode the `method-specific-id` as a Bech32m encoded string {{#cite BIP350}} to retrieve the unencoded data bytes and `hrp`. Parse the unencoded data bytes according to [Table 2: Unencoded Data Bytes](#unencoded-data-bytes) to retrieve the `btcr2_version`, `network_value` and `genesis_bytes`.
+The `method-specific-id` MUST be lowercase. Decode it as a Bech32m encoded string [^3] to retrieve the unencoded data bytes and the `hrp`. Parse the unencoded data bytes according to [Table 2: Unencoded Data Bytes](#unencoded-data-bytes) to retrieve the `btcr2_version`, `network_value` and `genesis_bytes`.
 
 * `btcr2_version` MUST be `0`. Introduce `version_number` as `btcr2_version + 1`. I.e., `version_number` MUST be returned to the caller as a type that can be represented as the value `1`.
 * `network_value` MUST be one of the values in [Table 1: Network Values](#network-values). `network_name` SHOULD be returned to the caller including additional type information using symbolic names that can be represented as integer values.
