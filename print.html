@@ -279,7 +279,7 @@ suitable for a wide range of high-volume, low cost use cases.</p>
 <p>All sections marked as non-normative, as well as all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.</p>
 <p>The key words MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this document are to be interpreted as described in [<a href="bibliography.html#BCP14">BCP14</a>] when, and only when, they appear in all capitals, as shown here.</p>
 <p>Interoperability of implementations of the <strong>did:btcr2</strong> DID method is tested by evaluating an implementation’s ability to create, resolve, update, and deactivate, <strong>did:btcr2</strong> identifiers and DID documents that conform to this specification. Interoperability for producers and consumers of <strong>did:btcr2</strong> identifiers and DID documents is provided by ensuring the DIDs and DID documents conform.</p>
-<p>Implementations MUST be conformant to all normative statements in Decentralized Identifiers v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] and DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>Implementations MUST be conformant to all normative statements in Decentralized Identifiers v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] and DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="terminology"><a class="header" href="#terminology">Terminology</a></h1>
 <h2 id="aggregate-beacon"><a class="header" href="#aggregate-beacon">Aggregate Beacon</a></h2>
 <p>A collection of <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> can optionally be aggregated into a single
@@ -502,13 +502,57 @@ the <a href="./terminology.html#cid">CID</a>.</p>
 <p>The IPFS CIDv1 is a binary identifier constructed from the file hash as:</p>
 <ul>
 <li><code>0x01</code>, the code for CIDv1;</li>
-<li><code>0x00</code>, the <a href="https://github.com/multiformats/multicodec">multicodec</a> code for raw binary;</li>
-<li><code>0x12</code>, the <a href="https://github.com/multiformats/multihash">multihash</a> code for SHA-256; and</li>
+<li><code>0x55</code>, the <a href="https://github.com/multiformats/multicodec">multicodec</a> code for raw binary;</li>
+<li><code>0x12</code>, the <a href="https://github.com/multiformats/multihash">multihash</a> code for SHA-256;</li>
+<li><code>0x20</code>, the length of the SHA-256 digest (32 bytes); and</li>
 <li>the SHA-256 of the file.</li>
 </ul>
 <p>The stringified version of the CIDv1 is accomplished using
 <a href="https://github.com/multiformats/multibase">multibase</a> encoding. The final URL
 is <code>"ipfs://&lt;stringified CIDv1&gt;"</code>.</p>
+<div class="tabs" id="cidv1-construction-example">
+  <div class="tablist" role="tablist" aria-label="cidv1-construction-example">
+    <button role="tab"
+            id="cidv1-construction-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="cidv1-construction-example-panel-hide"
+            data-tab="cidv1-construction-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="cidv1-construction-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="cidv1-construction-example-panel-show"
+            data-tab="cidv1-construction-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="cidv1-construction-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="cidv1-construction-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="cidv1-construction-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="cidv1-construction-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<p>Example input:</p>
+<ul>
+<li>file content: the 3-byte ASCII string <code>"abc"</code> (<code>0x61 0x62 0x63</code>)</li>
+</ul>
+<p>Example output:</p>
+<ul>
+<li>SHA-256 of the file: <code>ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad</code></li>
+<li>CIDv1 bytes: <code>01551220ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad</code></li>
+<li>stringified CIDv1 (multibase <code>base32</code>, prefix <code>b</code>): <code>"bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"</code></li>
+<li>final URL: <code>"ipfs://bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"</code></section>
+</li>
+</ul>
+</div>
 <p>A resolver retrieves a file associated with a SHA-256 hash by constructing the
 IPFS CIDv1 and requesting the file from an IPFS node.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="beacons"><a class="header" href="#beacons">Beacons</a></h1>
@@ -1046,7 +1090,7 @@ Show Example
 <li><code>cryptosuite</code>: The string <code>"bip340-jcs-2025"</code>.</li>
 <li><code>verificationMethod</code>: A valid <code>verificationMethod</code> reference that exists in the most recent DID document.</li>
 <li><code>proofPurpose</code>: The string <code>"capabilityInvocation"</code>.</li>
-<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>.</li>
+<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 [<a href="bibliography.html#ECMA-262">ECMA-262</a>].</li>
 <li><code>capabilityAction</code>: A string declaring the action required for the capability invocation. The
 string MUST be set to <code>"Write"</code>.</li>
 </ul>
@@ -1339,7 +1383,7 @@ Show Example
   </section>
 </div>
 <h2 id="resolution-options"><a class="header" href="#resolution-options">Resolution Options</a></h2>
-<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <p>Resolution options MAY contain the following properties:</p>
 <ul>
 <li><code>versionId</code>: OPTIONAL ASCII string representation of the specific version of a DID document to be resolved.</li>
@@ -1417,12 +1461,13 @@ Show Example
   </section>
 </div>
 <h2 id="did-resolution-metadata"><a class="header" href="#did-resolution-metadata">DID Resolution Metadata</a></h2>
-<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <p>Resolution metadata MAY contain the following properties:</p>
 <ul>
-<li><code>contentType</code>: OPTIONAL media type of the returned DID document. E.g., <code>"application/ld+json"</code>.</li>
+<li><code>contentType</code>: OPTIONAL media type of the returned DID document. E.g., <code>"application/did"</code>.</li>
 <li><code>error</code>: REQUIRED if an error occurs during DID resolution.</li>
 </ul>
+<p>A <strong>did:btcr2</strong> resolver returning a bare DID document MUST use the media type <code>"application/did"</code> [<a href="bibliography.html#DID-CORE">DID-CORE</a>]. A resolver returning a full DID resolution result MUST use the media type <code>"application/did-resolution"</code> [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>]. In both cases the <code>contentType</code> property records the media type of the DID document itself.</p>
 <div class="tabs" id="did-resolution-metadata-example">
   <div class="tablist" role="tablist" aria-label="did-resolution-metadata-example">
     <button role="tab"
@@ -1454,18 +1499,19 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
-  "contentType": "application/did+ld+json"
+  "contentType": "application/did"
 }
 </code></pre>
   </section>
 </div>
 <h2 id="did-document-metadata"><a class="header" href="#did-document-metadata">DID Document Metadata</a></h2>
-<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
-<p>Document metadata MAY contain the following properties:</p>
+<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>Document metadata contains the following properties:</p>
 <ul>
+<li><code>confirmations</code>: REQUIRED integer number of confirmations for the Bitcoin block that contains the most recently applied unique update for the resolved DID document. <code>0</code> when no <a href="./terminology.html#btcr2-update">BTCR2 Update</a> has been applied.</li>
 <li><code>deactivated</code>: REQUIRED boolean that represents whether the resolved DID document has been deactivated.</li>
 <li><code>updated</code>: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.</li>
-<li><code>versionId</code>: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.</li>
+<li><code>versionId</code>: REQUIRED ASCII string representation of the version of the last Update operation for the resolved DID document. <code>"1"</code> when no <a href="./terminology.html#btcr2-update">BTCR2 Update</a> has been applied.</li>
 </ul>
 <div class="tabs" id="did-document-metadata-example">
   <div class="tablist" role="tablist" aria-label="did-document-metadata-example">
@@ -1498,6 +1544,7 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
+  "confirmations": 2016,
   "deactivated": false,
   "updated": "2025-01-06T16:23:10Z",
   "versionId": "5"
@@ -1550,7 +1597,7 @@ Show Example
 <p>The Root Capability MUST be a map containing only the following properties:</p>
 <ul>
 <li><code>@context</code>: MUST be the context string <code>"https://w3id.org/zcap/v1"</code></li>
-<li><code>id</code>: MUST be a URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code></li>
+<li><code>id</code>: MUST be a URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 [<a href="bibliography.html#ECMA-262">ECMA-262</a>].</li>
 <li><code>invocationTarget</code>: MUST be the <code>did</code>.</li>
 <li><code>controller</code>: MUST be the <code>did</code>.</li>
 </ul>
@@ -1623,7 +1670,7 @@ the elliptic curve point. Reference Section 2.3.3 in SEC 1: Elliptic Curve Crypt
 to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="resolve"><a class="header" href="#resolve">Resolve</a></h1>
 <p>Resolving a <strong>did:btcr2</strong> identifier iteratively builds a DID document by applying <a href="operations/../terminology.html#btcr2-update">BTCR2 Updates</a> committed to the Bitcoin blockchain by <a href="operations/../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a> to an <a href="operations/../terminology.html#initial-did-document">Initial DID Document</a>. The <a href="operations/../terminology.html#initial-did-document">Initial DID Document</a> is either deterministically created from the DID or provided by <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a>.</p>
-<p>DID resolution is defined by DID Resolution v0.3 [<a href="operations/../bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>DID resolution is defined by DID Resolution v1 [<a href="operations/../bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <p>The resolve operation has the following function signature:</p>
 <pre><code class="language-rust">fn resolve(did, resolutionOptions) -&gt;
   (didResolutionMetadata, didDocument, didDocumentMetadata)</code></pre>
@@ -1635,7 +1682,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 <li><code>current_document</code>: the DID document being assembled.</li>
 <li><code>current_version_id</code>: the version number being processed (starts at <code>1</code>).</li>
 <li><code>update_hash_history</code>: a list of <a href="operations/../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> hashes used to detect duplicates.</li>
-<li><code>block_confirmations</code>: confirmations for the Bitcoin block that contains the most recently applied unique update.</li>
+<li><code>block_confirmations</code>: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at <code>0</code>).</li>
 </ul>
 <p>The resolver:</p>
 <ol>
@@ -1662,7 +1709,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 </ul>
 <h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
 <p>The <code>did</code> MUST be parsed with the <a href="operations/../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
-<code>network</code>, and <code>genesis_bytes</code>. An [<code>INVALID_DID</code>] error MUST be raised in response to any errors
+<code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
 raised while decoding.</p>
 <h2 id="process-sidecar-data"><a class="header" href="#process-sidecar-data">Process Sidecar Data</a></h2>
 <p><code>resolutionOptions</code> contains a <code>sidecar</code> property (<a href="operations/../data-structures.html#sidecar-data">Sidecar Data (data structure)</a>) which SHOULD be prepared as lookup tables:</p>
@@ -1671,7 +1718,7 @@ raised while decoding.</p>
 <li>Hash each <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> in <code>sidecar.casUpdates</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and build a map from hash to announcement (<code>cas_lookup_table</code>).</li>
 <li>Build a map from <code>sidecar.smtProofs</code> keyed by proof <code>id</code> (<code>smt_lookup_table</code>).</li>
 </ul>
-<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>genesis_bytes</code>. Raise an [<code>INVALID_DID</code>] error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>genesis_bytes</code>. Raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
 <p>When data is not available in <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a>, implementations are RECOMMENDED to retrieve it from a <a href="operations/../terminology.html#cas">Content Addressable Storage</a> (<a href="operations/../terminology.html#cas">CAS</a>) service. To retrieve a document from <a href="operations/../terminology.html#cas">CAS</a>, construct a CID from the document’s SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].</p>
 <h2 id="establish-current-document"><a class="header" href="#establish-current-document">Establish <code>current_document</code></a></h2>
 <p>Resolution begins by creating an <a href="operations/../terminology.html#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="operations/../terminology.html#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="operations/../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>
@@ -1947,7 +1994,7 @@ resulting <a href="operations/../data-structures.html#btcr2-unsigned-update">BTC
 <p>Fill the Data Integrity [<a href="operations/../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] template below with the required template variables.</p>
 <ul>
 <li><code>verification-method</code>: The value of <code>verificationMethodId</code>.</li>
-<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}</code>.</li>
+<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 [<a href="operations/../bibliography.html#ECMA-262">ECMA-262</a>].</li>
 </ul>
 <div class="tabs" id="data-integrity-config-template">
   <div class="tablist" role="tablist" aria-label="data-integrity-config-template">
@@ -2011,7 +2058,7 @@ The main responsibilities include establishing a protocol for one or more rounds
 <div style="break-before: page; page-break-before: always;"></div><h1 id="algorithms"><a class="header" href="#algorithms">Algorithms</a></h1>
 <p>These algorithms are referenced throughout this specification.</p>
 <h2 id="did-btcr2-identifier-encoding"><a class="header" href="#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a></h2>
-<p>Any errors encountered during this algorithm MUST raise an <a href="./errors.html"><code>INVALID_DID</code></a> error.</p>
+<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error.</p>
 <p>A <strong>did:btcr2</strong> identifier is created from three arguments: <code>version_number</code>, <code>network_name</code> and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
 <p><code>key_or_hash</code> MUST be one of the supported <a href="./terminology.html#genesis-bytes">Genesis Bytes</a> variants defined in the Terminology chapter and MUST be representable as a 33-byte secp256k1 public key or a 32-byte SHA-256 hash. Implementations SHOULD require <code>key_or_hash</code> to include additional type information that clearly distinguishes between the supported <a href="./terminology.html#genesis-bytes">Genesis Bytes</a> variants. This type information determines how the identifier is encoded.</p>
 <p>The <code>version_number</code> value MUST be <code>1</code>, declaring the encoding follows this specification.</p>
@@ -2082,7 +2129,7 @@ Show Example
 </ul>
 </div>
 <h2 id="did-btcr2-identifier-decoding"><a class="header" href="#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a></h2>
-<p>Any errors encountered during this algorithm MUST raise an <a href="./errors.html"><code>INVALID_DID</code></a> error.</p>
+<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error.</p>
 <p>Parsing a <strong>did:btcr2</strong> identifier produces three values: <code>version_number</code>, <code>network_name</code>, and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
 <p>A <strong>did:btcr2</strong> identifier MUST be processed according to the DID Resolution Algorithm [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>] to retrieve the <strong>did:btcr2</strong> DID Method-specific ID <code>method-specific-id</code>. (I.e., the first 10 characters in the string MUST be exactly <code>"did:btcr2:"</code>.)</p>
 <p>Decode the <code>method-specific-id</code> as a Bech32m encoded string [<a href="bibliography.html#BIP350">BIP350</a>] to retrieve the unencoded data bytes and <code>hrp</code>. Parse the unencoded data bytes according to <a href="algorithms.html#unencoded-data-bytes">Table 2: Unencoded Data Bytes</a> to retrieve the <code>btcr2_version</code>, <code>network_value</code> and <code>genesis_bytes</code>.</p>
@@ -2254,7 +2301,7 @@ return candidateHash == proof.id;</code></pre>
 <p>The “Index” is a Little Endian bit count starting from <code>0</code> on the left and ending in <code>263</code> or <code>271</code> on the right (inclusive). <a href="#fr-2-1">↩</a></p>
 </li>
 </ol><div style="break-before: page; page-break-before: always;"></div><h1 id="errors"><a class="header" href="#errors">Errors</a></h1>
-<p>The algorithms described in this specification can raise the specific errors listed below. Additional error types defined in Section 10 of DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>] may also be raised.</p>
+<p>The algorithms described in this specification can raise the specific errors listed below. Additional error types defined in the Errors section of DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>] may also be raised.</p>
 <p>These errors are assumed to be fatal and all <strong>did:btcr2</strong> operations must abort when one of these errors are raised.</p>
 <h2 id="invalid_did_update"><a class="header" href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a></h2>
 <p>An error was found when creating or applying a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</p>
@@ -2758,14 +2805,30 @@ div.bib_div section.abstract {
 <details data-key="DID-RESOLUTION" class="ref">
 <summary class="citation">
 <a id="DID-RESOLUTION">[DID-RESOLUTION]</a>
-- Markus Sabadello, Dmitri Zagidulin
-- <a href="https://www.w3.org/TR/did-resolution" target="_blank"><cite>Decentralized Identifier Resolution (DID Resolution) v0.3</cite></a>.
-- 2025.
+- Stephen Curran, Joe Andrieu
+- <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/" target="_blank"><cite>Decentralized Identifier Resolution (DID Resolution) v1</cite></a>.
+- 2026.
 </summary>
 <section class="abstract">
 <h2 id="summaryabstract-9"><a class="header" href="#summaryabstract-9">Summary/Abstract</a></h2>
 <div>Decentralized identifiers (DIDs) are a new type of identifier for verifiable, self-sovereign digital identity. DIDs are fully under the control of the DID controller, independent from any centralized registry, identity provider, or certificate authority. DIDs resolve to DID Documents — simple documents that describe how to use that specific DID.
 <p>This document specifies the algorithms and guidelines for resolving DIDs and dereferencing DID URLs. Additionally, this document describes the input and output metadata related to the DID resolution processes and further describes the data structures that may be returned from a DID resolution request. This document relies on the core DID specification, Decentralized Identifiers (DIDs) v1.1, which describes the underlying DID architecture in full detail.</div></p>
+<hr>
+</section>
+</details>
+</div>
+<br/>
+<div class="bib_div">
+<details data-key="ECMA-262" class="ref">
+<summary class="citation">
+<a id="ECMA-262">[ECMA-262]</a>
+- Ecma International
+- <a href="https://262.ecma-international.org/16.0/index.html" target="_blank"><cite>ECMAScript 2025 Language Specification</cite></a>.
+- 2025.
+</summary>
+<section class="abstract">
+<h2 id="summaryabstract-10"><a class="header" href="#summaryabstract-10">Summary/Abstract</a></h2>
+<div>ECMA-262, 16th Edition (ECMAScript 2025) defines the ECMAScript general-purpose programming language, including the URI handling functions encodeURIComponent() and decodeURIComponent() that escape and unescape components of Uniform Resource Identifiers.</div>
 <hr>
 </section>
 </details>
@@ -2780,7 +2843,7 @@ div.bib_div section.abstract {
 - 2020.
 </summary>
 <section class="abstract">
-<h2 id="summaryabstract-10"><a class="header" href="#summaryabstract-10">Summary/Abstract</a></h2>
+<h2 id="summaryabstract-11"><a class="header" href="#summaryabstract-11">Summary/Abstract</a></h2>
 <div>JSON is a useful data serialization and messaging format. This specification defines JSON-LD 1.1, a JSON-based format to serialize Linked Data. The syntax is designed to easily integrate into deployed systems that already use JSON, and provides a smooth upgrade path from JSON to JSON-LD. It is primarily intended to be a way to use Linked Data in Web-based programming environments, to build interoperable Web services, and to store Linked Data in JSON-based storage engines.
 <p>This specification describes a superset of the features defined in JSON-LD 1.0 and, except where noted, documents created using the 1.0 version of this specification remain compatible with JSON-LD 1.1.</div></p>
 <hr>
@@ -2797,7 +2860,7 @@ div.bib_div section.abstract {
 - 2006.
 </summary>
 <section class="abstract">
-<h2 id="summaryabstract-11"><a class="header" href="#summaryabstract-11">Summary/Abstract</a></h2>
+<h2 id="summaryabstract-12"><a class="header" href="#summaryabstract-12">Summary/Abstract</a></h2>
 <div>This document describes the commonly used base 64, base 32, and base 16 encoding schemes.  It also discusses the use of line-feeds in encoded data, use of padding in encoded data, use of non-alphabet characters in encoded data, use of different encoding alphabets, and canonical encodings.</div>
 <hr>
 </section>
@@ -2813,7 +2876,7 @@ div.bib_div section.abstract {
 - 2013.
 </summary>
 <section class="abstract">
-<h2 id="summaryabstract-12"><a class="header" href="#summaryabstract-12">Summary/Abstract</a></h2>
+<h2 id="summaryabstract-13"><a class="header" href="#summaryabstract-13">Summary/Abstract</a></h2>
 <div>JSON Patch defines a JSON document structure for expressing a sequence of operations to apply to a JavaScript Object Notation (JSON) document; it is suitable for use with the HTTP PATCH method. The application/json-patch+json media type is used to identify such patch documents.</div>
 <hr>
 </section>
@@ -2829,7 +2892,7 @@ div.bib_div section.abstract {
 - 2020.
 </summary>
 <section class="abstract">
-<h2 id="summaryabstract-13"><a class="header" href="#summaryabstract-13">Summary/Abstract</a></h2>
+<h2 id="summaryabstract-14"><a class="header" href="#summaryabstract-14">Summary/Abstract</a></h2>
 <div>Cryptographic operations like hashing and signing need the data to be expressed in an invariant format so that the operations are reliably repeatable. One way to address this is to create a canonical representation of the data. Canonicalization also permits data to be exchanged in its original form on the wire while cryptographic operations performed on the canonicalized counterpart of the data in the producer and consumer endpoints generate consistent results.
 <p>This document describes the JSON Canonicalization Scheme (JCS). This specification defines how to create a canonical representation of JSON data by building on the strict serialization methods for JSON primitives defined by ECMAScript, constraining JSON data to the Internet JSON (I-JSON) subset, and by using deterministic property sorting.</div></p>
 <hr>
@@ -2846,7 +2909,7 @@ div.bib_div section.abstract {
 - 2009.
 </summary>
 <section class="abstract">
-<h2 id="summaryabstract-14"><a class="header" href="#summaryabstract-14">Summary/Abstract</a></h2>
+<h2 id="summaryabstract-15"><a class="header" href="#summaryabstract-15">Summary/Abstract</a></h2>
 <div>This document specifies public-key cryptographic schemes based on elliptic curve cryptography (ECC). In particular, it specifies:
 <ul>
 <li>signature schemes;</li>
@@ -2869,7 +2932,7 @@ div.bib_div section.abstract {
 - 2015.
 </summary>
 <section class="abstract">
-<h2 id="summaryabstract-15"><a class="header" href="#summaryabstract-15">Summary/Abstract</a></h2>
+<h2 id="summaryabstract-16"><a class="header" href="#summaryabstract-16">Summary/Abstract</a></h2>
 <div>This standard specifies hash algorithms that can be used to generate digests of messages. The digests are used to detect whether messages have been changed since the digests were generated.</div>
 <hr>
 </section>
@@ -2885,7 +2948,7 @@ div.bib_div section.abstract {
 - 2025.
 </summary>
 <section class="abstract">
-<h2 id="summaryabstract-16"><a class="header" href="#summaryabstract-16">Summary/Abstract</a></h2>
+<h2 id="summaryabstract-17"><a class="header" href="#summaryabstract-17">Summary/Abstract</a></h2>
 <div>This specification describes mechanisms for ensuring the authenticity and integrity of verifiable credentials and similar types of constrained digital documents using cryptography, especially through the use of digital signatures and related mathematical proofs.</div>
 <hr>
 </section>
@@ -2901,7 +2964,7 @@ div.bib_div section.abstract {
 - 2025.
 </summary>
 <section class="abstract">
-<h2 id="summaryabstract-17"><a class="header" href="#summaryabstract-17">Summary/Abstract</a></h2>
+<h2 id="summaryabstract-18"><a class="header" href="#summaryabstract-18">Summary/Abstract</a></h2>
 <div>Authorization Capabilities for Linked Data (ZCAP-LD for short) provides a secure way for linked data systems to grant and express authority utilizing the object capability model. Capabilities are represented as linked data objects which are signed with Linked Data Proofs. ZCAP-LD supports delegating authority to other entities on the network by chaining together capability documents. Caveats may be attached to capability documents which may be used to restrict the scope of their use, for example to restrict the actions which may be used or providing a mechanism by which the capability may be later revoked.</div>
 <hr>
 </section>

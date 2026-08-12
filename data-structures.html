@@ -553,7 +553,7 @@ Show Example
 <li><code>cryptosuite</code>: The string <code>"bip340-jcs-2025"</code>.</li>
 <li><code>verificationMethod</code>: A valid <code>verificationMethod</code> reference that exists in the most recent DID document.</li>
 <li><code>proofPurpose</code>: The string <code>"capabilityInvocation"</code>.</li>
-<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>.</li>
+<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 [<a href="bibliography.html#ECMA-262">ECMA-262</a>].</li>
 <li><code>capabilityAction</code>: A string declaring the action required for the capability invocation. The
 string MUST be set to <code>"Write"</code>.</li>
 </ul>
@@ -846,7 +846,7 @@ Show Example
   </section>
 </div>
 <h2 id="resolution-options"><a class="header" href="#resolution-options">Resolution Options</a></h2>
-<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <p>Resolution options MAY contain the following properties:</p>
 <ul>
 <li><code>versionId</code>: OPTIONAL ASCII string representation of the specific version of a DID document to be resolved.</li>
@@ -924,12 +924,13 @@ Show Example
   </section>
 </div>
 <h2 id="did-resolution-metadata"><a class="header" href="#did-resolution-metadata">DID Resolution Metadata</a></h2>
-<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <p>Resolution metadata MAY contain the following properties:</p>
 <ul>
-<li><code>contentType</code>: OPTIONAL media type of the returned DID document. E.g., <code>"application/ld+json"</code>.</li>
+<li><code>contentType</code>: OPTIONAL media type of the returned DID document. E.g., <code>"application/did"</code>.</li>
 <li><code>error</code>: REQUIRED if an error occurs during DID resolution.</li>
 </ul>
+<p>A <strong>did:btcr2</strong> resolver returning a bare DID document MUST use the media type <code>"application/did"</code> [<a href="bibliography.html#DID-CORE">DID-CORE</a>]. A resolver returning a full DID resolution result MUST use the media type <code>"application/did-resolution"</code> [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>]. In both cases the <code>contentType</code> property records the media type of the DID document itself.</p>
 <div class="tabs" id="did-resolution-metadata-example">
   <div class="tablist" role="tablist" aria-label="did-resolution-metadata-example">
     <button role="tab"
@@ -961,18 +962,19 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
-  "contentType": "application/did+ld+json"
+  "contentType": "application/did"
 }
 </code></pre>
   </section>
 </div>
 <h2 id="did-document-metadata"><a class="header" href="#did-document-metadata">DID Document Metadata</a></h2>
-<p>This data structure is defined by DID Resolution v0.3 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
-<p>Document metadata MAY contain the following properties:</p>
+<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>Document metadata contains the following properties:</p>
 <ul>
+<li><code>confirmations</code>: REQUIRED integer number of confirmations for the Bitcoin block that contains the most recently applied unique update for the resolved DID document. <code>0</code> when no <a href="./terminology.html#btcr2-update">BTCR2 Update</a> has been applied.</li>
 <li><code>deactivated</code>: REQUIRED boolean that represents whether the resolved DID document has been deactivated.</li>
 <li><code>updated</code>: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.</li>
-<li><code>versionId</code>: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.</li>
+<li><code>versionId</code>: REQUIRED ASCII string representation of the version of the last Update operation for the resolved DID document. <code>"1"</code> when no <a href="./terminology.html#btcr2-update">BTCR2 Update</a> has been applied.</li>
 </ul>
 <div class="tabs" id="did-document-metadata-example">
   <div class="tablist" role="tablist" aria-label="did-document-metadata-example">
@@ -1005,6 +1007,7 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
+  "confirmations": 2016,
   "deactivated": false,
   "updated": "2025-01-06T16:23:10Z",
   "versionId": "5"
@@ -1057,7 +1060,7 @@ Show Example
 <p>The Root Capability MUST be a map containing only the following properties:</p>
 <ul>
 <li><code>@context</code>: MUST be the context string <code>"https://w3id.org/zcap/v1"</code></li>
-<li><code>id</code>: MUST be a URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code></li>
+<li><code>id</code>: MUST be a URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 [<a href="bibliography.html#ECMA-262">ECMA-262</a>].</li>
 <li><code>invocationTarget</code>: MUST be the <code>did</code>.</li>
 <li><code>controller</code>: MUST be the <code>did</code>.</li>
 </ul>

@@ -278,7 +278,7 @@ resulting <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned
 <p>Fill the Data Integrity [<a href="../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] template below with the required template variables.</p>
 <ul>
 <li><code>verification-method</code>: The value of <code>verificationMethodId</code>.</li>
-<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}</code>.</li>
+<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 [<a href="../bibliography.html#ECMA-262">ECMA-262</a>].</li>
 </ul>
 <div class="tabs" id="data-integrity-config-template">
   <div class="tablist" role="tablist" aria-label="data-integrity-config-template">

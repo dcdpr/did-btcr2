@@ -184,7 +184,7 @@
                     <main>
                         <h1 id="resolve"><a class="header" href="#resolve">Resolve</a></h1>
 <p>Resolving a <strong>did:btcr2</strong> identifier iteratively builds a DID document by applying <a href="../terminology.html#btcr2-update">BTCR2 Updates</a> committed to the Bitcoin blockchain by <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a> to an <a href="../terminology.html#initial-did-document">Initial DID Document</a>. The <a href="../terminology.html#initial-did-document">Initial DID Document</a> is either deterministically created from the DID or provided by <a href="../terminology.html#sidecar-data">Sidecar Data</a>.</p>
-<p>DID resolution is defined by DID Resolution v0.3 [<a href="../bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>DID resolution is defined by DID Resolution v1 [<a href="../bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
 <p>The resolve operation has the following function signature:</p>
 <pre><code class="language-rust">fn resolve(did, resolutionOptions) -&gt;
   (didResolutionMetadata, didDocument, didDocumentMetadata)</code></pre>
@@ -196,7 +196,7 @@
 <li><code>current_document</code>: the DID document being assembled.</li>
 <li><code>current_version_id</code>: the version number being processed (starts at <code>1</code>).</li>
 <li><code>update_hash_history</code>: a list of <a href="../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> hashes used to detect duplicates.</li>
-<li><code>block_confirmations</code>: confirmations for the Bitcoin block that contains the most recently applied unique update.</li>
+<li><code>block_confirmations</code>: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at <code>0</code>).</li>
 </ul>
 <p>The resolver:</p>
 <ol>
@@ -223,7 +223,7 @@
 </ul>
 <h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
 <p>The <code>did</code> MUST be parsed with the <a href="../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
-<code>network</code>, and <code>genesis_bytes</code>. An [<code>INVALID_DID</code>] error MUST be raised in response to any errors
+<code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
 raised while decoding.</p>
 <h2 id="process-sidecar-data"><a class="header" href="#process-sidecar-data">Process Sidecar Data</a></h2>
 <p><code>resolutionOptions</code> contains a <code>sidecar</code> property (<a href="../data-structures.html#sidecar-data">Sidecar Data (data structure)</a>) which SHOULD be prepared as lookup tables:</p>
@@ -232,7 +232,7 @@ raised while decoding.</p>
 <li>Hash each <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> in <code>sidecar.casUpdates</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and build a map from hash to announcement (<code>cas_lookup_table</code>).</li>
 <li>Build a map from <code>sidecar.smtProofs</code> keyed by proof <code>id</code> (<code>smt_lookup_table</code>).</li>
 </ul>
-<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>genesis_bytes</code>. Raise an [<code>INVALID_DID</code>] error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>genesis_bytes</code>. Raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
 <p>When data is not available in <a href="../terminology.html#sidecar-data">Sidecar Data</a>, implementations are RECOMMENDED to retrieve it from a <a href="../terminology.html#cas">Content Addressable Storage</a> (<a href="../terminology.html#cas">CAS</a>) service. To retrieve a document from <a href="../terminology.html#cas">CAS</a>, construct a CID from the document’s SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].</p>
 <h2 id="establish-current-document"><a class="header" href="#establish-current-document">Establish <code>current_document</code></a></h2>
 <p>Resolution begins by creating an <a href="../terminology.html#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="../terminology.html#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>

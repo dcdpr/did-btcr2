@@ -240,13 +240,57 @@ the <a href="./terminology.html#cid">CID</a>.</p>
 <p>The IPFS CIDv1 is a binary identifier constructed from the file hash as:</p>
 <ul>
 <li><code>0x01</code>, the code for CIDv1;</li>
-<li><code>0x00</code>, the <a href="https://github.com/multiformats/multicodec">multicodec</a> code for raw binary;</li>
-<li><code>0x12</code>, the <a href="https://github.com/multiformats/multihash">multihash</a> code for SHA-256; and</li>
+<li><code>0x55</code>, the <a href="https://github.com/multiformats/multicodec">multicodec</a> code for raw binary;</li>
+<li><code>0x12</code>, the <a href="https://github.com/multiformats/multihash">multihash</a> code for SHA-256;</li>
+<li><code>0x20</code>, the length of the SHA-256 digest (32 bytes); and</li>
 <li>the SHA-256 of the file.</li>
 </ul>
 <p>The stringified version of the CIDv1 is accomplished using
 <a href="https://github.com/multiformats/multibase">multibase</a> encoding. The final URL
 is <code>"ipfs://&lt;stringified CIDv1&gt;"</code>.</p>
+<div class="tabs" id="cidv1-construction-example">
+  <div class="tablist" role="tablist" aria-label="cidv1-construction-example">
+    <button role="tab"
+            id="cidv1-construction-example-tab-hide"
+            aria-selected="true"
+            class="is-active"
+            aria-controls="cidv1-construction-example-panel-hide"
+            data-tab="cidv1-construction-example-panel-hide">
+Hide
+    </button>
+    <button role="tab"
+            id="cidv1-construction-example-tab-show"
+            aria-selected="false"
+            class=""
+            aria-controls="cidv1-construction-example-panel-show"
+            data-tab="cidv1-construction-example-panel-show">
+Show Example
+    </button>
+  </div>
+  <section id="cidv1-construction-example-panel-hide"
+           role="tabpanel"
+           aria-labelledby="cidv1-construction-example-tab-hide"
+           >
+    <label>Hide</label>
+  </section>
+  <section id="cidv1-construction-example-panel-show"
+           role="tabpanel"
+           aria-labelledby="cidv1-construction-example-tab-show"
+           hidden>
+    <label>Show Example</label>
+<p>Example input:</p>
+<ul>
+<li>file content: the 3-byte ASCII string <code>"abc"</code> (<code>0x61 0x62 0x63</code>)</li>
+</ul>
+<p>Example output:</p>
+<ul>
+<li>SHA-256 of the file: <code>ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad</code></li>
+<li>CIDv1 bytes: <code>01551220ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad</code></li>
+<li>stringified CIDv1 (multibase <code>base32</code>, prefix <code>b</code>): <code>"bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"</code></li>
+<li>final URL: <code>"ipfs://bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"</code></section>
+</li>
+</ul>
+</div>
 <p>A resolver retrieves a file associated with a SHA-256 hash by constructing the
 IPFS CIDv1 and requesting the file from an IPFS node.</p>
 
