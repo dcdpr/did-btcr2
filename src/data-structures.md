@@ -99,9 +99,10 @@ SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced
   - `"https://w3id.org/security/data-integrity/v2"`
   - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://btcr2.dev/context/v1"`
-- `patch`: A JSON Patch {{#cite RFC6902}} object that defines a set of transformations to be
-  applied to a DID document. The result of applying the patch MUST be a conformant DID document
-  according to the DID core v1.1 specification {{#cite DID-CORE}}.
+- `patch`: A single JSON Patch {{#cite RFC6902}} document, i.e., one flat array of JSON Patch
+  operation objects, that defines a set of transformations to be applied to a DID document. The
+  result of applying the patch MUST be a conformant DID document according to the DID core v1.1
+  specification {{#cite DID-CORE}}.
 - `targetVersionId`: The `versionId` of the DID document after the patch has been applied. The
   targetVersionId MUST be one more than the `versionId` of the DID document being updated.
 - `sourceHash`: SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST be produced by the [JSON Document Hashing] algorithm.
