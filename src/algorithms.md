@@ -58,14 +58,14 @@ Prefix the `method-specific-id` with the string `"did:btcr2:"` to produce the fi
 '
 Example input:
 
-* `version_number`: `1`
-* `network_name`: `bitcoin` (`network_value` = `0`)
-* `key_or_hash`: SEC encoded secp256k1 public key
-  `171d59dd2d274011cbb090acc5a168dc98f303790ffce8f54779baed81890c1b00`
+  * `version_number`: `1`
+  * `network_name`: `bitcoin` (`network_value` = `0`)
+  * `key_or_hash`: SEC encoded secp256k1 public key
+    `171d59dd2d274011cbb090acc5a168dc98f303790ffce8f54779baed81890c1b00`
 
 Example output:
 
-* `did`: `"did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q"`' %}
+  * `did`: `"did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q"`' %}
 
 {{ ui::show_example_tabs(
   group_id="identifier-encoding-example",
@@ -101,13 +101,13 @@ If the `hrp` is `"x"` ([Genesis Document]-based **btcr2:did** identifier), `key_
 '
 Example input:
 
-* `did`: `"did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"`
+  * `did`: `"did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"`
 
 Example output:
 
-* `version_number`: `1`
-* `network_name`: `mutinynet` (`network_value` = `5`)
-* `key_or_hash`: SHA-256 hash `e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8`' %}
+  * `version_number`: `1`
+  * `network_name`: `mutinynet` (`network_value` = `5`)
+  * `key_or_hash`: SHA-256 hash `e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8`' %}
 
 {{ ui::show_example_tabs(
   group_id="identifier-decoding-example",
