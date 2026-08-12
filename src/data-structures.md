@@ -165,7 +165,7 @@ The following properties MUST be included in the Data Integrity Config:
 - `cryptosuite`: The string `"bip340-jcs-2025"`.
 - `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID document.
 - `proofPurpose`: The string `"capabilityInvocation"`.
-- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`.
+- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
 
@@ -277,7 +277,7 @@ SHA-256 hashes {{#cite SHA256}} (`id`, `updateId`, `hashes`) MUST be `"base64url
 
 ## Resolution Options { #resolution-options }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 Resolution options MAY contain the following properties:
 
@@ -306,12 +306,14 @@ Resolution options MAY contain the following properties:
 
 ## DID Resolution Metadata { #did-resolution-metadata }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 Resolution metadata MAY contain the following properties:
 
-- `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/ld+json"`.
+- `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/did"`.
 - `error`: REQUIRED if an error occurs during DID resolution.
+
+A **did:btcr2** resolver returning a bare DID document MUST use the media type `"application/did"` {{#cite DID-CORE}}. A resolver returning a full DID resolution result MUST use the media type `"application/did-resolution"` {{#cite DID-RESOLUTION}}. In both cases the `contentType` property records the media type of the DID document itself.
 
 {% set hide_text = `` %}
 {% set ex_did_resolution_metadata =
@@ -333,13 +335,14 @@ Resolution metadata MAY contain the following properties:
 
 ## DID Document Metadata { #did-document-metadata }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
-Document metadata MAY contain the following properties:
+Document metadata contains the following properties:
 
+- `confirmations`: REQUIRED integer number of confirmations for the Bitcoin block that contains the most recently applied unique update for the resolved DID document. `0` when no [BTCR2 Update] has been applied.
 - `deactivated`: REQUIRED boolean that represents whether the resolved DID document has been deactivated.
 - `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.
-- `versionId`: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.
+- `versionId`: REQUIRED ASCII string representation of the version of the last Update operation for the resolved DID document. `"1"` when no [BTCR2 Update] has been applied.
 
 {% set hide_text = `` %}
 {% set ex_did_document_metadata =
@@ -388,7 +391,7 @@ A Root Capability is an Object Capability used to authorize updates to a DID doc
 The Root Capability MUST be a map containing only the following properties:
 
 - `@context`: MUST be the context string `"https://w3id.org/zcap/v1"`
-- `id`: MUST be a URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`
+- `id`: MUST be a URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 - `invocationTarget`: MUST be the `did`.
 - `controller`: MUST be the `did`.
 

@@ -8,7 +8,7 @@
 
 Resolving a **did:btcr2** identifier iteratively builds a DID document by applying [BTCR2 Updates][BTCR2 Update] committed to the Bitcoin blockchain by [Authorized Beacon Signals][Authorized Beacon Signal] to an [Initial DID Document]. The [Initial DID Document] is either deterministically created from the DID or provided by [Sidecar Data].
 
-DID resolution is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+DID resolution is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 The resolve operation has the following function signature:
 
@@ -28,7 +28,7 @@ Resolution maintains the following state while building the DID document:
 * `current_document`: the DID document being assembled.
 * `current_version_id`: the version number being processed (starts at `1`).
 * `update_hash_history`: a list of [BTCR2 Unsigned Update] hashes used to detect duplicates.
-* `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update.
+* `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at `0`).
 
 The resolver:
 

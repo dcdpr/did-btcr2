@@ -1,3 +1,4 @@
+{% import "includes/ui.tera" as ui %}
 {% import "includes/links.tera" as links %}
 
 {{ links::include() }}
@@ -77,13 +78,37 @@ the [CID].
 The IPFS CIDv1 is a binary identifier constructed from the file hash as:
 
 * `0x01`, the code for CIDv1;
-* `0x00`, the [multicodec](https://github.com/multiformats/multicodec) code for raw binary;
-* `0x12`, the [multihash](https://github.com/multiformats/multihash) code for SHA-256; and
+* `0x55`, the [multicodec](https://github.com/multiformats/multicodec) code for raw binary;
+* `0x12`, the [multihash](https://github.com/multiformats/multihash) code for SHA-256;
+* `0x20`, the length of the SHA-256 digest (32 bytes); and
 * the SHA-256 of the file.
 
 The stringified version of the CIDv1 is accomplished using
 [multibase](https://github.com/multiformats/multibase) encoding. The final URL 
 is `"ipfs://<stringified CIDv1>"`.
+
+{% set hide_text = `` %}
+{% set ex_cidv1_construction =
+'
+Example input:
+
+* file content: the 3-byte ASCII string `"abc"` (`0x61 0x62 0x63`)
+
+Example output:
+
+* SHA-256 of the file: `ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`
+* CIDv1 bytes: `01551220ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`
+* stringified CIDv1 (multibase `base32`, prefix `b`): `"bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"`
+* final URL: `"ipfs://bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"`' %}
+
+{{ ui::show_example_tabs(
+  group_id="cidv1-construction-example",
+  example=ex_cidv1_construction,
+  hide=hide_text,
+  default="hide",
+  show_label="Show Example",
+  hide_label="Hide"
+) }}
 
 A resolver retrieves a file associated with a SHA-256 hash by constructing the 
 IPFS CIDv1 and requesting the file from an IPFS node.
