@@ -27,7 +27,7 @@ Input arguments:
 
 - `didSourceDocument`: The source DID document.
 - `jsonPatch`: A single JSON Patch document {{#cite RFC6902}} with the changes to be made to the source DID document. Its wire shape is defined by the `patch` property of the [BTCR2 Unsigned Update (data structure)].
-- `targetVersionId`: The `versionId` of the target DID document that the new [BTCR2 Signed Update] will yield.
+- `targetVersionId`: The `versionId` that will be returned in the [DID document metadata (data structure)] once the new [BTCR2 Signed Update] is applied.
 - `verificationMethodId`: The `verificationMethod` ID used for signing the [BTCR2 Update].
 - `privateKey`: Private key associated with the `verificationMethodId`.
   - An implementation MAY use the `verificationMethodId` ID to retrieve the private key from a key material manager.
@@ -56,6 +56,8 @@ Fill the [BTCR2 Unsigned Update (data structure)] template below with the requir
 * `source-hash`: `didSourceDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-hash`: `didTargetDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-version-id`: The value of `targetVersionId`.
+
+`targetVersionId` MUST be derived from the `versionId` returned in the [DID document metadata (data structure)] by a fresh resolution of the DID, rather than from a locally maintained count. Announcing a [BTCR2 Signed Update] whose `targetVersionId` is wrong in either direction can permanently prevent the DID from resolving.
 
 {% set hide_text = `` %}
 {% set btcr2_unsigned_update_template =
