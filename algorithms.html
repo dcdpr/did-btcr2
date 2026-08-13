@@ -199,9 +199,15 @@
 <tr><td style="text-align: left"><code>testnet4</code></td><td style="text-align: left"><code>4</code></td></tr>
 <tr><td style="text-align: left"><code>mutinynet</code></td><td style="text-align: left"><code>5</code></td></tr>
 <tr><td style="text-align: left">Reserved</td><td style="text-align: left"><code>6</code>..<code>11</code></td></tr>
-<tr><td style="text-align: left">Custom networks</td><td style="text-align: left"><code>12</code>..<code>14</code></td></tr>
+<tr><td style="text-align: left">Custom networks</td><td style="text-align: left"><code>12</code>..<code>15</code></td></tr>
 </tbody></table>
 </div>
+<p><code>Reserved</code> network values MUST NOT be encoded until this specification assigns them.</p>
+<p>A <code>Custom networks</code> value allows any user to stand up a custom network and create <strong>did:btcr2</strong> identifiers on it. Anyone encountering such an identifier has to know the details of the network (e.g., the challenge and seed nodes for a custom signet) to use it. This means:</p>
+<ul>
+<li>The interpretation of a custom value is by mutual agreement between the parties issuing <strong>did:btcr2</strong> identifiers and those resolving them.</li>
+<li>Other users may use the same value, and their <strong>did:btcr2</strong> identifiers will <strong>not</strong> be interoperable in each other’s networks.</li>
+</ul>
 <p>Introduce <code>btcr2_version</code> as <code>version_number - 1</code> (i.e., <code>0</code>). Combine <code>btcr2_version</code> in the low <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup> nibble and <code>network_value</code> in the high <sup class="footnote-reference" id="fr-1-2"><a href="#footnote-1">1</a></sup> nibble into a single byte value.</p>
 <p>Append <code>key_or_hash</code> to the first byte to produce the unencoded data bytes. Its format is:</p>
 <h3 id="unencoded-data-bytes"><a class="header" href="#unencoded-data-bytes">Table 2: Unencoded Data Bytes</a></h3>
@@ -210,7 +216,7 @@
 <tr><td style="text-align: left">Index <sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup>:</td><td style="text-align: left">0</td><td style="text-align: left">4</td><td style="text-align: left">8</td></tr>
 </tbody></table>
 </div>
-<p>Encode the unencoded data bytes with Bech32m [<a href="bibliography.html#BIP350">BIP350</a>] to produce the <code>method-specific-id</code>. Use <code>"k"</code> as the <code>hrp</code> for key-based <code>key_or_hash</code> and <code>"x"</code> as the <code>hrp</code> for <a href="./terminology.html#genesis-document">Genesis Document</a>-based <code>key_or_hash</code>.</p>
+<p>Encode the unencoded data bytes with Bech32m <sup class="footnote-reference" id="fr-3-1"><a href="#footnote-3">3</a></sup> to produce the <code>method-specific-id</code>, which MUST be lowercase. Use <code>"k"</code> as the <code>hrp</code> for key-based <code>key_or_hash</code> and <code>"x"</code> as the <code>hrp</code> for <a href="./terminology.html#genesis-document">Genesis Document</a>-based <code>key_or_hash</code>.</p>
 <p>Prefix the <code>method-specific-id</code> with the string <code>"did:btcr2:"</code> to produce the final <strong>did:btcr2</strong> identifier.</p>
 <div class="tabs" id="identifier-encoding-example">
   <div class="tablist" role="tablist" aria-label="identifier-encoding-example">
@@ -247,11 +253,11 @@ Show Example
 <li><code>version_number</code>: <code>1</code></li>
 <li><code>network_name</code>: <code>bitcoin</code> (<code>network_value</code> = <code>0</code>)</li>
 <li><code>key_or_hash</code>: SEC encoded secp256k1 public key
-<code>171d59dd2d274011cbb090acc5a168dc98f303790ffce8f54779baed81890c1b00</code></li>
+<code>0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798</code></li>
 </ul>
 <p>Example output:</p>
 <ul>
-<li><code>did</code>: <code>"did:btc1:k1qqt36kwa95n5qywtkzg2e3dpdrwf3ucr0y8le684gaum4mvp3yxpkqqx0845q"</code></section>
+<li><code>did</code>: <code>"did:btcr2:k1qqp8n0nx0muaewav2ksx99wwsu9swq5mlndjmn3gm9vl9q2mzmup0xqhmkf96"</code></section>
 </li>
 </ul>
 </div>
@@ -259,14 +265,21 @@ Show Example
 <p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error.</p>
 <p>Parsing a <strong>did:btcr2</strong> identifier produces three values: <code>version_number</code>, <code>network_name</code>, and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
 <p>A <strong>did:btcr2</strong> identifier MUST be processed according to the DID Resolution Algorithm [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>] to retrieve the <strong>did:btcr2</strong> DID Method-specific ID <code>method-specific-id</code>. (I.e., the first 10 characters in the string MUST be exactly <code>"did:btcr2:"</code>.)</p>
-<p>Decode the <code>method-specific-id</code> as a Bech32m encoded string [<a href="bibliography.html#BIP350">BIP350</a>] to retrieve the unencoded data bytes and <code>hrp</code>. Parse the unencoded data bytes according to <a href="#unencoded-data-bytes">Table 2: Unencoded Data Bytes</a> to retrieve the <code>btcr2_version</code>, <code>network_value</code> and <code>genesis_bytes</code>.</p>
+<p>The <code>method-specific-id</code> MUST be lowercase. Decode it as a Bech32m encoded string <sup class="footnote-reference" id="fr-3-2"><a href="#footnote-3">3</a></sup> to retrieve the unencoded data bytes and the <code>hrp</code>. Parse the unencoded data bytes according to <a href="#unencoded-data-bytes">Table 2: Unencoded Data Bytes</a> to retrieve the <code>btcr2_version</code>, <code>network_value</code> and <code>genesis_bytes</code>.</p>
 <ul>
 <li><code>btcr2_version</code> MUST be <code>0</code>. Introduce <code>version_number</code> as <code>btcr2_version + 1</code>. I.e., <code>version_number</code> MUST be returned to the caller as a type that can be represented as the value <code>1</code>.</li>
-<li><code>network_value</code> MUST be one of the values in <a href="#network-values">Table 1: Network Values</a>. <code>network_name</code> SHOULD be returned to the caller including additional type information using symbolic names that can be represented as integer values.</li>
+<li><code>network_value</code> MUST be handled according to its row in <a href="#network-values">Table 1: Network Values</a>:
+<ul>
+<li>A named network value (<code>0</code>..<code>5</code>) maps to its <code>network_name</code>. <code>network_name</code> SHOULD be returned to the caller including additional type information using symbolic names that can be represented as integer values.</li>
+<li>A <code>Reserved</code> value (<code>6</code>..<code>11</code>) MUST be rejected until this specification assigns it a <code>network_name</code>.</li>
+<li>A <code>Custom networks</code> value (<code>12</code>..<code>15</code>) SHOULD be rejected when the implementation does not support a custom network for that value. What it means to support a custom network is implementation-defined.</li>
+</ul>
+</li>
 <li>The <code>hrp</code> MUST be either <code>"k"</code> or <code>"x"</code>.</li>
 </ul>
 <p>If the <code>hrp</code> is <code>"k"</code> (key-based <strong>btcr2:did</strong> identifier), <code>key_or_hash</code> MUST be <code>genesis_bytes</code> interpreted as a 33-byte SEC encoded secp256k1 public key.</p>
 <p>If the <code>hrp</code> is <code>"x"</code> (<a href="./terminology.html#genesis-document">Genesis Document</a>-based <strong>btcr2:did</strong> identifier), <code>key_or_hash</code> MUST be <code>genesis_bytes</code> interpreted as a 32-byte SHA-256 hash of a <a href="./terminology.html#genesis-document">Genesis Document</a>.</p>
+<p>Decoding inverts encoding exactly: passing the <code>version_number</code>, <code>network_name</code>, and <code>key_or_hash</code> produced by this algorithm to the <a href="./algorithms.html#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a> algorithm MUST reproduce the identical <strong>did:btcr2</strong> identifier string.</p>
 <div class="tabs" id="identifier-decoding-example">
   <div class="tablist" role="tablist" aria-label="identifier-decoding-example">
     <button role="tab"
@@ -426,6 +439,9 @@ return candidateHash == proof.id;</code></pre>
 </li>
 <li id="footnote-2">
 <p>The “Index” is a Little Endian bit count starting from <code>0</code> on the left and ending in <code>263</code> or <code>271</code> on the right (inclusive). <a href="#fr-2-1">↩</a></p>
+</li>
+<li id="footnote-3">
+<p>The <code>method-specific-id</code> MUST be conformant to Bech32m [<a href="bibliography.html#BIP350">BIP350</a>], which extends Bech32 [<a href="bibliography.html#BIP173">BIP173</a>]. On encode, pad the final 5-bit group with zero bits; on decode, an incomplete final group MUST be 4 bits or fewer, MUST be all zeros, and is discarded. <a href="#fr-3-1">↩</a> <a href="#fr-3-2">↩2</a></p>
 </li>
 </ol>
                     </main>
