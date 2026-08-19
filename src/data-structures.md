@@ -104,10 +104,10 @@ SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced
   result of applying the patch MUST be a conformant DID document according to the DID core v1.1
   specification {{#cite DID-CORE}}.
 - `targetVersionId`: The version of the DID document that results from applying the patch, i.e., the
-`versionId` that will be returned in the [DID document metadata (data structure)] for the updated DID 
-document. The `targetVersionId` MUST be one more than the integer form of the `versionId` of the DID 
-document being updated. `versionId` is never a property of the DID document itself, so this requirement 
-cannot be checked when the update is constructed; it is enforced at resolution time.
+  `versionId` that will be returned in the [DID document metadata (data structure)] for the updated DID 
+  document. The `targetVersionId` MUST be one more than the integer form of the `versionId` of the DID 
+  document being updated. `versionId` is never a property of the DID document itself, so this requirement 
+  cannot be checked when the update is constructed; it is enforced at resolution time.
 - `sourceHash`: SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST be produced by the [JSON Document Hashing] algorithm.
 - `targetHash`: SHA-256 hash of the DID document that results from applying the patch to the source document. The hash MUST be produced by the [JSON Document Hashing] algorithm.
 
