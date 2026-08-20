@@ -71,7 +71,7 @@ DID. It MUST be either a [Singleton Beacon], [SMT Beacon], or a [CAS Beacon].
 ## BTCR2 Update { #btcr2-update }
 
 A data structure used for transforming a source DID document into a target DID document. It contains
-a JSON Patch {{#cite RFC6902}} object, a version number for the target DID document, and SHA-256
+a JSON Patch {{#cite RFC6902}} document, a version number for the target DID document, and SHA-256
 hashes for the source and target DID documents.
 
 ## BTCR2 Unsigned Update { #btcr2-unsigned-update }

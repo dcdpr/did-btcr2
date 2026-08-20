@@ -15,7 +15,7 @@ The update operation has the following function signature:
 ```rust
 fn update(
   didSourceDocument,
-  jsonPatches,
+  jsonPatch,
   targetVersionId,
   verificationMethodId,
   privateKey,
@@ -26,8 +26,8 @@ fn update(
 Input arguments:
 
 - `didSourceDocument`: The source DID document.
-- `jsonPatches`: An array of JSON patch documents {{#cite RFC6902}} with the changes to be made to the source DID document.
-- `targetVersionId`: The `versionId` of the target DID document that the new [BTCR2 Signed Update] will yield.
+- `jsonPatch`: A single JSON Patch document {{#cite RFC6902}} with the changes to be made to the source DID document. Its wire shape is defined by the `patch` property of the [BTCR2 Unsigned Update (data structure)].
+- `targetVersionId`: The `versionId` that will be returned in the [DID document metadata (data structure)] once the new [BTCR2 Signed Update] is applied.
 - `verificationMethodId`: The `verificationMethod` ID used for signing the [BTCR2 Update].
 - `privateKey`: Private key associated with the `verificationMethodId`.
   - An implementation MAY use the `verificationMethodId` ID to retrieve the private key from a key material manager.
@@ -48,14 +48,16 @@ Constructing a [BTCR2 Signed Update] is a two-step process. First, a [BTCR2 Unsi
 
 This process constructs a [BTCR2 Unsigned Update (data structure)].
 
-Apply all JSON patches in `jsonPatches` to `didSourceDocument` to create `didTargetDocument`. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `didSourceDocument.id`.
+Apply `jsonPatch` to `didSourceDocument` to create `didTargetDocument`. An [`INVALID_DID_UPDATE`] error MUST be raised if `jsonPatch` is malformed or fails to apply. JSON Patch {{#cite RFC6902}} operations are evaluated in order; the first operation that fails, including a failed `test` operation, fails the whole patch. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `didSourceDocument.id`.
 
 Fill the [BTCR2 Unsigned Update (data structure)] template below with the required template variables.
 
-* `array-of-patches`: `jsonPatches` serialized to a JSON string.
+* `array-of-patches`: `jsonPatch` embedded as JSON.
 * `source-hash`: `didSourceDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-hash`: `didTargetDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-version-id`: The value of `targetVersionId`.
+
+`targetVersionId` MUST be derived from the `versionId` returned in the [DID document metadata (data structure)] by a fresh resolution of the DID, rather than from a locally maintained count. Announcing a [BTCR2 Signed Update] whose `targetVersionId` is wrong in either direction can permanently prevent the DID from resolving.
 
 {% set hide_text = `` %}
 {% set btcr2_unsigned_update_template =

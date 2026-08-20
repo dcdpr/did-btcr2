@@ -187,7 +187,7 @@ Hash `current_document` with the [JSON Document Hashing] algorithm. Raise an [`I
 
 [Check `update.proof`](#check-update-proof).
 
-Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `current_document`.
+Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `current_document`. Raise an [`INVALID_DID_UPDATE`] error if `update.patch` is malformed or fails to apply. JSON Patch operations are evaluated in order; the first operation that fails, including a failed `test` operation, fails the whole patch.
 
 Verify that `current_document` conforms to DID Core v1.1 {{#cite DID-CORE}} and that `current_document.id` equals `did`. Otherwise raise [`INVALID_DID_UPDATE`].
 
