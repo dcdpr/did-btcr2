@@ -382,11 +382,15 @@ Show Example
 <li><code>"https://btcr2.dev/context/v1"</code></li>
 </ul>
 </li>
-<li><code>patch</code>: A JSON Patch [<a href="bibliography.html#RFC6902">RFC6902</a>] object that defines a set of transformations to be
-applied to a DID document. The result of applying the patch MUST be a conformant DID document
-according to the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</li>
-<li><code>targetVersionId</code>: The <code>versionId</code> of the DID document after the patch has been applied. The
-targetVersionId MUST be one more than the <code>versionId</code> of the DID document being updated.</li>
+<li><code>patch</code>: A single JSON Patch [<a href="bibliography.html#RFC6902">RFC6902</a>] document, i.e., one flat array of JSON Patch
+operation objects, that defines a set of transformations to be applied to a DID document. The
+result of applying the patch MUST be a conformant DID document according to the DID core v1.1
+specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</li>
+<li><code>targetVersionId</code>: The version of the DID document that results from applying the patch, i.e., the
+<code>versionId</code> that will be returned in the <a href="./data-structures.html#did-document-metadata">DID document metadata (data structure)</a> for the updated DID
+document. The <code>targetVersionId</code> MUST be one more than the integer form of the <code>versionId</code> of the DID
+document being updated. <code>versionId</code> is never a property of the DID document itself, so this requirement
+cannot be checked when the update is constructed; it is enforced at resolution time.</li>
 <li><code>sourceHash</code>: SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
 <li><code>targetHash</code>: SHA-256 hash of the DID document that results from applying the patch to the source document. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
 </ul>

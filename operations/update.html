@@ -188,7 +188,7 @@
 <p>The update operation has the following function signature:</p>
 <pre><code class="language-rust">fn update(
   didSourceDocument,
-  jsonPatches,
+  jsonPatch,
   targetVersionId,
   verificationMethodId,
   privateKey,
@@ -197,8 +197,8 @@
 <p>Input arguments:</p>
 <ul>
 <li><code>didSourceDocument</code>: The source DID document.</li>
-<li><code>jsonPatches</code>: An array of JSON patch documents [<a href="../bibliography.html#RFC6902">RFC6902</a>] with the changes to be made to the source DID document.</li>
-<li><code>targetVersionId</code>: The <code>versionId</code> of the target DID document that the new <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> will yield.</li>
+<li><code>jsonPatch</code>: A single JSON Patch document [<a href="../bibliography.html#RFC6902">RFC6902</a>] with the changes to be made to the source DID document. Its wire shape is defined by the <code>patch</code> property of the <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</li>
+<li><code>targetVersionId</code>: The <code>versionId</code> that will be returned in the <a href="../data-structures.html#did-document-metadata">DID document metadata (data structure)</a> once the new <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is applied.</li>
 <li><code>verificationMethodId</code>: The <code>verificationMethod</code> ID used for signing the <a href="../terminology.html#btcr2-update">BTCR2 Update</a>.</li>
 <li><code>privateKey</code>: Private key associated with the <code>verificationMethodId</code>.
 <ul>
@@ -215,14 +215,15 @@
 <p>Constructing a <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is a two-step process. First, a <a href="../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is constructed. Then the update is signed with a private key to construct the <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a>.</p>
 <h2 id="construct-btcr2-unsigned-update"><a class="header" href="#construct-btcr2-unsigned-update">Construct BTCR2 Unsigned Update</a></h2>
 <p>This process constructs a <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
-<p>Apply all JSON patches in <code>jsonPatches</code> to <code>didSourceDocument</code> to create <code>didTargetDocument</code>. <code>didTargetDocument</code> MUST be conformant to DID Core v1.1 [<a href="../bibliography.html#DID-CORE">DID-CORE</a>]. An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>didTargetDocument.id</code> is not equal to <code>didSourceDocument.id</code>.</p>
+<p>Apply <code>jsonPatch</code> to <code>didSourceDocument</code> to create <code>didTargetDocument</code>. An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>jsonPatch</code> is malformed or fails to apply. JSON Patch [<a href="../bibliography.html#RFC6902">RFC6902</a>] operations are evaluated in order; the first operation that fails, including a failed <code>test</code> operation, fails the whole patch. <code>didTargetDocument</code> MUST be conformant to DID Core v1.1 [<a href="../bibliography.html#DID-CORE">DID-CORE</a>]. An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>didTargetDocument.id</code> is not equal to <code>didSourceDocument.id</code>.</p>
 <p>Fill the <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> template below with the required template variables.</p>
 <ul>
-<li><code>array-of-patches</code>: <code>jsonPatches</code> serialized to a JSON string.</li>
+<li><code>array-of-patches</code>: <code>jsonPatch</code> embedded as JSON.</li>
 <li><code>source-hash</code>: <code>didSourceDocument</code> hashed with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
 <li><code>target-hash</code>: <code>didTargetDocument</code> hashed with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
 <li><code>target-version-id</code>: The value of <code>targetVersionId</code>.</li>
 </ul>
+<p><code>targetVersionId</code> MUST be derived from the <code>versionId</code> returned in the <a href="../data-structures.html#did-document-metadata">DID document metadata (data structure)</a> by a fresh resolution of the DID, rather than from a locally maintained count. Announcing a <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> whose <code>targetVersionId</code> is wrong in either direction can permanently prevent the DID from resolving.</p>
 <div class="tabs" id="btcr2-unsigned-update-template">
   <div class="tablist" role="tablist" aria-label="btcr2-unsigned-update-template">
     <button role="tab"
