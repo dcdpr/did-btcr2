@@ -12,3 +12,5 @@ The key words MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this d
 Interoperability of implementations of the **did:btcr2** DID method is tested by evaluating an implementation's ability to create, resolve, update, and deactivate, **did:btcr2** identifiers and DID documents that conform to this specification. Interoperability for producers and consumers of **did:btcr2** identifiers and DID documents is provided by ensuring the DIDs and DID documents conform.
 
 Implementations MUST be conformant to all normative statements in Decentralized Identifiers v1.1 {{#cite DID-CORE}} and DID Resolution v1 {{#cite DID-RESOLUTION}}.
+
+DID Resolution v1 normatively references Decentralized Identifiers v1.0. Where a normative statement in DID Resolution v1 relies on Decentralized Identifiers v1.0, the corresponding statement in Decentralized Identifiers v1.1 applies to **did:btcr2** identifiers and DID documents.
