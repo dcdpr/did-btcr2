@@ -83,9 +83,9 @@ resulting [BTCR2 Unsigned Update (data structure)] MUST be conformant to this sp
 
 This process constructs a [BTCR2 Signed Update (data structure)] from `update`, a [BTCR2 Unsigned Update (data structure)].
 
-An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.verificationMethod` Set does not contain an `id` matching `verificationMethodId`.
+An [`INVALID_DID_UPDATE`] error MUST be raised if no entry of the `didSourceDocument.capabilityInvocation` Set identifies `verificationMethodId`. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the `id` of the object is equal.
 
-An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.capabilityInvocation` Set does not contain `verificationMethodId`.
+If that entry is a reference, find the verification method in the `didSourceDocument.verificationMethod` Set with an `id` that is equal to the reference. An [`INVALID_DID_UPDATE`] error MUST be raised if there is no verification method with that `id`.
 
 Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `signer` as the signing interface and the `"bip340-jcs-2025"` cryptosuite.
 
