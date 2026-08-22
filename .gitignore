@@ -1,7 +1,8 @@
 /.idea/
-/node_modules/
+node_modules/
 /_site/
-/package-lock.json
+package-lock.json
+bun.lock
 .ipynb_checkpoints
 __pycache__
 venv
