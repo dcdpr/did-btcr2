@@ -200,6 +200,8 @@ Increment `current_version_id`.
 
 ### Check `update.proof` { #check-update-proof }
 
+Raise an [`INVALID_DID_UPDATE`] error if the `@context` of `update` is not the array that the [BTCR2 Unsigned Update (data structure)] specifies. Raise an [`INVALID_DID_UPDATE`] error if the `@context` of `update.proof` is not equal to the `@context` of `update`. Two `@context` arrays are equal when they contain the same context URLs in the same order.
+
 Implementations MAY derive a [Root Capability (data structure)] from `update.proof` and invoke it according to Authorization Capabilities for Linked Data v0.3 {{#cite ZCAP-LD}}.
 
 The resolver must locate `publicKeyMultibase` in `current_document.verificationMethod` whose `id` matches `update.proof.verificationMethod`. Otherwise raise [`INVALID_DID_UPDATE`]. Raise the same error if `current_document.capabilityInvocation` does not contain `update.proof.verificationMethod`.

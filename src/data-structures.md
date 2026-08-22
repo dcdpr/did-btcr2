@@ -94,11 +94,13 @@ A [BTCR2 Unsigned Update] is a Map data structure with the following properties:
 
 SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced using the [JSON Document Hashing] algorithm and MUST be encoded using `"base64url"` {{#cite RFC4648}} encoding without padding.
 
-- `@context`: A context array containing the following context URLs:
+- `@context`: A context array. It MUST contain exactly the following context URLs, in this order:
+  - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://w3id.org/zcap/v1"`
   - `"https://w3id.org/security/data-integrity/v2"`
-  - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://btcr2.dev/context/v1"`
+
+  A change to the membership or the order of this array changes the hash that the [JSON Document Hashing] algorithm produces.
 - `patch`: A single JSON Patch {{#cite RFC6902}} document, i.e., one flat array of JSON Patch
   operation objects, that defines a set of transformations to be applied to a DID document. The
   result of applying the patch MUST be a conformant DID document according to the DID core v1.1
@@ -160,11 +162,8 @@ A Data Integrity {{#cite VC-DATA-INTEGRITY}} proof with the `proofPurpose` set t
 
 The following properties MUST be included in the Data Integrity Config:
 
-- `@context`: A context array containing the follow context URLs:
-  - `"https://w3id.org/security/v2"`
-  - `"https://w3id.org/zcap/v1"`
-  - `"https://w3id.org/json-ld-patch/v1"`
-  - `"https://btcr2.dev/context/v1"`
+- `@context`: A context array. It MUST contain the same context URLs, in the same order, as the
+  [BTCR2 Unsigned Update (data structure)] `@context` array.
 - `type`: The string `"DataIntegrityProof"`.
 - `cryptosuite`: The string `"bip340-jcs-2025"`.
 - `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID document.
