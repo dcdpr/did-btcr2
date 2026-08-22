@@ -280,6 +280,7 @@ suitable for a wide range of high-volume, low cost use cases.</p>
 <p>The key words MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this document are to be interpreted as described in [<a href="bibliography.html#BCP14">BCP14</a>] when, and only when, they appear in all capitals, as shown here.</p>
 <p>Interoperability of implementations of the <strong>did:btcr2</strong> DID method is tested by evaluating an implementation’s ability to create, resolve, update, and deactivate, <strong>did:btcr2</strong> identifiers and DID documents that conform to this specification. Interoperability for producers and consumers of <strong>did:btcr2</strong> identifiers and DID documents is provided by ensuring the DIDs and DID documents conform.</p>
 <p>Implementations MUST be conformant to all normative statements in Decentralized Identifiers v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] and DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>DID Resolution v1 normatively references Decentralized Identifiers v1.0. Where a normative statement in DID Resolution v1 relies on Decentralized Identifiers v1.0, the corresponding statement in Decentralized Identifiers v1.1 applies to <strong>did:btcr2</strong> identifiers and DID documents.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="terminology"><a class="header" href="#terminology">Terminology</a></h1>
 <h2 id="aggregate-beacon"><a class="header" href="#aggregate-beacon">Aggregate Beacon</a></h2>
 <p>A collection of <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> can optionally be aggregated into a single
@@ -1713,7 +1714,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 </ul>
 <h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
 <p>The <code>did</code> MUST be parsed with the <a href="operations/../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
-<code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
+<code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
 raised while decoding.</p>
 <h2 id="process-sidecar-data"><a class="header" href="#process-sidecar-data">Process Sidecar Data</a></h2>
 <p><code>resolutionOptions</code> contains a <code>sidecar</code> property (<a href="operations/../data-structures.html#sidecar-data">Sidecar Data (data structure)</a>) which SHOULD be prepared as lookup tables:</p>
@@ -1722,7 +1723,7 @@ raised while decoding.</p>
 <li>Hash each <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> in <code>sidecar.casUpdates</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and build a map from hash to announcement (<code>cas_lookup_table</code>).</li>
 <li>Build a map from <code>sidecar.smtProofs</code> keyed by proof <code>id</code> (<code>smt_lookup_table</code>).</li>
 </ul>
-<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>genesis_bytes</code>. Raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>genesis_bytes</code>. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
 <p>When data is not available in <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a>, implementations are RECOMMENDED to retrieve it from a <a href="operations/../terminology.html#cas">Content Addressable Storage</a> (<a href="operations/../terminology.html#cas">CAS</a>) service. To retrieve a document from <a href="operations/../terminology.html#cas">CAS</a>, construct a CID from the document’s SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].</p>
 <h2 id="establish-current-document"><a class="header" href="#establish-current-document">Establish <code>current_document</code></a></h2>
 <p>Resolution begins by creating an <a href="operations/../terminology.html#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="operations/../terminology.html#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="operations/../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>
@@ -2063,7 +2064,7 @@ The main responsibilities include establishing a protocol for one or more rounds
 <div style="break-before: page; page-break-before: always;"></div><h1 id="algorithms"><a class="header" href="#algorithms">Algorithms</a></h1>
 <p>These algorithms are referenced throughout this specification.</p>
 <h2 id="did-btcr2-identifier-encoding"><a class="header" href="#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a></h2>
-<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error.</p>
+<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error.</p>
 <p>A <strong>did:btcr2</strong> identifier is created from three arguments: <code>version_number</code>, <code>network_name</code> and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
 <p><code>key_or_hash</code> MUST be one of the supported <a href="./terminology.html#genesis-bytes">Genesis Bytes</a> variants defined in the Terminology chapter and MUST be representable as a 33-byte secp256k1 public key or a 32-byte SHA-256 hash. Implementations SHOULD require <code>key_or_hash</code> to include additional type information that clearly distinguishes between the supported <a href="./terminology.html#genesis-bytes">Genesis Bytes</a> variants. This type information determines how the identifier is encoded.</p>
 <p>The <code>version_number</code> value MUST be <code>1</code>, declaring the encoding follows this specification.</p>
@@ -2140,7 +2141,7 @@ Show Example
 </ul>
 </div>
 <h2 id="did-btcr2-identifier-decoding"><a class="header" href="#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a></h2>
-<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error.</p>
+<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error.</p>
 <p>Parsing a <strong>did:btcr2</strong> identifier produces three values: <code>version_number</code>, <code>network_name</code>, and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
 <p>A <strong>did:btcr2</strong> identifier MUST be processed according to the DID Resolution Algorithm [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>] to retrieve the <strong>did:btcr2</strong> DID Method-specific ID <code>method-specific-id</code>. (I.e., the first 10 characters in the string MUST be exactly <code>"did:btcr2:"</code>.)</p>
 <p>The <code>method-specific-id</code> MUST be lowercase. Decode it as a Bech32m encoded string <sup class="footnote-reference" id="fr-3-2"><a href="#footnote-3">3</a></sup> to retrieve the unencoded data bytes and the <code>hrp</code>. Parse the unencoded data bytes according to <a href="algorithms.html#unencoded-data-bytes">Table 2: Unencoded Data Bytes</a> to retrieve the <code>btcr2_version</code>, <code>network_value</code> and <code>genesis_bytes</code>.</p>
@@ -2826,7 +2827,7 @@ div.bib_div section.abstract {
 <a id="DID-CORE">[DID-CORE]</a>
 - Manu Sporny, Dave Longley, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen
 - <a href="https://www.w3.org/TR/did-1.1/" target="_blank"><cite>Decentralized Identifiers (DIDs) v1.1</cite></a>.
-- 2025.
+- 2026.
 </summary>
 <section class="abstract">
 <h2 id="summaryabstract-9"><a class="header" href="#summaryabstract-9">Summary/Abstract</a></h2>
@@ -2843,7 +2844,7 @@ div.bib_div section.abstract {
 <summary class="citation">
 <a id="DID-RESOLUTION">[DID-RESOLUTION]</a>
 - Stephen Curran, Joe Andrieu
-- <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/" target="_blank"><cite>Decentralized Identifier Resolution (DID Resolution) v1</cite></a>.
+- <a href="https://www.w3.org/TR/did-resolution-1.0/" target="_blank"><cite>Decentralized Identifier Resolution (DID Resolution) v1</cite></a>.
 - 2026.
 </summary>
 <section class="abstract">

@@ -185,7 +185,7 @@
                         <h1 id="algorithms"><a class="header" href="#algorithms">Algorithms</a></h1>
 <p>These algorithms are referenced throughout this specification.</p>
 <h2 id="did-btcr2-identifier-encoding"><a class="header" href="#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a></h2>
-<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error.</p>
+<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error.</p>
 <p>A <strong>did:btcr2</strong> identifier is created from three arguments: <code>version_number</code>, <code>network_name</code> and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
 <p><code>key_or_hash</code> MUST be one of the supported <a href="./terminology.html#genesis-bytes">Genesis Bytes</a> variants defined in the Terminology chapter and MUST be representable as a 33-byte secp256k1 public key or a 32-byte SHA-256 hash. Implementations SHOULD require <code>key_or_hash</code> to include additional type information that clearly distinguishes between the supported <a href="./terminology.html#genesis-bytes">Genesis Bytes</a> variants. This type information determines how the identifier is encoded.</p>
 <p>The <code>version_number</code> value MUST be <code>1</code>, declaring the encoding follows this specification.</p>
@@ -262,7 +262,7 @@ Show Example
 </ul>
 </div>
 <h2 id="did-btcr2-identifier-decoding"><a class="header" href="#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a></h2>
-<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/2026/CR-did-resolution-1.0-20260806/#errors"><code>INVALID_DID</code></a> error.</p>
+<p>Any errors encountered during this algorithm MUST raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error.</p>
 <p>Parsing a <strong>did:btcr2</strong> identifier produces three values: <code>version_number</code>, <code>network_name</code>, and <code>key_or_hash</code> (<a href="./terminology.html#genesis-bytes">Genesis Bytes</a>).</p>
 <p>A <strong>did:btcr2</strong> identifier MUST be processed according to the DID Resolution Algorithm [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>] to retrieve the <strong>did:btcr2</strong> DID Method-specific ID <code>method-specific-id</code>. (I.e., the first 10 characters in the string MUST be exactly <code>"did:btcr2:"</code>.)</p>
 <p>The <code>method-specific-id</code> MUST be lowercase. Decode it as a Bech32m encoded string <sup class="footnote-reference" id="fr-3-2"><a href="#footnote-3">3</a></sup> to retrieve the unencoded data bytes and the <code>hrp</code>. Parse the unencoded data bytes according to <a href="#unencoded-data-bytes">Table 2: Unencoded Data Bytes</a> to retrieve the <code>btcr2_version</code>, <code>network_value</code> and <code>genesis_bytes</code>.</p>
