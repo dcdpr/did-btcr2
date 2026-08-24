@@ -87,7 +87,7 @@ Process the [Genesis Document] provided in `sidecar.genesisDocument` by replacin
 Render the [Initial DID Document] template with these values (Bitcoin addresses MUST use the Bitcoin URI Scheme {{#cite BIP321}}):
 
 * `did`: The `did`.
-* `public-key-multikey`: Public key as a Multibase `"base-58-btc"` {{#cite CID}} encoded string.
+* `public-key-multikey`: Public key as a Multibase `"base-58-btc"` {{#cite CONTROLLED-IDENTIFIERS}} encoded string.
 * `p2pkh-bitcoin-address`: Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public key.
 * `p2wpkh-bitcoin-address`: Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from the public key.
 * `p2tr-bitcoin-address`: Pay-to-Taproot (P2TR) Bitcoin address produced from the public key.

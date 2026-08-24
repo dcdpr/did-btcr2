@@ -196,7 +196,7 @@ A [Data Integrity Proof] with the `proofPurpose` set to `"capabilityInvocation"`
 
 This data structure is a Map data structure with the same properties as [Data Integrity Config (data structure)] and one additional property:
 
-- `proofValue`: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 {{#cite BIP340}}, as a Multibase `"base-58-btc"` {{#cite CID}} encoded string.
+- `proofValue`: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 {{#cite BIP340}}, as a Multibase `"base-58-btc"` {{#cite CONTROLLED-IDENTIFIERS}} encoded string.
 
 {% set hide_text = `` %}
 {% set ex_di_proof =
