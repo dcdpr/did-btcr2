@@ -1150,7 +1150,7 @@ Show Example
 <p>A <a href="./terminology.html#data-integrity-proof">Data Integrity Proof</a> with the <code>proofPurpose</code> set to <code>"capabilityInvocation"</code>. This proof MUST be a valid invocation of the capability to update a <strong>did:btcr2</strong> DID document.</p>
 <p>This data structure is a Map data structure with the same properties as <a href="./data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> and one additional property:</p>
 <ul>
-<li><code>proofValue</code>: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 [<a href="bibliography.html#BIP340">BIP340</a>], as a Multibase <code>"base-58-btc"</code> [<a href="bibliography.html#CID">CID</a>] encoded string.</li>
+<li><code>proofValue</code>: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 [<a href="bibliography.html#BIP340">BIP340</a>], as a Multibase <code>"base-58-btc"</code> [<a href="bibliography.html#CONTROLLED-IDENTIFIERS">CONTROLLED-IDENTIFIERS</a>] encoded string.</li>
 </ul>
 <div class="tabs" id="data-integrity-proof-example">
   <div class="tablist" role="tablist" aria-label="data-integrity-proof-example">
@@ -1734,7 +1734,7 @@ raised while decoding.</p>
 <p>Render the <a href="operations/../terminology.html#initial-did-document">Initial DID Document</a> template with these values (Bitcoin addresses MUST use the Bitcoin URI Scheme [<a href="operations/../bibliography.html#BIP321">BIP321</a>]):</p>
 <ul>
 <li><code>did</code>: The <code>did</code>.</li>
-<li><code>public-key-multikey</code>: Public key as a Multibase <code>"base-58-btc"</code> [<a href="operations/../bibliography.html#CID">CID</a>] encoded string.</li>
+<li><code>public-key-multikey</code>: Public key as a Multibase <code>"base-58-btc"</code> [<a href="operations/../bibliography.html#CONTROLLED-IDENTIFIERS">CONTROLLED-IDENTIFIERS</a>] encoded string.</li>
 <li><code>p2pkh-bitcoin-address</code>: Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public key.</li>
 <li><code>p2wpkh-bitcoin-address</code>: Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from the public key.</li>
 <li><code>p2tr-bitcoin-address</code>: Pay-to-Taproot (P2TR) Bitcoin address produced from the public key.</li>
@@ -2806,9 +2806,9 @@ div.bib_div section.abstract {
 </div>
 <br/>
 <div class="bib_div">
-<details data-key="CID" class="ref">
+<details data-key="CONTROLLED-IDENTIFIERS" class="ref">
 <summary class="citation">
-<a id="CID">[CID]</a>
+<a id="CONTROLLED-IDENTIFIERS">[CONTROLLED-IDENTIFIERS]</a>
 - Dave Longley, Manu Sporny, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen
 - <a href="https://www.w3.org/TR/cid-1.0/" target="_blank"><cite>Controlled Identifiers v1.0</cite></a>.
 - 2025.
