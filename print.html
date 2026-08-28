@@ -1912,7 +1912,7 @@ Show Template
   jsonPatch,
   targetVersionId,
   verificationMethodId,
-  privateKey,
+  signer,
 ) -&gt;
   signedUpdate</code></pre>
 <p>Input arguments:</p>
@@ -1921,11 +1921,7 @@ Show Template
 <li><code>jsonPatch</code>: A single JSON Patch document [<a href="operations/../bibliography.html#RFC6902">RFC6902</a>] with the changes to be made to the source DID document. Its wire shape is defined by the <code>patch</code> property of the <a href="operations/../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</li>
 <li><code>targetVersionId</code>: The <code>versionId</code> that will be returned in the <a href="operations/../data-structures.html#did-document-metadata">DID document metadata (data structure)</a> once the new <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is applied.</li>
 <li><code>verificationMethodId</code>: The <code>verificationMethod</code> ID used for signing the <a href="operations/../terminology.html#btcr2-update">BTCR2 Update</a>.</li>
-<li><code>privateKey</code>: Private key associated with the <code>verificationMethodId</code>.
-<ul>
-<li>An implementation MAY use the <code>verificationMethodId</code> ID to retrieve the private key from a key material manager.</li>
-</ul>
-</li>
+<li><code>signer</code>: A signing interface. The signer receives bytes and returns a Schnorr signature [<a href="operations/../bibliography.html#BIP340">BIP340</a>] for those bytes. The signer makes the signature with the private key for <code>verificationMethodId</code>. The signer selects how it holds or reaches that key. An external signer is RECOMMENDED. An implementation that holds the key in its own process is also conformant.</li>
 </ul>
 <p>Outputs:</p>
 <ul>
@@ -1933,7 +1929,7 @@ Show Template
 </ul>
 <h2 id="process-2"><a class="header" href="#process-2">Process</a></h2>
 <p>Updating a <strong>did:btcr2</strong> DID document is a matter of constructing a <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> then announcing that update via one or more <a href="operations/../terminology.html#btcr2-beacon">BTCR2 Beacons</a> listed in the DID document. The update announcement process varies depending on the <a href="operations/../terminology.html#beacon-type">Beacon Type</a>.</p>
-<p>Constructing a <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is a two-step process. First, a <a href="operations/../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is constructed. Then the update is signed with a private key to construct the <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a>.</p>
+<p>Constructing a <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is a two-step process. First, a <a href="operations/../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is constructed. Then the <code>signer</code> signs the update to construct the <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a>.</p>
 <h2 id="construct-btcr2-unsigned-update"><a class="header" href="#construct-btcr2-unsigned-update">Construct BTCR2 Unsigned Update</a></h2>
 <p>This process constructs a <a href="operations/../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
 <p>Apply <code>jsonPatch</code> to <code>didSourceDocument</code> to create <code>didTargetDocument</code>. An <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>jsonPatch</code> is malformed or fails to apply. JSON Patch [<a href="operations/../bibliography.html#RFC6902">RFC6902</a>] operations are evaluated in order; the first operation that fails, including a failed <code>test</code> operation, fails the whole patch. <code>didTargetDocument</code> MUST be conformant to DID Core v1.1 [<a href="operations/../bibliography.html#DID-CORE">DID-CORE</a>]. An <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>didTargetDocument.id</code> is not equal to <code>didSourceDocument.id</code>.</p>
@@ -1996,7 +1992,7 @@ resulting <a href="operations/../data-structures.html#btcr2-unsigned-update">BTC
 <p>This process constructs a <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> from <code>update</code>, a <a href="operations/../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
 <p>An <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if the <code>didSourceDocument.verificationMethod</code> Set does not contain an <code>id</code> matching <code>verificationMethodId</code>.</p>
 <p>An <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if the <code>didSourceDocument.capabilityInvocation</code> Set does not contain <code>verificationMethodId</code>.</p>
-<p>Create <code>cryptosuite</code> as a BIP340 Cryptosuite [<a href="operations/../bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] instance with <code>privateKey</code> and <code>"bip340-jcs-2025"</code> cryptosuite.</p>
+<p>Create <code>cryptosuite</code> as a BIP340 Cryptosuite [<a href="operations/../bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] instance with <code>signer</code> as the signing interface and the <code>"bip340-jcs-2025"</code> cryptosuite.</p>
 <p>Fill the Data Integrity [<a href="operations/../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] template below with the required template variables.</p>
 <ul>
 <li><code>verification-method</code>: The value of <code>verificationMethodId</code>.</li>
@@ -2052,6 +2048,7 @@ Show Template
 <p>Let <code>proofConfig</code> be the result of parsing the rendered template as JSON. The
 resulting <a href="operations/../data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> MUST be conformant to Verifiable Credentials Data Integrity 1.0 [<a href="operations/../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>].</p>
 <p>Pass <code>update</code> and <code>proofConfig</code> to the <code>cryptosuite.createProof</code> method and set <code>update.proof</code> to the resulting <a href="operations/../data-structures.html#data-integrity-proof">Data Integrity Proof (data structure)</a>.</p>
+<p>Implementations SHOULD verify <code>update.proof</code> before they announce the update. Use the public key of the verification method that <code>verificationMethodId</code> identifies. An announced update with an invalid proof permanently invalidates the DID.</p>
 <h2 id="announce-did-update"><a class="header" href="#announce-did-update">Announce DID Update</a></h2>
 <p><a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> are announced to the Bitcoin blockchain depending on the <a href="operations/../terminology.html#beacon-type">Beacon Type</a>.</p>
 <h3 id="announcing-to-a-singleton-beacon"><a class="header" href="#announcing-to-a-singleton-beacon">Announcing to a Singleton Beacon</a></h3>
