@@ -13,6 +13,27 @@ endpoints and [BTCR2 Beacons][BTCR2 Beacon] that support aggregation. Any
 active **did:btcr2** DID document can be updated later with new key material
 and service endpoints.
 
+The create operation has the following function signature:
+
+```rust
+fn create(
+  genesisBytes,
+  network,
+  version,
+) ->
+  did
+```
+
+Input arguments:
+
+- `genesisBytes`: [Genesis Bytes] is a secp256k1 public key or the hash of a [Genesis Document]. The [DID-BTCR2 Identifier Encoding] algorithm takes this value as `key_or_hash`.
+- `network`: The Bitcoin network that anchors the identifier. The [DID-BTCR2 Identifier Encoding] algorithm takes this value as `network_name`. [Algorithms Table 1: Network Values] lists the permitted values.
+- `version`: The specification version number. The [DID-BTCR2 Identifier Encoding] algorithm takes this value as `version_number`.
+
+Outputs:
+
+- `did`: A **did:btcr2** identifier that encodes `genesisBytes`, `network` and `version`.
+
 
 ## Process
 
