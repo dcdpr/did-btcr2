@@ -47,6 +47,8 @@ on a network for retrieval based on its content, not its name or location. The c
 address is determined by a cryptographic hash of the file. The hash is then passed into 
 a retrieval function specific to the type of [CAS] to retrieve the file.
 
+For each retrieval from [CAS], the resolver MUST compute the SHA-256 hash of the retrieved content. The resolver MUST compare the computed hash to the hash that was used for the retrieval. If the hashes do not match, the resolver MUST NOT use the content.
+
 Any [CAS] that provides a deterministic mapping from a SHA-256 hash of a file may be 
 used, and a resolver SHOULD be informed of the specific [CAS] mechanism so that it 
 can retrieve documents associated with a **did:btcr2** identifier efficiently. If 
