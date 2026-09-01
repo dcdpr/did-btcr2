@@ -38,6 +38,14 @@ It can optionally include one or more of the following properties:
   - [BTCR2 Beacons][BTCR2 Beacon] are declared as DID services using the service `type` specified in
     [Beacons Table 1: Beacon Types].
 
+Verification method references in this document MAY be relative DID URLs. DID Core v1.1 {{#cite DID-CORE}} permits this. Implementations MUST resolve a relative DID URL against the document `id` before they compare that URL with another reference. [^1]
+
+A resolver parses only one URL in a DID document. That URL is the `serviceEndpoint` of a [BTCR2 Beacon] service, and the resolver parses it as a [Beacon Address]. A resolver MAY treat all other URLs in the document as opaque strings. [^2]
+
+[^1]: When an implementation resolves a relative DID URL against a DID base, the result cannot contain an authority component. The result therefore cannot contain a host. See DID Core v1.1 {{#cite DID-CORE}} for the resolution algorithm and for the components that a relative DID URL can contain.
+
+[^2]: A DID document can contain a URL with a host. Examples are an `alsoKnownAs` value, a service `id`, and the `serviceEndpoint` of a service that is not a [BTCR2 Beacon]. A resolver does not use these values when it builds the update history. A [Beacon Address] is a Bitcoin address and has no host. A resolver that conforms to this specification therefore does not parse a host and does not need IDNA tables. This rule applies to the resolver, and does not change the requirements of DID Core v1.1 {{#cite DID-CORE}} or of a JSON-LD processor {{#cite JSON-LD}}.
+
 In order for this DID document to be updatable, controllers must include at least one
 verification method with a capability invocation verification relationship and at least one
 [BTCR2 Beacon] service.
@@ -94,11 +102,13 @@ A [BTCR2 Unsigned Update] is a Map data structure with the following properties:
 
 SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced using the [JSON Document Hashing] algorithm and MUST be encoded using `"base64url"` {{#cite RFC4648}} encoding without padding.
 
-- `@context`: A context array containing the following context URLs:
+- `@context`: A context array. It MUST contain exactly the following context URLs, in this order:
+  - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://w3id.org/zcap/v1"`
   - `"https://w3id.org/security/data-integrity/v2"`
-  - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://btcr2.dev/context/v1"`
+
+  A change to the membership or the order of this array changes the hash that the [JSON Document Hashing] algorithm produces.
 - `patch`: A single JSON Patch {{#cite RFC6902}} document, i.e., one flat array of JSON Patch
   operation objects, that defines a set of transformations to be applied to a DID document. The
   result of applying the patch MUST be a conformant DID document according to the DID core v1.1
@@ -160,11 +170,8 @@ A Data Integrity {{#cite VC-DATA-INTEGRITY}} proof with the `proofPurpose` set t
 
 The following properties MUST be included in the Data Integrity Config:
 
-- `@context`: A context array containing the follow context URLs:
-  - `"https://w3id.org/security/v2"`
-  - `"https://w3id.org/zcap/v1"`
-  - `"https://w3id.org/json-ld-patch/v1"`
-  - `"https://btcr2.dev/context/v1"`
+- `@context`: A context array. It MUST contain the same context URLs, in the same order, as the
+  [BTCR2 Unsigned Update (data structure)] `@context` array.
 - `type`: The string `"DataIntegrityProof"`.
 - `cryptosuite`: The string `"bip340-jcs-2025"`.
 - `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID document.

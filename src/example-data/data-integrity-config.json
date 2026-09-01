@@ -1,14 +1,14 @@
 {
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "type": "DataIntegrityProof",
   "cryptosuite": "bip340-jcs-2025",
-  "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+  "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
   "proofPurpose": "capabilityInvocation",
-  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
   "capabilityAction": "Write"
 }

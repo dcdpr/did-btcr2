@@ -22,6 +22,22 @@ The full specification may be viewed at https://dcdpr.github.io/did-btcr2/.
 The specification will be compiled and available in the `book/` folder and will
 be served via http://localhost:3000.
 
+## Regenerating the Examples
+
+The generator in `bin/gen-examples.ts` writes every file in `src/example-data` from
+the seeds in that script. The generator derives the keys, the identifiers, the hashes,
+the signatures and the Sparse Merkle Tree proof, verifies them, and writes the corpus.
+Run the generator after a change to a value that an example commits to, for example
+the update `@context`.
+
+```zsh
+> cd bin
+> bun install
+
+> bun gen-examples.ts          # regenerate
+> bun gen-examples.ts --check  # verify the committed corpus, write nothing
+```
+
 # History and Evolution of the did:btcr2 DID method
 
 ```mermaid

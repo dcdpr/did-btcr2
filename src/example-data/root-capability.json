@@ -1,6 +1,6 @@
 {
   "@context": "https://w3id.org/zcap/v1",
-  "id": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-  "invocationTarget": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-  "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"
+  "id": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+  "invocationTarget": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+  "controller": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg"
 }

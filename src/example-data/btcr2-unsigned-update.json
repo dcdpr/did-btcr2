@@ -1,8 +1,8 @@
 {
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "patch": [
@@ -10,21 +10,21 @@
       "op": "add",
       "path": "/verificationMethod/1",
       "value": {
-        "id": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1",
+        "id": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1",
         "type": "Multikey",
-        "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-        "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+        "controller": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+        "publicKeyMultibase": "zQ3shZ79GEwhLM94cu1STp5ZKvUJdcs8rQEbDB6cb8MKDbuw8"
       }
     },
     {
       "op": "add",
       "path": "/authentication",
       "value": [
-        "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1"
+        "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1"
       ]
     }
   ],
-  "sourceHash": "9UcLe0qX1eqH6WCrRzTdEFMqBLYAOKw2XURnhMTte84",
-  "targetHash": "jdTTyeniCwMEqUFny8D7cJbkEvtQOeoVPK9ugGLI9b8",
+  "sourceHash": "O-01R07Xdov9myJ0NBmrs0BF3u_Yw4hky8hMzKE0MUY",
+  "targetHash": "Rd9NR_kzIdbPBf9V5Srr5lkr3Qw6pUjrpuuZfo1YL8o",
   "targetVersionId": 2
 }
