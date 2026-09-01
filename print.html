@@ -752,6 +752,8 @@ method objects to be used for capability invocations.</li>
 </ul>
 </li>
 </ul>
+<p>Verification method references in this document MAY be relative DID URLs. DID Core v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] permits this. Implementations MUST resolve a relative DID URL against the document <code>id</code> before they compare that URL with another reference. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></p>
+<p>A resolver parses only one URL in a DID document. That URL is the <code>serviceEndpoint</code> of a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> service, and the resolver parses it as a <a href="./terminology.html#beacon-address">Beacon Address</a>. A resolver MAY treat all other URLs in the document as opaque strings. <sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup></p>
 <p>In order for this DID document to be updatable, controllers must include at least one
 verification method with a capability invocation verification relationship and at least one
 <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> service.</p>
@@ -799,7 +801,7 @@ Show Example
       "id": "did:btcr2:_#key-0",
       "type": "Multikey",
       "controller": "did:btcr2:_",
-      "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+      "publicKeyMultibase": "zQ3shgCG6kFncZjWf2cAsCHxnXXZTD5LADCaN6Afmc9whryfM"
     }
   ],
   "assertionMethod": [
@@ -812,17 +814,17 @@ Show Example
     {
       "id": "did:btcr2:_#service-0",
       "type": "SingletonBeacon",
-      "serviceEndpoint": "bitcoin:tb1qtmshuqzeyr7cdh5t2nl6kf3s73fdynpj5apgtx"
+      "serviceEndpoint": "bitcoin:tb1qvjqz6jjfux7slk9anek8gyclx7jdkfme782j45"
     },
     {
       "id": "did:btcr2:_#service-1",
-      "type": "MapBeacon",
-      "serviceEndpoint": "bitcoin:tb1pt97580gtfuge9mnrkvj2upk982alrr08pk4hhmlzkeutc06pt9pqyjqef2"
+      "type": "CASBeacon",
+      "serviceEndpoint": "bitcoin:tb1pglcfpaxw426fyke3syf7us86yatusmlcjl4wkn2g437ffs06mckq2ghwtn"
     },
     {
       "id": "did:btcr2:_#service-2",
       "type": "SMTBeacon",
-      "serviceEndpoint": "bitcoin:tb1pgrn7wxhtlsakjjelag6usrmzw89h8tnsaq2ly50ty29hujerqu0sk5kv4e"
+      "serviceEndpoint": "bitcoin:tb1pexcmzsevwvy7ndxhdsra2ld24mqf9n8tqn9mxhfvfgpu9u9uap2szfpes7"
     }
   ]
 }
@@ -866,42 +868,42 @@ Show Example
     "https://www.w3.org/ns/did/v1.1",
     "https://btcr2.dev/context/v1"
   ],
-  "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3",
+  "id": "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu",
   "verificationMethod": [
     {
-      "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey",
+      "id": "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu#initialKey",
       "type": "Multikey",
-      "controller": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3",
-      "publicKeyMultibase": "zQ3shb8PoGykqRtHb9bXNKrXG7PHMjDrECcgLeSqawMERFACj"
+      "controller": "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu",
+      "publicKeyMultibase": "zQ3shUNjnRCnXfg4YCXNCwuR2e4qHTgKo1VoCGLWgFNmnKSD3"
     }
   ],
   "authentication": [
-    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey"
+    "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu#initialKey"
   ],
   "assertionMethod": [
-    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey"
+    "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu#initialKey"
   ],
   "capabilityInvocation": [
-    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey"
+    "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu#initialKey"
   ],
   "capabilityDelegation": [
-    "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialKey"
+    "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu#initialKey"
   ],
   "service": [
     {
+      "id": "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu#initialP2PKH",
       "type": "SingletonBeacon",
-      "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialP2PKH",
-      "serviceEndpoint": "bitcoin:mzCTywak2t3ZGf1jMCF8UrsH2jWLwh9zJL"
+      "serviceEndpoint": "bitcoin:mjze5oaFanSDCAnYCRQ1hC8BP8vcZKPTnq"
     },
     {
+      "id": "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu#initialP2WPKH",
       "type": "SingletonBeacon",
-      "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialP2WPKH",
-      "serviceEndpoint": "bitcoin:tb1qen45fjp5r57v7x99ww3cpkd9argdkvgadrayfw"
+      "serviceEndpoint": "bitcoin:tb1qxyw09dm6xkdyv7xtuwnn5pmnw9g320vylmzn40"
     },
     {
+      "id": "did:btcr2:k1q5pxw76fzmq5fttej05clqr2wlg97zrj7897783pngqwa4kvunm538sev7lgu#initialP2TR",
       "type": "SingletonBeacon",
-      "id": "did:btcr2:k1q5pvh5zask8khdg7p58ygveewkcufetu3dlqyaca5dzqct6mjhf540qhrxgv3#initialP2TR",
-      "serviceEndpoint": "bitcoin:tb1p6efm2xk7mpfmh733qyu3k7cgk05gmyynp49srgn7u5uqxsr8avssj4rdlc"
+      "serviceEndpoint": "bitcoin:tb1p0akugyyvzkwm4tfmu58txwrmfkhr8ysx94e6q3hv5488g9xg9l3qts9xuu"
     }
   ]
 }
@@ -912,25 +914,35 @@ Show Example
 <p>A <a href="./terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is a Map data structure with the following properties:</p>
 <p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>targetHash</code> and <code>sourceHash</code>) MUST be produced using the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and MUST be encoded using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</p>
 <ul>
-<li><code>@context</code>: A context array containing the following context URLs:
+<li>
+<p><code>@context</code>: A context array. It MUST contain exactly the following context URLs, in this order:</p>
 <ul>
+<li><code>"https://w3id.org/json-ld-patch/v1"</code></li>
 <li><code>"https://w3id.org/zcap/v1"</code></li>
 <li><code>"https://w3id.org/security/data-integrity/v2"</code></li>
-<li><code>"https://w3id.org/json-ld-patch/v1"</code></li>
 <li><code>"https://btcr2.dev/context/v1"</code></li>
 </ul>
+<p>A change to the membership or the order of this array changes the hash that the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm produces.</p>
 </li>
-<li><code>patch</code>: A single JSON Patch [<a href="bibliography.html#RFC6902">RFC6902</a>] document, i.e., one flat array of JSON Patch
+<li>
+<p><code>patch</code>: A single JSON Patch [<a href="bibliography.html#RFC6902">RFC6902</a>] document, i.e., one flat array of JSON Patch
 operation objects, that defines a set of transformations to be applied to a DID document. The
 result of applying the patch MUST be a conformant DID document according to the DID core v1.1
-specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</li>
-<li><code>targetVersionId</code>: The version of the DID document that results from applying the patch, i.e., the
+specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</p>
+</li>
+<li>
+<p><code>targetVersionId</code>: The version of the DID document that results from applying the patch, i.e., the
 <code>versionId</code> that will be returned in the <a href="./data-structures.html#did-document-metadata">DID document metadata (data structure)</a> for the updated DID
 document. The <code>targetVersionId</code> MUST be one more than the integer form of the <code>versionId</code> of the DID
 document being updated. <code>versionId</code> is never a property of the DID document itself, so this requirement
-cannot be checked when the update is constructed; it is enforced at resolution time.</li>
-<li><code>sourceHash</code>: SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
-<li><code>targetHash</code>: SHA-256 hash of the DID document that results from applying the patch to the source document. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+cannot be checked when the update is constructed; it is enforced at resolution time.</p>
+</li>
+<li>
+<p><code>sourceHash</code>: SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</p>
+</li>
+<li>
+<p><code>targetHash</code>: SHA-256 hash of the DID document that results from applying the patch to the source document. The hash MUST be produced by the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</p>
+</li>
 </ul>
 <div class="tabs" id="btcr2-unsigned-update-example">
   <div class="tablist" role="tablist" aria-label="btcr2-unsigned-update-example">
@@ -964,9 +976,9 @@ Show Example
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "patch": [
@@ -974,22 +986,22 @@ Show Example
       "op": "add",
       "path": "/verificationMethod/1",
       "value": {
-        "id": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1",
+        "id": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1",
         "type": "Multikey",
-        "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-        "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+        "controller": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+        "publicKeyMultibase": "zQ3shZ79GEwhLM94cu1STp5ZKvUJdcs8rQEbDB6cb8MKDbuw8"
       }
     },
     {
       "op": "add",
       "path": "/authentication",
       "value": [
-        "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1"
+        "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1"
       ]
     }
   ],
-  "sourceHash": "9UcLe0qX1eqH6WCrRzTdEFMqBLYAOKw2XURnhMTte84",
-  "targetHash": "jdTTyeniCwMEqUFny8D7cJbkEvtQOeoVPK9ugGLI9b8",
+  "sourceHash": "O-01R07Xdov9myJ0NBmrs0BF3u_Yw4hky8hMzKE0MUY",
+  "targetHash": "Rd9NR_kzIdbPBf9V5Srr5lkr3Qw6pUjrpuuZfo1YL8o",
   "targetVersionId": 2
 }
 </code></pre>
@@ -1033,9 +1045,9 @@ Show Example
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "patch": [
@@ -1043,37 +1055,37 @@ Show Example
       "op": "add",
       "path": "/verificationMethod/1",
       "value": {
-        "id": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1",
+        "id": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1",
         "type": "Multikey",
-        "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-        "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+        "controller": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+        "publicKeyMultibase": "zQ3shZ79GEwhLM94cu1STp5ZKvUJdcs8rQEbDB6cb8MKDbuw8"
       }
     },
     {
       "op": "add",
       "path": "/authentication",
       "value": [
-        "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-1"
+        "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1"
       ]
     }
   ],
-  "sourceHash": "9UcLe0qX1eqH6WCrRzTdEFMqBLYAOKw2XURnhMTte84",
-  "targetHash": "jdTTyeniCwMEqUFny8D7cJbkEvtQOeoVPK9ugGLI9b8",
+  "sourceHash": "O-01R07Xdov9myJ0NBmrs0BF3u_Yw4hky8hMzKE0MUY",
+  "targetHash": "Rd9NR_kzIdbPBf9V5Srr5lkr3Qw6pUjrpuuZfo1YL8o",
   "targetVersionId": 2,
   "proof": {
     "@context": [
-      "https://w3id.org/security/v2",
-      "https://w3id.org/zcap/v1",
       "https://w3id.org/json-ld-patch/v1",
+      "https://w3id.org/zcap/v1",
+      "https://w3id.org/security/data-integrity/v2",
       "https://btcr2.dev/context/v1"
     ],
     "type": "DataIntegrityProof",
     "cryptosuite": "bip340-jcs-2025",
-    "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+    "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
     "proofPurpose": "capabilityInvocation",
-    "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+    "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
     "capabilityAction": "Write",
-    "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
+    "proofValue": "z313jDDznRsbnr85HMnVFRrLYxsrbQFBnJ7sDgtiE23KVeiQjjUWCLekPSWqzDHtmsv7YYfJdgQ16o2dBXEABJuEJ"
   }
 }
 </code></pre>
@@ -1083,14 +1095,8 @@ Show Example
 <p>A Data Integrity [<a href="bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] proof with the <code>proofPurpose</code> set to <code>"capabilityInvocation"</code> and <code>proofValue</code> omitted.</p>
 <p>The following properties MUST be included in the Data Integrity Config:</p>
 <ul>
-<li><code>@context</code>: A context array containing the follow context URLs:
-<ul>
-<li><code>"https://w3id.org/security/v2"</code></li>
-<li><code>"https://w3id.org/zcap/v1"</code></li>
-<li><code>"https://w3id.org/json-ld-patch/v1"</code></li>
-<li><code>"https://btcr2.dev/context/v1"</code></li>
-</ul>
-</li>
+<li><code>@context</code>: A context array. It MUST contain the same context URLs, in the same order, as the
+<a href="./data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> <code>@context</code> array.</li>
 <li><code>type</code>: The string <code>"DataIntegrityProof"</code>.</li>
 <li><code>cryptosuite</code>: The string <code>"bip340-jcs-2025"</code>.</li>
 <li><code>verificationMethod</code>: A valid <code>verificationMethod</code> reference that exists in the most recent DID document.</li>
@@ -1131,16 +1137,16 @@ Show Example
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "type": "DataIntegrityProof",
   "cryptosuite": "bip340-jcs-2025",
-  "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+  "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
   "proofPurpose": "capabilityInvocation",
-  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
   "capabilityAction": "Write"
 }
 </code></pre>
@@ -1184,18 +1190,18 @@ Show Example
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "type": "DataIntegrityProof",
   "cryptosuite": "bip340-jcs-2025",
-  "verificationMethod": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54#key-0",
+  "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
   "proofPurpose": "capabilityInvocation",
-  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
+  "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
   "capabilityAction": "Write",
-  "proofValue": "zNgANukLD9rKeH7PDcwNaNmRyGWo8wYBNaFE7xmGx6erWPGNzKKNH7ZXG8EwLRaK3EfpJ5o3F6ab8gLzWAZYrZL4"
+  "proofValue": "z313jDDznRsbnr85HMnVFRrLYxsrbQFBnJ7sDgtiE23KVeiQjjUWCLekPSWqzDHtmsv7YYfJdgQ16o2dBXEABJuEJ"
 }
 </code></pre>
   </section>
@@ -1245,88 +1251,179 @@ Show Example
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": "https://btcr2.dev/context/v1",
+  "genesisDocument": {
+    "@context": [
+      "https://www.w3.org/ns/did/v1.1",
+      "https://btcr2.dev/context/v1"
+    ],
+    "id": "did:btcr2:_",
+    "verificationMethod": [
+      {
+        "id": "did:btcr2:_#key-0",
+        "type": "Multikey",
+        "controller": "did:btcr2:_",
+        "publicKeyMultibase": "zQ3shgCG6kFncZjWf2cAsCHxnXXZTD5LADCaN6Afmc9whryfM"
+      }
+    ],
+    "assertionMethod": [
+      "did:btcr2:_#key-0"
+    ],
+    "capabilityInvocation": [
+      "did:btcr2:_#key-0"
+    ],
+    "service": [
+      {
+        "id": "did:btcr2:_#service-0",
+        "type": "SingletonBeacon",
+        "serviceEndpoint": "bitcoin:tb1qvjqz6jjfux7slk9anek8gyclx7jdkfme782j45"
+      },
+      {
+        "id": "did:btcr2:_#service-1",
+        "type": "CASBeacon",
+        "serviceEndpoint": "bitcoin:tb1pglcfpaxw426fyke3syf7us86yatusmlcjl4wkn2g437ffs06mckq2ghwtn"
+      },
+      {
+        "id": "did:btcr2:_#service-2",
+        "type": "SMTBeacon",
+        "serviceEndpoint": "bitcoin:tb1pexcmzsevwvy7ndxhdsra2ld24mqf9n8tqn9mxhfvfgpu9u9uap2szfpes7"
+      }
+    ]
+  },
   "updates": [
     {
       "@context": [
-        "https://w3id.org/security/v2",
+        "https://w3id.org/json-ld-patch/v1",
         "https://w3id.org/zcap/v1",
-        "https://w3id.org/json-ld-patch/v1"
+        "https://w3id.org/security/data-integrity/v2",
+        "https://btcr2.dev/context/v1"
       ],
       "patch": [
         {
           "op": "add",
           "path": "/verificationMethod/1",
           "value": {
-            "id": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp#key-1",
+            "id": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1",
             "type": "Multikey",
-            "controller": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp",
-            "publicKeyMultibase": "zQ3shnJ534uiR8xHXZuumXDDeAYwJhkTbiyYcaFSbwWxCnpXT"
+            "controller": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+            "publicKeyMultibase": "zQ3shZ79GEwhLM94cu1STp5ZKvUJdcs8rQEbDB6cb8MKDbuw8"
           }
+        },
+        {
+          "op": "add",
+          "path": "/authentication",
+          "value": [
+            "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1"
+          ]
         }
       ],
-      "sourceHash": "51Dqoi01JaRbQUNUlFeJPZZwfV1s3DBTjH_01pOhczA",
-      "targetHash": "VBgY-jPS1sHO8K8zsrceICbGJn1co1-OVVLb8DlUlUI",
+      "sourceHash": "O-01R07Xdov9myJ0NBmrs0BF3u_Yw4hky8hMzKE0MUY",
+      "targetHash": "Rd9NR_kzIdbPBf9V5Srr5lkr3Qw6pUjrpuuZfo1YL8o",
       "targetVersionId": 2,
       "proof": {
         "@context": [
-          "https://w3id.org/security/v2",
+          "https://w3id.org/json-ld-patch/v1",
           "https://w3id.org/zcap/v1",
-          "https://w3id.org/json-ld-patch/v1"
+          "https://w3id.org/security/data-integrity/v2",
+          "https://btcr2.dev/context/v1"
         ],
         "type": "DataIntegrityProof",
         "cryptosuite": "bip340-jcs-2025",
-        "verificationMethod": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp#initialKey",
+        "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
         "proofPurpose": "capabilityInvocation",
-        "capability": "urn:zcap:root:did%3Abtcr2%3Ak1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp",
+        "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
         "capabilityAction": "Write",
-        "proofValue": "z2mEjk9a1cgm9KZyo16heWmuoSV9TZYaQmuKkJMoh4pvFYhQnaz18WAWNv98MQ9xqbWa95rYoMCvEy5c2wc2yaFYg"
+        "proofValue": "z313jDDznRsbnr85HMnVFRrLYxsrbQFBnJ7sDgtiE23KVeiQjjUWCLekPSWqzDHtmsv7YYfJdgQ16o2dBXEABJuEJ"
       }
     },
     {
       "@context": [
-        "https://w3id.org/security/v2",
+        "https://w3id.org/json-ld-patch/v1",
         "https://w3id.org/zcap/v1",
-        "https://w3id.org/json-ld-patch/v1"
+        "https://w3id.org/security/data-integrity/v2",
+        "https://btcr2.dev/context/v1"
       ],
       "patch": [
         {
           "op": "add",
           "path": "/service/3",
           "value": {
-            "id": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp#service-3",
+            "id": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#service-3",
             "type": "SingletonBeacon",
-            "serviceEndpoint": "bitcoin:tb1qcs60r4j6ema8x4gf07hgt83x45e650dr97q3qv"
+            "serviceEndpoint": "bitcoin:tb1qcd0hlhuvjsya47y092zl2wwdkpgh4xagcecqfp"
           }
         }
       ],
-      "sourceHash": "VBgY-jPS1sHO8K8zsrceICbGJn1co1-OVVLb8DlUlUI",
-      "targetHash": "xbIYnaRXtjMH7aR7d0sFWpl_r688CtKYlkEimpH-Zlk",
+      "sourceHash": "Rd9NR_kzIdbPBf9V5Srr5lkr3Qw6pUjrpuuZfo1YL8o",
+      "targetHash": "HDLiTin4d3Lt-Z5NSh5Kfkhqf4iglDv8A0T7oG20_uU",
       "targetVersionId": 3,
       "proof": {
         "@context": [
-          "https://w3id.org/security/v2",
+          "https://w3id.org/json-ld-patch/v1",
           "https://w3id.org/zcap/v1",
-          "https://w3id.org/json-ld-patch/v1"
+          "https://w3id.org/security/data-integrity/v2",
+          "https://btcr2.dev/context/v1"
         ],
         "type": "DataIntegrityProof",
         "cryptosuite": "bip340-jcs-2025",
-        "verificationMethod": "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp#initialKey",
+        "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
         "proofPurpose": "capabilityInvocation",
-        "capability": "urn:zcap:root:did%3Abtcr2%3Ak1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp",
+        "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
         "capabilityAction": "Write",
-        "proofValue": "z4WtnwesES1oTXLDPTJdwQEAkvStsWKxW8FFbnKt2SRh6QRdcGFk5DiEdG7QWoVDXqCRX3FpgrrTKhebEnuLHxbrf"
+        "proofValue": "z4Wc65jGEM5eYWJ33Ny8TNzWjfEBb8qpqwg2Xwtmk33Y6QkPbD9ReqZt5MpVJdPnBcxE1bX1pdSe8Jz7hZLLMBRTd"
+      }
+    },
+    {
+      "@context": [
+        "https://w3id.org/json-ld-patch/v1",
+        "https://w3id.org/zcap/v1",
+        "https://w3id.org/security/data-integrity/v2",
+        "https://btcr2.dev/context/v1"
+      ],
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/capabilityInvocation",
+          "value": [
+            "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1"
+          ]
+        }
+      ],
+      "sourceHash": "HDLiTin4d3Lt-Z5NSh5Kfkhqf4iglDv8A0T7oG20_uU",
+      "targetHash": "WDutTOxfjKx7Peh56FI3TwbAxVxYIbvdKZLdLL1EQec",
+      "targetVersionId": 4,
+      "proof": {
+        "@context": [
+          "https://w3id.org/json-ld-patch/v1",
+          "https://w3id.org/zcap/v1",
+          "https://w3id.org/security/data-integrity/v2",
+          "https://btcr2.dev/context/v1"
+        ],
+        "type": "DataIntegrityProof",
+        "cryptosuite": "bip340-jcs-2025",
+        "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
+        "proofPurpose": "capabilityInvocation",
+        "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+        "capabilityAction": "Write",
+        "proofValue": "z4fFKMP5N64vNBfPj2qmSJycpgrWNeDsKCyuJtBBPoggiG9jbPT4a1MfQM9uiBJeFsMiptoQgKhF2hhUpek9Wr3tC"
       }
     }
   ],
   "casUpdates": [
     {
-      "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp": "a4ayc_80_OGda4BO_1o_V0etpOqiLx1JwB5S3beHW0s",
-      "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54": "1HNeOiZeFu7gP1lxi5tdAwGcB9i2xR-Q2jpmbuwTqzU",
-      "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7": "TgdAhWK-24tgzgXB3s_jrRa3IjCWfeAfZAt-Rym0n84"
-    },
+      "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg": "MkZZ6wn_ZzKKMgP4_Jg5vA72ai3CMpsamSx90a3qDu0",
+      "did:btcr2:k1q5p27vtztzx8sc4aqgkhfpu45wq28kkgh8cz7lsxf4qf3hmfylj2zfgq08ltl": "fKGEeABs99Pz-viC8mN7h1EKsdqIgwJO2TAGSC6FVWY",
+      "did:btcr2:k1q5p45r553eyay795wdf6h6ymkmal4e6cncuhvmg86u5n2wmxwrhx0tqckly4m": "iR4qVQijk_RHWPFWUA1UPbE-l48SWncSDqoxwOg_KgA"
+    }
+  ],
+  "smtProofs": [
     {
-      "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp": "SyJ3d9TdH8Ycb4hPSGQdArTRIdP9Moywi1Ux_Kzav4o",
-      "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54": "7y0SfeN7lCuq0GFF5UsMYZofIjJ7LrvPvsePVWSv450"
+      "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+      "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
+      "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
+      "collapsed": "__________________________________________4",
+      "hashes": [
+        "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
+      ]
     }
   ]
 }
@@ -1374,14 +1471,12 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
-  "id": "&lt;&lt; base64url (no padding) of Root Hash &gt;&gt;",
-  "nonce": "&lt;&lt; base64url (no padding) of Nonce 1101 &gt;&gt;",
-  "updateId": "&lt;&lt; base64url (no padding) of hash(Data Block 1101) &gt;&gt;",
-  "collapsed": "&lt;&lt; base64url (no padding) of 0001 &gt;&gt;",
+  "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+  "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
+  "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
+  "collapsed": "__________________________________________4",
   "hashes": [
-      "&lt;&lt; base64url (no padding) of Hash 111 &gt;&gt;",
-      "&lt;&lt; base64url (no padding) of Hash 10 &gt;&gt;",
-      "&lt;&lt; base64url (no padding) of Hash 0 &gt;&gt;"
+    "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
   ]
 }
 </code></pre>
@@ -1428,7 +1523,7 @@ Show Example
     <label>Show Example</label>
 <pre><code class="language-json">{
   "versionId": "4",
-  "versionTime": "2025-01-05T12:00:00Z",
+  "versionTime": "2025-01-07T00:00:00Z",
   "minConf": 6,
   "sidecar": {
     "@context": "https://btcr2.dev/context/v1",
@@ -1440,26 +1535,173 @@ Show Example
       "id": "did:btcr2:_",
       "verificationMethod": [
         {
-          "id": "did:btcr2:_#initialKey",
+          "id": "did:btcr2:_#key-0",
           "type": "Multikey",
           "controller": "did:btcr2:_",
-          "publicKeyMultibase": "zQ3shb8PoGykqRtHb9bXNKrXG7PHMjDrECcgLeSqawMERFACj"
+          "publicKeyMultibase": "zQ3shgCG6kFncZjWf2cAsCHxnXXZTD5LADCaN6Afmc9whryfM"
         }
       ],
+      "assertionMethod": [
+        "did:btcr2:_#key-0"
+      ],
       "capabilityInvocation": [
-        "did:btcr2:_#initialKey"
+        "did:btcr2:_#key-0"
       ],
       "service": [
         {
+          "id": "did:btcr2:_#service-0",
           "type": "SingletonBeacon",
-          "id": "did:btcr2:_#initialP2TR",
-          "serviceEndpoint": "bitcoin:tb1p6efm2xk7mpfmh733qyu3k7cgk05gmyynp49srgn7u5uqxsr8avssj4rdlc"
+          "serviceEndpoint": "bitcoin:tb1qvjqz6jjfux7slk9anek8gyclx7jdkfme782j45"
+        },
+        {
+          "id": "did:btcr2:_#service-1",
+          "type": "CASBeacon",
+          "serviceEndpoint": "bitcoin:tb1pglcfpaxw426fyke3syf7us86yatusmlcjl4wkn2g437ffs06mckq2ghwtn"
+        },
+        {
+          "id": "did:btcr2:_#service-2",
+          "type": "SMTBeacon",
+          "serviceEndpoint": "bitcoin:tb1pexcmzsevwvy7ndxhdsra2ld24mqf9n8tqn9mxhfvfgpu9u9uap2szfpes7"
         }
       ]
     },
-    "updates": [],
-    "casUpdates": [],
-    "smtProofs": []
+    "updates": [
+      {
+        "@context": [
+          "https://w3id.org/json-ld-patch/v1",
+          "https://w3id.org/zcap/v1",
+          "https://w3id.org/security/data-integrity/v2",
+          "https://btcr2.dev/context/v1"
+        ],
+        "patch": [
+          {
+            "op": "add",
+            "path": "/verificationMethod/1",
+            "value": {
+              "id": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1",
+              "type": "Multikey",
+              "controller": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+              "publicKeyMultibase": "zQ3shZ79GEwhLM94cu1STp5ZKvUJdcs8rQEbDB6cb8MKDbuw8"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/authentication",
+            "value": [
+              "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1"
+            ]
+          }
+        ],
+        "sourceHash": "O-01R07Xdov9myJ0NBmrs0BF3u_Yw4hky8hMzKE0MUY",
+        "targetHash": "Rd9NR_kzIdbPBf9V5Srr5lkr3Qw6pUjrpuuZfo1YL8o",
+        "targetVersionId": 2,
+        "proof": {
+          "@context": [
+            "https://w3id.org/json-ld-patch/v1",
+            "https://w3id.org/zcap/v1",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://btcr2.dev/context/v1"
+          ],
+          "type": "DataIntegrityProof",
+          "cryptosuite": "bip340-jcs-2025",
+          "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
+          "proofPurpose": "capabilityInvocation",
+          "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+          "capabilityAction": "Write",
+          "proofValue": "z313jDDznRsbnr85HMnVFRrLYxsrbQFBnJ7sDgtiE23KVeiQjjUWCLekPSWqzDHtmsv7YYfJdgQ16o2dBXEABJuEJ"
+        }
+      },
+      {
+        "@context": [
+          "https://w3id.org/json-ld-patch/v1",
+          "https://w3id.org/zcap/v1",
+          "https://w3id.org/security/data-integrity/v2",
+          "https://btcr2.dev/context/v1"
+        ],
+        "patch": [
+          {
+            "op": "add",
+            "path": "/service/3",
+            "value": {
+              "id": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#service-3",
+              "type": "SingletonBeacon",
+              "serviceEndpoint": "bitcoin:tb1qcd0hlhuvjsya47y092zl2wwdkpgh4xagcecqfp"
+            }
+          }
+        ],
+        "sourceHash": "Rd9NR_kzIdbPBf9V5Srr5lkr3Qw6pUjrpuuZfo1YL8o",
+        "targetHash": "HDLiTin4d3Lt-Z5NSh5Kfkhqf4iglDv8A0T7oG20_uU",
+        "targetVersionId": 3,
+        "proof": {
+          "@context": [
+            "https://w3id.org/json-ld-patch/v1",
+            "https://w3id.org/zcap/v1",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://btcr2.dev/context/v1"
+          ],
+          "type": "DataIntegrityProof",
+          "cryptosuite": "bip340-jcs-2025",
+          "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
+          "proofPurpose": "capabilityInvocation",
+          "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+          "capabilityAction": "Write",
+          "proofValue": "z4Wc65jGEM5eYWJ33Ny8TNzWjfEBb8qpqwg2Xwtmk33Y6QkPbD9ReqZt5MpVJdPnBcxE1bX1pdSe8Jz7hZLLMBRTd"
+        }
+      },
+      {
+        "@context": [
+          "https://w3id.org/json-ld-patch/v1",
+          "https://w3id.org/zcap/v1",
+          "https://w3id.org/security/data-integrity/v2",
+          "https://btcr2.dev/context/v1"
+        ],
+        "patch": [
+          {
+            "op": "replace",
+            "path": "/capabilityInvocation",
+            "value": [
+              "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-1"
+            ]
+          }
+        ],
+        "sourceHash": "HDLiTin4d3Lt-Z5NSh5Kfkhqf4iglDv8A0T7oG20_uU",
+        "targetHash": "WDutTOxfjKx7Peh56FI3TwbAxVxYIbvdKZLdLL1EQec",
+        "targetVersionId": 4,
+        "proof": {
+          "@context": [
+            "https://w3id.org/json-ld-patch/v1",
+            "https://w3id.org/zcap/v1",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://btcr2.dev/context/v1"
+          ],
+          "type": "DataIntegrityProof",
+          "cryptosuite": "bip340-jcs-2025",
+          "verificationMethod": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg#key-0",
+          "proofPurpose": "capabilityInvocation",
+          "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+          "capabilityAction": "Write",
+          "proofValue": "z4fFKMP5N64vNBfPj2qmSJycpgrWNeDsKCyuJtBBPoggiG9jbPT4a1MfQM9uiBJeFsMiptoQgKhF2hhUpek9Wr3tC"
+        }
+      }
+    ],
+    "casUpdates": [
+      {
+        "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg": "MkZZ6wn_ZzKKMgP4_Jg5vA72ai3CMpsamSx90a3qDu0",
+        "did:btcr2:k1q5p27vtztzx8sc4aqgkhfpu45wq28kkgh8cz7lsxf4qf3hmfylj2zfgq08ltl": "fKGEeABs99Pz-viC8mN7h1EKsdqIgwJO2TAGSC6FVWY",
+        "did:btcr2:k1q5p45r553eyay795wdf6h6ymkmal4e6cncuhvmg86u5n2wmxwrhx0tqckly4m": "iR4qVQijk_RHWPFWUA1UPbE-l48SWncSDqoxwOg_KgA"
+      }
+    ],
+    "smtProofs": [
+      {
+        "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+        "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
+        "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
+        "collapsed": "__________________________________________4",
+        "hashes": [
+          "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
+        ]
+      }
+    ]
   }
 }
 </code></pre>
@@ -1549,10 +1791,10 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
-  "confirmations": 2016,
+  "confirmations": 12,
   "deactivated": false,
   "updated": "2025-01-06T16:23:10Z",
-  "versionId": "5"
+  "versionId": "4"
 }
 </code></pre>
   </section>
@@ -1590,9 +1832,9 @@ Show Example
            hidden>
     <label>Show Example</label>
 <pre><code class="language-json">{
-  "did:btcr2:k1q5pa5tq86fzrl0ez32nh8e0ks4tzzkxnnmn8tdvxk04ahzt70u09dag02h0cp": "a4ayc_80_OGda4BO_1o_V0etpOqiLx1JwB5S3beHW0s",
-  "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54": "1HNeOiZeFu7gP1lxi5tdAwGcB9i2xR-Q2jpmbuwTqzU",
-  "did:btcr2:k1qgp5h79scv4sfqkzak5g6y89dsy3cq0pd2nussu2cm3zjfhn4ekwrucc4q7t7": "TgdAhWK-24tgzgXB3s_jrRa3IjCWfeAfZAt-Rym0n84"
+  "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg": "MkZZ6wn_ZzKKMgP4_Jg5vA72ai3CMpsamSx90a3qDu0",
+  "did:btcr2:k1q5p27vtztzx8sc4aqgkhfpu45wq28kkgh8cz7lsxf4qf3hmfylj2zfgq08ltl": "fKGEeABs99Pz-viC8mN7h1EKsdqIgwJO2TAGSC6FVWY",
+  "did:btcr2:k1q5p45r553eyay795wdf6h6ymkmal4e6cncuhvmg86u5n2wmxwrhx0tqckly4m": "iR4qVQijk_RHWPFWUA1UPbE-l48SWncSDqoxwOg_KgA"
 }
 </code></pre>
   </section>
@@ -1638,14 +1880,21 @@ Show Example
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": "https://w3id.org/zcap/v1",
-  "id": "urn:zcap:root:did%3Abtcr2%3Ax1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-  "invocationTarget": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54",
-  "controller": "did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"
+  "id": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+  "invocationTarget": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+  "controller": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg"
 }
 </code></pre>
   </section>
 </div>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="operations"><a class="header" href="#operations">Operations</a></h1>
+<hr>
+<ol class="footnote-definition"><li id="footnote-1">
+<p>When an implementation resolves a relative DID URL against a DID base, the result cannot contain an authority component. The result therefore cannot contain a host. See DID Core v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] for the resolution algorithm and for the components that a relative DID URL can contain. <a href="#fr-1-1">↩</a></p>
+</li>
+<li id="footnote-2">
+<p>A DID document can contain a URL with a host. Examples are an <code>alsoKnownAs</code> value, a service <code>id</code>, and the <code>serviceEndpoint</code> of a service that is not a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a>. A resolver does not use these values when it builds the update history. A <a href="./terminology.html#beacon-address">Beacon Address</a> is a Bitcoin address and has no host. A resolver that conforms to this specification therefore does not parse a host and does not need IDNA tables. This rule applies to the resolver, and does not change the requirements of DID Core v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] or of a JSON-LD processor [<a href="bibliography.html#JSON-LD">JSON-LD</a>]. <a href="#fr-2-1">↩</a></p>
+</li>
+</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="operations"><a class="header" href="#operations">Operations</a></h1>
 <p>Creating and using <strong>did:bctr2</strong> DIDs is achieved through specified
 cryptographic and network operations, with all updates anchored to
 Bitcoin transactions. This section defines the Create, Resolve, Update,
@@ -1890,8 +2139,22 @@ Show Template
 <p>Create <code>unsigned_update</code> by removing the <code>proof</code> property from <code>update</code>, hash it with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm, and append the hash to <code>update_hash_history</code>.</p>
 <p>Increment <code>current_version_id</code>.</p>
 <h3 id="check-update-proof"><a class="header" href="#check-update-proof">Check <code>update.proof</code></a></h3>
+<p>Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the <code>@context</code> of <code>update</code> is not the array that the <a href="operations/../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> specifies. Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the <code>@context</code> of <code>update.proof</code> is not equal to the <code>@context</code> of <code>update</code>. Two <code>@context</code> arrays are equal when they contain the same context URLs in the same order.</p>
+<p>Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are not true:</p>
+<ul>
+<li><code>update.proof.proofPurpose</code> equals <code>"capabilityInvocation"</code>.</li>
+<li><code>update.proof.capabilityAction</code> equals <code>"Write"</code>.</li>
+<li><code>update.proof.capability</code> equals the <code>capability</code> URN that <a href="operations/../data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> specifies for <code>did</code>.</li>
+</ul>
 <p>Implementations MAY derive a <a href="operations/../data-structures.html#root-capability">Root Capability (data structure)</a> from <code>update.proof</code> and invoke it according to Authorization Capabilities for Linked Data v0.3 [<a href="operations/../bibliography.html#ZCAP-LD">ZCAP-LD</a>].</p>
-<p>The resolver must locate <code>publicKeyMultibase</code> in <code>current_document.verificationMethod</code> whose <code>id</code> matches <code>update.proof.verificationMethod</code>. Otherwise raise <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a>. Raise the same error if <code>current_document.capabilityInvocation</code> does not contain <code>update.proof.verificationMethod</code>.</p>
+<p>The resolver MUST find the entry of <code>current_document.capabilityInvocation</code> that identifies <code>update.proof.verificationMethod</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal. Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if no entry identifies it.</p>
+<p>Read <code>publicKeyMultibase</code> from that entry. When the entry is an embedded verification method object, read <code>publicKeyMultibase</code> from the object. When the entry is a reference, find the verification method in <code>current_document.verificationMethod</code> with an <code>id</code> that is equal to the reference. Read <code>publicKeyMultibase</code> from that verification method. Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if there is no verification method with that <code>id</code>.</p>
+<p>If <code>update.proof.created</code> or <code>update.proof.expires</code> is present, check each value against the Bitcoin block that contains the <a href="operations/../terminology.html#beacon-signal">Beacon Signal</a> that announced <code>update</code>. <sup class="footnote-reference" id="fr-3-1"><a href="#footnote-3">3</a></sup> Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are true:</p>
+<ul>
+<li><code>update.proof.created</code> is after the timestamp in the block header.</li>
+<li><code>update.proof.expires</code> is before the block <code>mediantime</code> [<a href="operations/../bibliography.html#Bitcoin-Core">Bitcoin-Core</a>].</li>
+<li><code>update.proof.expires</code> is before <code>update.proof.created</code>, when both values are present.</li>
+</ul>
 <p>Use a BIP340 Cryptosuite [<a href="operations/../bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] instance with <code>publicKeyMultibase</code> and the <code>"bip340-jcs-2025"</code> cryptosuite to verify <code>update</code>. Raise <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> if verification fails.</p>
 <!-- Line breaks to visibly separate the preceding subsection from the chapter footnotes. -->
 <br>
@@ -1902,6 +2165,9 @@ Show Template
 </li>
 <li id="footnote-2">
 <p>Six confirmations is the widely accepted industry standard for treating a Bitcoin transaction as settled. Resolution requests can raise or lower <code>minConf</code> to match their own threat and security model; lowering it increases exposure to Bitcoin block reorganizations, which consumers can evaluate from the returned <code>confirmations</code> metadata. <a href="#fr-2-1">↩</a></p>
+</li>
+<li id="footnote-3">
+<p>In Data Integrity [<a href="operations/../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>], each method selects the time of interest for <code>created</code> and <code>expires</code>. On mainnet, the timestamp in the block header is approximately one hour later than <code>mediantime</code>. A controller signs a proof a short time before the block that contains it, so a check of <code>created</code> against <code>mediantime</code> rejects valid updates. For this reason, <code>created</code> uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change <code>mediantime</code>. The <code>expires</code> value limits the time between the signature and a replay of the update, so <code>expires</code> uses <code>mediantime</code>. <a href="#fr-3-1">↩</a></p>
 </li>
 </ol><div style="break-before: page; page-break-before: always;"></div><h1 id="update"><a class="header" href="#update">Update</a></h1>
 <p><strong>did:btcr2</strong> DID documents can be updated by anchoring <a href="operations/../terminology.html#btcr2-update">BTCR2 Updates</a> to Bitcoin transactions. These transactions MAY be published to the Bitcoin network.</p>
@@ -1973,9 +2239,9 @@ Show Template
     <label>Show Template</label>
 <pre><code class="language-hbs">{
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "patch": {{array-of-patches}},
@@ -1990,8 +2256,8 @@ Show Template
 resulting <a href="operations/../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> MUST be conformant to this specification.</p>
 <h2 id="construct-btcr2-signed-update"><a class="header" href="#construct-btcr2-signed-update">Construct BTCR2 Signed Update</a></h2>
 <p>This process constructs a <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> from <code>update</code>, a <a href="operations/../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
-<p>An <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if the <code>didSourceDocument.verificationMethod</code> Set does not contain an <code>id</code> matching <code>verificationMethodId</code>.</p>
-<p>An <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if the <code>didSourceDocument.capabilityInvocation</code> Set does not contain <code>verificationMethodId</code>.</p>
+<p>An <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if no entry of the <code>didSourceDocument.capabilityInvocation</code> Set identifies <code>verificationMethodId</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal.</p>
+<p>If that entry is a reference, find the verification method in the <code>didSourceDocument.verificationMethod</code> Set with an <code>id</code> that is equal to the reference. An <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if there is no verification method with that <code>id</code>.</p>
 <p>Create <code>cryptosuite</code> as a BIP340 Cryptosuite [<a href="operations/../bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] instance with <code>signer</code> as the signing interface and the <code>"bip340-jcs-2025"</code> cryptosuite.</p>
 <p>Fill the Data Integrity [<a href="operations/../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] template below with the required template variables.</p>
 <ul>
@@ -2030,9 +2296,9 @@ Show Template
     <label>Show Template</label>
 <pre><code class="language-hbs">{
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "type": "DataIntegrityProof",

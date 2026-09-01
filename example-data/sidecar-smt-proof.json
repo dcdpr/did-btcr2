@@ -1,11 +1,9 @@
 {
-  "id": "<< base64url (no padding) of Root Hash >>",
-  "nonce": "<< base64url (no padding) of Nonce 1101 >>",
-  "updateId": "<< base64url (no padding) of hash(Data Block 1101) >>",
-  "collapsed": "<< base64url (no padding) of 0001 >>",
+  "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+  "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
+  "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
+  "collapsed": "__________________________________________4",
   "hashes": [
-      "<< base64url (no padding) of Hash 111 >>",
-      "<< base64url (no padding) of Hash 10 >>",
-      "<< base64url (no padding) of Hash 0 >>"
+    "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
   ]
 }

@@ -252,9 +252,9 @@ Show Template
     <label>Show Template</label>
 <pre><code class="language-hbs">{
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "patch": {{array-of-patches}},
@@ -269,8 +269,8 @@ Show Template
 resulting <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> MUST be conformant to this specification.</p>
 <h2 id="construct-btcr2-signed-update"><a class="header" href="#construct-btcr2-signed-update">Construct BTCR2 Signed Update</a></h2>
 <p>This process constructs a <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> from <code>update</code>, a <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
-<p>An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if the <code>didSourceDocument.verificationMethod</code> Set does not contain an <code>id</code> matching <code>verificationMethodId</code>.</p>
-<p>An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if the <code>didSourceDocument.capabilityInvocation</code> Set does not contain <code>verificationMethodId</code>.</p>
+<p>An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if no entry of the <code>didSourceDocument.capabilityInvocation</code> Set identifies <code>verificationMethodId</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal.</p>
+<p>If that entry is a reference, find the verification method in the <code>didSourceDocument.verificationMethod</code> Set with an <code>id</code> that is equal to the reference. An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if there is no verification method with that <code>id</code>.</p>
 <p>Create <code>cryptosuite</code> as a BIP340 Cryptosuite [<a href="../bibliography.html#BIP340-Cryptosuite">BIP340-Cryptosuite</a>] instance with <code>signer</code> as the signing interface and the <code>"bip340-jcs-2025"</code> cryptosuite.</p>
 <p>Fill the Data Integrity [<a href="../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] template below with the required template variables.</p>
 <ul>
@@ -309,9 +309,9 @@ Show Template
     <label>Show Template</label>
 <pre><code class="language-hbs">{
   "@context": [
-    "https://w3id.org/security/v2",
-    "https://w3id.org/zcap/v1",
     "https://w3id.org/json-ld-patch/v1",
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/data-integrity/v2",
     "https://btcr2.dev/context/v1"
   ],
   "type": "DataIntegrityProof",

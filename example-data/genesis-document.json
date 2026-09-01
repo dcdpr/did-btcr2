@@ -9,7 +9,7 @@
       "id": "did:btcr2:_#key-0",
       "type": "Multikey",
       "controller": "did:btcr2:_",
-      "publicKeyMultibase": "zQ3shSnvxNK94Kpux1sp8RCWfn4dTFcAr1fZLf7E3Dy19mEBi"
+      "publicKeyMultibase": "zQ3shgCG6kFncZjWf2cAsCHxnXXZTD5LADCaN6Afmc9whryfM"
     }
   ],
   "assertionMethod": [
@@ -22,17 +22,17 @@
     {
       "id": "did:btcr2:_#service-0",
       "type": "SingletonBeacon",
-      "serviceEndpoint": "bitcoin:tb1qtmshuqzeyr7cdh5t2nl6kf3s73fdynpj5apgtx"
+      "serviceEndpoint": "bitcoin:tb1qvjqz6jjfux7slk9anek8gyclx7jdkfme782j45"
     },
     {
       "id": "did:btcr2:_#service-1",
-      "type": "MapBeacon",
-      "serviceEndpoint": "bitcoin:tb1pt97580gtfuge9mnrkvj2upk982alrr08pk4hhmlzkeutc06pt9pqyjqef2"
+      "type": "CASBeacon",
+      "serviceEndpoint": "bitcoin:tb1pglcfpaxw426fyke3syf7us86yatusmlcjl4wkn2g437ffs06mckq2ghwtn"
     },
     {
       "id": "did:btcr2:_#service-2",
       "type": "SMTBeacon",
-      "serviceEndpoint": "bitcoin:tb1pgrn7wxhtlsakjjelag6usrmzw89h8tnsaq2ly50ty29hujerqu0sk5kv4e"
+      "serviceEndpoint": "bitcoin:tb1pexcmzsevwvy7ndxhdsra2ld24mqf9n8tqn9mxhfvfgpu9u9uap2szfpes7"
     }
   ]
 }
