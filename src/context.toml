@@ -1,0 +1,8 @@
+# Tera context for the book, loaded by default by mdbook-tera.
+#
+# `publication_date` is overwritten during the GitHub Pages build with the date
+# of the commit being built (see .github/workflows/deploy.yml). The value here is
+# the fallback used by local builds, and it MUST stay present: a chapter that
+# references an undefined variable fails the tera preprocessor, which would break
+# `mdbook build` for every local checkout.
+publication_date = "unreleased draft"

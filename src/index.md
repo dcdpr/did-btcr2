@@ -36,7 +36,7 @@ WARNING This specification is still under active development and may be subject 
 
 ## Publication Date
 
-... 2026
+{{ publication_date }}
 
 ## License
 
