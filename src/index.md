@@ -36,7 +36,7 @@ WARNING This specification is still under active development and may be subject 
 
 ## Publication Date
 
-... 2025
+... 2026
 
 ## License
 
@@ -44,4 +44,4 @@ WARNING This specification is still under active development and may be subject 
 
 ## Copyright
 
-&copy; 2024-2025 Digital Contract Design
+&copy; 2024-2026 Digital Contract Design
