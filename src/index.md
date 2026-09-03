@@ -24,9 +24,19 @@ WARNING This specification is still under active development and may be subject 
 | Markus Sabadello | <markus@danubetech.com>  | [Danube Tech](https://danubetech.com/)              |
 
 
+## This Document
+
+|                |                                                                                                    |
+| -------------- | -------------------------------------------------------------------------------------------------- |
+| This version   | [https://dcdpr.github.io/did-btcr2/](https://dcdpr.github.io/did-btcr2/)                           |
+| Repository     | [https://github.com/dcdpr/did-btcr2](https://github.com/dcdpr/did-btcr2)                           |
+| Commit history | [https://github.com/dcdpr/did-btcr2/commits/main](https://github.com/dcdpr/did-btcr2/commits/main) |
+| Feedback       | [https://github.com/dcdpr/did-btcr2/issues](https://github.com/dcdpr/did-btcr2/issues)             |
+
+
 ## Publication Date
 
-... 2025
+{{ publication_date }}
 
 ## License
 
@@ -34,4 +44,4 @@ WARNING This specification is still under active development and may be subject 
 
 ## Copyright
 
-&copy; 2024-2025 Digital Contract Design
+&copy; 2024-2026 Digital Contract Design

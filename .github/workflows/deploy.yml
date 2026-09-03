@@ -51,6 +51,11 @@ jobs:
           version: '=0.6.0'
           locked: true
 
+      - name: Stamp the publication date
+        run: |
+          printf 'publication_date = "%s"\n' \
+            "$(git log -1 --format=%cd --date=format:'%-d %B %Y')" > src/context.toml
+
       - name: Build
         run: mdbook build
 
