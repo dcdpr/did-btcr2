@@ -1907,6 +1907,23 @@ complex <a href="operations/../terminology.html#initial-did-document">Initial DI
 endpoints and <a href="operations/../terminology.html#btcr2-beacon">BTCR2 Beacons</a> that support aggregation. Any
 active <strong>did:btcr2</strong> DID document can be updated later with new key material
 and service endpoints.</p>
+<p>The create operation has the following function signature:</p>
+<pre><code class="language-rust">fn create(
+  genesisBytes,
+  network,
+  version,
+) -&gt;
+  did</code></pre>
+<p>Input arguments:</p>
+<ul>
+<li><code>genesisBytes</code>: <a href="operations/../terminology.html#genesis-bytes">Genesis Bytes</a> is a secp256k1 public key or the hash of a <a href="operations/../terminology.html#genesis-document">Genesis Document</a>. The <a href="operations/../algorithms.html#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a> algorithm takes this value as <code>key_or_hash</code>.</li>
+<li><code>network</code>: The Bitcoin network that anchors the identifier. The <a href="operations/../algorithms.html#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a> algorithm takes this value as <code>network_name</code>. <a href="operations/../algorithms.html#network-values">Algorithms Table 1: Network Values</a> lists the permitted values.</li>
+<li><code>version</code>: The specification version number. The <a href="operations/../algorithms.html#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a> algorithm takes this value as <code>version_number</code>.</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>did</code>: A <strong>did:btcr2</strong> identifier that encodes <code>genesisBytes</code>, <code>network</code> and <code>version</code>.</li>
+</ul>
 <h2 id="process"><a class="header" href="#process">Process</a></h2>
 <p>A <strong>did:btcr2</strong> identifier encodes a few pieces of information: an indicator
 for a specific Bitcoin network, a collection of <a href="operations/../terminology.html#genesis-bytes">Genesis Bytes</a>, and a
@@ -2323,7 +2340,37 @@ resulting <a href="operations/../data-structures.html#data-integrity-config">Dat
 <p>Aggregating and announcing updates for multiple <strong>did:btcr2</strong> identifiers is the responsibility of the <a href="operations/../terminology.html#aggregation-service">Aggregation Service</a>.
 The main responsibilities include establishing a protocol for one or more rounds of secure group communications amongst <a href="operations/../terminology.html#aggregation-participant">Aggregation Participants</a>, advertising available <a href="operations/../terminology.html#aggregation-cohort">Aggregation Cohorts</a> to <a href="operations/../terminology.html#aggregation-participant">Aggregation Participants</a> including the creation, management, timing and scheduling of those <a href="operations/../terminology.html#aggregation-cohort">Aggregation Cohorts</a>, and broadcasting a Bitcoin transaction to the Bitcoin network that includes signatures from all <a href="operations/../terminology.html#aggregation-participant">Aggregation Participants</a> in a given <a href="operations/../terminology.html#aggregation-cohort">Aggregation Cohort</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="deactivate"><a class="header" href="#deactivate">Deactivate</a></h1>
-<p>To deactivate a <strong>did:btcr2</strong>, the DID controller MUST add the property <code>deactivated</code> with the value <code>true</code> to the DID document. To do this, the DID controller constructs a valid <a href="operations/../terminology.html#btcr2-update">BTCR2 Update</a> with a JSON Patch [<a href="operations/../bibliography.html#RFC6902">RFC6902</a>] that adds this property and announces the <a href="operations/../terminology.html#btcr2-update">BTCR2 Update</a> by broadcasting an <a href="operations/../terminology.html#authorized-beacon-signal">Authorized Beacon Signal</a> following the algorithms defined in <a href="operations/update.html">Update</a>. Once a <strong>did:btcr2</strong> has been deactivated this state is considered permanent and resolution MUST terminate.</p>
+<p>To deactivate a <strong>did:btcr2</strong> identifier, the DID controller MUST add the property <code>deactivated</code> with the value <code>true</code> to the DID document. Once a <strong>did:btcr2</strong> identifier has been deactivated, this state is considered permanent and resolution MUST terminate.</p>
+<p>The deactivate operation has the following function signature:</p>
+<pre><code class="language-rust">fn deactivate(
+  didSourceDocument,
+  targetVersionId,
+  verificationMethodId,
+  signer,
+) -&gt;
+  signedUpdate</code></pre>
+<p>Input arguments:</p>
+<ul>
+<li><code>didSourceDocument</code>: The DID document being deactivated.</li>
+<li><code>targetVersionId</code>: The <code>versionId</code> that will be returned in the <a href="operations/../data-structures.html#did-document-metadata">DID document metadata (data structure)</a> once the new <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is applied.</li>
+<li><code>verificationMethodId</code>: The <code>verificationMethod</code> ID used for signing the <a href="operations/../terminology.html#btcr2-update">BTCR2 Update</a>.</li>
+<li><code>signer</code>: A signing interface, as defined for the <a href="operations/update.html">Update</a> operation.</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>signedUpdate</code>: A <a href="operations/../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> with a patch that adds the <code>deactivated</code> property with the value <code>true</code>.</li>
+</ul>
+<h2 id="process-3"><a class="header" href="#process-3">Process</a></h2>
+<p>The deactivate operation is the <a href="operations/update.html">Update</a> operation with a predetermined patch:</p>
+<pre><code class="language-json">[
+  {
+    "op": "add",
+    "path": "/deactivated",
+    "value": true
+  }
+]
+</code></pre>
+<p>The DID controller constructs a valid <a href="operations/../terminology.html#btcr2-update">BTCR2 Update</a> with a JSON Patch [<a href="operations/../bibliography.html#RFC6902">RFC6902</a>] that adds the <code>deactivated</code> property with the value <code>true</code>, and announces the <a href="operations/../terminology.html#btcr2-update">BTCR2 Update</a> by broadcasting an <a href="operations/../terminology.html#authorized-beacon-signal">Authorized Beacon Signal</a> following the algorithms defined in <a href="operations/update.html">Update</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="algorithms"><a class="header" href="#algorithms">Algorithms</a></h1>
 <p>These algorithms are referenced throughout this specification.</p>
 <h2 id="did-btcr2-identifier-encoding"><a class="header" href="#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a></h2>
@@ -2617,7 +2664,7 @@ return candidateHash == proof.id;</code></pre>
 <h3 id="updates-can-be-private"><a class="header" href="#updates-can-be-private">Updates Can Be Private</a></h3>
 <p><strong>did:btcr2</strong> was designed such that updates to Decentralized Identifier (DID) documents are NOT REQUIRED to be public. Bitcoin is used to publicly announce and anchor updates to DID documents, however the updates themselves can be kept private by DID controllers and provided through a <a href="appendix/../terminology.html#sidecar">Sidecar</a> mechanism at Resolution Time.</p>
 <h3 id="did-documents-can-be-private"><a class="header" href="#did-documents-can-be-private">DID Documents Can Be Private</a></h3>
-<p>Since updates to DID documents are NOT REQUIRED to be public, neither are <strong>did:btcr2</strong> DID documents. A <strong>did:btcr2</strong> DID document is an initial document plus a series of updates to that DID document. To keep the DID document fully private, the DID controller can choose to use an externally resolved initial <strong>did:btcr2</strong> and not place the initial DID document on a <a href="appendix/../terminology.html#content-addressable-storage">Content Addressable Storage</a> (CAS) system such as the InterPlanetary File System (IPFS). The initial DID document can be provided at Resolution Time through a <a href="appendix/../terminology.html#sidecar">Sidecar</a> mechanism along with the collection of <a href="appendix/../terminology.html#btcr2-update">BTCR2 Updates</a> that can be verified against the relevant <a href="appendix/../terminology.html#beacon-signal">Beacon Signals</a> for the DID being resolved.</p>
+<p>Since updates to DID documents are NOT REQUIRED to be public, neither are <strong>did:btcr2</strong> DID documents. A <strong>did:btcr2</strong> DID document is an initial document plus a series of updates to that DID document. To keep the DID document fully private, the DID controller can choose to use an externally resolved initial <strong>did:btcr2</strong> identifier and not place the initial DID document on a <a href="appendix/../terminology.html#content-addressable-storage">Content Addressable Storage</a> (CAS) system such as the InterPlanetary File System (IPFS). The initial DID document can be provided at Resolution Time through a <a href="appendix/../terminology.html#sidecar">Sidecar</a> mechanism along with the collection of <a href="appendix/../terminology.html#btcr2-update">BTCR2 Updates</a> that can be verified against the relevant <a href="appendix/../terminology.html#beacon-signal">Beacon Signals</a> for the DID being resolved.</p>
 <h3 id="offline-did-creation"><a class="header" href="#offline-did-creation">Offline DID Creation</a></h3>
 <p><strong>did:btcr2</strong> was designed to support offline creation, that is, the generation of a <strong>did:btcr2</strong> identifier and associated DID document without any network calls to the Bitcoin blockchain. This is possible in both deterministic and externally resolvable DIDs.</p>
 <h3 id="aggregation-services-only-need-hashes"><a class="header" href="#aggregation-services-only-need-hashes">Aggregation Services Only Need Hashes</a></h3>

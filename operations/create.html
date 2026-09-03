@@ -190,6 +190,23 @@ complex <a href="../terminology.html#initial-did-document">Initial DID Document<
 endpoints and <a href="../terminology.html#btcr2-beacon">BTCR2 Beacons</a> that support aggregation. Any
 active <strong>did:btcr2</strong> DID document can be updated later with new key material
 and service endpoints.</p>
+<p>The create operation has the following function signature:</p>
+<pre><code class="language-rust">fn create(
+  genesisBytes,
+  network,
+  version,
+) -&gt;
+  did</code></pre>
+<p>Input arguments:</p>
+<ul>
+<li><code>genesisBytes</code>: <a href="../terminology.html#genesis-bytes">Genesis Bytes</a> is a secp256k1 public key or the hash of a <a href="../terminology.html#genesis-document">Genesis Document</a>. The <a href="../algorithms.html#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a> algorithm takes this value as <code>key_or_hash</code>.</li>
+<li><code>network</code>: The Bitcoin network that anchors the identifier. The <a href="../algorithms.html#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a> algorithm takes this value as <code>network_name</code>. <a href="../algorithms.html#network-values">Algorithms Table 1: Network Values</a> lists the permitted values.</li>
+<li><code>version</code>: The specification version number. The <a href="../algorithms.html#did-btcr2-identifier-encoding">DID-BTCR2 Identifier Encoding</a> algorithm takes this value as <code>version_number</code>.</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>did</code>: A <strong>did:btcr2</strong> identifier that encodes <code>genesisBytes</code>, <code>network</code> and <code>version</code>.</li>
+</ul>
 <h2 id="process"><a class="header" href="#process">Process</a></h2>
 <p>A <strong>did:btcr2</strong> identifier encodes a few pieces of information: an indicator
 for a specific Bitcoin network, a collection of <a href="../terminology.html#genesis-bytes">Genesis Bytes</a>, and a

@@ -183,7 +183,37 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="deactivate"><a class="header" href="#deactivate">Deactivate</a></h1>
-<p>To deactivate a <strong>did:btcr2</strong>, the DID controller MUST add the property <code>deactivated</code> with the value <code>true</code> to the DID document. To do this, the DID controller constructs a valid <a href="../terminology.html#btcr2-update">BTCR2 Update</a> with a JSON Patch [<a href="../bibliography.html#RFC6902">RFC6902</a>] that adds this property and announces the <a href="../terminology.html#btcr2-update">BTCR2 Update</a> by broadcasting an <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signal</a> following the algorithms defined in <a href="update.html">Update</a>. Once a <strong>did:btcr2</strong> has been deactivated this state is considered permanent and resolution MUST terminate.</p>
+<p>To deactivate a <strong>did:btcr2</strong> identifier, the DID controller MUST add the property <code>deactivated</code> with the value <code>true</code> to the DID document. Once a <strong>did:btcr2</strong> identifier has been deactivated, this state is considered permanent and resolution MUST terminate.</p>
+<p>The deactivate operation has the following function signature:</p>
+<pre><code class="language-rust">fn deactivate(
+  didSourceDocument,
+  targetVersionId,
+  verificationMethodId,
+  signer,
+) -&gt;
+  signedUpdate</code></pre>
+<p>Input arguments:</p>
+<ul>
+<li><code>didSourceDocument</code>: The DID document being deactivated.</li>
+<li><code>targetVersionId</code>: The <code>versionId</code> that will be returned in the <a href="../data-structures.html#did-document-metadata">DID document metadata (data structure)</a> once the new <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is applied.</li>
+<li><code>verificationMethodId</code>: The <code>verificationMethod</code> ID used for signing the <a href="../terminology.html#btcr2-update">BTCR2 Update</a>.</li>
+<li><code>signer</code>: A signing interface, as defined for the <a href="update.html">Update</a> operation.</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>signedUpdate</code>: A <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> with a patch that adds the <code>deactivated</code> property with the value <code>true</code>.</li>
+</ul>
+<h2 id="process"><a class="header" href="#process">Process</a></h2>
+<p>The deactivate operation is the <a href="update.html">Update</a> operation with a predetermined patch:</p>
+<pre><code class="language-json">[
+  {
+    "op": "add",
+    "path": "/deactivated",
+    "value": true
+  }
+]
+</code></pre>
+<p>The DID controller constructs a valid <a href="../terminology.html#btcr2-update">BTCR2 Update</a> with a JSON Patch [<a href="../bibliography.html#RFC6902">RFC6902</a>] that adds the <code>deactivated</code> property with the value <code>true</code>, and announces the <a href="../terminology.html#btcr2-update">BTCR2 Update</a> by broadcasting an <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signal</a> following the algorithms defined in <a href="update.html">Update</a>.</p>
 
                     </main>
 
