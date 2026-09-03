@@ -203,12 +203,20 @@
 <tr><td>Markus Sabadello</td><td><a href="mailto:markus@danubetech.com">markus@danubetech.com</a></td><td><a href="https://danubetech.com/">Danube Tech</a></td></tr>
 </tbody></table>
 </div>
+<h2 id="this-document"><a class="header" href="#this-document">This Document</a></h2>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>This version</td><td><a href="https://dcdpr.github.io/did-btcr2/">https://dcdpr.github.io/did-btcr2/</a></td></tr>
+<tr><td>Repository</td><td><a href="https://github.com/dcdpr/did-btcr2">https://github.com/dcdpr/did-btcr2</a></td></tr>
+<tr><td>Commit history</td><td><a href="https://github.com/dcdpr/did-btcr2/commits/main">https://github.com/dcdpr/did-btcr2/commits/main</a></td></tr>
+<tr><td>Feedback</td><td><a href="https://github.com/dcdpr/did-btcr2/issues">https://github.com/dcdpr/did-btcr2/issues</a></td></tr>
+</tbody></table>
+</div>
 <h2 id="publication-date"><a class="header" href="#publication-date">Publication Date</a></h2>
-<p>… 2025</p>
+<p>3 September 2026</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p><a href="https://github.com/dcdpr/did-btcr2/blob/main/LICENSE">Mozilla Public License Version 2.0</a></p>
 <h2 id="copyright"><a class="header" href="#copyright">Copyright</a></h2>
-<p>© 2024-2025 Digital Contract Design</p>
+<p>© 2024-2026 Digital Contract Design</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="abstract"><a class="header" href="#abstract">Abstract</a></h1>
 <p><strong>did:btcr2</strong> is a censorship-resistant Decentralized Identifier (DID) method using the Bitcoin
 blockchain as a Verifiable Data Registry to announce changes to the DID document. It supports
@@ -1895,7 +1903,7 @@ Show Example
 <p>A DID document can contain a URL with a host. Examples are an <code>alsoKnownAs</code> value, a service <code>id</code>, and the <code>serviceEndpoint</code> of a service that is not a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a>. A resolver does not use these values when it builds the update history. A <a href="./terminology.html#beacon-address">Beacon Address</a> is a Bitcoin address and has no host. A resolver that conforms to this specification therefore does not parse a host and does not need IDNA tables. This rule applies to the resolver, and does not change the requirements of DID Core v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] or of a JSON-LD processor [<a href="bibliography.html#JSON-LD">JSON-LD</a>]. <a href="#fr-2-1">↩</a></p>
 </li>
 </ol><div style="break-before: page; page-break-before: always;"></div><h1 id="operations"><a class="header" href="#operations">Operations</a></h1>
-<p>Creating and using <strong>did:bctr2</strong> DIDs is achieved through specified
+<p>Creating and using <strong>did:btcr2</strong> DIDs is achieved through specified
 cryptographic and network operations, with all updates anchored to
 Bitcoin transactions. This section defines the Create, Resolve, Update,
 and Deactivate operations for the <strong>did:btcr2</strong> method.</p>
