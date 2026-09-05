@@ -215,6 +215,7 @@ If any SHA-256 hash doesn’t have a corresponding file, the resolution fails.</
 on a network for retrieval based on its content, not its name or location. The content
 address is determined by a cryptographic hash of the file. The hash is then passed into
 a retrieval function specific to the type of <a href="./terminology.html#cas">CAS</a> to retrieve the file.</p>
+<p>For each retrieval from <a href="./terminology.html#cas">CAS</a>, the resolver MUST compute the SHA-256 hash of the retrieved content. The resolver MUST compare the computed hash to the hash that was used for the retrieval. If the hashes do not match, the resolver MUST NOT use the content.</p>
 <p>Any <a href="./terminology.html#cas">CAS</a> that provides a deterministic mapping from a SHA-256 hash of a file may be
 used, and a resolver SHOULD be informed of the specific <a href="./terminology.html#cas">CAS</a> mechanism so that it
 can retrieve documents associated with a <strong>did:btcr2</strong> identifier efficiently. If
