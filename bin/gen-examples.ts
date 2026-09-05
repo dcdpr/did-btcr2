@@ -90,7 +90,6 @@ const NONCE_SEEDS = {
  * illustrate the shape of resolution output rather than describing real blocks.
  */
 const LAST_UPDATE_TIME = '2025-01-06T16:23:10Z';
-const RESOLUTION_TIME = '2025-01-07T00:00:00Z';
 const CONFIRMATIONS = 12;
 
 // ---------------------------------------------------------------------------
@@ -521,7 +520,6 @@ const sidecarData = {
 
 const resolutionOptions = {
   versionId: '4',
-  versionTime: RESOLUTION_TIME,
   minConf: 6,
   sidecar: sidecarData,
 };
