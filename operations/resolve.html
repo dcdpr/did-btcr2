@@ -190,9 +190,11 @@
   (didResolutionMetadata, didDocument, didDocumentMetadata)</code></pre>
 <h2 id="process"><a class="header" href="#process">Process</a></h2>
 <p>Input values MUST first go through <a href="#decode-the-did">Decoding the DID</a> and <a href="#process-sidecar-data">Processing Sidecar Data</a>.</p>
+<p>Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_OPTIONS</code></a> error if <code>resolutionOptions</code> contains both <code>versionId</code> and <code>versionTime</code>. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></p>
+<p>When provided, <code>resolutionOptions.versionId</code> MUST be parsed as an integer and <code>resolutionOptions.versionTime</code> SHOULD be parsed as an XML Datetime. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_OPTIONS</code></a> error if either value does not parse.</p>
 <p>Resolution maintains the following state while building the DID document:</p>
 <ul>
-<li><code>updates</code>: a list of tuples, each containing Bitcoin block metadata (height, time, confirmations) and a <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</li>
+<li><code>updates</code>: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations) and a <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</li>
 <li><code>current_document</code>: the DID document being assembled.</li>
 <li><code>current_version_id</code>: the version number being processed (starts at <code>1</code>).</li>
 <li><code>update_hash_history</code>: a list of <a href="../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> hashes used to detect duplicates.</li>
@@ -216,7 +218,7 @@
 <li><code>didDocumentMetadata</code>: a <a href="../data-structures.html#did-document-metadata">DID document metadata (data structure)</a> with REQUIRED fields:
 <ul>
 <li><code>versionId</code>: <code>current_version_id</code> as an ASCII string.</li>
-<li><code>confirmations</code>: <code>block_confirmations</code> as an integer. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></li>
+<li><code>confirmations</code>: <code>block_confirmations</code> as an integer. <sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup></li>
 <li><code>deactivated</code>: <code>current_document.deactivated</code>.</li>
 </ul>
 </li>
@@ -329,7 +331,7 @@ Show Template
 <h2 id="process-beacon-signals"><a class="header" href="#process-beacon-signals">Process Beacon Signals</a></h2>
 <p>Scan the <code>service</code> entries in <code>current_document</code> (<a href="../data-structures.html#did-document">DID Document (data structure)</a>) and identify <a href="../terminology.html#btcr2-beacon">BTCR2 Beacons</a> by matching service <code>type</code> to <a href="../beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>. Parse each beacon <code>serviceEndpoint</code> as a <a href="../terminology.html#beacon-address">Beacon Address</a>, then use those <a href="../terminology.html#beacon-address">Beacon Addresses</a> to find Bitcoin transactions whose last output script contains <a href="../terminology.html#signal-bytes">Signal Bytes</a>.</p>
 <p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block. Cache <a href="../terminology.html#beacon-address">Beacon Addresses</a> to avoid repeated transaction lookups.</p>
-<p>A transaction MUST be included in a Bitcoin block and have at least <code>resolutionOptions.minConf</code> confirmations (<code>6</code> when not provided). Unconfirmed mempool transactions MUST NOT be processed. <sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup></p>
+<p>A transaction MUST be included in a Bitcoin block and have at least <code>resolutionOptions.minConf</code> confirmations (<code>6</code> when not provided). Unconfirmed mempool transactions MUST NOT be processed. <sup class="footnote-reference" id="fr-3-1"><a href="#footnote-3">3</a></sup></p>
 <p>For each transaction found:</p>
 <ul>
 <li>Derive <code>update_hash</code> from the transaction’s <a href="../terminology.html#signal-bytes">Signal Bytes</a> based on the <a href="../terminology.html#beacon-type">Beacon Type</a>:
@@ -341,7 +343,7 @@ Show Template
 </li>
 <li>Build a tuple with:
 <ul>
-<li>The transaction’s block metadata (height, time, and confirmations).</li>
+<li>The transaction’s block metadata (height, mediantime, and confirmations).</li>
 <li>The <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> retrieved from <code>update_lookup_table[update_hash]</code>.
 <ul>
 <li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>update_hash</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</li>
@@ -357,15 +359,18 @@ Show Template
 <h3 id="process-smt-beacon"><a class="header" href="#process-smt-beacon">Process SMT Beacon</a></h3>
 <p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="../data-structures.html#smt-proof">SMT Proof (data structure)</a>. Validate the proof with the <a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Use <code>smt_proof.updateId</code> as <code>update_hash</code>.</p>
 <h2 id="process-updates"><a class="header" href="#process-updates">Process <code>updates</code> Array</a></h2>
-<p>Resolve <code>current_document</code> as <code>didDocument</code> if <code>updates</code> is empty.</p>
-<p>Otherwise:</p>
 <ol>
+<li>If <code>resolutionOptions.versionId</code> is provided and <code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
+<li>If <code>updates</code> is empty or <code>current_document.deactivated</code> is <code>true</code>:
+<ul>
+<li>Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>NOT_FOUND</code></a> error if <code>resolutionOptions.versionId</code> is provided.</li>
+<li>Otherwise, resolve <code>current_document</code> as <code>didDocument</code>.</li>
+</ul>
+</li>
 <li>Sort <code>updates</code> by <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> <code>targetVersionId</code> (ascending) with the tuple’s block height as a tiebreaker. Take the first tuple.</li>
+<li>If <code>resolutionOptions.versionTime</code> is provided and the tuple’s block <code>mediantime</code> [<a href="../bibliography.html#Bitcoin-Core">Bitcoin-Core</a>] is after <code>resolutionOptions.versionTime</code>, resolve <code>current_document</code> as <code>didDocument</code>. <sup class="footnote-reference" id="fr-4-1"><a href="#footnote-4">4</a></sup></li>
 <li>Set <code>block_confirmations</code> to the tuple’s block confirmations.</li>
-<li>If <code>resolutionOptions.versionTime</code> is provided and the tuple’s block time is more recent, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 <li>Set <code>update</code> to the tuple’s <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> and <a href="#check-update-version">check <code>update.targetVersionId</code></a>.</li>
-<li>If <code>current_version_id</code> is greater than or equal to the integer form of <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
-<li>If <code>current_document.deactivated</code> is <code>true</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 </ol>
 <h3 id="check-update-version"><a class="header" href="#check-update-version">Check <code>update.targetVersionId</code></a></h3>
 <p>Compare <code>update.targetVersionId</code> to <code>current_version_id</code>. Only one of three possible conditions will occur:</p>
@@ -409,7 +414,7 @@ Show Template
 <p>Implementations MAY derive a <a href="../data-structures.html#root-capability">Root Capability (data structure)</a> from <code>update.proof</code> and invoke it according to Authorization Capabilities for Linked Data v0.3 [<a href="../bibliography.html#ZCAP-LD">ZCAP-LD</a>].</p>
 <p>The resolver MUST find the entry of <code>current_document.capabilityInvocation</code> that identifies <code>update.proof.verificationMethod</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if no entry identifies it.</p>
 <p>Read <code>publicKeyMultibase</code> from that entry. When the entry is an embedded verification method object, read <code>publicKeyMultibase</code> from the object. When the entry is a reference, find the verification method in <code>current_document.verificationMethod</code> with an <code>id</code> that is equal to the reference. Read <code>publicKeyMultibase</code> from that verification method. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if there is no verification method with that <code>id</code>.</p>
-<p>If <code>update.proof.created</code> or <code>update.proof.expires</code> is present, check each value against the Bitcoin block that contains the <a href="../terminology.html#beacon-signal">Beacon Signal</a> that announced <code>update</code>. <sup class="footnote-reference" id="fr-3-1"><a href="#footnote-3">3</a></sup> Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are true:</p>
+<p>If <code>update.proof.created</code> or <code>update.proof.expires</code> is present, check each value against the Bitcoin block that contains the <a href="../terminology.html#beacon-signal">Beacon Signal</a> that announced <code>update</code>. <sup class="footnote-reference" id="fr-5-1"><a href="#footnote-5">5</a></sup> Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are true:</p>
 <ul>
 <li><code>update.proof.created</code> is after the timestamp in the block header.</li>
 <li><code>update.proof.expires</code> is before the block <code>mediantime</code> [<a href="../bibliography.html#Bitcoin-Core">Bitcoin-Core</a>].</li>
@@ -421,13 +426,19 @@ Show Template
 <br>
 <hr>
 <ol class="footnote-definition"><li id="footnote-1">
-<p>The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. “Unique” refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations. <a href="#fr-1-1">↩</a></p>
+<p>DID Resolution v1 [<a href="../bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>] defines the two options as mutually exclusive. <a href="#fr-1-1">↩</a></p>
 </li>
 <li id="footnote-2">
-<p>Six confirmations is the widely accepted industry standard for treating a Bitcoin transaction as settled. Resolution requests can raise or lower <code>minConf</code> to match their own threat and security model; lowering it increases exposure to Bitcoin block reorganizations, which consumers can evaluate from the returned <code>confirmations</code> metadata. <a href="#fr-2-1">↩</a></p>
+<p>The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. “Unique” refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations. <a href="#fr-2-1">↩</a></p>
 </li>
 <li id="footnote-3">
-<p>In Data Integrity [<a href="../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>], each method selects the time of interest for <code>created</code> and <code>expires</code>. On mainnet, the timestamp in the block header is approximately one hour later than <code>mediantime</code>. A controller signs a proof a short time before the block that contains it, so a check of <code>created</code> against <code>mediantime</code> rejects valid updates. For this reason, <code>created</code> uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change <code>mediantime</code>. The <code>expires</code> value limits the time between the signature and a replay of the update, so <code>expires</code> uses <code>mediantime</code>. <a href="#fr-3-1">↩</a></p>
+<p>Six confirmations is the widely accepted industry standard for treating a Bitcoin transaction as settled. Resolution requests can raise or lower <code>minConf</code> to match their own threat and security model; lowering it increases exposure to Bitcoin block reorganizations, which consumers can evaluate from the returned <code>confirmations</code> metadata. <a href="#fr-3-1">↩</a></p>
+</li>
+<li id="footnote-4">
+<p>The resolver applies an update whose block <code>mediantime</code> is equal to <code>versionTime</code>. The comparison has no tolerance. <code>mediantime</code> does not decrease from one block to the next. Each resolver reads the same value from the block chain, so each resolver selects the same version. <a href="#fr-4-1">↩</a></p>
+</li>
+<li id="footnote-5">
+<p>In Data Integrity [<a href="../bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>], each method selects the time of interest for <code>created</code> and <code>expires</code>. On mainnet, the timestamp in the block header is approximately one hour later than <code>mediantime</code>. A controller signs a proof a short time before the block that contains it, so a check of <code>created</code> against <code>mediantime</code> rejects valid updates. For this reason, <code>created</code> uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change <code>mediantime</code>. The <code>expires</code> value limits the time between the signature and a replay of the update, so <code>expires</code> uses <code>mediantime</code>. <a href="#fr-5-1">↩</a></p>
 </li>
 </ol>
                     </main>
