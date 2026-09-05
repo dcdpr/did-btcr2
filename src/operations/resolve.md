@@ -26,6 +26,8 @@ Raise an [`INVALID_OPTIONS`] error if `resolutionOptions` contains both `version
 
 [^1]: DID Resolution v1 {{#cite DID-RESOLUTION}} defines the two options as mutually exclusive.
 
+When provided, `resolutionOptions.versionId` MUST be parsed as an integer and `resolutionOptions.versionTime` SHOULD be parsed as an XML Datetime. Raise an [`INVALID_OPTIONS`] error if either value does not parse.
+
 Resolution maintains the following state while building the DID document:
 
 * `updates`: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations) and a [BTCR2 Signed Update (data structure)].
@@ -152,7 +154,7 @@ Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to 
 
 ## Process `updates` Array { #process-updates }
 
-1. If `resolutionOptions.versionId` is provided and `current_version_id` is equal to the integer form of `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
+1. If `resolutionOptions.versionId` is provided and `current_version_id` is equal to the parsed `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
 2. If `updates` is empty or `current_document.deactivated` is `true`:
     * Raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
     * Otherwise, resolve `current_document` as `didDocument`.
