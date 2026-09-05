@@ -22,9 +22,13 @@ fn resolve(did, resolutionOptions) ->
 
 Input values MUST first go through [Decoding the DID](#decode-the-did) and [Processing Sidecar Data](#process-sidecar-data).
 
+Raise an [`INVALID_OPTIONS`] error if `resolutionOptions` contains both `versionId` and `versionTime`. [^1]
+
+[^1]: DID Resolution v1 {{#cite DID-RESOLUTION}} defines the two options as mutually exclusive.
+
 Resolution maintains the following state while building the DID document:
 
-* `updates`: a list of tuples, each containing Bitcoin block metadata (height, time, confirmations) and a [BTCR2 Signed Update (data structure)].
+* `updates`: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations) and a [BTCR2 Signed Update (data structure)].
 * `current_document`: the DID document being assembled.
 * `current_version_id`: the version number being processed (starts at `1`).
 * `update_hash_history`: a list of [BTCR2 Unsigned Update] hashes used to detect duplicates.
@@ -44,10 +48,10 @@ The resolver returns:
 * `didDocument`: the final [DID document (data structure)].
 * `didDocumentMetadata`: a [DID document metadata (data structure)] with REQUIRED fields:
   * `versionId`: `current_version_id` as an ASCII string.
-  * `confirmations`: `block_confirmations` as an integer. [^1]
+  * `confirmations`: `block_confirmations` as an integer. [^2]
   * `deactivated`: `current_document.deactivated`.
 
-[^1]: The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. "Unique" refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations.
+[^2]: The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. "Unique" refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations.
 
 
 ## Decode the DID { #decode-the-did }
@@ -118,9 +122,9 @@ Scan the `service` entries in `current_document` ([DID Document (data structure)
 
 Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as [electrs](https://github.com/romanz/electrs) or [Esplora](https://github.com/Blockstream/esplora). Implementations MAY instead traverse blocks from the genesis block. Cache [Beacon Addresses][Beacon Address] to avoid repeated transaction lookups.
 
-A transaction MUST be included in a Bitcoin block and have at least `resolutionOptions.minConf` confirmations (`6` when not provided). Unconfirmed mempool transactions MUST NOT be processed. [^2]
+A transaction MUST be included in a Bitcoin block and have at least `resolutionOptions.minConf` confirmations (`6` when not provided). Unconfirmed mempool transactions MUST NOT be processed. [^3]
 
-[^2]: Six confirmations is the widely accepted industry standard for treating a Bitcoin transaction as settled. Resolution requests can raise or lower `minConf` to match their own threat and security model; lowering it increases exposure to Bitcoin block reorganizations, which consumers can evaluate from the returned `confirmations` metadata.
+[^3]: Six confirmations is the widely accepted industry standard for treating a Bitcoin transaction as settled. Resolution requests can raise or lower `minConf` to match their own threat and security model; lowering it increases exposure to Bitcoin block reorganizations, which consumers can evaluate from the returned `confirmations` metadata.
 
 For each transaction found:
 
@@ -129,7 +133,7 @@ For each transaction found:
   * [CAS Beacon]: use [Process CAS Beacon](#process-cas-beacon).
   * [SMT Beacon]: use [Process SMT Beacon](#process-smt-beacon).
 * Build a tuple with:
-  * The transaction's block metadata (height, time, and confirmations).
+  * The transaction's block metadata (height, mediantime, and confirmations).
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
     * If the update is not in `update_lookup_table`, retrieve it from [CAS] using `update_hash` as described in [BTCR2 Update Data Distribution].
     * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
@@ -148,16 +152,16 @@ Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to 
 
 ## Process `updates` Array { #process-updates }
 
-Resolve `current_document` as `didDocument` if `updates` is empty.
+1. If `resolutionOptions.versionId` is provided and `current_version_id` is equal to the integer form of `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
+2. If `updates` is empty or `current_document.deactivated` is `true`:
+    * Raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
+    * Otherwise, resolve `current_document` as `didDocument`.
+3. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Take the first tuple.
+4. If `resolutionOptions.versionTime` is provided and the tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`, resolve `current_document` as `didDocument`. [^4]
+5. Set `block_confirmations` to the tuple's block confirmations.
+6. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 
-Otherwise:
-
-1. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Take the first tuple.
-2. Set `block_confirmations` to the tuple's block confirmations.
-3. If `resolutionOptions.versionTime` is provided and the tuple's block time is more recent, resolve `current_document` as `didDocument`.
-4. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
-5. If `current_version_id` is greater than or equal to the integer form of `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
-6. If `current_document.deactivated` is `true`, resolve `current_document` as `didDocument`.
+[^4]: The resolver applies an update whose block `mediantime` is equal to `versionTime`. The comparison has no tolerance. `mediantime` does not decrease from one block to the next. Each resolver reads the same value from the block chain, so each resolver selects the same version.
 
 
 ### Check `update.targetVersionId` { #check-update-version }
@@ -214,13 +218,13 @@ The resolver MUST find the entry of `current_document.capabilityInvocation` that
 
 Read `publicKeyMultibase` from that entry. When the entry is an embedded verification method object, read `publicKeyMultibase` from the object. When the entry is a reference, find the verification method in `current_document.verificationMethod` with an `id` that is equal to the reference. Read `publicKeyMultibase` from that verification method. Raise an [`INVALID_DID_UPDATE`] error if there is no verification method with that `id`.
 
-If `update.proof.created` or `update.proof.expires` is present, check each value against the Bitcoin block that contains the [Beacon Signal] that announced `update`. [^3] Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true:
+If `update.proof.created` or `update.proof.expires` is present, check each value against the Bitcoin block that contains the [Beacon Signal] that announced `update`. [^5] Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true:
 
 * `update.proof.created` is after the timestamp in the block header.
 * `update.proof.expires` is before the block `mediantime` {{#cite Bitcoin-Core}}.
 * `update.proof.expires` is before `update.proof.created`, when both values are present.
 
-[^3]: In Data Integrity {{#cite VC-DATA-INTEGRITY}}, each method selects the time of interest for `created` and `expires`. On mainnet, the timestamp in the block header is approximately one hour later than `mediantime`. A controller signs a proof a short time before the block that contains it, so a check of `created` against `mediantime` rejects valid updates. For this reason, `created` uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change `mediantime`. The `expires` value limits the time between the signature and a replay of the update, so `expires` uses `mediantime`.
+[^5]: In Data Integrity {{#cite VC-DATA-INTEGRITY}}, each method selects the time of interest for `created` and `expires`. On mainnet, the timestamp in the block header is approximately one hour later than `mediantime`. A controller signs a proof a short time before the block that contains it, so a check of `created` against `mediantime` rejects valid updates. For this reason, `created` uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change `mediantime`. The `expires` value limits the time between the signature and a replay of the update, so `expires` uses `mediantime`.
 
 Use a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `publicKeyMultibase` and the `"bip340-jcs-2025"` cryptosuite to verify `update`. Raise [`INVALID_DID_UPDATE`] if verification fails.
 

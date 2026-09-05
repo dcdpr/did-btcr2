@@ -293,7 +293,7 @@ This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 Resolution options MAY contain the following properties:
 
 - `versionId`: OPTIONAL ASCII string representation of the specific version of a DID document to be resolved.
-- `versionTime`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID before the specified `versionTime`.
+- `versionTime`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID at or before the specified `versionTime`.
 - `minConf`: OPTIONAL positive integer (minimum `1`). The minimum number of Bitcoin block confirmations required on a [Beacon Signal] transaction during resolution. Defaults to `6`.
 - `sidecar`: [Sidecar Data (data structure)].
 
