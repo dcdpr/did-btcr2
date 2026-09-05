@@ -65,7 +65,7 @@ raised while decoding.
 - Hash each [CAS Announcement (data structure)] in `sidecar.casUpdates` with the [JSON Document Hashing] algorithm and build a map from hash to announcement (`cas_lookup_table`).
 - Build a map from `sidecar.smtProofs` keyed by proof `id` (`smt_lookup_table`).
 
-If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. If `sidecar.genesisDocument` is not provided, retrieve it from [CAS] using `genesis_bytes`. Raise a [`NOT_FOUND`] error if the [Genesis Document] cannot be retrieved. Raise an [`INVALID_DID`] error if the computed hash does not match `genesis_bytes`.
+If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. If `sidecar.genesisDocument` is not provided, retrieve it from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`NOT_FOUND`] error if the [Genesis Document] cannot be retrieved. Raise an [`INVALID_DID`] error if the computed hash does not match `genesis_bytes`.
 
 When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
@@ -131,14 +131,14 @@ For each transaction found:
 * Build a tuple with:
   * The transaction's block metadata (height, time, and confirmations).
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
-    * If the update is not in `update_lookup_table`, retrieve it from [CAS].
+    * If the update is not in `update_lookup_table`, retrieve it from [CAS] using `update_hash` as described in [BTCR2 Update Data Distribution].
     * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
 * Append the tuple to `updates`.
 
 
 ### Process CAS Beacon { #process-cas-beacon }
 
-Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)] and read `update_hash` from the announcement entry keyed by `did`. If the [CAS Announcement (data structure)] is not in `cas_lookup_table`, retrieve it from [CAS].
+Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)] and read `update_hash` from the announcement entry keyed by `did`. If the [CAS Announcement (data structure)] is not in `cas_lookup_table`, retrieve it from [CAS] using `map_update_hash` as described in [BTCR2 Update Data Distribution].
 
 
 ### Process SMT Beacon { #process-smt-beacon }
