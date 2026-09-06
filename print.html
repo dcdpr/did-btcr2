@@ -212,7 +212,7 @@
 </tbody></table>
 </div>
 <h2 id="publication-date"><a class="header" href="#publication-date">Publication Date</a></h2>
-<p>5 September 2026</p>
+<p>6 September 2026</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p><a href="https://github.com/dcdpr/did-btcr2/blob/main/LICENSE">Mozilla Public License Version 2.0</a></p>
 <h2 id="copyright"><a class="header" href="#copyright">Copyright</a></h2>
@@ -1960,6 +1960,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 <p>Resolution maintains the following state while building the DID document:</p>
 <ul>
 <li><code>updates</code>: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations) and a <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</li>
+<li><code>scanned_beacons</code>: a list of <a href="operations/../terminology.html#beacon-address">Beacon Addresses</a> that <a href="operations/resolve.html#find-beacon-signals">Find Beacon Signals</a> scanned (starts empty).</li>
 <li><code>current_document</code>: the DID document being assembled.</li>
 <li><code>current_version_id</code>: the version number being processed (starts at <code>1</code>).</li>
 <li><code>update_hash_history</code>: a list of <a href="operations/../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> hashes used to detect duplicates.</li>
@@ -1970,9 +1971,9 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 <li><a href="operations/resolve.html#establish-current-document">Establishes <code>current_document</code></a> from the DID or from <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a>.</li>
 <li>Repeats the following loop:
 <ul>
-<li><a href="operations/resolve.html#process-beacon-signals">Process Beacon Signals</a> to populate <code>updates</code> from the beacon services in <code>current_document</code>.</li>
-<li><a href="operations/resolve.html#process-updates">Process <code>updates</code> Array</a> to apply updates to <code>current_document</code> and refresh <code>block_confirmations</code>.</li>
-<li>The loop terminates when processing updates resolves <code>didDocument</code> or an error occurs.</li>
+<li><a href="operations/resolve.html#find-beacon-signals">Find Beacon Signals</a> to add tuples to <code>updates</code> from the beacon services in <code>current_document</code>.</li>
+<li><a href="operations/resolve.html#process-next-update">Process Next Update</a> to apply one update to <code>current_document</code> and refresh <code>block_confirmations</code>.</li>
+<li>The loop terminates when <a href="operations/resolve.html#process-next-update">Process Next Update</a> resolves <code>didDocument</code> or an error occurs.</li>
 </ul>
 </li>
 </ol>
@@ -2093,9 +2094,14 @@ Show Template
   </section>
 </div>
 <p>Parse the rendered template as JSON to form <code>current_document</code>. The resulting <a href="operations/../data-structures.html#did-document">DID Document (data structure)</a> MUST be conformant to DID Core v1.1 [<a href="operations/../bibliography.html#DID-CORE">DID-CORE</a>].</p>
-<h2 id="process-beacon-signals"><a class="header" href="#process-beacon-signals">Process Beacon Signals</a></h2>
-<p>Scan the <code>service</code> entries in <code>current_document</code> (<a href="operations/../data-structures.html#did-document">DID Document (data structure)</a>) and identify <a href="operations/../terminology.html#btcr2-beacon">BTCR2 Beacons</a> by matching service <code>type</code> to <a href="operations/../beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>. Parse each beacon <code>serviceEndpoint</code> as a <a href="operations/../terminology.html#beacon-address">Beacon Address</a>, then use those <a href="operations/../terminology.html#beacon-address">Beacon Addresses</a> to find Bitcoin transactions whose last output script contains <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a>.</p>
-<p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block. Cache <a href="operations/../terminology.html#beacon-address">Beacon Addresses</a> to avoid repeated transaction lookups.</p>
+<h2 id="find-beacon-signals"><a class="header" href="#find-beacon-signals">Find Beacon Signals</a></h2>
+<p>Scan the <code>service</code> entries in <code>current_document</code> (<a href="operations/../data-structures.html#did-document">DID Document (data structure)</a>) and identify <a href="operations/../terminology.html#btcr2-beacon">BTCR2 Beacons</a> by matching service <code>type</code> to <a href="operations/../beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>. Parse each beacon <code>serviceEndpoint</code> as a <a href="operations/../terminology.html#beacon-address">Beacon Address</a>.</p>
+<p>For each <a href="operations/../terminology.html#beacon-address">Beacon Address</a> that is not in <code>scanned_beacons</code>:</p>
+<ul>
+<li>Find the Bitcoin transactions that spend from the <a href="operations/../terminology.html#beacon-address">Beacon Address</a> and whose last output script contains <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a>.</li>
+<li>Add the <a href="operations/../terminology.html#beacon-address">Beacon Address</a> to <code>scanned_beacons</code>.</li>
+</ul>
+<p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block.</p>
 <p>A transaction MUST be included in a Bitcoin block and have at least <code>resolutionOptions.minConf</code> confirmations (<code>6</code> when not provided). Unconfirmed mempool transactions MUST NOT be processed. <sup class="footnote-reference" id="fr-3-1"><a href="#footnote-3">3</a></sup></p>
 <p>For each transaction found:</p>
 <ul>
@@ -2123,7 +2129,7 @@ Show Template
 <p>Treat <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a> as <code>map_update_hash</code>. Look up <code>map_update_hash</code> in <code>cas_lookup_table</code> to retrieve a <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> and read <code>update_hash</code> from the announcement entry keyed by <code>did</code>. If the <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> is not in <code>cas_lookup_table</code>, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>map_update_hash</code> as described in <a href="operations/../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</p>
 <h3 id="process-smt-beacon"><a class="header" href="#process-smt-beacon">Process SMT Beacon</a></h3>
 <p>Treat <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="operations/../data-structures.html#smt-proof">SMT Proof (data structure)</a>. Validate the proof with the <a href="operations/../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Use <code>smt_proof.updateId</code> as <code>update_hash</code>.</p>
-<h2 id="process-updates"><a class="header" href="#process-updates">Process <code>updates</code> Array</a></h2>
+<h2 id="process-next-update"><a class="header" href="#process-next-update">Process Next Update</a></h2>
 <ol>
 <li>If <code>resolutionOptions.versionId</code> is provided and <code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 <li>If <code>updates</code> is empty or <code>current_document.deactivated</code> is <code>true</code>:
@@ -2132,7 +2138,7 @@ Show Template
 <li>Otherwise, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 </ul>
 </li>
-<li>Sort <code>updates</code> by <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> <code>targetVersionId</code> (ascending) with the tuple’s block height as a tiebreaker. Take the first tuple.</li>
+<li>Sort <code>updates</code> by <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> <code>targetVersionId</code> (ascending) with the tuple’s block height as a tiebreaker. Remove the first tuple from <code>updates</code>.</li>
 <li>If <code>resolutionOptions.versionTime</code> is provided and the tuple’s block <code>mediantime</code> [<a href="operations/../bibliography.html#Bitcoin-Core">Bitcoin-Core</a>] is after <code>resolutionOptions.versionTime</code>, resolve <code>current_document</code> as <code>didDocument</code>. <sup class="footnote-reference" id="fr-4-1"><a href="#footnote-4">4</a></sup></li>
 <li>Set <code>block_confirmations</code> to the tuple’s block confirmations.</li>
 <li>Set <code>update</code> to the tuple’s <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> and <a href="operations/resolve.html#check-update-version">check <code>update.targetVersionId</code></a>.</li>
