@@ -31,6 +31,7 @@ When provided, `resolutionOptions.versionId` MUST be parsed as an integer and `r
 Resolution maintains the following state while building the DID document:
 
 * `updates`: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations) and a [BTCR2 Signed Update (data structure)].
+* `scanned_beacons`: a list of [Beacon Addresses][Beacon Address] that [Find Beacon Signals](#find-beacon-signals) scanned (starts empty).
 * `current_document`: the DID document being assembled.
 * `current_version_id`: the version number being processed (starts at `1`).
 * `update_hash_history`: a list of [BTCR2 Unsigned Update] hashes used to detect duplicates.
@@ -40,9 +41,9 @@ The resolver:
 
 1. [Establishes `current_document`](#establish-current-document) from the DID or from [Sidecar Data].
 2. Repeats the following loop:
-    * [Process Beacon Signals](#process-beacon-signals) to populate `updates` from the beacon services in `current_document`.
-    * [Process `updates` Array](#process-updates) to apply updates to `current_document` and refresh `block_confirmations`.
-    * The loop terminates when processing updates resolves `didDocument` or an error occurs.
+    * [Find Beacon Signals](#find-beacon-signals) to add tuples to `updates` from the beacon services in `current_document`.
+    * [Process Next Update](#process-next-update) to apply one update to `current_document` and refresh `block_confirmations`.
+    * The loop terminates when [Process Next Update](#process-next-update) resolves `didDocument` or an error occurs.
 
 The resolver returns:
 
@@ -118,11 +119,16 @@ Render the [Initial DID Document] template with these values (Bitcoin addresses 
 Parse the rendered template as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
 
-## Process Beacon Signals { #process-beacon-signals }
+## Find Beacon Signals { #find-beacon-signals }
 
-Scan the `service` entries in `current_document` ([DID Document (data structure)]) and identify [BTCR2 Beacons][BTCR2 Beacon] by matching service `type` to [Beacons Table 1: Beacon Types]. Parse each beacon `serviceEndpoint` as a [Beacon Address], then use those [Beacon Addresses][Beacon Address] to find Bitcoin transactions whose last output script contains [Signal Bytes].
+Scan the `service` entries in `current_document` ([DID Document (data structure)]) and identify [BTCR2 Beacons][BTCR2 Beacon] by matching service `type` to [Beacons Table 1: Beacon Types]. Parse each beacon `serviceEndpoint` as a [Beacon Address].
 
-Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as [electrs](https://github.com/romanz/electrs) or [Esplora](https://github.com/Blockstream/esplora). Implementations MAY instead traverse blocks from the genesis block. Cache [Beacon Addresses][Beacon Address] to avoid repeated transaction lookups.
+For each [Beacon Address] that is not in `scanned_beacons`:
+
+* Find the Bitcoin transactions that spend from the [Beacon Address] and whose last output script contains [Signal Bytes].
+* Add the [Beacon Address] to `scanned_beacons`.
+
+Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as [electrs](https://github.com/romanz/electrs) or [Esplora](https://github.com/Blockstream/esplora). Implementations MAY instead traverse blocks from the genesis block.
 
 A transaction MUST be included in a Bitcoin block and have at least `resolutionOptions.minConf` confirmations (`6` when not provided). Unconfirmed mempool transactions MUST NOT be processed. [^3]
 
@@ -152,13 +158,13 @@ Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_loo
 Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to retrieve an [SMT Proof (data structure)]. Validate the proof with the [SMT Proof Verification] algorithm. Use `smt_proof.updateId` as `update_hash`.
 
 
-## Process `updates` Array { #process-updates }
+## Process Next Update { #process-next-update }
 
 1. If `resolutionOptions.versionId` is provided and `current_version_id` is equal to the parsed `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
 2. If `updates` is empty or `current_document.deactivated` is `true`:
     * Raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
     * Otherwise, resolve `current_document` as `didDocument`.
-3. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Take the first tuple.
+3. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Remove the first tuple from `updates`.
 4. If `resolutionOptions.versionTime` is provided and the tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`, resolve `current_document` as `didDocument`. [^4]
 5. Set `block_confirmations` to the tuple's block confirmations.
 6. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
