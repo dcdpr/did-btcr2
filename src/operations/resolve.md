@@ -165,7 +165,10 @@ Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to 
     * Raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
     * Otherwise, resolve `current_document` as `didDocument`.
 3. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Remove the first tuple from `updates`.
-4. If `resolutionOptions.versionTime` is provided and the tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`, resolve `current_document` as `didDocument`. [^4]
+4. Resolve `current_document` as `didDocument` if all of the following conditions are true:
+    * The tuple's `targetVersionId` is more than `current_version_id`.
+    * `resolutionOptions.versionTime` is provided.
+    * The tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`. [^4]
 5. Set `block_confirmations` to the tuple's block confirmations.
 6. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 
