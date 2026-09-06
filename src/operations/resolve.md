@@ -31,7 +31,7 @@ When provided, `resolutionOptions.versionId` MUST be parsed as an integer and `r
 Resolution maintains the following state while building the DID document:
 
 * `updates`: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations) and a [BTCR2 Signed Update (data structure)].
-* `scanned_beacons`: a list of [Beacon Addresses][Beacon Address] that [Process Beacon Signals](#process-beacon-signals) scanned (starts empty).
+* `scanned_beacons`: a list of [Beacon Addresses][Beacon Address] that [Find Beacon Signals](#find-beacon-signals) scanned (starts empty).
 * `current_document`: the DID document being assembled.
 * `current_version_id`: the version number being processed (starts at `1`).
 * `update_hash_history`: a list of [BTCR2 Unsigned Update] hashes used to detect duplicates.
@@ -41,9 +41,9 @@ The resolver:
 
 1. [Establishes `current_document`](#establish-current-document) from the DID or from [Sidecar Data].
 2. Repeats the following loop:
-    * [Process Beacon Signals](#process-beacon-signals) to add tuples to `updates` from the beacon services in `current_document`.
-    * [Process `updates` Array](#process-updates) to apply one update to `current_document` and refresh `block_confirmations`.
-    * The loop terminates when processing updates resolves `didDocument` or an error occurs.
+    * [Find Beacon Signals](#find-beacon-signals) to add tuples to `updates` from the beacon services in `current_document`.
+    * [Process Next Update](#process-next-update) to apply one update to `current_document` and refresh `block_confirmations`.
+    * The loop terminates when [Process Next Update](#process-next-update) resolves `didDocument` or an error occurs.
 
 The resolver returns:
 
@@ -119,7 +119,7 @@ Render the [Initial DID Document] template with these values (Bitcoin addresses 
 Parse the rendered template as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
 
-## Process Beacon Signals { #process-beacon-signals }
+## Find Beacon Signals { #find-beacon-signals }
 
 Scan the `service` entries in `current_document` ([DID Document (data structure)]) and identify [BTCR2 Beacons][BTCR2 Beacon] by matching service `type` to [Beacons Table 1: Beacon Types]. Parse each beacon `serviceEndpoint` as a [Beacon Address].
 
@@ -158,7 +158,7 @@ Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_loo
 Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to retrieve an [SMT Proof (data structure)]. Validate the proof with the [SMT Proof Verification] algorithm. Use `smt_proof.updateId` as `update_hash`.
 
 
-## Process `updates` Array { #process-updates }
+## Process Next Update { #process-next-update }
 
 1. If `resolutionOptions.versionId` is provided and `current_version_id` is equal to the parsed `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
 2. If `updates` is empty or `current_document.deactivated` is `true`:
