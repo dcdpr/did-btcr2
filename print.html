@@ -212,7 +212,7 @@
 </tbody></table>
 </div>
 <h2 id="publication-date"><a class="header" href="#publication-date">Publication Date</a></h2>
-<p>11 September 2026</p>
+<p>14 September 2026</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p><a href="https://github.com/dcdpr/did-btcr2/blob/main/LICENSE">Mozilla Public License Version 2.0</a></p>
 <h2 id="copyright"><a class="header" href="#copyright">Copyright</a></h2>
@@ -1959,7 +1959,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 <p>When provided, <code>resolutionOptions.versionId</code> MUST be parsed as an integer and <code>resolutionOptions.versionTime</code> SHOULD be parsed as an XML Datetime. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_OPTIONS</code></a> error if either value does not parse.</p>
 <p>Resolution maintains the following state while building the DID document:</p>
 <ul>
-<li><code>updates</code>: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations) and a <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</li>
+<li><code>updates</code>: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations), a <a href="operations/../terminology.html#beacon-address">Beacon Address</a>, and a <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</li>
 <li><code>scanned_beacons</code>: a list of <a href="operations/../terminology.html#beacon-address">Beacon Addresses</a> that <a href="operations/resolve.html#find-beacon-signals">Find Beacon Signals</a> scanned (starts empty).</li>
 <li><code>current_document</code>: the DID document being assembled.</li>
 <li><code>current_version_id</code>: the version number being processed (starts at <code>1</code>).</li>
@@ -2115,6 +2115,7 @@ Show Template
 <li>Build a tuple with:
 <ul>
 <li>The transaction’s block metadata (height, mediantime, and confirmations).</li>
+<li>The <a href="operations/../terminology.html#beacon-address">Beacon Address</a> of the transaction.</li>
 <li>The <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> retrieved from <code>update_lookup_table[update_hash]</code>.
 <ul>
 <li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>update_hash</code> as described in <a href="operations/../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</li>
@@ -2139,6 +2140,7 @@ Show Template
 </ul>
 </li>
 <li>Sort <code>updates</code> by <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> <code>targetVersionId</code> (ascending) with the tuple’s block height as a tiebreaker. Remove the first tuple from <code>updates</code>.</li>
+<li>If <code>current_document</code> has no <a href="operations/../terminology.html#btcr2-beacon">BTCR2 Beacon</a> with the tuple’s <a href="operations/../terminology.html#beacon-address">Beacon Address</a>, ignore the tuple. Continue with the next tuple.</li>
 <li>Resolve <code>current_document</code> as <code>didDocument</code> if all of the following conditions are true:
 <ul>
 <li>The tuple’s <code>targetVersionId</code> is more than <code>current_version_id</code>. <sup class="footnote-reference" id="fr-4-1"><a href="#footnote-4">4</a></sup></li>
