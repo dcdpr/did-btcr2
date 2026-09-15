@@ -43,7 +43,7 @@ The resolver:
 1. [Establishes `current_document`](#establish-current-document) from the DID or from [Sidecar Data].
 2. Repeats the following loop:
     * [Find Beacon Signals](#find-beacon-signals) to add tuples to `updates` from the beacon services in `current_document`.
-    * [Process Next Update](#process-next-update) to apply one update to `current_document` and refresh `block_confirmations`.
+    * [Process Next Update](#process-next-update) to apply one update to `current_document`.
     * The loop terminates when [Process Next Update](#process-next-update) resolves `didDocument` or an error occurs.
 
 The resolver returns:
@@ -183,8 +183,7 @@ Verify `smt_proof` with the [SMT Proof Verification] algorithm. Raise an [`INVAL
     * The tuple's `targetVersionId` is more than `current_version_id`. [^4]
     * `resolutionOptions.versionTime` is provided.
     * The tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`. [^5]
-6. Set `block_confirmations` to the tuple's block confirmations. Set `current_block_height` to the tuple's block height.
-7. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
+6. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 
 [^4]: This condition is necessary because the resolver accepts a duplicate update ([Confirm Duplicate Update](#confirm-duplicate-update)). The block of a duplicate can be after `versionTime` while the block of a subsequent version is before `versionTime`. Without this condition, the resolver stops at the duplicate and does not apply the subsequent version.
 
@@ -225,6 +224,8 @@ Verify that `current_document` conforms to DID Core v1.1 {{#cite DID-CORE}} and 
 Hash the patched `current_document` with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_UPDATE`] error if the result does not match the decoded `update.targetHash`.
 
 Create `unsigned_update` by removing the `proof` property from `update`, hash it with the [JSON Document Hashing] algorithm, and append the hash to `update_hash_history`. 
+
+Set `block_confirmations` to the tuple's block confirmations. Set `current_block_height` to the tuple's block height.
 
 Increment `current_version_id`.
 
