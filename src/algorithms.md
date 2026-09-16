@@ -142,7 +142,9 @@ Example output:
 
 To verify the inclusion or non-inclusion of a DID in the [SMT Proof], perform the following steps:
 
-Throughout this section, `hash()` denotes SHA-256 {{#cite SHA256}} over a byte sequence. The byte sequence has no length limit. `concat()` (equivalently, the `+` operator) concatenates two 32-byte values into one 64-byte value. `0` denotes 32 zero bytes. `bitAt(i)` of a 32-byte value counts from left to right. `bitAt(0)` is the most significant bit of the first byte. `bitAt(255)` is the least significant bit of the last byte. The `base64url` {{#cite RFC4648}} encoded fields of an [SMT Proof (data structure)] (`id`, `nonce`, `updateId`, `collapsed`, and the entries of `hashes`) MUST be decoded to their raw bytes before being used in any of these operations.
+Throughout this section, `hash()` denotes SHA-256 {{#cite SHA256}} over a byte sequence. The byte sequence has no length limit. `hash(did)` denotes `hash()` over the UTF-8 bytes of the DID string. `concat()` (equivalently, the `+` operator) concatenates two 32-byte values into one 64-byte value. `0` denotes 32 zero bytes.
+
+`bitAt(i)` of a 32-byte value counts from left to right. `bitAt(0)` is the most significant bit of the first byte. `bitAt(255)` is the least significant bit of the last byte. The `base64url` {{#cite RFC4648}} encoded fields of an [SMT Proof (data structure)] (`id`, `nonce`, `updateId`, `collapsed`, and the entries of `hashes`) MUST be decoded to their raw bytes before being used in any of these operations.
 
 Construct a hashed-zero cache. `cachedZero[0]` is the value of an empty leaf and is equal to `hash(0 + 0)`. `cachedZero[n]` is the value of an empty subtree at height `n` and is equal to `hash(cachedZero[n-1] + cachedZero[n-1])`.
 
