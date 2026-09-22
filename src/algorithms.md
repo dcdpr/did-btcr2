@@ -178,6 +178,7 @@ The result of the algorithm MUST be `false` if any of the following conditions a
 * The decoded `collapsed` is not 32 bytes.
 * A decoded entry of `hashes` is not 32 bytes.
 * The number of entries in `hashes` plus the number of `1` bits in `collapsed` is not `256`.
+* A `0` bit of `collapsed` selects an entry of `hashes` that is equal to the cached zero of that level.
 
 The OPTIONAL fields `nonce` and `updateId` of the [SMT Proof (data structure)] select the leaf value of the index of `did`. The DID controller selects the fields for each index and each [Beacon Signal]:
 
@@ -224,7 +225,9 @@ for n in 0..=255 {
   let siblingHash = if proof.collapsed.bitAt(i) == 1 {
     cachedZero[n]
   } else {
-    proof.hashes.pop_front()
+    let siblingHash = proof.hashes.pop_front();
+    if siblingHash == cachedZero[n] { return false; }
+    siblingHash
   };
 
   if index.bitAt(i) == 1 {
