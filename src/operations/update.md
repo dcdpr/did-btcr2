@@ -15,10 +15,10 @@ The update operation has the following function signature:
 ```rust
 fn update(
   didSourceDocument,
-  jsonPatches,
+  jsonPatch,
   targetVersionId,
   verificationMethodId,
-  privateKey,
+  signer,
 ) ->
   signedUpdate
 ```
@@ -26,11 +26,10 @@ fn update(
 Input arguments:
 
 - `didSourceDocument`: The source DID document.
-- `jsonPatches`: An array of JSON patch documents {{#cite RFC6902}} with the changes to be made to the source DID document.
-- `targetVersionId`: The `versionId` of the target DID document that the new [BTCR2 Signed Update] will yield.
+- `jsonPatch`: A single JSON Patch document {{#cite RFC6902}} with the changes to be made to the source DID document. Its wire shape is defined by the `patch` property of the [BTCR2 Unsigned Update (data structure)].
+- `targetVersionId`: The `versionId` that will be returned in the [DID document metadata (data structure)] once the new [BTCR2 Signed Update] is applied.
 - `verificationMethodId`: The `verificationMethod` ID used for signing the [BTCR2 Update].
-- `privateKey`: Private key associated with the `verificationMethodId`.
-  - An implementation MAY use the `verificationMethodId` ID to retrieve the private key from a key material manager.
+- `signer`: A signing interface. The signer receives bytes and returns a Schnorr signature {{#cite BIP340}} for those bytes. The signer makes the signature with the private key for `verificationMethodId`. The signer selects how it holds or reaches that key. An external signer is RECOMMENDED. An implementation that holds the key in its own process is also conformant.
 
 Outputs:
 
@@ -41,21 +40,23 @@ Outputs:
 
 Updating a **did:btcr2** DID document is a matter of constructing a [BTCR2 Signed Update] then announcing that update via one or more [BTCR2 Beacons][BTCR2 Beacon] listed in the DID document. The update announcement process varies depending on the [Beacon Type].
 
-Constructing a [BTCR2 Signed Update] is a two-step process. First, a [BTCR2 Unsigned Update] is constructed. Then the update is signed with a private key to construct the [BTCR2 Signed Update].
+Constructing a [BTCR2 Signed Update] is a two-step process. First, a [BTCR2 Unsigned Update] is constructed. Then the `signer` signs the update to construct the [BTCR2 Signed Update].
 
 
 ## Construct BTCR2 Unsigned Update
 
 This process constructs a [BTCR2 Unsigned Update (data structure)].
 
-Apply all JSON patches in `jsonPatches` to `didSourceDocument` to create `didTargetDocument`. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `didSourceDocument.id`.
+Apply `jsonPatch` to `didSourceDocument` to create `didTargetDocument`. An [`INVALID_DID_UPDATE`] error MUST be raised if `jsonPatch` is malformed or fails to apply. JSON Patch {{#cite RFC6902}} operations are evaluated in order; the first operation that fails, including a failed `test` operation, fails the whole patch. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `didSourceDocument.id`.
 
 Fill the [BTCR2 Unsigned Update (data structure)] template below with the required template variables.
 
-* `array-of-patches`: `jsonPatches` serialized to a JSON string.
+* `array-of-patches`: `jsonPatch` embedded as JSON.
 * `source-hash`: `didSourceDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-hash`: `didTargetDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-version-id`: The value of `targetVersionId`.
+
+`targetVersionId` MUST be derived from the `versionId` returned in the [DID document metadata (data structure)] by a fresh resolution of the DID, rather than from a locally maintained count. Announcing a [BTCR2 Signed Update] whose `targetVersionId` is wrong in either direction can permanently prevent the DID from resolving.
 
 {% set hide_text = `` %}
 {% set btcr2_unsigned_update_template =
@@ -82,16 +83,16 @@ resulting [BTCR2 Unsigned Update (data structure)] MUST be conformant to this sp
 
 This process constructs a [BTCR2 Signed Update (data structure)] from `update`, a [BTCR2 Unsigned Update (data structure)].
 
-An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.verificationMethod` Set does not contain an `id` matching `verificationMethodId`.
+An [`INVALID_DID_UPDATE`] error MUST be raised if no entry of the `didSourceDocument.capabilityInvocation` Set identifies `verificationMethodId`. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the `id` of the object is equal.
 
-An [`INVALID_DID_UPDATE`] error MUST be raised if the `didSourceDocument.capabilityInvocation` Set does not contain `verificationMethodId`.
+If that entry is a reference, find the verification method in the `didSourceDocument.verificationMethod` Set with an `id` that is equal to the reference. An [`INVALID_DID_UPDATE`] error MUST be raised if there is no verification method with that `id`.
 
-Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `privateKey` and `"bip340-jcs-2025"` cryptosuite.
+Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `signer` as the signing interface and the `"bip340-jcs-2025"` cryptosuite.
 
 Fill the Data Integrity {{#cite VC-DATA-INTEGRITY}} template below with the required template variables.
 
 * `verification-method`: The value of `verificationMethodId`.
-* `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}`.
+* `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 
 {% set hide_text = `` %}
 {% set data_integrity_config_template =
@@ -114,6 +115,8 @@ Let `proofConfig` be the result of parsing the rendered template as JSON. The
 resulting [Data Integrity Config (data structure)] MUST be conformant to Verifiable Credentials Data Integrity 1.0 {{#cite VC-DATA-INTEGRITY}}.
 
 Pass `update` and `proofConfig` to the `cryptosuite.createProof` method and set `update.proof` to the resulting [Data Integrity Proof (data structure)].
+
+Implementations SHOULD verify `update.proof` before they announce the update. Use the public key of the verification method that `verificationMethodId` identifies. An announced update with an invalid proof permanently invalidates the DID.
 
 
 ## Announce DID Update

@@ -12,7 +12,7 @@ model defined by the DID core v1.1 specification {{#cite DID-CORE}}.
 Concrete representations of these data structures MUST conform to the JSON-LD 1.1 specification {{#cite JSON-LD}}.
 
 All SHA-256 hashes {{#cite SHA256}} that appear in concrete representations of these data structures
-MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
+MUST be encoded as a string using `"base64url"` {{#cite RFC4648}} encoding without padding.
 
 
 ## DID Document { #did-document }
@@ -23,7 +23,7 @@ DID-CORE}}.
 The following properties MUST be included:
 
 - `@context`: A context array containing the following context URLs:
-  - `"https://www.w3.org/TR/did-1.1"`
+  - `"https://www.w3.org/ns/did/v1.1"`
   - `"https://btcr2.dev/context/v1"`
 - `id`: The `did`.
 
@@ -37,6 +37,14 @@ It can optionally include one or more of the following properties:
 - `service`: An array of service objects.
   - [BTCR2 Beacons][BTCR2 Beacon] are declared as DID services using the service `type` specified in
     [Beacons Table 1: Beacon Types].
+
+Verification method references in this document MAY be relative DID URLs. DID Core v1.1 {{#cite DID-CORE}} permits this. Implementations MUST resolve a relative DID URL against the document `id` before they compare that URL with another reference. [^1]
+
+A resolver parses only one URL in a DID document. That URL is the `serviceEndpoint` of a [BTCR2 Beacon] service, and the resolver parses it as a [Beacon Address]. A resolver MAY treat all other URLs in the document as opaque strings. [^2]
+
+[^1]: When an implementation resolves a relative DID URL against a DID base, the result cannot contain an authority component. The result therefore cannot contain a host. See DID Core v1.1 {{#cite DID-CORE}} for the resolution algorithm and for the components that a relative DID URL can contain.
+
+[^2]: A DID document can contain a URL with a host. Examples are an `alsoKnownAs` value, a service `id`, and the `serviceEndpoint` of a service that is not a [BTCR2 Beacon]. A resolver does not use these values when it builds the update history. A [Beacon Address] is a Bitcoin address and has no host. A resolver that conforms to this specification therefore does not parse a host and does not need IDNA tables. This rule applies to the resolver, and does not change the requirements of DID Core v1.1 {{#cite DID-CORE}} or of a JSON-LD processor {{#cite JSON-LD}}.
 
 In order for this DID document to be updatable, controllers must include at least one
 verification method with a capability invocation verification relationship and at least one
@@ -92,20 +100,26 @@ An [Initial DID Document] is a conformant [DID document (data structure)].
 
 A [BTCR2 Unsigned Update] is a Map data structure with the following properties:
 
-- `@context`: A context array containing the following context URLs:
+SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced using the [JSON Document Hashing] algorithm and MUST be encoded using `"base64url"` {{#cite RFC4648}} encoding without padding.
+
+- `@context`: A context array. It MUST contain exactly the following context URLs, in this order:
+  - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://w3id.org/zcap/v1"`
   - `"https://w3id.org/security/data-integrity/v2"`
-  - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://btcr2.dev/context/v1"`
-- `patch`: A JSON Patch {{#cite RFC6902}} object that defines a set of transformations to be
-  applied to a DID document. The result of applying the patch MUST be a conformant DID document
-  according to the DID core v1.1 specification {{#cite DID-CORE}}.
-- `targetVersionId`: The `versionId` of the DID document after the patch has been applied. The
-  targetVersionId MUST be one more than the `versionId` of the DID document being updated.
-- `sourceHash`: A SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST
-  be produced by the [JSON Document Hashing] algorithm.
-- `targetHash`: A SHA-256 hash of the DID document that results from applying the patch to the
-  source document. The hash MUST be produced by the [JSON Document Hashing] algorithm.
+
+  A change to the membership or the order of this array changes the hash that the [JSON Document Hashing] algorithm produces.
+- `patch`: A single JSON Patch {{#cite RFC6902}} document, i.e., one flat array of JSON Patch
+  operation objects, that defines a set of transformations to be applied to a DID document. The
+  result of applying the patch MUST be a conformant DID document according to the DID core v1.1
+  specification {{#cite DID-CORE}}.
+- `targetVersionId`: The version of the DID document that results from applying the patch, i.e., the
+  `versionId` that will be returned in the [DID document metadata (data structure)] for the updated DID 
+  document. The `targetVersionId` MUST be one more than the integer form of the `versionId` of the DID 
+  document being updated. `versionId` is never a property of the DID document itself, so this requirement 
+  cannot be checked when the update is constructed; it is enforced at resolution time.
+- `sourceHash`: SHA-256 hash of the DID document that the patch MUST be applied to. The hash MUST be produced by the [JSON Document Hashing] algorithm.
+- `targetHash`: SHA-256 hash of the DID document that results from applying the patch to the source document. The hash MUST be produced by the [JSON Document Hashing] algorithm.
 
 {% set hide_text = `` %}
 {% set ex_btcr2_unsigned_update =
@@ -156,16 +170,13 @@ A Data Integrity {{#cite VC-DATA-INTEGRITY}} proof with the `proofPurpose` set t
 
 The following properties MUST be included in the Data Integrity Config:
 
-- `@context`: A context array containing the follow context URLs:
-  - `"https://w3id.org/security/v2"`
-  - `"https://w3id.org/zcap/v1"`
-  - `"https://w3id.org/json-ld-patch/v1"`
-  - `"https://btcr2.dev/context/v1"`
+- `@context`: A context array. It MUST contain the same context URLs, in the same order, as the
+  [BTCR2 Unsigned Update (data structure)] `@context` array.
 - `type`: The string `"DataIntegrityProof"`.
 - `cryptosuite`: The string `"bip340-jcs-2025"`.
 - `verificationMethod`: A valid `verificationMethod` reference that exists in the most recent DID document.
 - `proofPurpose`: The string `"capabilityInvocation"`.
-- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`.
+- `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
 
@@ -192,7 +203,7 @@ A [Data Integrity Proof] with the `proofPurpose` set to `"capabilityInvocation"`
 
 This data structure is a Map data structure with the same properties as [Data Integrity Config (data structure)] and one additional property:
 
-- `proofValue`: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 {{#cite BIP340}}, as a Multibase `"base-58-btc"` {{#cite CID}} encoded string.
+- `proofValue`: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 {{#cite BIP340}}, as a Multibase `"base-58-btc"` {{#cite CONTROLLED-IDENTIFIERS}} encoded string.
 
 {% set hide_text = `` %}
 {% set ex_di_proof =
@@ -223,8 +234,7 @@ The [Sidecar Data] contains optional properties:
   if the DID being resolved has ever had a published [BTCR2 Update].
 - `casUpdates`: OPTIONAL array of [CAS Announcements][CAS Announcement (data structure)]. It is REQUIRED
   if the DID being resolved has used a [CAS Beacon] to publish a [BTCR2 Update].
-- `smtProofs`: OPTIONAL array of [SMT Proofs][SMT Proof (data structure)]. It is REQUIRED
-  if the DID being resolved has used a [SMT Beacon] to publish a [BTCR2 Update].
+- `smtProofs`: OPTIONAL array of [SMT Proofs][SMT Proof (data structure)]. It MUST contain one [SMT Proof (data structure)] for each [Beacon Signal] of an [SMT Beacon] that [Find Beacon Signals](operations/resolve.md#find-beacon-signals) finds. The DID controller keeps each [SMT Proof (data structure)] for the life of the DID.
 
 {% set hide_text = `` %}
 {% set ex_sidecar_data =
@@ -248,20 +258,30 @@ The [Sidecar Data] contains optional properties:
 
 An [SMT Proof] data structure contains the following properties:
 
+SHA-256 hashes {{#cite SHA256}} (`id`, `updateId`, `hashes`) MUST be `"base64url"` {{#cite RFC4648}} encoded without padding.
+
 - `id`: SHA-256 hash of the root node.
-- `nonce`: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using the `"base64url"` {{#cite RFC4648}} encoding.
+- `nonce`: OPTIONAL 256-bit nonce, one for each index in each [Beacon Signal]. MUST be encoded as a string using `"base64url"` {{#cite RFC4648}} encoding without padding. If the DID controller does not have the `nonce`, the [SMT Proof] of that [Beacon Signal] cannot be verified.
 - `updateId`: The OPTIONAL [BTCR2 Signed Update (data structure)] hashed with the [JSON Document Hashing] algorithm.
-- `collapsed`: Bitmap of zero nodes within the path (see: [collapsed leaves](https://github.com/hoytech/quadrable#collapsed-leaves)).
-- `hashes`: Array of SHA-256 hashes representing the sibling [SMT] nodes from the leaf, containing the SHA-256 hash of the [BTCR2 Signed Update] or the "zero identity", to the root.
+- `collapsed`: 256-bit bitmap with one bit for each level of the path from the leaf to the root. A `1` bit identifies a level at which the sibling is an empty subtree. The bit SHOULD be `1` at each of those levels. [Appendix: Optimized Sparse Merkle Tree Implementation] gives the value of an empty subtree. Bit `255` is the leaf level and bit `0` is the root level. Bit `i` is `bitAt(i)` of the decoded value as specified in the [SMT Proof Verification] algorithm. MUST be 32 bytes `"base64url"` {{#cite RFC4648}} encoded without padding. The number of entries in `hashes` plus the number of `1` bits in `collapsed` MUST be `256`.
+- `hashes`: Array of the SHA-256 hashes of the non-empty sibling nodes on the path from the leaf to the root. Each hash MUST be `"base64url"` {{#cite RFC4648}} encoded without padding.
 
 
 {% set hide_text = `` %}
 {% set ex_sidecar_smt_proof =
-`
+'
+An update in nonce mode (`nonce` and `updateId`):
+
 ~~~json
 {{#include example-data/sidecar-smt-proof.json}}
 ~~~
-` %}
+
+No update in no-nonce mode (no `nonce` and no `updateId`, the index is empty):
+
+~~~json
+{{#include example-data/sidecar-smt-proof-empty.json}}
+~~~
+' %}
 
 {{ ui::show_example_tabs(
   group_id="sidecar-smt-proof-example",
@@ -275,12 +295,13 @@ An [SMT Proof] data structure contains the following properties:
 
 ## Resolution Options { #resolution-options }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 Resolution options MAY contain the following properties:
 
 - `versionId`: OPTIONAL ASCII string representation of the specific version of a DID document to be resolved.
-- `versionTime`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID before the specified `versionTime`.
+- `versionTime`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision. The DID document to be resolved is the most recent version of the DID document that was valid for the DID at or before the specified `versionTime`.
+- `minConf`: OPTIONAL positive integer (minimum `1`). The minimum number of Bitcoin block confirmations required on a [Beacon Signal] transaction during resolution. Defaults to `6`.
 - `sidecar`: [Sidecar Data (data structure)].
 
 {% set hide_text = `` %}
@@ -303,12 +324,14 @@ Resolution options MAY contain the following properties:
 
 ## DID Resolution Metadata { #did-resolution-metadata }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 Resolution metadata MAY contain the following properties:
 
-- `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/ld+json"`.
+- `contentType`: OPTIONAL media type of the returned DID document. E.g., `"application/did"`.
 - `error`: REQUIRED if an error occurs during DID resolution.
+
+A **did:btcr2** resolver returning a bare DID document MUST use the media type `"application/did"` {{#cite DID-CORE}}. A resolver returning a full DID resolution result MUST use the media type `"application/did-resolution"` {{#cite DID-RESOLUTION}}. In both cases the `contentType` property records the media type of the DID document itself.
 
 {% set hide_text = `` %}
 {% set ex_did_resolution_metadata =
@@ -330,13 +353,14 @@ Resolution metadata MAY contain the following properties:
 
 ## DID Document Metadata { #did-document-metadata }
 
-This data structure is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+This data structure is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
-Document metadata MAY contain the following properties:
+Document metadata contains the following properties:
 
+- `confirmations`: REQUIRED integer number of confirmations for the Bitcoin block that contains the most recently applied unique update for the resolved DID document. `0` when no [BTCR2 Update] has been applied.
 - `deactivated`: REQUIRED boolean that represents whether the resolved DID document has been deactivated.
 - `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.
-- `versionId`: OPTIONAL ASCII string representation of the version of the last Update operation for the resolved DID document.
+- `versionId`: REQUIRED ASCII string representation of the version of the last Update operation for the resolved DID document. `"1"` when no [BTCR2 Update] has been applied.
 
 {% set hide_text = `` %}
 {% set ex_did_document_metadata =
@@ -385,7 +409,7 @@ A Root Capability is an Object Capability used to authorize updates to a DID doc
 The Root Capability MUST be a map containing only the following properties:
 
 - `@context`: MUST be the context string `"https://w3id.org/zcap/v1"`
-- `id`: MUST be a URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`
+- `id`: MUST be a URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 - `invocationTarget`: MUST be the `did`.
 - `controller`: MUST be the `did`.
 

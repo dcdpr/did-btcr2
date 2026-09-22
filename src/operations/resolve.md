@@ -6,9 +6,9 @@
 
 # Resolve
 
-Resolving a **did:btcr2** identifier iteratively builds a DID document by applying [BTCR2 Updates][BTCR2 Update] to an [Initial DID Document] that have been committed to the Bitcoin blockchain by [Authorized Beacon Signals][Authorized Beacon Signal]. The [Initial DID Document] is either deterministically created from the DID or provided by [Sidecar Data].
+Resolving a **did:btcr2** identifier iteratively builds a DID document by applying [BTCR2 Updates][BTCR2 Update] committed to the Bitcoin blockchain by [Authorized Beacon Signals][Authorized Beacon Signal] to an [Initial DID Document]. The [Initial DID Document] is either deterministically created from the DID or provided by [Sidecar Data].
 
-DID resolution is defined by DID Resolution v0.3 {{#cite DID-RESOLUTION}}.
+DID resolution is defined by DID Resolution v1 {{#cite DID-RESOLUTION}}.
 
 The resolve operation has the following function signature:
 
@@ -22,21 +22,29 @@ fn resolve(did, resolutionOptions) ->
 
 Input values MUST first go through [Decoding the DID](#decode-the-did) and [Processing Sidecar Data](#process-sidecar-data).
 
+Raise an [`INVALID_OPTIONS`] error if `resolutionOptions` contains both `versionId` and `versionTime`. [^1]
+
+[^1]: DID Resolution v1 {{#cite DID-RESOLUTION}} defines the two options as mutually exclusive.
+
+When provided, `resolutionOptions.versionId` MUST be parsed as an integer and `resolutionOptions.versionTime` SHOULD be parsed as an XML Datetime. Raise an [`INVALID_OPTIONS`] error if either value does not parse.
+
 Resolution maintains the following state while building the DID document:
 
-* `updates`: a list of tuples, each containing Bitcoin block metadata (height, time, confirmations) and a [BTCR2 Signed Update (data structure)].
+* `updates`: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations), a [Beacon Address], and a [BTCR2 Signed Update (data structure)].
+* `scanned_beacons`: a list of [Beacon Addresses][Beacon Address] that [Find Beacon Signals](#find-beacon-signals) scanned (starts empty).
 * `current_document`: the DID document being assembled.
 * `current_version_id`: the version number being processed (starts at `1`).
 * `update_hash_history`: a list of [BTCR2 Unsigned Update] hashes used to detect duplicates.
-* `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update.
+* `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at `0`).
+* `current_block_height`: the height of the Bitcoin block that contains the most recently applied update (starts at `0`).
 
 The resolver:
 
 1. [Establishes `current_document`](#establish-current-document) from the DID or from [Sidecar Data].
 2. Repeats the following loop:
-    * [Process Beacon Signals](#process-beacon-signals) to populate `updates` from the beacon services in `current_document`.
-    * [Process `updates` Array](#process-updates) to apply updates to `current_document` and refresh `block_confirmations`.
-    * The loop terminates when processing updates resolves `didDocument` or an error occurs.
+    * [Find Beacon Signals](#find-beacon-signals) to add tuples to `updates` from the beacon services in `current_document`.
+    * [Process Next Update](#process-next-update) to apply one update to `current_document`.
+    * The loop terminates when [Process Next Update](#process-next-update) resolves `didDocument` or an error occurs.
 
 The resolver returns:
 
@@ -44,16 +52,18 @@ The resolver returns:
 * `didDocument`: the final [DID document (data structure)].
 * `didDocumentMetadata`: a [DID document metadata (data structure)] with REQUIRED fields:
   * `versionId`: `current_version_id` as an ASCII string.
-  * `confirmations`: `block_confirmations` as an integer. [^1]
+  * `confirmations`: `block_confirmations` as an integer. [^2]
   * `deactivated`: `current_document.deactivated`.
 
-[^1]: The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. "Unique" refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations.
+[^2]: The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. "Unique" refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations.
+
+If `resolutionOptions` has no `versionId` and no `versionTime`, [Sidecar Data] that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a [Beacon Signal] has less than `minConf` confirmations, or the resolver reads a different chain. It can also show a problem with the [Sidecar Data], for example [Sidecar Data] that is not for `did`. Implementations MAY tell the caller which [Sidecar Data] they did not use.
 
 
 ## Decode the DID { #decode-the-did }
 
 The `did` MUST be parsed with the [DID-BTCR2 Identifier Decoding] algorithm to retrieve `version`,
-`network`, and `genesis_bytes`. An [`INVALID_DID`](../errors.html) error MUST be raised in response to any errors
+`network`, and `genesis_bytes`. An [`INVALID_DID`] error MUST be raised in response to any errors
 raised while decoding.
 
 
@@ -65,7 +75,9 @@ raised while decoding.
 - Hash each [CAS Announcement (data structure)] in `sidecar.casUpdates` with the [JSON Document Hashing] algorithm and build a map from hash to announcement (`cas_lookup_table`).
 - Build a map from `sidecar.smtProofs` keyed by proof `id` (`smt_lookup_table`).
 
-If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID`](../errors.html) error if the computed hash does not match `genesis_bytes`.
+If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. If `sidecar.genesisDocument` is not provided, retrieve it from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`NOT_FOUND`] error if the [Genesis Document] cannot be retrieved. Raise an [`INVALID_DID`] error if the computed hash does not match `genesis_bytes`.
+
+When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
 
 ## Establish `current_document` { #establish-current-document }
@@ -85,10 +97,10 @@ Process the [Genesis Document] provided in `sidecar.genesisDocument` by replacin
 Render the [Initial DID Document] template with these values (Bitcoin addresses MUST use the Bitcoin URI Scheme {{#cite BIP321}}):
 
 * `did`: The `did`.
-* `public-key-multikey`: Public key as a Multibase `"base-58-btc"` {{#cite CID}} encoded string.
+* `public-key-multikey`: Public key as a Multibase `"base-58-btc"` {{#cite CONTROLLED-IDENTIFIERS}} encoded string.
 * `p2pkh-bitcoin-address`: Pay-to-Public-Key-Hash (P2PKH) Bitcoin address produced from the public key.
 * `p2wpkh-bitcoin-address`: Pay-to-Witness-Public-Key-Hash (P2WPKH) Bitcoin address produced from the public key.
-* `p2tr-bitcoin-address`: Pay-to-Taproot Bitcoin address produced from the public key.
+* `p2tr-bitcoin-address`: Pay-to-Taproot (P2TR) Bitcoin address produced from the public key.
 
 {% set hide_text = `` %}
 {% set initial_did_document_template =
@@ -110,48 +122,72 @@ Render the [Initial DID Document] template with these values (Bitcoin addresses 
 Parse the rendered template as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
 
-## Process Beacon Signals { #process-beacon-signals }
+## Find Beacon Signals { #find-beacon-signals }
 
-Scan the `service` entries in `current_document` ([DID Document (data structure)]) and identify [BTCR2 Beacons][BTCR2 Beacon] by matching service `type` to [Beacons Table 1: Beacon Types]. Parse each beacon `serviceEndpoint` as a [Beacon Address], then use those [Beacon Addresses][Beacon Address] to find Bitcoin transactions whose last output script contains [Signal Bytes].
+Scan the `service` entries in `current_document` ([DID Document (data structure)]) and identify [BTCR2 Beacons][BTCR2 Beacon] by matching service `type` to [Beacons Table 1: Beacon Types]. Parse each beacon `serviceEndpoint` as a [Beacon Address].
 
-Implementations are RECOMMENDED to query an indexed Bitcoin blockchain RPC service such as [electrs](https://github.com/romanz/electrs) or [Esplora](https://github.com/Blockstream/esplora). Implementations MAY instead traverse blocks from the genesis block. Cache [Beacon Addresses][Beacon Address] to avoid repeated transaction lookups.
+For each [Beacon Address] that is not in `scanned_beacons`:
+
+* Find the Bitcoin transactions for which all of the following conditions are true:
+    * The transaction spends from the [Beacon Address].
+    * The last output script of the transaction contains [Signal Bytes].
+    * The block height of the transaction is equal to or more than `current_block_height`.
+* Add the [Beacon Address] to `scanned_beacons`.
+
+Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as [electrs](https://github.com/romanz/electrs) or [Esplora](https://github.com/Blockstream/esplora). Implementations MAY instead traverse blocks from the genesis block.
+
+A transaction MUST be included in a Bitcoin block and have at least `resolutionOptions.minConf` confirmations (`6` when not provided). Unconfirmed mempool transactions MUST NOT be processed. [^3]
+
+[^3]: Six confirmations is the widely accepted industry standard for treating a Bitcoin transaction as settled. Resolution requests can raise or lower `minConf` to match their own threat and security model; lowering it increases exposure to Bitcoin block reorganizations, which consumers can evaluate from the returned `confirmations` metadata.
 
 For each transaction found:
 
-* Derive `update_hash` from the transaction's [Signal Bytes] based on the beacon type:
-  * Singleton Beacon: `update_hash` is the [Signal Bytes].
-  * CAS Beacon: use [Process CAS Beacon](#process-cas-beacon).
-  * SMT Beacon: use [Process SMT Beacon](#process-smt-beacon).
+* Derive `update_hash` from the transaction's [Signal Bytes] based on the [Beacon Type]:
+  * [Singleton Beacon]: `update_hash` is the [Signal Bytes].
+  * [CAS Beacon]: use [Process CAS Beacon](#process-cas-beacon).
+  * [SMT Beacon]: use [Process SMT Beacon](#process-smt-beacon).
+* If the [Beacon Signal] announces no update for `did`, do not build a tuple. Continue with the next transaction.
 * Build a tuple with:
-  * The transaction's block metadata (height, time, and confirmations).
+  * The transaction's block metadata (height, mediantime, and confirmations).
+  * The [Beacon Address] of the transaction.
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
-    * If the update is not in `update_lookup_table`, raise a [`MISSING_UPDATE_DATA`] error.
+    * If the update is not in `update_lookup_table`, retrieve it from [CAS] using `update_hash` as described in [BTCR2 Update Data Distribution].
+    * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
+    * The resolver MUST hash the update with the [JSON Document Hashing] algorithm. The resolver MUST compare the hash to `update_hash`. Raise an [`INVALID_SIGNAL_DATA`] error if the two hashes are not equal.
 * Append the tuple to `updates`.
 
 
 ### Process CAS Beacon { #process-cas-beacon }
 
-Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)] and read `update_hash` from the announcement entry keyed by `did`.
+Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)]. If the [CAS Announcement (data structure)] is not in `cas_lookup_table`, retrieve it from [CAS] using `map_update_hash` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_UPDATE_DATA`] error if the announcement is not in `cas_lookup_table` and not available from [CAS]. The announcement is not available from [CAS] if the hash of the retrieved content is not equal to `map_update_hash` ([BTCR2 Update Data Distribution]).
+
+Read `update_hash` from the announcement entry keyed by `did`. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`.
 
 
 ### Process SMT Beacon { #process-smt-beacon }
 
-Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to retrieve an [SMT Proof (data structure)]. Validate the proof with the [SMT Proof Verification] algorithm. Use `smt_proof.updateId` as `update_hash`.
+Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to retrieve an [SMT Proof (data structure)] as `smt_proof`. Raise a [`MISSING_UPDATE_DATA`] error if `smt_lookup_table` has no entry for `smt_root`. Raise an [`INVALID_SIGNAL_DATA`] error if the `id` of `smt_proof` is not equal to `smt_root`.
+
+Verify `smt_proof` with the [SMT Proof Verification] algorithm. Raise an [`INVALID_SIGNAL_DATA`] error if the result of the algorithm is `false`. If `smt_proof` has an `updateId`, use it as `update_hash`. If `smt_proof` has no `updateId`, the [Beacon Signal] announces no update for `did`.
 
 
-## Process `updates` Array { #process-updates }
+## Process Next Update { #process-next-update }
 
-Resolve `current_document` as `didDocument` if `updates` is empty.
+1. If `resolutionOptions.versionId` is provided and `current_version_id` is equal to the parsed `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
+2. If `updates` is empty or `current_document.deactivated` is `true`:
+    * Raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
+    * Otherwise, resolve `current_document` as `didDocument`.
+3. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Remove the first tuple from `updates`.
+4. If `current_document` has no [BTCR2 Beacon] with the tuple's [Beacon Address], ignore the tuple. Continue with the next tuple.
+5. Resolve `current_document` as `didDocument` if all of the following conditions are true:
+    * The tuple's `targetVersionId` is more than `current_version_id`. [^4]
+    * `resolutionOptions.versionTime` is provided.
+    * The tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`. [^5]
+6. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 
-Otherwise:
+[^4]: This condition is necessary because the resolver accepts a duplicate update ([Confirm Duplicate Update](#confirm-duplicate-update)). The block of a duplicate can be after `versionTime` while the block of a subsequent version is before `versionTime`. Without this condition, the resolver stops at the duplicate and does not apply the subsequent version.
 
-1. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Take the first tuple.
-2. Set `block_confirmations` to the tuple's block confirmations.
-3. If `resolutionOptions.versionTime` is provided and the tuple's block time is more recent, resolve `current_document` as `didDocument`.
-4. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
-5. Increment `current_version_id`.
-6. If `current_version_id` is greater than or equal to the integer form of `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
-7. If `current_document.deactivated` is `true`, resolve `current_document` as `didDocument`.
+[^5]: The resolver applies an update whose block `mediantime` is equal to `versionTime`. The comparison has no tolerance. `mediantime` does not decrease from one block to the next. Each resolver reads the same value from the block chain, so each resolver selects the same version.
 
 
 ### Check `update.targetVersionId` { #check-update-version }
@@ -170,6 +206,8 @@ Compare `update.targetVersionId` to `current_version_id`. Only one of three poss
 
 This step confirms that an update with a lower-than-expected `targetVersionId` is a true duplicate.
 
+Raise an [`INVALID_DID_UPDATE`] error if `update.targetVersionId` is less than `2`.
+
 Create `unsigned_update` by removing the `proof` property from `update`. Hash `unsigned_update` with the [JSON Document Hashing] algorithm and compare it to `update_hash_history[update.targetVersionId - 2]`. Raise a [`LATE_PUBLISHING`] error if the hashes differ.
 
 
@@ -179,20 +217,42 @@ Hash `current_document` with the [JSON Document Hashing] algorithm. Raise an [`I
 
 [Check `update.proof`](#check-update-proof).
 
-Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `current_document`.
+Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `current_document`. Raise an [`INVALID_DID_UPDATE`] error if `update.patch` is malformed or fails to apply. JSON Patch operations are evaluated in order; the first operation that fails, including a failed `test` operation, fails the whole patch.
 
 Verify that `current_document` conforms to DID Core v1.1 {{#cite DID-CORE}} and that `current_document.id` equals `did`. Otherwise raise [`INVALID_DID_UPDATE`].
 
 Hash the patched `current_document` with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_UPDATE`] error if the result does not match the decoded `update.targetHash`.
 
-Create `unsigned_update` by removing the `proof` property from `update`, hash it with the [JSON Document Hashing] algorithm, and append the hash to `update_hash_history`.
+Create `unsigned_update` by removing the `proof` property from `update`, hash it with the [JSON Document Hashing] algorithm, and append the hash to `update_hash_history`. 
+
+Set `block_confirmations` to the tuple's block confirmations. Set `current_block_height` to the tuple's block height.
+
+Increment `current_version_id`.
 
 
 ### Check `update.proof` { #check-update-proof }
 
+Raise an [`INVALID_DID_UPDATE`] error if the `@context` of `update` is not the array that the [BTCR2 Unsigned Update (data structure)] specifies. Raise an [`INVALID_DID_UPDATE`] error if the `@context` of `update.proof` is not equal to the `@context` of `update`. Two `@context` arrays are equal when they contain the same context URLs in the same order.
+
+Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are not true:
+
+* `update.proof.proofPurpose` equals `"capabilityInvocation"`.
+* `update.proof.capabilityAction` equals `"Write"`.
+* `update.proof.capability` equals the `capability` URN that [Data Integrity Config (data structure)] specifies for `did`.
+
 Implementations MAY derive a [Root Capability (data structure)] from `update.proof` and invoke it according to Authorization Capabilities for Linked Data v0.3 {{#cite ZCAP-LD}}.
 
-The resolver must locate `publicKeyMultibase` in `current_document.verificationMethod` whose `id` matches `update.proof.verificationMethod`. Otherwise raise [`INVALID_DID_UPDATE`]. Raise the same error if `current_document.capabilityInvocation` does not contain `update.proof.verificationMethod`.
+The resolver MUST find the entry of `current_document.capabilityInvocation` that identifies `update.proof.verificationMethod`. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the `id` of the object is equal. Raise an [`INVALID_DID_UPDATE`] error if no entry identifies it.
+
+Read `publicKeyMultibase` from that entry. When the entry is an embedded verification method object, read `publicKeyMultibase` from the object. When the entry is a reference, find the verification method in `current_document.verificationMethod` with an `id` that is equal to the reference. Read `publicKeyMultibase` from that verification method. Raise an [`INVALID_DID_UPDATE`] error if there is no verification method with that `id`.
+
+If `update.proof.created` or `update.proof.expires` is present, check each value against the Bitcoin block that contains the [Beacon Signal] that announced `update`. [^6] Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true:
+
+* `update.proof.created` is after the timestamp in the block header.
+* `update.proof.expires` is before the block `mediantime` {{#cite Bitcoin-Core}}.
+* `update.proof.expires` is before `update.proof.created`, when both values are present.
+
+[^6]: In Data Integrity {{#cite VC-DATA-INTEGRITY}}, each method selects the time of interest for `created` and `expires`. On mainnet, the timestamp in the block header is approximately one hour later than `mediantime`. A controller signs a proof a short time before the block that contains it, so a check of `created` against `mediantime` rejects valid updates. For this reason, `created` uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change `mediantime`. The `expires` value limits the time between the signature and a replay of the update, so `expires` uses `mediantime`.
 
 Use a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `publicKeyMultibase` and the `"bip340-jcs-2025"` cryptosuite to verify `update`. Raise [`INVALID_DID_UPDATE`] if verification fails.
 

@@ -5,4 +5,5 @@
 {% include "includes/data-structures-links.tera" %}
 {% include "includes/errors-links.tera" %}
 {% include "includes/terminology-links.tera" %}
+{% include "includes/update-data-distribution-links.tera" %}
 {% endmacro %}

@@ -1,0 +1,22 @@
+{
+  "name": "did-btcr2-spec",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tooling for the did:btcr2 DID Method Specification. The specification itself is built with mdbook; this package only regenerates the example corpus in src/example-data.",
+  "scripts": {
+    "examples": "bun gen-examples.ts",
+    "examples:check": "bun gen-examples.ts --check"
+  },
+  "devDependencies": {
+    "@did-btcr2/api": "0.19.2",
+    "@did-btcr2/bitcoin": "0.10.0",
+    "@did-btcr2/common": "9.3.0",
+    "@did-btcr2/keypair": "0.13.1",
+    "@did-btcr2/method": "0.58.0",
+    "@did-btcr2/smt": "0.3.0",
+    "@noble/curves": "1.9.7",
+    "@noble/hashes": "1.8.0",
+    "@scure/btc-signer": "1.8.1"
+  }
+}

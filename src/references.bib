@@ -18,6 +18,17 @@
   abstract = {Bitcoin Core is the reference implementation of the Bitcoin protocol. It is a full node implementation that validates all transactions and blocks according to the Bitcoin consensus rules.}
 }
 
+@misc{BIP173,
+  title = {Base32 address format for native v0-16 witness outputs},
+  author = {Pieter Wuille, Greg Maxwell},
+  howpublished = {Bitcoin Improvement Proposal 173},
+  year = {2017},
+  month = {March},
+  url = {https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki},
+  note = {BIP-0173},
+  abstract = {This document proposes a checksummed base32 format, "Bech32", and a standard for native segregated witness output addresses using it.}
+}
+
 @misc{BIP321,
   title = {URI Scheme},
   author = {Matt Corallo},
@@ -73,14 +84,14 @@
   abstract = {This document defines an improved variant of Bech32 called Bech32m, and amends BIP173 to use Bech32m for native segregated witness outputs of version 1 and later. Bech32 remains in use for segregated witness outputs of version 0.}
 }
 
-@misc{CID,
+@misc{CONTROLLED-IDENTIFIERS,
   title = {Controlled Identifiers v1.0},
   author = {Dave Longley, Manu Sporny, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen},
   howpublished = {Online},
   year = {2025},
   month = {May},
   url = {https://www.w3.org/TR/cid-1.0/},
-  note = {CID},
+  note = {CONTROLLED-IDENTIFIERS},
   abstract = {A controlled identifier document contains cryptographic material and lists service endpoints for the purposes of verifying cryptographic proofs from, and interacting with, the controller of an identifier.}
 }
 
@@ -88,8 +99,8 @@
   title = {Decentralized Identifiers (DIDs) v1.1},
   author = {Manu Sporny, Dave Longley, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen},
   howpublished = {Online},
-  year = {2025},
-  month = {September},
+  year = {2026},
+  month = {March},
   url = {https://www.w3.org/TR/did-1.1/},
   note = {DID-CORE},
   abstract = {Decentralized identifiers (DIDs) are a new type of identifier that enables verifiable, decentralized digital identity. A DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) as determined by the controller of the DID. In contrast to typical, federated identifiers, DIDs have been designed so that they may be decoupled from centralized registries, identity providers, and certificate authorities. Specifically, while other parties might be used to help enable the discovery of information related to a DID, the design enables the controller of a DID to prove control over it without requiring permission from any other party. DIDs are URIs that associate a DID subject with a DID document allowing trustable interactions associated with that subject.
@@ -100,16 +111,25 @@ This document specifies the DID syntax, a common data model, core properties, se
 }
 
 @misc{DID-RESOLUTION,
-  title = {Decentralized Identifier Resolution (DID Resolution) v0.3},
-  author = {Markus Sabadello, Dmitri Zagidulin},
+  title = {Decentralized Identifier Resolution (DID Resolution) v1},
+  author = {Stephen Curran, Joe Andrieu},
   howpublished = {Online},
-  year = {2025},
-  month = {September},
-  url = {https://www.w3.org/TR/did-resolution},
+  year = {2026},
+  month = {August},
+  url = {https://www.w3.org/TR/did-resolution-1.0/},
   note = {DID-RESOLUTION},
-  abstract = {Decentralized identifiers (DIDs) are a new type of identifier for verifiable, "self-sovereign" digital identity. DIDs are fully under the control of the DID controller, independent from any centralized registry, identity provider, or certificate authority. DIDs resolve to DID Documents — simple documents that describe how to use that specific DID.
+  abstract = {Decentralized identifier (DID) resolution is the process of obtaining a DID document and accompanying metadata for a specific DID. The process takes a DID and a set of resolution options as its input and returns a DID document and associated metadata about the resolved document and the resolution request. A resolved DID document is a set of information which enables cryptographically verifiable interactions with the DID subject, including mechanisms such as cryptographic public keys. This specification covers the algorithms and guidelines to be used for DID resolution and relies on the core DID specification, Decentralized Identifiers (DIDs) v1.0, which describes the underlying DID architecture in full detail.}
+}
 
-This document specifies the algorithms and guidelines for resolving DIDs and dereferencing DID URLs. Additionally, this document describes the input and output metadata related to the DID resolution processes and further describes the data structures that may be returned from a DID resolution request. This document relies on the core DID specification, Decentralized Identifiers (DIDs) v1.1, which describes the underlying DID architecture in full detail.}
+@misc{ECMA-262,
+  title = {ECMAScript 2025 Language Specification},
+  author = {Ecma International},
+  howpublished = {Standard ECMA-262, 16th Edition},
+  year = {2025},
+  month = {June},
+  url = {https://262.ecma-international.org/16.0/index.html},
+  note = {ECMA-262},
+  abstract = {ECMA-262, 16th Edition (ECMAScript 2025) defines the ECMAScript general-purpose programming language, including the URI handling functions encodeURIComponent() and decodeURIComponent() that escape and unescape components of Uniform Resource Identifiers.}
 }
 
 @misc{JSON-LD,

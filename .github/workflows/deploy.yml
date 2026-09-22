@@ -43,6 +43,11 @@ jobs:
           git: 'https://github.com/stevecheckoway/mdbook-tera'
           rev: 'cdb9d902b714a5efa5a025a7d263e0924eb4d4d4'
 
+      - name: Stamp the publication date
+        run: |
+          printf 'publication_date = "%s"\n' \
+            "$(git log -1 --format=%cd --date=format:'%-d %B %Y')" > src/context.toml
+
       - name: Build
         run: mdbook build
 

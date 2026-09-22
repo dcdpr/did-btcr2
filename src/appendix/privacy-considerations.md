@@ -13,7 +13,7 @@
 
 ### DID Documents Can Be Private
 
-Since updates to DID documents are NOT REQUIRED to be public, neither are **did:btcr2** DID documents. A **did:btcr2** DID document is an initial document plus a series of updates to that DID document. To keep the DID document fully private, the DID controller can choose to use an externally resolved initial **did:btcr2** and not place the initial DID document on a [Content Addressable Storage] (CAS) system such as the InterPlanetary File System (IPFS). The initial DID document can be provided at Resolution Time through a [Sidecar] mechanism along with the collection of [BTCR2 Updates][BTCR2 Update] that can be verified against the relevant [Beacon Signals][Beacon Signal] for the DID being resolved.
+Since updates to DID documents are NOT REQUIRED to be public, neither are **did:btcr2** DID documents. A **did:btcr2** DID document is an initial document plus a series of updates to that DID document. To keep the DID document fully private, the DID controller can choose to use an externally resolved initial **did:btcr2** identifier and not place the initial DID document on a [Content Addressable Storage] (CAS) system such as the InterPlanetary File System (IPFS). The initial DID document can be provided at Resolution Time through a [Sidecar] mechanism along with the collection of [BTCR2 Updates][BTCR2 Update] that can be verified against the relevant [Beacon Signals][Beacon Signal] for the DID being resolved.
 
 ### Offline DID Creation
 

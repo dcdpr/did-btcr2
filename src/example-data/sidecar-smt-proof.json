@@ -1,11 +1,10 @@
 {
-  "id": "<< Hexadecimal of Root Hash >>",
-  "nonce": "<< Hexadecimal of Nonce 1101 >>",
-  "updateId": "<< Hexadecimal of hash(Data Block 1101) >>",
-  "collapsed": "<< Hexadecimal of 0001 >>",
+  "id": "208Pec071gcHsI7YXsaVCo5FsXDk6PDWIJtsziVdAfw",
+  "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
+  "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
+  "collapsed": "P_________________________________________8",
   "hashes": [
-      "<< Hexadecimal of Hash 1110 >>",
-      "<< Hexadecimal of Hash 1001 >>",
-      "<< Hexadecimal of Hash 0 >>"
+    "VMJ9bwgtPMaW6FuopXGELydi7GyVTvamRijYHgvBuuA",
+    "ht6kU4sez9-FhMWICitpg-Mnzf1ICfZuKSnmBL1pc8E"
   ]
 }
