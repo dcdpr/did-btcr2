@@ -678,8 +678,7 @@ identifiers with <code>x</code> HRP.</li>
 if the DID being resolved has ever had a published <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
 <li><code>casUpdates</code>: OPTIONAL array of <a href="./data-structures.html#cas-announcement">CAS Announcements</a>. It is REQUIRED
 if the DID being resolved has used a <a href="./terminology.html#cas-beacon">CAS Beacon</a> to publish a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
-<li><code>smtProofs</code>: OPTIONAL array of <a href="./data-structures.html#smt-proof">SMT Proofs</a>. It is REQUIRED
-if the DID being resolved has used a <a href="./terminology.html#smt-beacon">SMT Beacon</a> to publish a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
+<li><code>smtProofs</code>: OPTIONAL array of <a href="./data-structures.html#smt-proof">SMT Proofs</a>. It MUST contain one <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> for each <a href="./terminology.html#beacon-signal">Beacon Signal</a> of an <a href="./terminology.html#smt-beacon">SMT Beacon</a> that <a href="operations/resolve.html#find-beacon-signals">Find Beacon Signals</a> finds. The DID controller keeps each <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> for the life of the DID.</li>
 </ul>
 <div class="tabs" id="sidecar-data-example">
   <div class="tablist" role="tablist" aria-label="sidecar-data-example">
@@ -879,12 +878,21 @@ Show Example
   ],
   "smtProofs": [
     {
-      "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+      "id": "208Pec071gcHsI7YXsaVCo5FsXDk6PDWIJtsziVdAfw",
       "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
       "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
-      "collapsed": "__________________________________________4",
+      "collapsed": "P_________________________________________8",
       "hashes": [
-        "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
+        "VMJ9bwgtPMaW6FuopXGELydi7GyVTvamRijYHgvBuuA",
+        "ht6kU4sez9-FhMWICitpg-Mnzf1ICfZuKSnmBL1pc8E"
+      ]
+    },
+    {
+      "id": "mLwEScugPDRUPsuy_EnGqOIcQkpKbFPXR8mhvBxtmxc",
+      "collapsed": "P_________________________________________8",
+      "hashes": [
+        "6MoensHkmr2EXPgtglcHDj7FbEIJ_zF_A4h4wjeYunw",
+        "QZXS6IWNhC43TFCrVwyIxIhdXTc3zQUELl7JUyihAsU"
       ]
     }
   ]
@@ -897,10 +905,10 @@ Show Example
 <p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>id</code>, <code>updateId</code>, <code>hashes</code>) MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</p>
 <ul>
 <li><code>id</code>: SHA-256 hash of the root node.</li>
-<li><code>nonce</code>: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</li>
+<li><code>nonce</code>: OPTIONAL 256-bit nonce, one for each index in each <a href="./terminology.html#beacon-signal">Beacon Signal</a>. MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding. If the DID controller does not have the <code>nonce</code>, the <a href="./terminology.html#smt-proof">SMT Proof</a> of that <a href="./terminology.html#beacon-signal">Beacon Signal</a> cannot be verified.</li>
 <li><code>updateId</code>: The OPTIONAL <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
-<li><code>collapsed</code>: Bitmap of zero nodes within the path (see: <a href="https://github.com/hoytech/quadrable#collapsed-leaves">collapsed leaves</a>). MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
-<li><code>hashes</code>: Array of SHA-256 hashes representing the sibling <a href="./terminology.html#smt">SMT</a> nodes from the leaf, containing the SHA-256 hash of the <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> or the “zero identity”, to the root. Each hash MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
+<li><code>collapsed</code>: 256-bit bitmap with one bit for each level of the path from the leaf to the root. A <code>1</code> bit identifies a level at which the sibling is an empty subtree. The bit SHOULD be <code>1</code> at each of those levels. <a href="./appendix/optimized-smt.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> gives the value of an empty subtree. Bit <code>255</code> is the leaf level and bit <code>0</code> is the root level. Bit <code>i</code> is <code>bitAt(i)</code> of the decoded value as specified in the <a href="./algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. MUST be 32 bytes <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding. The number of entries in <code>hashes</code> plus the number of <code>1</code> bits in <code>collapsed</code> MUST be <code>256</code>.</li>
+<li><code>hashes</code>: Array of the SHA-256 hashes of the non-empty sibling nodes on the path from the leaf to the root. Each hash MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
 </ul>
 <div class="tabs" id="sidecar-smt-proof-example">
   <div class="tablist" role="tablist" aria-label="sidecar-smt-proof-example">
@@ -932,13 +940,25 @@ Show Example
            aria-labelledby="sidecar-smt-proof-example-tab-show"
            hidden>
     <label>Show Example</label>
+<p>An update in nonce mode (<code>nonce</code> and <code>updateId</code>):</p>
 <pre><code class="language-json">{
-  "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+  "id": "208Pec071gcHsI7YXsaVCo5FsXDk6PDWIJtsziVdAfw",
   "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
   "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
-  "collapsed": "__________________________________________4",
+  "collapsed": "P_________________________________________8",
   "hashes": [
-    "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
+    "VMJ9bwgtPMaW6FuopXGELydi7GyVTvamRijYHgvBuuA",
+    "ht6kU4sez9-FhMWICitpg-Mnzf1ICfZuKSnmBL1pc8E"
+  ]
+}
+</code></pre>
+<p>No update in no-nonce mode (no <code>nonce</code> and no <code>updateId</code>, the index is empty):</p>
+<pre><code class="language-json">{
+  "id": "mLwEScugPDRUPsuy_EnGqOIcQkpKbFPXR8mhvBxtmxc",
+  "collapsed": "P_________________________________________8",
+  "hashes": [
+    "6MoensHkmr2EXPgtglcHDj7FbEIJ_zF_A4h4wjeYunw",
+    "QZXS6IWNhC43TFCrVwyIxIhdXTc3zQUELl7JUyihAsU"
   ]
 }
 </code></pre>
@@ -1154,12 +1174,21 @@ Show Example
     ],
     "smtProofs": [
       {
-        "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+        "id": "208Pec071gcHsI7YXsaVCo5FsXDk6PDWIJtsziVdAfw",
         "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
         "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
-        "collapsed": "__________________________________________4",
+        "collapsed": "P_________________________________________8",
         "hashes": [
-          "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
+          "VMJ9bwgtPMaW6FuopXGELydi7GyVTvamRijYHgvBuuA",
+          "ht6kU4sez9-FhMWICitpg-Mnzf1ICfZuKSnmBL1pc8E"
+        ]
+      },
+      {
+        "id": "mLwEScugPDRUPsuy_EnGqOIcQkpKbFPXR8mhvBxtmxc",
+        "collapsed": "P_________________________________________8",
+        "hashes": [
+          "6MoensHkmr2EXPgtglcHDj7FbEIJ_zF_A4h4wjeYunw",
+          "QZXS6IWNhC43TFCrVwyIxIhdXTc3zQUELl7JUyihAsU"
         ]
       }
     ]

@@ -200,6 +200,7 @@
 <li><code>current_version_id</code>: the version number being processed (starts at <code>1</code>).</li>
 <li><code>update_hash_history</code>: a list of <a href="../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> hashes used to detect duplicates.</li>
 <li><code>block_confirmations</code>: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at <code>0</code>).</li>
+<li><code>current_block_height</code>: the height of the Bitcoin block that contains the most recently applied update (starts at <code>0</code>).</li>
 </ul>
 <p>The resolver:</p>
 <ol>
@@ -207,7 +208,7 @@
 <li>Repeats the following loop:
 <ul>
 <li><a href="#find-beacon-signals">Find Beacon Signals</a> to add tuples to <code>updates</code> from the beacon services in <code>current_document</code>.</li>
-<li><a href="#process-next-update">Process Next Update</a> to apply one update to <code>current_document</code> and refresh <code>block_confirmations</code>.</li>
+<li><a href="#process-next-update">Process Next Update</a> to apply one update to <code>current_document</code>.</li>
 <li>The loop terminates when <a href="#process-next-update">Process Next Update</a> resolves <code>didDocument</code> or an error occurs.</li>
 </ul>
 </li>
@@ -224,6 +225,7 @@
 </ul>
 </li>
 </ul>
+<p>If <code>resolutionOptions</code> has no <code>versionId</code> and no <code>versionTime</code>, <a href="../terminology.html#sidecar-data">Sidecar Data</a> that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a <a href="../terminology.html#beacon-signal">Beacon Signal</a> has less than <code>minConf</code> confirmations, or the resolver reads a different chain. It can also show a problem with the <a href="../terminology.html#sidecar-data">Sidecar Data</a>, for example <a href="../terminology.html#sidecar-data">Sidecar Data</a> that is not for <code>did</code>. Implementations MAY tell the caller which <a href="../terminology.html#sidecar-data">Sidecar Data</a> they did not use.</p>
 <h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
 <p>The <code>did</code> MUST be parsed with the <a href="../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
 <code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
@@ -333,7 +335,13 @@ Show Template
 <p>Scan the <code>service</code> entries in <code>current_document</code> (<a href="../data-structures.html#did-document">DID Document (data structure)</a>) and identify <a href="../terminology.html#btcr2-beacon">BTCR2 Beacons</a> by matching service <code>type</code> to <a href="../beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>. Parse each beacon <code>serviceEndpoint</code> as a <a href="../terminology.html#beacon-address">Beacon Address</a>.</p>
 <p>For each <a href="../terminology.html#beacon-address">Beacon Address</a> that is not in <code>scanned_beacons</code>:</p>
 <ul>
-<li>Find the Bitcoin transactions that spend from the <a href="../terminology.html#beacon-address">Beacon Address</a> and whose last output script contains <a href="../terminology.html#signal-bytes">Signal Bytes</a>.</li>
+<li>Find the Bitcoin transactions for which all of the following conditions are true:
+<ul>
+<li>The transaction spends from the <a href="../terminology.html#beacon-address">Beacon Address</a>.</li>
+<li>The last output script of the transaction contains <a href="../terminology.html#signal-bytes">Signal Bytes</a>.</li>
+<li>The block height of the transaction is equal to or more than <code>current_block_height</code>.</li>
+</ul>
+</li>
 <li>Add the <a href="../terminology.html#beacon-address">Beacon Address</a> to <code>scanned_beacons</code>.</li>
 </ul>
 <p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block.</p>
@@ -347,6 +355,7 @@ Show Template
 <li><a href="../terminology.html#smt-beacon">SMT Beacon</a>: use <a href="#process-smt-beacon">Process SMT Beacon</a>.</li>
 </ul>
 </li>
+<li>If the <a href="../terminology.html#beacon-signal">Beacon Signal</a> announces no update for <code>did</code>, do not build a tuple. Continue with the next transaction.</li>
 <li>Build a tuple with:
 <ul>
 <li>The transaction’s block metadata (height, mediantime, and confirmations).</li>
@@ -355,6 +364,7 @@ Show Template
 <ul>
 <li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>update_hash</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</li>
 <li>Raise a <a href="../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the update is not available from either source.</li>
+<li>The resolver MUST hash the update with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. The resolver MUST compare the hash to <code>update_hash</code>. Raise an <a href="../errors.html#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the two hashes are not equal.</li>
 </ul>
 </li>
 </ul>
@@ -362,9 +372,11 @@ Show Template
 <li>Append the tuple to <code>updates</code>.</li>
 </ul>
 <h3 id="process-cas-beacon"><a class="header" href="#process-cas-beacon">Process CAS Beacon</a></h3>
-<p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>map_update_hash</code>. Look up <code>map_update_hash</code> in <code>cas_lookup_table</code> to retrieve a <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> and read <code>update_hash</code> from the announcement entry keyed by <code>did</code>. If the <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> is not in <code>cas_lookup_table</code>, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>map_update_hash</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</p>
+<p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>map_update_hash</code>. Look up <code>map_update_hash</code> in <code>cas_lookup_table</code> to retrieve a <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a>. If the <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> is not in <code>cas_lookup_table</code>, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>map_update_hash</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>. Raise a <a href="../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the announcement is not in <code>cas_lookup_table</code> and not available from <a href="../terminology.html#cas">CAS</a>. The announcement is not available from <a href="../terminology.html#cas">CAS</a> if the hash of the retrieved content is not equal to <code>map_update_hash</code> (<a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>).</p>
+<p>Read <code>update_hash</code> from the announcement entry keyed by <code>did</code>. If the announcement has no entry for <code>did</code>, the <a href="../terminology.html#beacon-signal">Beacon Signal</a> announces no update for <code>did</code>.</p>
 <h3 id="process-smt-beacon"><a class="header" href="#process-smt-beacon">Process SMT Beacon</a></h3>
-<p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="../data-structures.html#smt-proof">SMT Proof (data structure)</a>. Validate the proof with the <a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Use <code>smt_proof.updateId</code> as <code>update_hash</code>.</p>
+<p>Treat <a href="../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="../data-structures.html#smt-proof">SMT Proof (data structure)</a> as <code>smt_proof</code>. Raise a <a href="../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if <code>smt_lookup_table</code> has no entry for <code>smt_root</code>. Raise an <a href="../errors.html#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the <code>id</code> of <code>smt_proof</code> is not equal to <code>smt_root</code>.</p>
+<p>Verify <code>smt_proof</code> with the <a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Raise an <a href="../errors.html#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the result of the algorithm is <code>false</code>. If <code>smt_proof</code> has an <code>updateId</code>, use it as <code>update_hash</code>. If <code>smt_proof</code> has no <code>updateId</code>, the <a href="../terminology.html#beacon-signal">Beacon Signal</a> announces no update for <code>did</code>.</p>
 <h2 id="process-next-update"><a class="header" href="#process-next-update">Process Next Update</a></h2>
 <ol>
 <li>If <code>resolutionOptions.versionId</code> is provided and <code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
@@ -383,7 +395,6 @@ Show Template
 <li>The tuple’s block <code>mediantime</code> [<a href="../bibliography.html#Bitcoin-Core">Bitcoin-Core</a>] is after <code>resolutionOptions.versionTime</code>. <sup class="footnote-reference" id="fr-5-1"><a href="#footnote-5">5</a></sup></li>
 </ul>
 </li>
-<li>Set <code>block_confirmations</code> to the tuple’s block confirmations.</li>
 <li>Set <code>update</code> to the tuple’s <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> and <a href="#check-update-version">check <code>update.targetVersionId</code></a>.</li>
 </ol>
 <h3 id="check-update-version"><a class="header" href="#check-update-version">Check <code>update.targetVersionId</code></a></h3>
@@ -416,6 +427,7 @@ Show Template
 <p>Verify that <code>current_document</code> conforms to DID Core v1.1 [<a href="../bibliography.html#DID-CORE">DID-CORE</a>] and that <code>current_document.id</code> equals <code>did</code>. Otherwise raise <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a>.</p>
 <p>Hash the patched <code>current_document</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the result does not match the decoded <code>update.targetHash</code>.</p>
 <p>Create <code>unsigned_update</code> by removing the <code>proof</code> property from <code>update</code>, hash it with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm, and append the hash to <code>update_hash_history</code>.</p>
+<p>Set <code>block_confirmations</code> to the tuple’s block confirmations. Set <code>current_block_height</code> to the tuple’s block height.</p>
 <p>Increment <code>current_version_id</code>.</p>
 <h3 id="check-update-proof"><a class="header" href="#check-update-proof">Check <code>update.proof</code></a></h3>
 <p>Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the <code>@context</code> of <code>update</code> is not the array that the <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> specifies. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the <code>@context</code> of <code>update.proof</code> is not equal to the <code>@context</code> of <code>update</code>. Two <code>@context</code> arrays are equal when they contain the same context URLs in the same order.</p>

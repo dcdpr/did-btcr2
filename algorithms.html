@@ -329,8 +329,9 @@ Show Example
 </ul>
 <h2 id="smt-proof-verification"><a class="header" href="#smt-proof-verification">SMT Proof Verification</a></h2>
 <p>To verify the inclusion or non-inclusion of a DID in the <a href="./terminology.html#smt-proof">SMT Proof</a>, perform the following steps:</p>
-<p>Throughout this section, <code>hash()</code> denotes SHA-256 [<a href="bibliography.html#SHA256">SHA256</a>] over a byte array, and <code>concat()</code> (equivalently, the <code>+</code> operator) concatenates byte arrays, not strings. The <code>base64url</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded fields of an <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) MUST be decoded to their raw bytes before being used in any of these operations.</p>
-<p>Construct a hashed-zero cache. Two zero leaves are hashed together by concatenating the value <code>0</code> with itself for the bottom level, and then hashed again with its next sibling, also itself, at each level up the tree. Each computed hash value can be cached in an array.</p>
+<p>Throughout this section, <code>hash()</code> denotes SHA-256 [<a href="bibliography.html#SHA256">SHA256</a>] over a byte sequence. The byte sequence has no length limit. <code>hash(did)</code> denotes <code>hash()</code> over the UTF-8 bytes of the DID string. <code>concat()</code> (equivalently, the <code>+</code> operator) concatenates two 32-byte values into one 64-byte value. <code>0</code> denotes 32 zero bytes.</p>
+<p><code>bitAt(i)</code> of a 32-byte value counts from left to right. <code>bitAt(0)</code> is the most significant bit of the first byte. <code>bitAt(255)</code> is the least significant bit of the last byte. The <code>base64url</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded fields of an <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) MUST be decoded to their raw bytes before being used in any of these operations.</p>
+<p>Construct a hashed-zero cache. <code>cachedZero[0]</code> is the value of an empty leaf and is equal to <code>hash(0 + 0)</code>. <code>cachedZero[n]</code> is the value of an empty subtree at height <code>n</code> and is equal to <code>hash(cachedZero[n-1] + cachedZero[n-1])</code>.</p>
 <div class="tabs" id="construct_hashed_zero_cache">
   <div class="tablist" role="tablist" aria-label="construct_hashed_zero_cache">
     <button role="tab"
@@ -362,7 +363,7 @@ Show Pseudocode
            hidden>
     <label>Show Pseudocode</label>
 <pre><code class="language-rust">let cachedZero = [];
-let z = 0;
+let z = 0;  // 32 zero bytes
 
 for n in 0..=255 {
   z = hash(concat(z, z));
@@ -370,8 +371,22 @@ for n in 0..=255 {
 }</code></pre>
   </section>
 </div>
-<p>The <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> is verified by walking the tree starting from the leaf node value — given by <code>hash(hash(proof.nonce) + proof.updateId)</code> for update inclusion or <code>hash(hash(proof.nonce))</code> for non-inclusion — to the root <code>proof.id</code>. Walking the tree means hashing sibling hashes from <code>proof.hashes</code> concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by <code>hash(did)</code>) informs the algorithm which side of the concatenation operation the sibling hash belongs on: 0 for left, 1 for right.</p>
-<p>The tree is “optimized” by collapsing empty nodes. (See <a href="./appendix.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> for definition of “optimized”.) Each bit within <code>proof.collapsed</code> informs the algorithm whether to take the next sibling hash from <code>proof.hashes</code> (0) or use a hashed zero from the current height of the tree (1).</p>
+<p>The result of the algorithm MUST be <code>false</code> if any of the following conditions are true:</p>
+<ul>
+<li>The proof has an <code>updateId</code>, and the decoded <code>updateId</code> is not 32 bytes.</li>
+<li>The decoded <code>collapsed</code> is not 32 bytes.</li>
+<li>A decoded entry of <code>hashes</code> is not 32 bytes.</li>
+<li>The number of entries in <code>hashes</code> plus the number of <code>1</code> bits in <code>collapsed</code> is not <code>256</code>.</li>
+</ul>
+<p>The OPTIONAL fields <code>nonce</code> and <code>updateId</code> of the <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> select the leaf value of the index of <code>did</code>. The DID controller selects the fields for each index and each <a href="./terminology.html#beacon-signal">Beacon Signal</a>:</p>
+<ul>
+<li><code>nonce</code> and <code>updateId</code>: <code>hash(hash(nonce) + updateId)</code>. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces the update.</li>
+<li><code>nonce</code> only: <code>hash(hash(nonce))</code>. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces no update.</li>
+<li><code>updateId</code> only: <code>updateId</code>. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces the update.</li>
+<li>No <code>nonce</code> and no <code>updateId</code>: <code>cachedZero[0]</code>, the value of an empty leaf. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces no update, and the index is empty.</li>
+</ul>
+<p>The <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> is verified by walking the tree starting from the leaf value to the root <code>proof.id</code>. Walking the tree means hashing sibling hashes from <code>proof.hashes</code> concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by <code>hash(did)</code>) selects the side of the candidate hash: <code>0</code> for left, <code>1</code> for right. The sibling hash is on the other side. The walk starts at the leaf with <code>bitAt(255)</code> and stops at the root with <code>bitAt(0)</code>.</p>
+<p>The tree is “optimized” by collapsing empty nodes. (See <a href="./appendix/optimized-smt.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> for definition of “optimized”.) Each bit within <code>proof.collapsed</code> informs the algorithm whether to take the next sibling hash from <code>proof.hashes</code> (0) or use a hashed zero from the current height of the tree (1).</p>
 <p>The last step is asserting that the computed candidate hash is equivalent to <code>proof.id</code> (the Merkle root).</p>
 <div class="tabs" id="pseudocode_smt_proof_verification">
   <div class="tablist" role="tablist" aria-label="pseudocode_smt_proof_verification">
@@ -403,14 +418,28 @@ Show Pseudocode
            aria-labelledby="pseudocode_smt_proof_verification-tab-show"
            hidden>
     <label>Show Pseudocode</label>
-<pre><code class="language-rust">let candidateHash = if let Some(updateId) = proof.updateId {
-  hash(concat(hash(proof.nonce), updateId))
-} else {
-  hash(hash(proof.nonce))
+<pre><code class="language-rust">if let Some(updateId) = proof.updateId {
+  if updateId.len() != 32 { return false; }
+}
+if proof.collapsed.len() != 32 { return false; }
+for siblingHash in &amp;proof.hashes {
+  if siblingHash.len() != 32 { return false; }
+}
+if proof.hashes.len() + proof.collapsed.count_ones() != 256 {
+  return false;
+}
+
+let candidateHash = match (proof.nonce, proof.updateId) {
+  (Some(nonce), Some(updateId)) =&gt; hash(concat(hash(nonce), updateId)),  // update, private
+  (Some(nonce), None)           =&gt; hash(hash(nonce)),                    // no update, private
+  (None,        Some(updateId)) =&gt; updateId,                             // update, public
+  (None,        None)           =&gt; cachedZero[0],                        // empty index
 };
 
 let index = hash(did);
 
+// bitAt(i): bit i, counted from left to right over the 32 bytes.
+// n = 0 is the leaf level (i = 255), n = 255 is the root level (i = 0).
 for n in 0..=255 {
   let i = 255 - n;
 

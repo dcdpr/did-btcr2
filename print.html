@@ -212,7 +212,7 @@
 </tbody></table>
 </div>
 <h2 id="publication-date"><a class="header" href="#publication-date">Publication Date</a></h2>
-<p>14 September 2026</p>
+<p>22 September 2026</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p><a href="https://github.com/dcdpr/did-btcr2/blob/main/LICENSE">Mozilla Public License Version 2.0</a></p>
 <h2 id="copyright"><a class="header" href="#copyright">Copyright</a></h2>
@@ -567,7 +567,7 @@ Show Example
 IPFS CIDv1 and requesting the file from an IPFS node.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="beacons"><a class="header" href="#beacons">Beacons</a></h1>
 <p>A <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> is a service listed in a BTCR2 DID document that informs resolvers how to find authentic updates to the DID. The service properties define a Bitcoin address to watch for <a href="./terminology.html#beacon-signal">Beacon Signals</a>.</p>
-<p>All <a href="./terminology.html#beacon-signal">Beacon Signals</a> broadcast from a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> in the <a href="./terminology.html#current-did-document">Current DID Document</a> MUST be processed as part of DID document resolution. The <a href="./terminology.html#beacon-type">Beacon Type</a> in the service defines how <a href="./terminology.html#beacon-signal">Beacon Signals</a> MUST be processed.</p>
+<p>The resolver MUST process each <a href="./terminology.html#beacon-signal">Beacon Signal</a> that <a href="operations/resolve.html#find-beacon-signals">Find Beacon Signals</a> finds for the <a href="./terminology.html#current-did-document">Current DID Document</a>. The <a href="./terminology.html#beacon-type">Beacon Type</a> in the service defines how <a href="./terminology.html#beacon-signal">Beacon Signals</a> MUST be processed.</p>
 <p>Any on-chain <a href="./terminology.html#beacon-signal">Beacon Signal</a> that cannot be processed renders the related DID invalid. For this reason, all DID controllers SHOULD ensure the <a href="./terminology.html#beacon-address">Beacon Addresses</a> they include in their DID document require appropriate approval to spend <a href="./terminology.html#utxo">UTXOs</a> controlled by the address, so that only approved <a href="./terminology.html#beacon-signal">Beacon Signals</a> can be posted to Bitcoin. For resilience, BTCR2 DIDs can specify any number of <a href="./terminology.html#btcr2-beacon">Beacons</a> and SHOULD include at least one <a href="./terminology.html#singleton-beacon">Singleton Beacon</a> as a fallback in case all <a href="./terminology.html#aggregate-beacon">Aggregate Beacons</a> fail.</p>
 <p>A <a href="./terminology.html#beacon-signal">Beacon Signal</a> commits to, and anchors in a Bitcoin block, 32 bytes of information. These <a href="./terminology.html#signal-bytes">Signal Bytes</a> represent one of the following:</p>
 <ul>
@@ -600,8 +600,8 @@ IPFS CIDv1 and requesting the file from an IPFS node.</p>
 <p>For a <a href="./terminology.html#cas-beacon">CAS Beacon</a>, proof of non-inclusion of a <strong>did:btcr2</strong> identifier is simply its absence from the Map.</p>
 <p>The <code>type</code> of a <code>service</code> defining a <a href="./terminology.html#cas-beacon">CAS Beacon</a> in a DID document is <code>"CASBeacon"</code>.</p>
 <h2 id="smt-beacon"><a class="header" href="#smt-beacon">SMT Beacon</a></h2>
-<p>An <a href="./terminology.html#smt-beacon">SMT Beacon</a> creates a <a href="./terminology.html#beacon-signal">Beacon Signal</a> that commits to multiple <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a>, each identified by a <strong>did:btcr2</strong> identifier. To do so, it constructs an optimized <a href="./terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> as defined in <a href="./appendix.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> and publishes the Merkle root.</p>
-<p>An <a href="./terminology.html#smt-beacon">SMT Beacon</a> provides maximum privacy for the DID controller, as the DID controller never has to reveal their DIDs or <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> to the aggregator.</p>
+<p>An <a href="./terminology.html#smt-beacon">SMT Beacon</a> creates a <a href="./terminology.html#beacon-signal">Beacon Signal</a> that commits to multiple <a href="./terminology.html#btcr2-update-announcement">BTCR2 Update Announcements</a>, each identified by a <strong>did:btcr2</strong> identifier. To do so, it constructs an optimized <a href="./terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> as defined in <a href="./appendix/optimized-smt.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> and publishes the Merkle root.</p>
+<p>An <a href="./terminology.html#smt-beacon">SMT Beacon</a> provides maximum privacy for the DID controller, as the DID controller never has to reveal their DIDs to the aggregator. With a <code>nonce</code> in the leaf value, the DID controller also does not show if there is a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>, or its contents. Without a <code>nonce</code>, all parties know if there is an update, and all parties can retrieve its contents if the update is on <a href="./terminology.html#cas">CAS</a>.</p>
 <p>The <code>type</code> of a <code>service</code> defining an <a href="./terminology.html#smt-beacon">SMT Beacon</a> in a DID document is <code>"SMTBeacon"</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="aggregate-beacons"><a class="header" href="#aggregate-beacons">Aggregate Beacons</a></h1>
 <p>DID controllers can use a <a href="beacons/../terminology.html#cas-beacon">CAS Beacon</a>, an <a href="beacons/../terminology.html#smt-beacon">SMT Beacon</a>, or both to participate in <a href="beacons/../terminology.html#btcr2-update">BTCR2 Update</a> Aggregation. In contrast to a <a href="beacons/../terminology.html#singleton-beacon">Singleton Beacon</a>, which only allows for one <a href="beacons/../terminology.html#btcr2-update">BTCR2 Update</a> per Bitcoin transaction, <a href="beacons/../terminology.html#aggregate-beacon">Aggregate Beacons</a> combine multiple <a href="beacons/../terminology.html#btcr2-update">BTCR2 Updates</a> into one Bitcoin transaction for any number of DID controllers. In this context, DID BTCR2 controllers are called <a href="beacons/../terminology.html#aggregation-participant">Aggregation Participants</a>.</p>
@@ -668,14 +668,14 @@ IPFS CIDv1 and requesting the file from an IPFS node.</p>
 <ul>
 <li>If there is an update:
 <ul>
-<li>If a <code>nonce</code> is used: <code>hash(hash(nonce) + json_document_hash(update))</code></li>
-<li>If a <code>nonce</code> is not used: <code>json_document_hash(update)</code></li>
+<li>If a <code>nonce</code> is used: <code>hash(hash(nonce) + updateId)</code></li>
+<li>If a <code>nonce</code> is not used: <code>updateId</code></li>
 </ul>
 </li>
 <li>If there is not an update:
 <ul>
 <li>If a <code>nonce</code> is used: <code>hash(hash(nonce))</code></li>
-<li>If a <code>nonce</code> is not used: <code>0</code></li>
+<li>If a <code>nonce</code> is not used: no value, the index stays empty and its leaf value is <code>cachedZero[0]</code></li>
 </ul>
 </li>
 </ul>
@@ -1225,8 +1225,7 @@ identifiers with <code>x</code> HRP.</li>
 if the DID being resolved has ever had a published <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
 <li><code>casUpdates</code>: OPTIONAL array of <a href="./data-structures.html#cas-announcement">CAS Announcements</a>. It is REQUIRED
 if the DID being resolved has used a <a href="./terminology.html#cas-beacon">CAS Beacon</a> to publish a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
-<li><code>smtProofs</code>: OPTIONAL array of <a href="./data-structures.html#smt-proof">SMT Proofs</a>. It is REQUIRED
-if the DID being resolved has used a <a href="./terminology.html#smt-beacon">SMT Beacon</a> to publish a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</li>
+<li><code>smtProofs</code>: OPTIONAL array of <a href="./data-structures.html#smt-proof">SMT Proofs</a>. It MUST contain one <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> for each <a href="./terminology.html#beacon-signal">Beacon Signal</a> of an <a href="./terminology.html#smt-beacon">SMT Beacon</a> that <a href="operations/resolve.html#find-beacon-signals">Find Beacon Signals</a> finds. The DID controller keeps each <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> for the life of the DID.</li>
 </ul>
 <div class="tabs" id="sidecar-data-example">
   <div class="tablist" role="tablist" aria-label="sidecar-data-example">
@@ -1426,12 +1425,21 @@ Show Example
   ],
   "smtProofs": [
     {
-      "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+      "id": "208Pec071gcHsI7YXsaVCo5FsXDk6PDWIJtsziVdAfw",
       "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
       "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
-      "collapsed": "__________________________________________4",
+      "collapsed": "P_________________________________________8",
       "hashes": [
-        "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
+        "VMJ9bwgtPMaW6FuopXGELydi7GyVTvamRijYHgvBuuA",
+        "ht6kU4sez9-FhMWICitpg-Mnzf1ICfZuKSnmBL1pc8E"
+      ]
+    },
+    {
+      "id": "mLwEScugPDRUPsuy_EnGqOIcQkpKbFPXR8mhvBxtmxc",
+      "collapsed": "P_________________________________________8",
+      "hashes": [
+        "6MoensHkmr2EXPgtglcHDj7FbEIJ_zF_A4h4wjeYunw",
+        "QZXS6IWNhC43TFCrVwyIxIhdXTc3zQUELl7JUyihAsU"
       ]
     }
   ]
@@ -1444,10 +1452,10 @@ Show Example
 <p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>id</code>, <code>updateId</code>, <code>hashes</code>) MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</p>
 <ul>
 <li><code>id</code>: SHA-256 hash of the root node.</li>
-<li><code>nonce</code>: OPTIONAL 256-bit nonce generated for each update. MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</li>
+<li><code>nonce</code>: OPTIONAL 256-bit nonce, one for each index in each <a href="./terminology.html#beacon-signal">Beacon Signal</a>. MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding. If the DID controller does not have the <code>nonce</code>, the <a href="./terminology.html#smt-proof">SMT Proof</a> of that <a href="./terminology.html#beacon-signal">Beacon Signal</a> cannot be verified.</li>
 <li><code>updateId</code>: The OPTIONAL <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
-<li><code>collapsed</code>: Bitmap of zero nodes within the path (see: <a href="https://github.com/hoytech/quadrable#collapsed-leaves">collapsed leaves</a>). MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
-<li><code>hashes</code>: Array of SHA-256 hashes representing the sibling <a href="./terminology.html#smt">SMT</a> nodes from the leaf, containing the SHA-256 hash of the <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> or the “zero identity”, to the root. Each hash MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
+<li><code>collapsed</code>: 256-bit bitmap with one bit for each level of the path from the leaf to the root. A <code>1</code> bit identifies a level at which the sibling is an empty subtree. The bit SHOULD be <code>1</code> at each of those levels. <a href="./appendix/optimized-smt.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> gives the value of an empty subtree. Bit <code>255</code> is the leaf level and bit <code>0</code> is the root level. Bit <code>i</code> is <code>bitAt(i)</code> of the decoded value as specified in the <a href="./algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. MUST be 32 bytes <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding. The number of entries in <code>hashes</code> plus the number of <code>1</code> bits in <code>collapsed</code> MUST be <code>256</code>.</li>
+<li><code>hashes</code>: Array of the SHA-256 hashes of the non-empty sibling nodes on the path from the leaf to the root. Each hash MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
 </ul>
 <div class="tabs" id="sidecar-smt-proof-example">
   <div class="tablist" role="tablist" aria-label="sidecar-smt-proof-example">
@@ -1479,13 +1487,25 @@ Show Example
            aria-labelledby="sidecar-smt-proof-example-tab-show"
            hidden>
     <label>Show Example</label>
+<p>An update in nonce mode (<code>nonce</code> and <code>updateId</code>):</p>
 <pre><code class="language-json">{
-  "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+  "id": "208Pec071gcHsI7YXsaVCo5FsXDk6PDWIJtsziVdAfw",
   "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
   "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
-  "collapsed": "__________________________________________4",
+  "collapsed": "P_________________________________________8",
   "hashes": [
-    "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
+    "VMJ9bwgtPMaW6FuopXGELydi7GyVTvamRijYHgvBuuA",
+    "ht6kU4sez9-FhMWICitpg-Mnzf1ICfZuKSnmBL1pc8E"
+  ]
+}
+</code></pre>
+<p>No update in no-nonce mode (no <code>nonce</code> and no <code>updateId</code>, the index is empty):</p>
+<pre><code class="language-json">{
+  "id": "mLwEScugPDRUPsuy_EnGqOIcQkpKbFPXR8mhvBxtmxc",
+  "collapsed": "P_________________________________________8",
+  "hashes": [
+    "6MoensHkmr2EXPgtglcHDj7FbEIJ_zF_A4h4wjeYunw",
+    "QZXS6IWNhC43TFCrVwyIxIhdXTc3zQUELl7JUyihAsU"
   ]
 }
 </code></pre>
@@ -1701,12 +1721,21 @@ Show Example
     ],
     "smtProofs": [
       {
-        "id": "JuJBH50b9ISHDCYpkDBYw8Pw_RKWE80C86g2g49DKlc",
+        "id": "208Pec071gcHsI7YXsaVCo5FsXDk6PDWIJtsziVdAfw",
         "nonce": "GYMJ4h8Mzy7WHWH23c0ae3MVhG4OCS7flXABFCFRqHE",
         "updateId": "VpP2ejoQp2Xll1tjZbqCOiKHKScl5ejpBzYAqgwLd2M",
-        "collapsed": "__________________________________________4",
+        "collapsed": "P_________________________________________8",
         "hashes": [
-          "dyldtUJbad3Cqkj-bS6B0xvbbWoAWSkDd1ZXgc9jZ6k"
+          "VMJ9bwgtPMaW6FuopXGELydi7GyVTvamRijYHgvBuuA",
+          "ht6kU4sez9-FhMWICitpg-Mnzf1ICfZuKSnmBL1pc8E"
+        ]
+      },
+      {
+        "id": "mLwEScugPDRUPsuy_EnGqOIcQkpKbFPXR8mhvBxtmxc",
+        "collapsed": "P_________________________________________8",
+        "hashes": [
+          "6MoensHkmr2EXPgtglcHDj7FbEIJ_zF_A4h4wjeYunw",
+          "QZXS6IWNhC43TFCrVwyIxIhdXTc3zQUELl7JUyihAsU"
         ]
       }
     ]
@@ -1965,6 +1994,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 <li><code>current_version_id</code>: the version number being processed (starts at <code>1</code>).</li>
 <li><code>update_hash_history</code>: a list of <a href="operations/../terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> hashes used to detect duplicates.</li>
 <li><code>block_confirmations</code>: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at <code>0</code>).</li>
+<li><code>current_block_height</code>: the height of the Bitcoin block that contains the most recently applied update (starts at <code>0</code>).</li>
 </ul>
 <p>The resolver:</p>
 <ol>
@@ -1972,7 +2002,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 <li>Repeats the following loop:
 <ul>
 <li><a href="operations/resolve.html#find-beacon-signals">Find Beacon Signals</a> to add tuples to <code>updates</code> from the beacon services in <code>current_document</code>.</li>
-<li><a href="operations/resolve.html#process-next-update">Process Next Update</a> to apply one update to <code>current_document</code> and refresh <code>block_confirmations</code>.</li>
+<li><a href="operations/resolve.html#process-next-update">Process Next Update</a> to apply one update to <code>current_document</code>.</li>
 <li>The loop terminates when <a href="operations/resolve.html#process-next-update">Process Next Update</a> resolves <code>didDocument</code> or an error occurs.</li>
 </ul>
 </li>
@@ -1989,6 +2019,7 @@ to 32 bytes with the <a href="operations/../algorithms.html#json-document-hashin
 </ul>
 </li>
 </ul>
+<p>If <code>resolutionOptions</code> has no <code>versionId</code> and no <code>versionTime</code>, <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a> that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a <a href="operations/../terminology.html#beacon-signal">Beacon Signal</a> has less than <code>minConf</code> confirmations, or the resolver reads a different chain. It can also show a problem with the <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a>, for example <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a> that is not for <code>did</code>. Implementations MAY tell the caller which <a href="operations/../terminology.html#sidecar-data">Sidecar Data</a> they did not use.</p>
 <h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
 <p>The <code>did</code> MUST be parsed with the <a href="operations/../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
 <code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
@@ -2098,7 +2129,13 @@ Show Template
 <p>Scan the <code>service</code> entries in <code>current_document</code> (<a href="operations/../data-structures.html#did-document">DID Document (data structure)</a>) and identify <a href="operations/../terminology.html#btcr2-beacon">BTCR2 Beacons</a> by matching service <code>type</code> to <a href="operations/../beacons.html#beacon-types">Beacons Table 1: Beacon Types</a>. Parse each beacon <code>serviceEndpoint</code> as a <a href="operations/../terminology.html#beacon-address">Beacon Address</a>.</p>
 <p>For each <a href="operations/../terminology.html#beacon-address">Beacon Address</a> that is not in <code>scanned_beacons</code>:</p>
 <ul>
-<li>Find the Bitcoin transactions that spend from the <a href="operations/../terminology.html#beacon-address">Beacon Address</a> and whose last output script contains <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a>.</li>
+<li>Find the Bitcoin transactions for which all of the following conditions are true:
+<ul>
+<li>The transaction spends from the <a href="operations/../terminology.html#beacon-address">Beacon Address</a>.</li>
+<li>The last output script of the transaction contains <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a>.</li>
+<li>The block height of the transaction is equal to or more than <code>current_block_height</code>.</li>
+</ul>
+</li>
 <li>Add the <a href="operations/../terminology.html#beacon-address">Beacon Address</a> to <code>scanned_beacons</code>.</li>
 </ul>
 <p>Implementations are RECOMMENDED to query an indexed Bitcoin blockchain Remote Procedure Call (RPC) service such as <a href="https://github.com/romanz/electrs">electrs</a> or <a href="https://github.com/Blockstream/esplora">Esplora</a>. Implementations MAY instead traverse blocks from the genesis block.</p>
@@ -2112,6 +2149,7 @@ Show Template
 <li><a href="operations/../terminology.html#smt-beacon">SMT Beacon</a>: use <a href="operations/resolve.html#process-smt-beacon">Process SMT Beacon</a>.</li>
 </ul>
 </li>
+<li>If the <a href="operations/../terminology.html#beacon-signal">Beacon Signal</a> announces no update for <code>did</code>, do not build a tuple. Continue with the next transaction.</li>
 <li>Build a tuple with:
 <ul>
 <li>The transaction’s block metadata (height, mediantime, and confirmations).</li>
@@ -2120,6 +2158,7 @@ Show Template
 <ul>
 <li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>update_hash</code> as described in <a href="operations/../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</li>
 <li>Raise a <a href="operations/../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the update is not available from either source.</li>
+<li>The resolver MUST hash the update with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. The resolver MUST compare the hash to <code>update_hash</code>. Raise an <a href="operations/../errors.html#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the two hashes are not equal.</li>
 </ul>
 </li>
 </ul>
@@ -2127,9 +2166,11 @@ Show Template
 <li>Append the tuple to <code>updates</code>.</li>
 </ul>
 <h3 id="process-cas-beacon"><a class="header" href="#process-cas-beacon">Process CAS Beacon</a></h3>
-<p>Treat <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a> as <code>map_update_hash</code>. Look up <code>map_update_hash</code> in <code>cas_lookup_table</code> to retrieve a <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> and read <code>update_hash</code> from the announcement entry keyed by <code>did</code>. If the <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> is not in <code>cas_lookup_table</code>, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>map_update_hash</code> as described in <a href="operations/../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</p>
+<p>Treat <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a> as <code>map_update_hash</code>. Look up <code>map_update_hash</code> in <code>cas_lookup_table</code> to retrieve a <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a>. If the <a href="operations/../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> is not in <code>cas_lookup_table</code>, retrieve it from <a href="operations/../terminology.html#cas">CAS</a> using <code>map_update_hash</code> as described in <a href="operations/../update-data-distribution.html">BTCR2 Update Data Distribution</a>. Raise a <a href="operations/../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the announcement is not in <code>cas_lookup_table</code> and not available from <a href="operations/../terminology.html#cas">CAS</a>. The announcement is not available from <a href="operations/../terminology.html#cas">CAS</a> if the hash of the retrieved content is not equal to <code>map_update_hash</code> (<a href="operations/../update-data-distribution.html">BTCR2 Update Data Distribution</a>).</p>
+<p>Read <code>update_hash</code> from the announcement entry keyed by <code>did</code>. If the announcement has no entry for <code>did</code>, the <a href="operations/../terminology.html#beacon-signal">Beacon Signal</a> announces no update for <code>did</code>.</p>
 <h3 id="process-smt-beacon"><a class="header" href="#process-smt-beacon">Process SMT Beacon</a></h3>
-<p>Treat <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="operations/../data-structures.html#smt-proof">SMT Proof (data structure)</a>. Validate the proof with the <a href="operations/../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Use <code>smt_proof.updateId</code> as <code>update_hash</code>.</p>
+<p>Treat <a href="operations/../terminology.html#signal-bytes">Signal Bytes</a> as <code>smt_root</code>. Look up <code>smt_root</code> in <code>smt_lookup_table</code> to retrieve an <a href="operations/../data-structures.html#smt-proof">SMT Proof (data structure)</a> as <code>smt_proof</code>. Raise a <a href="operations/../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if <code>smt_lookup_table</code> has no entry for <code>smt_root</code>. Raise an <a href="operations/../errors.html#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the <code>id</code> of <code>smt_proof</code> is not equal to <code>smt_root</code>.</p>
+<p>Verify <code>smt_proof</code> with the <a href="operations/../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Raise an <a href="operations/../errors.html#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the result of the algorithm is <code>false</code>. If <code>smt_proof</code> has an <code>updateId</code>, use it as <code>update_hash</code>. If <code>smt_proof</code> has no <code>updateId</code>, the <a href="operations/../terminology.html#beacon-signal">Beacon Signal</a> announces no update for <code>did</code>.</p>
 <h2 id="process-next-update"><a class="header" href="#process-next-update">Process Next Update</a></h2>
 <ol>
 <li>If <code>resolutionOptions.versionId</code> is provided and <code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
@@ -2148,7 +2189,6 @@ Show Template
 <li>The tuple’s block <code>mediantime</code> [<a href="operations/../bibliography.html#Bitcoin-Core">Bitcoin-Core</a>] is after <code>resolutionOptions.versionTime</code>. <sup class="footnote-reference" id="fr-5-1"><a href="#footnote-5">5</a></sup></li>
 </ul>
 </li>
-<li>Set <code>block_confirmations</code> to the tuple’s block confirmations.</li>
 <li>Set <code>update</code> to the tuple’s <a href="operations/../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> and <a href="operations/resolve.html#check-update-version">check <code>update.targetVersionId</code></a>.</li>
 </ol>
 <h3 id="check-update-version"><a class="header" href="#check-update-version">Check <code>update.targetVersionId</code></a></h3>
@@ -2181,6 +2221,7 @@ Show Template
 <p>Verify that <code>current_document</code> conforms to DID Core v1.1 [<a href="operations/../bibliography.html#DID-CORE">DID-CORE</a>] and that <code>current_document.id</code> equals <code>did</code>. Otherwise raise <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a>.</p>
 <p>Hash the patched <code>current_document</code> with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the result does not match the decoded <code>update.targetHash</code>.</p>
 <p>Create <code>unsigned_update</code> by removing the <code>proof</code> property from <code>update</code>, hash it with the <a href="operations/../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm, and append the hash to <code>update_hash_history</code>.</p>
+<p>Set <code>block_confirmations</code> to the tuple’s block confirmations. Set <code>current_block_height</code> to the tuple’s block height.</p>
 <p>Increment <code>current_version_id</code>.</p>
 <h3 id="check-update-proof"><a class="header" href="#check-update-proof">Check <code>update.proof</code></a></h3>
 <p>Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the <code>@context</code> of <code>update</code> is not the array that the <a href="operations/../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> specifies. Raise an <a href="operations/../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the <code>@context</code> of <code>update.proof</code> is not equal to the <code>@context</code> of <code>update</code>. Two <code>@context</code> arrays are equal when they contain the same context URLs in the same order.</p>
@@ -2554,8 +2595,9 @@ Show Example
 </ul>
 <h2 id="smt-proof-verification"><a class="header" href="#smt-proof-verification">SMT Proof Verification</a></h2>
 <p>To verify the inclusion or non-inclusion of a DID in the <a href="./terminology.html#smt-proof">SMT Proof</a>, perform the following steps:</p>
-<p>Throughout this section, <code>hash()</code> denotes SHA-256 [<a href="bibliography.html#SHA256">SHA256</a>] over a byte array, and <code>concat()</code> (equivalently, the <code>+</code> operator) concatenates byte arrays, not strings. The <code>base64url</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded fields of an <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) MUST be decoded to their raw bytes before being used in any of these operations.</p>
-<p>Construct a hashed-zero cache. Two zero leaves are hashed together by concatenating the value <code>0</code> with itself for the bottom level, and then hashed again with its next sibling, also itself, at each level up the tree. Each computed hash value can be cached in an array.</p>
+<p>Throughout this section, <code>hash()</code> denotes SHA-256 [<a href="bibliography.html#SHA256">SHA256</a>] over a byte sequence. The byte sequence has no length limit. <code>hash(did)</code> denotes <code>hash()</code> over the UTF-8 bytes of the DID string. <code>concat()</code> (equivalently, the <code>+</code> operator) concatenates two 32-byte values into one 64-byte value. <code>0</code> denotes 32 zero bytes.</p>
+<p><code>bitAt(i)</code> of a 32-byte value counts from left to right. <code>bitAt(0)</code> is the most significant bit of the first byte. <code>bitAt(255)</code> is the least significant bit of the last byte. The <code>base64url</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded fields of an <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) MUST be decoded to their raw bytes before being used in any of these operations.</p>
+<p>Construct a hashed-zero cache. <code>cachedZero[0]</code> is the value of an empty leaf and is equal to <code>hash(0 + 0)</code>. <code>cachedZero[n]</code> is the value of an empty subtree at height <code>n</code> and is equal to <code>hash(cachedZero[n-1] + cachedZero[n-1])</code>.</p>
 <div class="tabs" id="construct_hashed_zero_cache">
   <div class="tablist" role="tablist" aria-label="construct_hashed_zero_cache">
     <button role="tab"
@@ -2587,7 +2629,7 @@ Show Pseudocode
            hidden>
     <label>Show Pseudocode</label>
 <pre><code class="language-rust">let cachedZero = [];
-let z = 0;
+let z = 0;  // 32 zero bytes
 
 for n in 0..=255 {
   z = hash(concat(z, z));
@@ -2595,8 +2637,22 @@ for n in 0..=255 {
 }</code></pre>
   </section>
 </div>
-<p>The <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> is verified by walking the tree starting from the leaf node value — given by <code>hash(hash(proof.nonce) + proof.updateId)</code> for update inclusion or <code>hash(hash(proof.nonce))</code> for non-inclusion — to the root <code>proof.id</code>. Walking the tree means hashing sibling hashes from <code>proof.hashes</code> concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by <code>hash(did)</code>) informs the algorithm which side of the concatenation operation the sibling hash belongs on: 0 for left, 1 for right.</p>
-<p>The tree is “optimized” by collapsing empty nodes. (See <a href="./appendix.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> for definition of “optimized”.) Each bit within <code>proof.collapsed</code> informs the algorithm whether to take the next sibling hash from <code>proof.hashes</code> (0) or use a hashed zero from the current height of the tree (1).</p>
+<p>The result of the algorithm MUST be <code>false</code> if any of the following conditions are true:</p>
+<ul>
+<li>The proof has an <code>updateId</code>, and the decoded <code>updateId</code> is not 32 bytes.</li>
+<li>The decoded <code>collapsed</code> is not 32 bytes.</li>
+<li>A decoded entry of <code>hashes</code> is not 32 bytes.</li>
+<li>The number of entries in <code>hashes</code> plus the number of <code>1</code> bits in <code>collapsed</code> is not <code>256</code>.</li>
+</ul>
+<p>The OPTIONAL fields <code>nonce</code> and <code>updateId</code> of the <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> select the leaf value of the index of <code>did</code>. The DID controller selects the fields for each index and each <a href="./terminology.html#beacon-signal">Beacon Signal</a>:</p>
+<ul>
+<li><code>nonce</code> and <code>updateId</code>: <code>hash(hash(nonce) + updateId)</code>. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces the update.</li>
+<li><code>nonce</code> only: <code>hash(hash(nonce))</code>. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces no update.</li>
+<li><code>updateId</code> only: <code>updateId</code>. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces the update.</li>
+<li>No <code>nonce</code> and no <code>updateId</code>: <code>cachedZero[0]</code>, the value of an empty leaf. The <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces no update, and the index is empty.</li>
+</ul>
+<p>The <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> is verified by walking the tree starting from the leaf value to the root <code>proof.id</code>. Walking the tree means hashing sibling hashes from <code>proof.hashes</code> concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by <code>hash(did)</code>) selects the side of the candidate hash: <code>0</code> for left, <code>1</code> for right. The sibling hash is on the other side. The walk starts at the leaf with <code>bitAt(255)</code> and stops at the root with <code>bitAt(0)</code>.</p>
+<p>The tree is “optimized” by collapsing empty nodes. (See <a href="./appendix/optimized-smt.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> for definition of “optimized”.) Each bit within <code>proof.collapsed</code> informs the algorithm whether to take the next sibling hash from <code>proof.hashes</code> (0) or use a hashed zero from the current height of the tree (1).</p>
 <p>The last step is asserting that the computed candidate hash is equivalent to <code>proof.id</code> (the Merkle root).</p>
 <div class="tabs" id="pseudocode_smt_proof_verification">
   <div class="tablist" role="tablist" aria-label="pseudocode_smt_proof_verification">
@@ -2628,14 +2684,28 @@ Show Pseudocode
            aria-labelledby="pseudocode_smt_proof_verification-tab-show"
            hidden>
     <label>Show Pseudocode</label>
-<pre><code class="language-rust">let candidateHash = if let Some(updateId) = proof.updateId {
-  hash(concat(hash(proof.nonce), updateId))
-} else {
-  hash(hash(proof.nonce))
+<pre><code class="language-rust">if let Some(updateId) = proof.updateId {
+  if updateId.len() != 32 { return false; }
+}
+if proof.collapsed.len() != 32 { return false; }
+for siblingHash in &amp;proof.hashes {
+  if siblingHash.len() != 32 { return false; }
+}
+if proof.hashes.len() + proof.collapsed.count_ones() != 256 {
+  return false;
+}
+
+let candidateHash = match (proof.nonce, proof.updateId) {
+  (Some(nonce), Some(updateId)) =&gt; hash(concat(hash(nonce), updateId)),  // update, private
+  (Some(nonce), None)           =&gt; hash(hash(nonce)),                    // no update, private
+  (None,        Some(updateId)) =&gt; updateId,                             // update, public
+  (None,        None)           =&gt; cachedZero[0],                        // empty index
 };
 
 let index = hash(did);
 
+// bitAt(i): bit i, counted from left to right over the 32 bytes.
+// n = 0 is the leaf level (i = 255), n = 255 is the root level (i = 0).
 for n in 0..=255 {
   let i = 255 - n;
 
@@ -2673,10 +2743,12 @@ return candidateHash == proof.id;</code></pre>
 <p>These errors are assumed to be fatal and all <strong>did:btcr2</strong> operations must abort when one of these errors are raised.</p>
 <h2 id="invalid_did_update"><a class="header" href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a></h2>
 <p>An error was found when creating or applying a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</p>
+<h2 id="invalid_signal_data"><a class="header" href="#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a></h2>
+<p>The data for a <a href="./terminology.html#beacon-signal">Beacon Signal</a> does not agree with its <a href="./terminology.html#signal-bytes">Signal Bytes</a>. Example: an <a href="./terminology.html#smt-proof">SMT Proof</a> that does not verify against the <a href="./terminology.html#smt">SMT</a> root in the <a href="./terminology.html#beacon-signal">Beacon Signal</a>.</p>
 <h2 id="late_publishing"><a class="header" href="#late_publishing"><code>LATE_PUBLISHING</code></a></h2>
 <p>An error was found when processing the full history of <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> announced by all relevant <a href="./terminology.html#beacon-signal">Beacon Signals</a>. See <a href="./terminology.html#late-publishing">Late Publishing</a>.</p>
 <h2 id="missing_update_data"><a class="header" href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a></h2>
-<p><a href="./terminology.html#btcr2-update">BTCR2 Update</a> data can not be found in either the provided <a href="./terminology.html#sidecar-data">Sidecar Data</a> nor in <a href="./terminology.html#cas">CAS</a>.</p>
+<p>Data that is necessary to find what a <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces for the DID is not in the <a href="./terminology.html#sidecar-data">Sidecar Data</a> and not in <a href="./terminology.html#cas">CAS</a>. This data includes <a href="./terminology.html#btcr2-update">BTCR2 Updates</a>, <a href="./data-structures.html#cas-announcement">CAS Announcements</a>, and <a href="./terminology.html#smt-proof">SMT Proofs</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="appendix"><a class="header" href="#appendix">Appendix</a></h1>
 <p>The appendix contains privacy and security considerations made by the developers of this specification. This section is designed to complement the main specification and provide additional rationale, edge-case analyses, and guidance intended to help implementers understand subtle aspects of the BTCR2 design.</p>
 <h2 id="btcr2-update-aggregation-1"><a class="header" href="#btcr2-update-aggregation-1">BTCR2 Update Aggregation</a></h2>
@@ -2845,20 +2917,22 @@ return candidateHash == proof.id;</code></pre>
 </pre>
 <p>To use Merkle trees to signal commitments in <a href="appendix/../terminology.html#btcr2-beacon">BTCR2 Beacons</a>:</p>
 <ul>
-<li>The index (the identification of the leaf node) is the hash of the DID with the hash byte stream converted to an integer using big-endian conversion, i.e., <code>index = int(hash(did))</code>.
+<li>The index (the identification of the leaf node) is the hash of the DID with the hash byte stream converted to an integer using big-endian conversion, i.e., <code>index = int(hash(did))</code>. The most significant bit selects the child of the root.
 <ul>
 <li>Each DID is therefore associated with one and only one leaf node.</li>
 <li>Binding the index to the DID ensures that no other index can be used by a nefarious actor to post an update to the DID.</li>
 <li>This produces a data structure with lots of unused leaves, making it a <a href="appendix/../terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a>.</li>
 </ul>
 </li>
-<li>The value stored at a leaf node is the hash of a 256-bit nonce, concatenated with the hash of the <a href="appendix/../terminology.html#btcr2-update">BTCR2 Update</a> (the <a href="appendix/../terminology.html#btcr2-update-announcement">BTCR2 Update Announcement</a>) if available, then the resulting stream is hashed again. I.e., <code>value = hash(hash(nonce) + hash(btcr2Update))</code> if there is a <a href="appendix/../terminology.html#btcr2-update">BTCR2 Update</a> or <code>value = hash(hash(nonce))</code> if there is not.
+<li>The value at a leaf node is one of four values that the <a href="appendix/../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm specifies. The DID controller selects the value for that index in that signal: a <code>nonce</code> or no <code>nonce</code>, and an update or no update. The <code>nonce</code> is an OPTIONAL 256-bit value that is unique for each DID and each signal.
 <ul>
-<li>Provided that it is unique per DID and per signal, the use of a nonce ensures that updates and non-updates are indistinguishable to outside parties (aggregators, other DID controllers, verifiers) unless explicitly informed by the DID controller.</li>
-<li>The hashing of the nonce ensures that verifiers with limited input validation deal only with a 256-bit result.</li>
+<li>With a <code>nonce</code>, other parties (aggregators, other DID controllers, verifiers) cannot know if there is an update, or its contents. Only the DID controller can tell them. The DID controller keeps one <code>nonce</code> for each index and each signal for the life of the DID. If the DID controller does not have the <code>nonce</code>, the <a href="appendix/../terminology.html#smt-proof">SMT Proof</a> of that signal cannot be verified.</li>
+<li>Without a <code>nonce</code>, all parties know if there is an update. If the update is on <a href="appendix/../terminology.html#cas">CAS</a>, all parties can also retrieve its contents, because the leaf value is the retrieval key.</li>
+<li>The inner hash <code>hash(nonce)</code> is 32 bytes for a <code>nonce</code> of any length. Thus <a href="appendix/../algorithms.html#smt-proof-verification">SMT Proof Verification</a> accepts a <code>nonce</code> of any length.</li>
+<li><a href="appendix/../algorithms.html#smt-proof-verification">SMT Proof Verification</a> rejects an <code>updateId</code> that is not 32 bytes.</li>
 </ul>
 </li>
-<li>An unused (empty) leaf takes a fixed <em>zero identity</em> value, defined as <code>hash(0 + 0)</code> (the zero identity hashed with itself). An empty subtree therefore has a fixed, precomputable value at each height of the tree — its <em>cached zero</em> — obtained by hashing the previous height’s cached zero with itself, i.e., <code>cachedZero[0] = hash(0 + 0)</code> and <code>cachedZero[n] = hash(cachedZero[n-1] + cachedZero[n-1])</code>.</li>
+<li>An unused (empty) leaf takes a fixed <em>zero identity</em> value, defined as <code>hash(0 + 0)</code>, where <code>0</code> is 32 zero bytes. An empty subtree therefore has a fixed, precomputable value at each height of the tree — its <em>cached zero</em> — obtained by hashing the previous height’s cached zero with itself, i.e., <code>cachedZero[0] = hash(0 + 0)</code> and <code>cachedZero[n] = hash(cachedZero[n-1] + cachedZero[n-1])</code>.</li>
 <li>The value of every node is the hash of the concatenation of its left value (bit 0) and its right value (bit 1), i.e., <code>node_value = hash(left_value + right_value)</code>. This holds even when a child is empty: the empty child contributes its cached zero value, so a hash is performed at every level all the way down the tree and no level is skipped.
 <ul>
 <li>Because the cached zero values are known to every verifier, the empty siblings along a path need not be transmitted in an <a href="appendix/../terminology.html#smt-proof">SMT Proof</a>; only the non-empty sibling hashes are sent, and the <code>collapsed</code> bitmap marks the positions where a cached zero is substituted. Accounting for every hash operation in this way is what makes the tree “optimized” while ensuring a single set of values cannot produce more than one valid path to the root.</li>
@@ -2866,7 +2940,7 @@ return candidateHash == proof.id;</code></pre>
 </li>
 <li>The only thing published in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a> is the root hash (the Merkle root).</li>
 </ul>
-<p>Throughout this appendix, <code>hash()</code> denotes SHA-256 [<a href="appendix/../bibliography.html#SHA256">SHA256</a>] over a byte array, and the <code>+</code> operator concatenates byte arrays, not strings. The values carried in an <a href="appendix/../data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) are <code>base64url</code> [<a href="appendix/../bibliography.html#RFC4648">RFC4648</a>] encoded without padding and MUST be decoded to their raw bytes before being used in these operations; the quoted <code>Hash …</code> and <code>Nonce …</code> labels in the example below stand in for those decoded byte values.</p>
+<p>Throughout this appendix, <code>hash()</code> denotes SHA-256 [<a href="appendix/../bibliography.html#SHA256">SHA256</a>] over a byte sequence. The byte sequence has no length limit. The <code>+</code> operator concatenates two 32-byte values into one 64-byte value. The values carried in an <a href="appendix/../data-structures.html#smt-proof">SMT Proof (data structure)</a> (<code>id</code>, <code>nonce</code>, <code>updateId</code>, <code>collapsed</code>, and the entries of <code>hashes</code>) are <code>base64url</code> [<a href="appendix/../bibliography.html#RFC4648">RFC4648</a>] encoded without padding and MUST be decoded to their raw bytes before being used in these operations; the quoted <code>Hash …</code> and <code>Nonce …</code> labels in the example below stand in for those decoded byte values.</p>
 <p>Let’s assume that indexes 0 (<code>0000</code>), 2 (<code>0010</code>), 5 (<code>0101</code>), 9 (<code>1001</code>), 13 (<code>1101</code>), and 14 (<code>1110</code>) have DIDs associated with them; and a signal includes updates for DIDs 2, 9, and 13 and non-updates for all others.</p>
 <p>The optimized tree for this signal looks like this. Every node is still hashed from its two children, but each empty subtree contributes its precomputed cached zero value rather than being recomputed or transmitted. Empty leaves take the value <code>z0</code> (<code>cachedZero[0]</code>), and a subtree of two empty leaves takes <code>z1 = hash(z0 + z0)</code> (<code>cachedZero[1]</code>); these cached zeros are shown inline in the node formulas rather than drawn as separate nodes:</p>
 <pre class="mermaid">flowchart TD
@@ -2926,9 +3000,9 @@ return candidateHash == proof.id;</code></pre>
     Hash1001 --&gt; DataBlock1001[(&quot;Data Block 1001&quot;)]:::dataBlock
     Hash1101 --&gt; DataBlock1101[(&quot;Data Block 1101&quot;)]:::dataBlock
 </pre>
-<p>The DID controller has to prove that there is either an update or a non-update in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a>. To prove an update, the DID controller provides the nonce and either the <a href="appendix/../terminology.html#btcr2-update">BTCR2 Update</a> or the hash; to prove a non-update, the DID controller provides the nonce. In addition, the DID controller provides the <code>collapsed</code> bitmap (marking which sibling positions are empty subtrees, recoverable from the cached zeros) and the hashes of the non-empty peers in the tree necessary to recompute the root hash to compare against the value in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a>.</p>
+<p>The DID controller has to prove that there is either an update or a non-update in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a>. The DID controller gives an <a href="appendix/../data-structures.html#smt-proof">SMT Proof (data structure)</a>, and its <code>nonce</code> and <code>updateId</code> fields select the leaf value that <a href="appendix/../algorithms.html#smt-proof-verification">SMT Proof Verification</a> specifies. In addition, the DID controller provides the <code>collapsed</code> bitmap (marking which sibling positions are empty subtrees, recoverable from the cached zeros) and the hashes of the non-empty peers in the tree necessary to recompute the root hash to compare against the value in the <a href="appendix/../terminology.html#beacon-signal">Beacon Signal</a>.</p>
 <p>Assuming that the DID of interest is at index 13 (<code>int(hash(did)) == int(1101) == 13</code>), the <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> (the party responsible for constructing the <a href="appendix/../terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a>) must provide the DID controller with the <code>collapsed</code> bitmap for the path above leaf node 13 and the hashes of the non-empty peers along that path (the empty peers are recovered from the cached zeros).</p>
-<p>The <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> has the full <a href="appendix/../terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> and can construct <a href="appendix/../terminology.html#smt-proof">SMT Proofs</a>. DID controllers request the <a href="appendix/../terminology.html#smt-proof">SMT Proofs</a> from the <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> and give them to verifiers. An example proof may be:</p>
+<p>The <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> has the full <a href="appendix/../terminology.html#sparse-merkle-tree">Sparse Merkle Tree</a> and can construct <a href="appendix/../terminology.html#smt-proof">SMT Proofs</a>. DID controllers request the <a href="appendix/../terminology.html#smt-proof">SMT Proofs</a> from the <a href="appendix/../terminology.html#aggregation-service">Aggregation Service</a> and give them to verifiers. This is an example proof for the four-level tree above. Its values are labels, not bytes. <a href="appendix/../data-structures.html#smt-proof">SMT Proof (data structure)</a> shows proofs of the 256-level tree with correct byte values.</p>
 <pre><code class="language-json">{
   "id": "&lt;&lt; base64url (no padding) of Root Hash &gt;&gt;",
   "nonce": "&lt;&lt; base64url (no padding) of Nonce 1101 &gt;&gt;",

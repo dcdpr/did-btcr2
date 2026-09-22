@@ -187,10 +187,12 @@
 <p>These errors are assumed to be fatal and all <strong>did:btcr2</strong> operations must abort when one of these errors are raised.</p>
 <h2 id="invalid_did_update"><a class="header" href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a></h2>
 <p>An error was found when creating or applying a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</p>
+<h2 id="invalid_signal_data"><a class="header" href="#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a></h2>
+<p>The data for a <a href="./terminology.html#beacon-signal">Beacon Signal</a> does not agree with its <a href="./terminology.html#signal-bytes">Signal Bytes</a>. Example: an <a href="./terminology.html#smt-proof">SMT Proof</a> that does not verify against the <a href="./terminology.html#smt">SMT</a> root in the <a href="./terminology.html#beacon-signal">Beacon Signal</a>.</p>
 <h2 id="late_publishing"><a class="header" href="#late_publishing"><code>LATE_PUBLISHING</code></a></h2>
 <p>An error was found when processing the full history of <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> announced by all relevant <a href="./terminology.html#beacon-signal">Beacon Signals</a>. See <a href="./terminology.html#late-publishing">Late Publishing</a>.</p>
 <h2 id="missing_update_data"><a class="header" href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a></h2>
-<p><a href="./terminology.html#btcr2-update">BTCR2 Update</a> data can not be found in either the provided <a href="./terminology.html#sidecar-data">Sidecar Data</a> nor in <a href="./terminology.html#cas">CAS</a>.</p>
+<p>Data that is necessary to find what a <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces for the DID is not in the <a href="./terminology.html#sidecar-data">Sidecar Data</a> and not in <a href="./terminology.html#cas">CAS</a>. This data includes <a href="./terminology.html#btcr2-update">BTCR2 Updates</a>, <a href="./data-structures.html#cas-announcement">CAS Announcements</a>, and <a href="./terminology.html#smt-proof">SMT Proofs</a>.</p>
 
                     </main>
 

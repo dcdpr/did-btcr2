@@ -247,14 +247,14 @@
 <ul>
 <li>If there is an update:
 <ul>
-<li>If a <code>nonce</code> is used: <code>hash(hash(nonce) + json_document_hash(update))</code></li>
-<li>If a <code>nonce</code> is not used: <code>json_document_hash(update)</code></li>
+<li>If a <code>nonce</code> is used: <code>hash(hash(nonce) + updateId)</code></li>
+<li>If a <code>nonce</code> is not used: <code>updateId</code></li>
 </ul>
 </li>
 <li>If there is not an update:
 <ul>
 <li>If a <code>nonce</code> is used: <code>hash(hash(nonce))</code></li>
-<li>If a <code>nonce</code> is not used: <code>0</code></li>
+<li>If a <code>nonce</code> is not used: no value, the index stays empty and its leaf value is <code>cachedZero[0]</code></li>
 </ul>
 </li>
 </ul>
