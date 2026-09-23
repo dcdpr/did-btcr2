@@ -40,7 +40,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-25a29133.js";
+            window.path_to_searchindex_js = "searchindex-12885049.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -2233,6 +2233,27 @@ resulting <a href="#data-integrity-config">Data Integrity Config (data structure
 <p><a href="#btcr2-signed-update">BTCR2 Signed Updates</a> are announced to the Bitcoin blockchain depending on the <a href="#beacon-type">Beacon Type</a>.</p>
 <h3 id="announcing-to-a-singleton-beacon"><a class="header" href="#announcing-to-a-singleton-beacon">Announcing to a Singleton Beacon</a></h3>
 <p>A <a href="#btcr2-update-announcement">BTCR2 Update Announcement</a> for a <a href="#singleton-beacon">Singleton Beacon</a> is the <a href="#btcr2-signed-update">BTCR2 Signed Update</a> hashed with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm. This 32-byte SHA-256 hash is used as the <a href="#signal-bytes">Signal Bytes</a> when constructing a <a href="#beacon-signal">Beacon Signal</a> Bitcoin transaction. The <a href="#beacon-signal">Beacon Signal</a> is signed by the private key that controls the <a href="#beacon-address">Beacon Address</a> and broadcast to the Bitcoin network. To broadcast signed Bitcoin transactions, see the <a class="bib-cite" href="#Bitcoin-Core" title="Bitcoin Core">Bitcoin-Core</a> source code.</p>
+<h4 id="funding-a-beacon-signal"><a class="header" href="#funding-a-beacon-signal">Funding a Beacon Signal</a></h4>
+<p>This section is non-normative. A full definition of the construction of a <a href="#beacon-signal">Beacon Signal</a> is out of scope for this specification. This section shows a RECOMMENDED example.</p>
+<p>The <a href="#btcr2-signed-update">BTCR2 Signed Update</a> supplies only the <a href="#signal-bytes">Signal Bytes</a>. The transaction also has inputs, a fee, and a change output. The inputs are <a href="#utxo">UTXOs</a> that the caller selects. The three values are parameters of the RECOMMENDED example:</p>
+<pre><code class="language-rust">fn constructBeaconSignal(
+  signedUpdate,
+  prevouts,
+  feeRate,
+  changeAddress,
+) -&gt;
+  unsignedBeaconSignal</code></pre>
+<p>Input arguments:</p>
+<ul>
+<li><code>signedUpdate</code>: The <a href="#btcr2-signed-update">BTCR2 Signed Update</a> that the <a href="#beacon-signal">Beacon Signal</a> announces.</li>
+<li><code>prevouts</code>: The <a href="#utxo">UTXOs</a> that the transaction spends, each with its value. One of them is a <a href="#utxo">UTXO</a> that the <a href="#beacon-address">Beacon Address</a> controls.</li>
+<li><code>feeRate</code>: The fee rate that the caller selects for the transaction.</li>
+<li><code>changeAddress</code>: The address that receives the total value of <code>prevouts</code> minus the fee.</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>unsignedBeaconSignal</code>: An <a href="#unsigned-beacon-signal">Unsigned Beacon Signal</a></li>
+</ul>
 <h3 id="announcing-to-an-aggregate-beacon"><a class="header" href="#announcing-to-an-aggregate-beacon">Announcing to an Aggregate Beacon</a></h3>
 <p>Aggregating and announcing updates for multiple <strong>did:btcr2</strong> identifiers is the responsibility of the <a href="#aggregation-service">Aggregation Service</a>.
 The main responsibilities include establishing a protocol for one or more rounds of secure group communications amongst <a href="#aggregation-participant">Aggregation Participants</a>, advertising available <a href="#aggregation-cohort">Aggregation Cohorts</a> to <a href="#aggregation-participant">Aggregation Participants</a> including the creation, management, timing and scheduling of those <a href="#aggregation-cohort">Aggregation Cohorts</a>, and broadcasting a Bitcoin transaction to the Bitcoin network that includes signatures from all <a href="#aggregation-participant">Aggregation Participants</a> in a given <a href="#aggregation-cohort">Aggregation Cohort</a>.</p>
