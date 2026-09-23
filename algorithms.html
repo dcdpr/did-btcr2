@@ -39,7 +39,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-d55bc490.js";
+            window.path_to_searchindex_js = "searchindex-25a29133.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -349,6 +349,7 @@ for n in 0..=255 {
 <li>The decoded <code>collapsed</code> is not 32 bytes.</li>
 <li>A decoded entry of <code>hashes</code> is not 32 bytes.</li>
 <li>The number of entries in <code>hashes</code> plus the number of <code>1</code> bits in <code>collapsed</code> is not <code>256</code>.</li>
+<li>A <code>0</code> bit of <code>collapsed</code> selects an entry of <code>hashes</code> that is equal to the cached zero of that level.</li>
 </ul>
 <p>The OPTIONAL fields <code>nonce</code> and <code>updateId</code> of the <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> select the leaf value of the index of <code>did</code>. The DID controller selects the fields for each index and each <a href="./terminology.html#beacon-signal">Beacon Signal</a>:</p>
 <ul>
@@ -404,7 +405,9 @@ for n in 0..=255 {
   let siblingHash = if proof.collapsed.bitAt(i) == 1 {
     cachedZero[n]
   } else {
-    proof.hashes.pop_front()
+    let siblingHash = proof.hashes.pop_front();
+    if siblingHash == cachedZero[n] { return false; }
+    siblingHash
   };
 
   if index.bitAt(i) == 1 {

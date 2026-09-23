@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-d55bc490.js";
+            window.path_to_searchindex_js = "../searchindex-25a29133.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -303,12 +303,13 @@
 <li>Without a <code>nonce</code>, all parties know if there is an update. If the update is on <a href="../terminology.html#cas">CAS</a>, all parties can also retrieve its contents, because the leaf value is the retrieval key.</li>
 <li>The inner hash <code>hash(nonce)</code> is 32 bytes for a <code>nonce</code> of any length. Thus <a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> accepts a <code>nonce</code> of any length.</li>
 <li><a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> rejects an <code>updateId</code> that is not 32 bytes.</li>
+<li><a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> rejects a proof that lists an empty sibling in <code>hashes</code>.</li>
 </ul>
 </li>
 <li>An unused (empty) leaf takes a fixed <em>zero identity</em> value, defined as <code>hash(0 + 0)</code>, where <code>0</code> is 32 zero bytes. An empty subtree therefore has a fixed, precomputable value at each height of the tree — its <em>cached zero</em> — obtained by hashing the previous height’s cached zero with itself, i.e., <code>cachedZero[0] = hash(0 + 0)</code> and <code>cachedZero[n] = hash(cachedZero[n-1] + cachedZero[n-1])</code>.</li>
 <li>The value of every node is the hash of the concatenation of its left value (bit 0) and its right value (bit 1), i.e., <code>node_value = hash(left_value + right_value)</code>. This holds even when a child is empty: the empty child contributes its cached zero value, so a hash is performed at every level all the way down the tree and no level is skipped.
 <ul>
-<li>Because the cached zero values are known to every verifier, the empty siblings along a path need not be transmitted in an <a href="../terminology.html#smt-proof">SMT Proof</a>; only the non-empty sibling hashes are sent, and the <code>collapsed</code> bitmap marks the positions where a cached zero is substituted. Accounting for every hash operation in this way is what makes the tree “optimized” while ensuring a single set of values cannot produce more than one valid path to the root.</li>
+<li>Because the cached zero values are known to every verifier, the empty siblings along a path are not transmitted in an <a href="../terminology.html#smt-proof">SMT Proof</a>; only the non-empty sibling hashes are sent, and the <code>collapsed</code> bitmap marks the positions where a cached zero is substituted. Accounting for every hash operation in this way is what makes the tree “optimized” while ensuring a single set of values cannot produce more than one valid path to the root.</li>
 </ul>
 </li>
 <li>The only thing published in the <a href="../terminology.html#beacon-signal">Beacon Signal</a> is the root hash (the Merkle root).</li>
