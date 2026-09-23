@@ -2,6 +2,8 @@ table {
   margin: 1em !important;
 }
 
-.content a:link, a:visited, a > .hljs {
+.content a:link,
+.content a:visited,
+.content a > .hljs {
   color: hsl(from var(--links) h calc(s * 0.4) calc(l * 1.3));
 }

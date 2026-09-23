@@ -13,26 +13,25 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="src/assets/tabs.css">
-        <link rel="stylesheet" href="theme/custom.css">
-        <link rel="stylesheet" href="theme/pagetoc.css">
+        <link rel="stylesheet" href="src/assets/tabs-6affeecf.css">
+        <link rel="stylesheet" href="theme/custom-68ab6ea5.css">
+        <link rel="stylesheet" href="theme/references-e52a1758.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -40,10 +39,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex.js";
+            window.path_to_searchindex_js = "searchindex-d55bc490.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-222e76be.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -57,7 +56,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -86,12 +85,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -106,39 +105,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -146,50 +145,50 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="data-structures"><a class="header" href="#data-structures">Data Structures</a></h1>
 <p>For the purposes of interoperability, this specification defines data structures using the data
-model defined by the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</p>
-<p>Concrete representations of these data structures MUST conform to the JSON-LD 1.1 specification [<a href="bibliography.html#JSON-LD">JSON-LD</a>].</p>
-<p>All SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] that appear in concrete representations of these data structures
-MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</p>
+model defined by the DID core v1.1 specification <a class="bib-cite" href="bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>.</p>
+<p>Concrete representations of these data structures MUST conform to the JSON-LD 1.1 specification <a class="bib-cite" href="bibliography.html#JSON-LD" title="JSON-LD 1.1">JSON-LD</a>.</p>
+<p>All SHA-256 hashes <a class="bib-cite" href="bibliography.html#SHA256" title="Secure Hash Standard (SHS)">SHA256</a> that appear in concrete representations of these data structures
+MUST be encoded as a string using <code>"base64url"</code> <a class="bib-cite" href="bibliography.html#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> encoding without padding.</p>
 <h2 id="did-document"><a class="header" href="#did-document">DID Document</a></h2>
-<p>A DID document is a map data structure defined by the DID core v1.1 specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</p>
+<p>A DID document is a map data structure defined by the DID core v1.1 specification <a class="bib-cite" href="bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>.</p>
 <p>The following properties MUST be included:</p>
 <ul>
 <li><code>@context</code>: A context array containing the following context URLs:
@@ -214,7 +213,7 @@ method objects to be used for capability invocations.</li>
 </ul>
 </li>
 </ul>
-<p>Verification method references in this document MAY be relative DID URLs. DID Core v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] permits this. Implementations MUST resolve a relative DID URL against the document <code>id</code> before they compare that URL with another reference. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></p>
+<p>Verification method references in this document MAY be relative DID URLs. DID Core v1.1 <a class="bib-cite" href="bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a> permits this. Implementations MUST resolve a relative DID URL against the document <code>id</code> before they compare that URL with another reference. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></p>
 <p>A resolver parses only one URL in a DID document. That URL is the <code>serviceEndpoint</code> of a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a> service, and the resolver parses it as a <a href="./terminology.html#beacon-address">Beacon Address</a>. A resolver MAY treat all other URLs in the document as opaque strings. <sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup></p>
 <p>In order for this DID document to be updatable, controllers must include at least one
 verification method with a capability invocation verification relationship and at least one
@@ -223,34 +222,20 @@ verification method with a capability invocation verification relationship and a
 <p>A <a href="./terminology.html#genesis-document">Genesis Document</a> is a <a href="./data-structures.html#did-document">DID document (data structure)</a> with the identifier set to the
 placeholder value (<code>did:btcr2:_</code>).</p>
 <div class="tabs" id="genesis-document-example">
-  <div class="tablist" role="tablist" aria-label="genesis-document-example">
-    <button role="tab"
-            id="genesis-document-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="genesis-document-example-panel-hide"
-            data-tab="genesis-document-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="genesis-document-example">
+    <button role="tab" id="genesis-document-example-tab-hide" aria-selected="true" class="is-active" aria-controls="genesis-document-example-panel-hide" data-tab="genesis-document-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="genesis-document-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="genesis-document-example-panel-show"
-            data-tab="genesis-document-example-panel-show">
+    <button role="tab" id="genesis-document-example-tab-show" aria-selected="false" class="" aria-controls="genesis-document-example-panel-show" data-tab="genesis-document-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="genesis-document-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="genesis-document-example-tab-hide"
-           >
+
+  <section id="genesis-document-example-panel-hide" role="tabpanel" aria-labelledby="genesis-document-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="genesis-document-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="genesis-document-example-tab-show"
-           hidden>
+  <section id="genesis-document-example-panel-show" role="tabpanel" aria-labelledby="genesis-document-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
@@ -293,37 +278,24 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="initial-document"><a class="header" href="#initial-document">Initial DID Document</a></h2>
 <p>An <a href="./terminology.html#initial-did-document">Initial DID Document</a> is a conformant <a href="./data-structures.html#did-document">DID document (data structure)</a>.</p>
 <div class="tabs" id="initial-did-document-example">
-  <div class="tablist" role="tablist" aria-label="initial-did-document-example">
-    <button role="tab"
-            id="initial-did-document-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="initial-did-document-example-panel-hide"
-            data-tab="initial-did-document-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="initial-did-document-example">
+    <button role="tab" id="initial-did-document-example-tab-hide" aria-selected="true" class="is-active" aria-controls="initial-did-document-example-panel-hide" data-tab="initial-did-document-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="initial-did-document-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="initial-did-document-example-panel-show"
-            data-tab="initial-did-document-example-panel-show">
+    <button role="tab" id="initial-did-document-example-tab-show" aria-selected="false" class="" aria-controls="initial-did-document-example-panel-show" data-tab="initial-did-document-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="initial-did-document-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="initial-did-document-example-tab-hide"
-           >
+
+  <section id="initial-did-document-example-panel-hide" role="tabpanel" aria-labelledby="initial-did-document-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="initial-did-document-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="initial-did-document-example-tab-show"
-           hidden>
+  <section id="initial-did-document-example-panel-show" role="tabpanel" aria-labelledby="initial-did-document-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
@@ -372,9 +344,10 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="btcr2-unsigned-update"><a class="header" href="#btcr2-unsigned-update">BTCR2 Unsigned Update</a></h2>
 <p>A <a href="./terminology.html#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is a Map data structure with the following properties:</p>
-<p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>targetHash</code> and <code>sourceHash</code>) MUST be produced using the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and MUST be encoded using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding.</p>
+<p>SHA-256 hashes <a class="bib-cite" href="bibliography.html#SHA256" title="Secure Hash Standard (SHS)">SHA256</a> (<code>targetHash</code> and <code>sourceHash</code>) MUST be produced using the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and MUST be encoded using <code>"base64url"</code> <a class="bib-cite" href="bibliography.html#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> encoding without padding.</p>
 <ul>
 <li>
 <p><code>@context</code>: A context array. It MUST contain exactly the following context URLs, in this order:</p>
@@ -387,10 +360,10 @@ Show Example
 <p>A change to the membership or the order of this array changes the hash that the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm produces.</p>
 </li>
 <li>
-<p><code>patch</code>: A single JSON Patch [<a href="bibliography.html#RFC6902">RFC6902</a>] document, i.e., one flat array of JSON Patch
+<p><code>patch</code>: A single JSON Patch <a class="bib-cite" href="bibliography.html#RFC6902" title="JavaScript Object Notation (JSON) Patch">RFC6902</a> document, i.e., one flat array of JSON Patch
 operation objects, that defines a set of transformations to be applied to a DID document. The
 result of applying the patch MUST be a conformant DID document according to the DID core v1.1
-specification [<a href="bibliography.html#DID-CORE">DID-CORE</a>].</p>
+specification <a class="bib-cite" href="bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>.</p>
 </li>
 <li>
 <p><code>targetVersionId</code>: The version of the DID document that results from applying the patch, i.e., the
@@ -407,34 +380,20 @@ cannot be checked when the update is constructed; it is enforced at resolution t
 </li>
 </ul>
 <div class="tabs" id="btcr2-unsigned-update-example">
-  <div class="tablist" role="tablist" aria-label="btcr2-unsigned-update-example">
-    <button role="tab"
-            id="btcr2-unsigned-update-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="btcr2-unsigned-update-example-panel-hide"
-            data-tab="btcr2-unsigned-update-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="btcr2-unsigned-update-example">
+    <button role="tab" id="btcr2-unsigned-update-example-tab-hide" aria-selected="true" class="is-active" aria-controls="btcr2-unsigned-update-example-panel-hide" data-tab="btcr2-unsigned-update-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="btcr2-unsigned-update-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="btcr2-unsigned-update-example-panel-show"
-            data-tab="btcr2-unsigned-update-example-panel-show">
+    <button role="tab" id="btcr2-unsigned-update-example-tab-show" aria-selected="false" class="" aria-controls="btcr2-unsigned-update-example-panel-show" data-tab="btcr2-unsigned-update-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="btcr2-unsigned-update-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="btcr2-unsigned-update-example-tab-hide"
-           >
+
+  <section id="btcr2-unsigned-update-example-panel-hide" role="tabpanel" aria-labelledby="btcr2-unsigned-update-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="btcr2-unsigned-update-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="btcr2-unsigned-update-example-tab-show"
-           hidden>
+  <section id="btcr2-unsigned-update-example-panel-show" role="tabpanel" aria-labelledby="btcr2-unsigned-update-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
@@ -469,6 +428,7 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="btcr2-signed-update"><a class="header" href="#btcr2-signed-update">BTCR2 Signed Update</a></h2>
 <p>A <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is a Map data structure with the same properties as
 <a href="./data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> and one additional property:</p>
@@ -476,34 +436,20 @@ Show Example
 <li><code>proof</code>: A <a href="./data-structures.html#data-integrity-proof">Data Integrity Proof (data structure)</a>.</li>
 </ul>
 <div class="tabs" id="btcr2-signed-update-example">
-  <div class="tablist" role="tablist" aria-label="btcr2-signed-update-example">
-    <button role="tab"
-            id="btcr2-signed-update-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="btcr2-signed-update-example-panel-hide"
-            data-tab="btcr2-signed-update-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="btcr2-signed-update-example">
+    <button role="tab" id="btcr2-signed-update-example-tab-hide" aria-selected="true" class="is-active" aria-controls="btcr2-signed-update-example-panel-hide" data-tab="btcr2-signed-update-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="btcr2-signed-update-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="btcr2-signed-update-example-panel-show"
-            data-tab="btcr2-signed-update-example-panel-show">
+    <button role="tab" id="btcr2-signed-update-example-tab-show" aria-selected="false" class="" aria-controls="btcr2-signed-update-example-panel-show" data-tab="btcr2-signed-update-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="btcr2-signed-update-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="btcr2-signed-update-example-tab-hide"
-           >
+
+  <section id="btcr2-signed-update-example-panel-hide" role="tabpanel" aria-labelledby="btcr2-signed-update-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="btcr2-signed-update-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="btcr2-signed-update-example-tab-show"
-           hidden>
+  <section id="btcr2-signed-update-example-panel-show" role="tabpanel" aria-labelledby="btcr2-signed-update-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
@@ -553,8 +499,9 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="data-integrity-config"><a class="header" href="#data-integrity-config">Data Integrity Config</a></h2>
-<p>A Data Integrity [<a href="bibliography.html#VC-DATA-INTEGRITY">VC-DATA-INTEGRITY</a>] proof with the <code>proofPurpose</code> set to <code>"capabilityInvocation"</code> and <code>proofValue</code> omitted.</p>
+<p>A Data Integrity <a class="bib-cite" href="bibliography.html#VC-DATA-INTEGRITY" title="Verifiable Credential Data Integrity 1.0">VC-DATA-INTEGRITY</a> proof with the <code>proofPurpose</code> set to <code>"capabilityInvocation"</code> and <code>proofValue</code> omitted.</p>
 <p>The following properties MUST be included in the Data Integrity Config:</p>
 <ul>
 <li><code>@context</code>: A context array. It MUST contain the same context URLs, in the same order, as the
@@ -563,39 +510,25 @@ Show Example
 <li><code>cryptosuite</code>: The string <code>"bip340-jcs-2025"</code>.</li>
 <li><code>verificationMethod</code>: A valid <code>verificationMethod</code> reference that exists in the most recent DID document.</li>
 <li><code>proofPurpose</code>: The string <code>"capabilityInvocation"</code>.</li>
-<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 [<a href="bibliography.html#ECMA-262">ECMA-262</a>].</li>
+<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 <a class="bib-cite" href="bibliography.html#ECMA-262" title="ECMAScript 2025 Language Specification">ECMA-262</a>.</li>
 <li><code>capabilityAction</code>: A string declaring the action required for the capability invocation. The
 string MUST be set to <code>"Write"</code>.</li>
 </ul>
 <div class="tabs" id="data-integrity-config-example">
-  <div class="tablist" role="tablist" aria-label="data-integrity-config-example">
-    <button role="tab"
-            id="data-integrity-config-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="data-integrity-config-example-panel-hide"
-            data-tab="data-integrity-config-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="data-integrity-config-example">
+    <button role="tab" id="data-integrity-config-example-tab-hide" aria-selected="true" class="is-active" aria-controls="data-integrity-config-example-panel-hide" data-tab="data-integrity-config-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="data-integrity-config-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="data-integrity-config-example-panel-show"
-            data-tab="data-integrity-config-example-panel-show">
+    <button role="tab" id="data-integrity-config-example-tab-show" aria-selected="false" class="" aria-controls="data-integrity-config-example-panel-show" data-tab="data-integrity-config-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="data-integrity-config-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="data-integrity-config-example-tab-hide"
-           >
+
+  <section id="data-integrity-config-example-panel-hide" role="tabpanel" aria-labelledby="data-integrity-config-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="data-integrity-config-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="data-integrity-config-example-tab-show"
-           hidden>
+  <section id="data-integrity-config-example-panel-show" role="tabpanel" aria-labelledby="data-integrity-config-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
@@ -614,41 +547,28 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="data-integrity-proof"><a class="header" href="#data-integrity-proof">Data Integrity Proof</a></h2>
 <p>A <a href="./terminology.html#data-integrity-proof">Data Integrity Proof</a> with the <code>proofPurpose</code> set to <code>"capabilityInvocation"</code>. This proof MUST be a valid invocation of the capability to update a <strong>did:btcr2</strong> DID document.</p>
 <p>This data structure is a Map data structure with the same properties as <a href="./data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> and one additional property:</p>
 <ul>
-<li><code>proofValue</code>: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 [<a href="bibliography.html#BIP340">BIP340</a>], as a Multibase <code>"base-58-btc"</code> [<a href="bibliography.html#CONTROLLED-IDENTIFIERS">CONTROLLED-IDENTIFIERS</a>] encoded string.</li>
+<li><code>proofValue</code>: MUST be a detached Schnorr signature produced according to Schnorr Signatures for secp256k1 <a class="bib-cite" href="bibliography.html#BIP340" title="Schnorr Signatures for secp256k1">BIP340</a>, as a Multibase <code>"base-58-btc"</code> <a class="bib-cite" href="bibliography.html#CONTROLLED-IDENTIFIERS" title="Controlled Identifiers v1.0">CONTROLLED-IDENTIFIERS</a> encoded string.</li>
 </ul>
 <div class="tabs" id="data-integrity-proof-example">
-  <div class="tablist" role="tablist" aria-label="data-integrity-proof-example">
-    <button role="tab"
-            id="data-integrity-proof-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="data-integrity-proof-example-panel-hide"
-            data-tab="data-integrity-proof-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="data-integrity-proof-example">
+    <button role="tab" id="data-integrity-proof-example-tab-hide" aria-selected="true" class="is-active" aria-controls="data-integrity-proof-example-panel-hide" data-tab="data-integrity-proof-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="data-integrity-proof-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="data-integrity-proof-example-panel-show"
-            data-tab="data-integrity-proof-example-panel-show">
+    <button role="tab" id="data-integrity-proof-example-tab-show" aria-selected="false" class="" aria-controls="data-integrity-proof-example-panel-show" data-tab="data-integrity-proof-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="data-integrity-proof-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="data-integrity-proof-example-tab-hide"
-           >
+
+  <section id="data-integrity-proof-example-panel-hide" role="tabpanel" aria-labelledby="data-integrity-proof-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="data-integrity-proof-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="data-integrity-proof-example-tab-show"
-           hidden>
+  <section id="data-integrity-proof-example-panel-show" role="tabpanel" aria-labelledby="data-integrity-proof-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": [
@@ -668,6 +588,7 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="sidecar-data"><a class="header" href="#sidecar-data">Sidecar Data</a></h2>
 <p>The <a href="./terminology.html#sidecar-data">Sidecar Data</a> contains optional properties:</p>
 <ul>
@@ -681,34 +602,20 @@ if the DID being resolved has used a <a href="./terminology.html#cas-beacon">CAS
 <li><code>smtProofs</code>: OPTIONAL array of <a href="./data-structures.html#smt-proof">SMT Proofs</a>. It MUST contain one <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> for each <a href="./terminology.html#beacon-signal">Beacon Signal</a> of an <a href="./terminology.html#smt-beacon">SMT Beacon</a> that <a href="operations/resolve.html#find-beacon-signals">Find Beacon Signals</a> finds. The DID controller keeps each <a href="./data-structures.html#smt-proof">SMT Proof (data structure)</a> for the life of the DID.</li>
 </ul>
 <div class="tabs" id="sidecar-data-example">
-  <div class="tablist" role="tablist" aria-label="sidecar-data-example">
-    <button role="tab"
-            id="sidecar-data-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="sidecar-data-example-panel-hide"
-            data-tab="sidecar-data-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="sidecar-data-example">
+    <button role="tab" id="sidecar-data-example-tab-hide" aria-selected="true" class="is-active" aria-controls="sidecar-data-example-panel-hide" data-tab="sidecar-data-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="sidecar-data-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="sidecar-data-example-panel-show"
-            data-tab="sidecar-data-example-panel-show">
+    <button role="tab" id="sidecar-data-example-tab-show" aria-selected="false" class="" aria-controls="sidecar-data-example-panel-show" data-tab="sidecar-data-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="sidecar-data-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="sidecar-data-example-tab-hide"
-           >
+
+  <section id="sidecar-data-example-panel-hide" role="tabpanel" aria-labelledby="sidecar-data-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="sidecar-data-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="sidecar-data-example-tab-show"
-           hidden>
+  <section id="sidecar-data-example-panel-show" role="tabpanel" aria-labelledby="sidecar-data-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": "https://btcr2.dev/context/v1",
@@ -900,45 +807,32 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="smt-proof"><a class="header" href="#smt-proof">SMT Proof</a></h2>
 <p>An <a href="./terminology.html#smt-proof">SMT Proof</a> data structure contains the following properties:</p>
-<p>SHA-256 hashes [<a href="bibliography.html#SHA256">SHA256</a>] (<code>id</code>, <code>updateId</code>, <code>hashes</code>) MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</p>
+<p>SHA-256 hashes <a class="bib-cite" href="bibliography.html#SHA256" title="Secure Hash Standard (SHS)">SHA256</a> (<code>id</code>, <code>updateId</code>, <code>hashes</code>) MUST be <code>"base64url"</code> <a class="bib-cite" href="bibliography.html#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> encoded without padding.</p>
 <ul>
 <li><code>id</code>: SHA-256 hash of the root node.</li>
-<li><code>nonce</code>: OPTIONAL 256-bit nonce, one for each index in each <a href="./terminology.html#beacon-signal">Beacon Signal</a>. MUST be encoded as a string using <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoding without padding. If the DID controller does not have the <code>nonce</code>, the <a href="./terminology.html#smt-proof">SMT Proof</a> of that <a href="./terminology.html#beacon-signal">Beacon Signal</a> cannot be verified.</li>
+<li><code>nonce</code>: OPTIONAL 256-bit nonce, one for each index in each <a href="./terminology.html#beacon-signal">Beacon Signal</a>. MUST be encoded as a string using <code>"base64url"</code> <a class="bib-cite" href="bibliography.html#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> encoding without padding. If the DID controller does not have the <code>nonce</code>, the <a href="./terminology.html#smt-proof">SMT Proof</a> of that <a href="./terminology.html#beacon-signal">Beacon Signal</a> cannot be verified.</li>
 <li><code>updateId</code>: The OPTIONAL <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
-<li><code>collapsed</code>: 256-bit bitmap with one bit for each level of the path from the leaf to the root. A <code>1</code> bit identifies a level at which the sibling is an empty subtree. The bit SHOULD be <code>1</code> at each of those levels. <a href="./appendix/optimized-smt.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> gives the value of an empty subtree. Bit <code>255</code> is the leaf level and bit <code>0</code> is the root level. Bit <code>i</code> is <code>bitAt(i)</code> of the decoded value as specified in the <a href="./algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. MUST be 32 bytes <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding. The number of entries in <code>hashes</code> plus the number of <code>1</code> bits in <code>collapsed</code> MUST be <code>256</code>.</li>
-<li><code>hashes</code>: Array of the SHA-256 hashes of the non-empty sibling nodes on the path from the leaf to the root. Each hash MUST be <code>"base64url"</code> [<a href="bibliography.html#RFC4648">RFC4648</a>] encoded without padding.</li>
+<li><code>collapsed</code>: 256-bit bitmap with one bit for each level of the path from the leaf to the root. A <code>1</code> bit identifies a level at which the sibling is an empty subtree. The bit SHOULD be <code>1</code> at each of those levels. <a href="./appendix/optimized-smt.html#smt-implementation">Appendix: Optimized Sparse Merkle Tree Implementation</a> gives the value of an empty subtree. Bit <code>255</code> is the leaf level and bit <code>0</code> is the root level. Bit <code>i</code> is <code>bitAt(i)</code> of the decoded value as specified in the <a href="./algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. MUST be 32 bytes <code>"base64url"</code> <a class="bib-cite" href="bibliography.html#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> encoded without padding. The number of entries in <code>hashes</code> plus the number of <code>1</code> bits in <code>collapsed</code> MUST be <code>256</code>.</li>
+<li><code>hashes</code>: Array of the SHA-256 hashes of the non-empty sibling nodes on the path from the leaf to the root. Each hash MUST be <code>"base64url"</code> <a class="bib-cite" href="bibliography.html#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> encoded without padding.</li>
 </ul>
 <div class="tabs" id="sidecar-smt-proof-example">
-  <div class="tablist" role="tablist" aria-label="sidecar-smt-proof-example">
-    <button role="tab"
-            id="sidecar-smt-proof-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="sidecar-smt-proof-example-panel-hide"
-            data-tab="sidecar-smt-proof-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="sidecar-smt-proof-example">
+    <button role="tab" id="sidecar-smt-proof-example-tab-hide" aria-selected="true" class="is-active" aria-controls="sidecar-smt-proof-example-panel-hide" data-tab="sidecar-smt-proof-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="sidecar-smt-proof-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="sidecar-smt-proof-example-panel-show"
-            data-tab="sidecar-smt-proof-example-panel-show">
+    <button role="tab" id="sidecar-smt-proof-example-tab-show" aria-selected="false" class="" aria-controls="sidecar-smt-proof-example-panel-show" data-tab="sidecar-smt-proof-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="sidecar-smt-proof-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="sidecar-smt-proof-example-tab-hide"
-           >
+
+  <section id="sidecar-smt-proof-example-panel-hide" role="tabpanel" aria-labelledby="sidecar-smt-proof-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="sidecar-smt-proof-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="sidecar-smt-proof-example-tab-show"
-           hidden>
+  <section id="sidecar-smt-proof-example-panel-show" role="tabpanel" aria-labelledby="sidecar-smt-proof-example-tab-show" hidden="">
     <label>Show Example</label>
 <p>An update in nonce mode (<code>nonce</code> and <code>updateId</code>):</p>
 <pre><code class="language-json">{
@@ -964,8 +858,9 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="resolution-options"><a class="header" href="#resolution-options">Resolution Options</a></h2>
-<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>This data structure is defined by DID Resolution v1 <a class="bib-cite" href="bibliography.html#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a>.</p>
 <p>Resolution options MAY contain the following properties:</p>
 <ul>
 <li><code>versionId</code>: OPTIONAL ASCII string representation of the specific version of a DID document to be resolved.</li>
@@ -974,34 +869,20 @@ Show Example
 <li><code>sidecar</code>: <a href="./data-structures.html#sidecar-data">Sidecar Data (data structure)</a>.</li>
 </ul>
 <div class="tabs" id="resolution-options-example">
-  <div class="tablist" role="tablist" aria-label="resolution-options-example">
-    <button role="tab"
-            id="resolution-options-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="resolution-options-example-panel-hide"
-            data-tab="resolution-options-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="resolution-options-example">
+    <button role="tab" id="resolution-options-example-tab-hide" aria-selected="true" class="is-active" aria-controls="resolution-options-example-panel-hide" data-tab="resolution-options-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="resolution-options-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="resolution-options-example-panel-show"
-            data-tab="resolution-options-example-panel-show">
+    <button role="tab" id="resolution-options-example-tab-show" aria-selected="false" class="" aria-controls="resolution-options-example-panel-show" data-tab="resolution-options-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="resolution-options-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="resolution-options-example-tab-hide"
-           >
+
+  <section id="resolution-options-example-panel-hide" role="tabpanel" aria-labelledby="resolution-options-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="resolution-options-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="resolution-options-example-tab-show"
-           hidden>
+  <section id="resolution-options-example-panel-show" role="tabpanel" aria-labelledby="resolution-options-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "versionId": "4",
@@ -1197,43 +1078,30 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="did-resolution-metadata"><a class="header" href="#did-resolution-metadata">DID Resolution Metadata</a></h2>
-<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>This data structure is defined by DID Resolution v1 <a class="bib-cite" href="bibliography.html#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a>.</p>
 <p>Resolution metadata MAY contain the following properties:</p>
 <ul>
 <li><code>contentType</code>: OPTIONAL media type of the returned DID document. E.g., <code>"application/did"</code>.</li>
 <li><code>error</code>: REQUIRED if an error occurs during DID resolution.</li>
 </ul>
-<p>A <strong>did:btcr2</strong> resolver returning a bare DID document MUST use the media type <code>"application/did"</code> [<a href="bibliography.html#DID-CORE">DID-CORE</a>]. A resolver returning a full DID resolution result MUST use the media type <code>"application/did-resolution"</code> [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>]. In both cases the <code>contentType</code> property records the media type of the DID document itself.</p>
+<p>A <strong>did:btcr2</strong> resolver returning a bare DID document MUST use the media type <code>"application/did"</code> <a class="bib-cite" href="bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>. A resolver returning a full DID resolution result MUST use the media type <code>"application/did-resolution"</code> <a class="bib-cite" href="bibliography.html#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a>. In both cases the <code>contentType</code> property records the media type of the DID document itself.</p>
 <div class="tabs" id="did-resolution-metadata-example">
-  <div class="tablist" role="tablist" aria-label="did-resolution-metadata-example">
-    <button role="tab"
-            id="did-resolution-metadata-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="did-resolution-metadata-example-panel-hide"
-            data-tab="did-resolution-metadata-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="did-resolution-metadata-example">
+    <button role="tab" id="did-resolution-metadata-example-tab-hide" aria-selected="true" class="is-active" aria-controls="did-resolution-metadata-example-panel-hide" data-tab="did-resolution-metadata-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="did-resolution-metadata-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="did-resolution-metadata-example-panel-show"
-            data-tab="did-resolution-metadata-example-panel-show">
+    <button role="tab" id="did-resolution-metadata-example-tab-show" aria-selected="false" class="" aria-controls="did-resolution-metadata-example-panel-show" data-tab="did-resolution-metadata-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="did-resolution-metadata-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="did-resolution-metadata-example-tab-hide"
-           >
+
+  <section id="did-resolution-metadata-example-panel-hide" role="tabpanel" aria-labelledby="did-resolution-metadata-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="did-resolution-metadata-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="did-resolution-metadata-example-tab-show"
-           hidden>
+  <section id="did-resolution-metadata-example-panel-show" role="tabpanel" aria-labelledby="did-resolution-metadata-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "contentType": "application/did"
@@ -1241,8 +1109,9 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="did-document-metadata"><a class="header" href="#did-document-metadata">DID Document Metadata</a></h2>
-<p>This data structure is defined by DID Resolution v1 [<a href="bibliography.html#DID-RESOLUTION">DID-RESOLUTION</a>].</p>
+<p>This data structure is defined by DID Resolution v1 <a class="bib-cite" href="bibliography.html#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a>.</p>
 <p>Document metadata contains the following properties:</p>
 <ul>
 <li><code>confirmations</code>: REQUIRED integer number of confirmations for the Bitcoin block that contains the most recently applied unique update for the resolved DID document. <code>0</code> when no <a href="./terminology.html#btcr2-update">BTCR2 Update</a> has been applied.</li>
@@ -1251,34 +1120,20 @@ Show Example
 <li><code>versionId</code>: REQUIRED ASCII string representation of the version of the last Update operation for the resolved DID document. <code>"1"</code> when no <a href="./terminology.html#btcr2-update">BTCR2 Update</a> has been applied.</li>
 </ul>
 <div class="tabs" id="did-document-metadata-example">
-  <div class="tablist" role="tablist" aria-label="did-document-metadata-example">
-    <button role="tab"
-            id="did-document-metadata-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="did-document-metadata-example-panel-hide"
-            data-tab="did-document-metadata-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="did-document-metadata-example">
+    <button role="tab" id="did-document-metadata-example-tab-hide" aria-selected="true" class="is-active" aria-controls="did-document-metadata-example-panel-hide" data-tab="did-document-metadata-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="did-document-metadata-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="did-document-metadata-example-panel-show"
-            data-tab="did-document-metadata-example-panel-show">
+    <button role="tab" id="did-document-metadata-example-tab-show" aria-selected="false" class="" aria-controls="did-document-metadata-example-panel-show" data-tab="did-document-metadata-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="did-document-metadata-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="did-document-metadata-example-tab-hide"
-           >
+
+  <section id="did-document-metadata-example-panel-hide" role="tabpanel" aria-labelledby="did-document-metadata-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="did-document-metadata-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="did-document-metadata-example-tab-show"
-           hidden>
+  <section id="did-document-metadata-example-panel-show" role="tabpanel" aria-labelledby="did-document-metadata-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "confirmations": 12,
@@ -1289,37 +1144,24 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="cas-announcement"><a class="header" href="#cas-announcement">CAS Announcement</a></h2>
 <p>A data structure that maps DIDs to <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> hashes. All <a href="./data-structures.html#btcr2-signed-update">BTCR2 Signed Updates (data structure)</a> MUST be hashed with the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. The concrete representation of this data structure will be published to a <a href="./terminology.html#cas">CAS</a>.</p>
 <div class="tabs" id="cas-announcement-example">
-  <div class="tablist" role="tablist" aria-label="cas-announcement-example">
-    <button role="tab"
-            id="cas-announcement-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="cas-announcement-example-panel-hide"
-            data-tab="cas-announcement-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="cas-announcement-example">
+    <button role="tab" id="cas-announcement-example-tab-hide" aria-selected="true" class="is-active" aria-controls="cas-announcement-example-panel-hide" data-tab="cas-announcement-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="cas-announcement-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="cas-announcement-example-panel-show"
-            data-tab="cas-announcement-example-panel-show">
+    <button role="tab" id="cas-announcement-example-tab-show" aria-selected="false" class="" aria-controls="cas-announcement-example-panel-show" data-tab="cas-announcement-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="cas-announcement-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="cas-announcement-example-tab-hide"
-           >
+
+  <section id="cas-announcement-example-panel-hide" role="tabpanel" aria-labelledby="cas-announcement-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="cas-announcement-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="cas-announcement-example-tab-show"
-           hidden>
+  <section id="cas-announcement-example-panel-show" role="tabpanel" aria-labelledby="cas-announcement-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg": "MkZZ6wn_ZzKKMgP4_Jg5vA72ai3CMpsamSx90a3qDu0",
@@ -1329,44 +1171,31 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <h2 id="root-capability"><a class="header" href="#root-capability">Root Capability</a></h2>
-<p>A Root Capability is an Object Capability used to authorize updates to a DID document. Implementation MAY use ZCAP-LD for capability invocations [<a href="bibliography.html#ZCAP-LD">ZCAP-LD</a>].</p>
+<p>A Root Capability is an Object Capability used to authorize updates to a DID document. Implementation MAY use ZCAP-LD for capability invocations <a class="bib-cite" href="bibliography.html#ZCAP-LD" title="Authorization Capabilities for Linked Data v0.3">ZCAP-LD</a>.</p>
 <p>The Root Capability MUST be a map containing only the following properties:</p>
 <ul>
 <li><code>@context</code>: MUST be the context string <code>"https://w3id.org/zcap/v1"</code></li>
-<li><code>id</code>: MUST be a URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 [<a href="bibliography.html#ECMA-262">ECMA-262</a>].</li>
+<li><code>id</code>: MUST be a URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 <a class="bib-cite" href="bibliography.html#ECMA-262" title="ECMAScript 2025 Language Specification">ECMA-262</a>.</li>
 <li><code>invocationTarget</code>: MUST be the <code>did</code>.</li>
 <li><code>controller</code>: MUST be the <code>did</code>.</li>
 </ul>
 <div class="tabs" id="root-capability-example">
-  <div class="tablist" role="tablist" aria-label="root-capability-example">
-    <button role="tab"
-            id="root-capability-example-tab-hide"
-            aria-selected="true"
-            class="is-active"
-            aria-controls="root-capability-example-panel-hide"
-            data-tab="root-capability-example-panel-hide">
+  
+<div class="tablist" role="tablist" aria-label="root-capability-example">
+    <button role="tab" id="root-capability-example-tab-hide" aria-selected="true" class="is-active" aria-controls="root-capability-example-panel-hide" data-tab="root-capability-example-panel-hide">
 Hide
     </button>
-    <button role="tab"
-            id="root-capability-example-tab-show"
-            aria-selected="false"
-            class=""
-            aria-controls="root-capability-example-panel-show"
-            data-tab="root-capability-example-panel-show">
+    <button role="tab" id="root-capability-example-tab-show" aria-selected="false" class="" aria-controls="root-capability-example-panel-show" data-tab="root-capability-example-panel-show">
 Show Example
     </button>
   </div>
-  <section id="root-capability-example-panel-hide"
-           role="tabpanel"
-           aria-labelledby="root-capability-example-tab-hide"
-           >
+
+  <section id="root-capability-example-panel-hide" role="tabpanel" aria-labelledby="root-capability-example-tab-hide">
     <label>Hide</label>
   </section>
-  <section id="root-capability-example-panel-show"
-           role="tabpanel"
-           aria-labelledby="root-capability-example-tab-show"
-           hidden>
+  <section id="root-capability-example-panel-show" role="tabpanel" aria-labelledby="root-capability-example-tab-show" hidden="">
     <label>Show Example</label>
 <pre><code class="language-json">{
   "@context": "https://w3id.org/zcap/v1",
@@ -1377,24 +1206,27 @@ Show Example
 </code></pre>
   </section>
 </div>
+
 <hr>
-<ol class="footnote-definition"><li id="footnote-1">
-<p>When an implementation resolves a relative DID URL against a DID base, the result cannot contain an authority component. The result therefore cannot contain a host. See DID Core v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] for the resolution algorithm and for the components that a relative DID URL can contain. <a href="#fr-1-1">↩</a></p>
+<ol class="footnote-definition">
+<li id="footnote-1">
+<p>When an implementation resolves a relative DID URL against a DID base, the result cannot contain an authority component. The result therefore cannot contain a host. See DID Core v1.1 <a class="bib-cite" href="bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a> for the resolution algorithm and for the components that a relative DID URL can contain. <a href="#fr-1-1">↩</a></p>
 </li>
 <li id="footnote-2">
-<p>A DID document can contain a URL with a host. Examples are an <code>alsoKnownAs</code> value, a service <code>id</code>, and the <code>serviceEndpoint</code> of a service that is not a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a>. A resolver does not use these values when it builds the update history. A <a href="./terminology.html#beacon-address">Beacon Address</a> is a Bitcoin address and has no host. A resolver that conforms to this specification therefore does not parse a host and does not need IDNA tables. This rule applies to the resolver, and does not change the requirements of DID Core v1.1 [<a href="bibliography.html#DID-CORE">DID-CORE</a>] or of a JSON-LD processor [<a href="bibliography.html#JSON-LD">JSON-LD</a>]. <a href="#fr-2-1">↩</a></p>
+<p>A DID document can contain a URL with a host. Examples are an <code>alsoKnownAs</code> value, a service <code>id</code>, and the <code>serviceEndpoint</code> of a service that is not a <a href="./terminology.html#btcr2-beacon">BTCR2 Beacon</a>. A resolver does not use these values when it builds the update history. A <a href="./terminology.html#beacon-address">Beacon Address</a> is a Bitcoin address and has no host. A resolver that conforms to this specification therefore does not parse a host and does not need IDNA tables. This rule applies to the resolver, and does not change the requirements of DID Core v1.1 <a class="bib-cite" href="bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a> or of a JSON-LD processor <a class="bib-cite" href="bibliography.html#JSON-LD" title="JSON-LD 1.1">JSON-LD</a>. <a href="#fr-2-1">↩</a></p>
 </li>
 </ol>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="beacons/aggregate-beacons.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="operations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -1404,16 +1236,21 @@ Show Example
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="beacons/aggregate-beacons.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="operations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -1422,19 +1259,18 @@ Show Example
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="src/assets/mermaid.min.js"></script>
-        <script src="src/assets/mermaid-init.js"></script>
-        <script src="src/assets/tabs.js"></script>
-        <script src="theme/pagetoc.js"></script>
+        <script src="src/assets/mermaid-eefea253.min.js"></script>
+        <script src="src/assets/mermaid-init-53b67c53.js"></script>
+        <script src="src/assets/tabs-4e6585f5.js"></script>
 
 
 

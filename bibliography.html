@@ -13,26 +13,25 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="src/assets/tabs.css">
-        <link rel="stylesheet" href="theme/custom.css">
-        <link rel="stylesheet" href="theme/pagetoc.css">
+        <link rel="stylesheet" href="src/assets/tabs-6affeecf.css">
+        <link rel="stylesheet" href="theme/custom-68ab6ea5.css">
+        <link rel="stylesheet" href="theme/references-e52a1758.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -40,10 +39,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex.js";
+            window.path_to_searchindex_js = "searchindex-d55bc490.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-222e76be.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -57,7 +56,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -86,12 +85,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -106,39 +105,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -146,41 +145,41 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/dcdpr/did-btcr2" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="references"><a class="header" href="#references">References</a></h1>
 <script type="text/javascript">
@@ -221,360 +220,657 @@ function copyToClipboard(text) {
 }
 
 </script>
-<style>div.bib_div h2 {
-    margin-block-start: 0.5em;
+<style>/* ==========================================================================
+   mdbook-bib: Default Bibliography Styles
+   Designed to work with mdBook's light and dark themes
+   ========================================================================== */
+
+:root {
+  --bib-accent: hsl(from var(--links) h calc(s * 0.6) calc(l * 1.3));
+  --bib-cite-bg: rgba(59, 130, 246, 0.1);
+  --bib-cite-border: rgba(59, 130, 246, 0.3);
+  --bib-abstract-bg: rgba(0, 0, 0, 0.03);
+  --bib-divider: rgba(0, 0, 0, 0.1);
+  --bib-shadow: rgba(0, 0, 0, 0.08);
+  --bib-text-secondary: #6b7280;
 }
 
-div.bib_div hr {
-    margin-block-start: 1.5em;
+.coal .bib-entry,
+.navy .bib-entry,
+.ayu .bib-entry {
+  --bib-abstract-bg: rgba(255, 255, 255, 0.03);
+  --bib-divider: rgba(255, 255, 255, 0.1);
+  --bib-shadow: rgba(0, 0, 0, 0.3);
+  --bib-text-secondary: #9ca3af;
 }
 
-div.bib_div:last-of-type hr {
-    display: none;
+/* Inline citations */
+.bib-cite,
+.bib-cite:link,
+.bib-cite:visited {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1em 0.45em;
+  margin: 0 0.1em;
+  font-size: 0.85em;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--bib-accent);
+  background: var(--bib-cite-bg);
+  border: 1px solid var(--bib-cite-border);
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
-div.bib_div section.abstract {
-    margin-left: 1.5em;
+.bib-cite[href^="bibliography.html"]:hover {
+  background: var(--bib-accent);
+  color: white;
+  border-color: var(--bib-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--bib-shadow);
+  text-decoration: none;
+}
+
+/* Bibliography entry */
+.bib-entry {
+  margin: 1.25rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--bg);
+  border-left: 3px solid var(--bib-accent);
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 1px 3px var(--bib-shadow);
+  transition: all 0.2s ease;
+}
+
+.bib-entry:hover {
+  box-shadow: 0 4px 12px var(--bib-shadow);
+  transform: translateX(2px);
+}
+
+.bib-entry details { margin: 0; }
+.bib-entry summary { cursor: pointer; list-style: none; display: block; }
+.bib-entry summary::-webkit-details-marker { display: none; }
+
+.bib-key {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  margin-right: 0.75rem;
+  font-size: 0.8em;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  color: var(--bib-accent);
+  background: var(--bib-cite-bg);
+  border: 1px solid var(--bib-cite-border);
+  border-radius: 4px;
+}
+
+.bib-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 0.5rem;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: white;
+  background: var(--bib-accent);
+  border-radius: 50%;
+}
+
+.bib-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.4;
+  color: var(--fg);
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.bib-title a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed var(--bib-accent);
+}
+
+.bib-title a:hover {
+  color: var(--bib-accent);
+  border-bottom-style: solid;
+}
+
+.bib-title a::after { content: " ↗"; font-size: 0.75em; opacity: 0.6; }
+
+.bib-meta {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9em;
+  color: var(--bib-text-secondary);
+}
+
+.bib-meta-item { display: inline-flex; align-items: center; }
+.bib-authors { font-style: italic; }
+
+.bib-expand-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+  padding: 0.2em 0.5em;
+  font-size: 0.75em;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bib-text-secondary);
+  opacity: 0.7;
+}
+
+.bib-entry:hover .bib-expand-hint { opacity: 1; }
+.bib-expand-arrow { transition: transform 0.3s ease; }
+details[open] .bib-expand-arrow { transform: rotate(180deg); }
+
+.bib-abstract {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--bib-divider);
+  animation: bib-fade-in 0.3s ease;
+}
+
+@keyframes bib-fade-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bib-abstract-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bib-text-secondary);
+}
+
+.bib-abstract-content {
+  padding: 1rem;
+  font-size: 0.95em;
+  line-height: 1.7;
+  background: var(--bib-abstract-bg);
+  border-radius: 6px;
+  text-align: justify;
+}
+
+.bib-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35em 0.7em;
+  margin-left: 0.75rem;
+  font-size: 0.75em;
+  font-weight: 500;
+  color: var(--bib-text-secondary);
+  background: transparent;
+  border: 1px solid var(--bib-divider);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bib-copy-btn:hover {
+  color: var(--bib-accent);
+  border-color: var(--bib-accent);
+  background: var(--bib-cite-bg);
+}
+
+/* Chapter references section */
+.bib-chapter-separator {
+  height: 0;
+  margin: 3rem 0 1.5rem 0;
+  border: none;
+  border-top: 2px solid var(--bib-divider);
+}
+
+.bib-chapter-refs-header {
+  margin: 0 0 1.25rem 0;
+  padding: 0;
+  font-size: 1.4em;
+  font-weight: 600;
+  color: var(--bib-text-secondary);
+}
+
+@media (max-width: 600px) {
+  .bib-entry { padding: 1rem; margin: 1rem 0; }
+  .bib-meta { flex-direction: column; gap: 0.35rem; }
+  .bib-expand-hint { display: none; }
+  .bib-title { font-size: 1em; }
+}
+
+@media print {
+  .bib-entry { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  .bib-copy-btn, .bib-expand-hint { display: none; }
 }
 </style>
-<div class="bib_div">
+<article class="bib-entry" id="BCP14">
 <details data-key="BCP14" class="ref">
 <summary class="citation">
-<a id="BCP14">[BCP14]</a>
-- N/A
-- <a href="https://www.rfc-editor.org/info/bcp14" target="_blank"><cite>Best Current Practice 14: Key words for use in RFCs to Indicate Requirement Levels</cite></a>.
-- 2017.
+<span class="bib-key">BCP14</span><span class="bib-index">1</span>
+<cite class="bib-title"><a href="https://www.rfc-editor.org/info/bcp14" target="_blank" rel="noopener noreferrer">Best Current Practice 14: Key words for use in RFCs to Indicate Requirement Levels</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">N/A</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 2017</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract"><a class="header" href="#summaryabstract">Summary/Abstract</a></h2>
-<div>BCP 14 is the Best Current Practice that defines and clarifies the usage of requirement-level keywords (MUST, SHOULD, MAY, etc.) in IETF documents. It comprises RFC 2119 (defining the keywords) and RFC 8174 (clarifying that only uppercase usage carries the defined semantics).</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">BCP 14 is the Best Current Practice that defines and clarifies the usage of requirement-level keywords (MUST, SHOULD, MAY, etc.) in IETF documents. It comprises RFC 2119 (defining the keywords) and RFC 8174 (clarifying that only uppercase usage carries the defined semantics).</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="Bitcoin-Core">
 <details data-key="Bitcoin-Core" class="ref">
 <summary class="citation">
-<a id="Bitcoin-Core">[Bitcoin-Core]</a>
-- Bitcoin Core Developers
-- <a href="https://github.com/bitcoin/bitcoin" target="_blank"><cite>Bitcoin Core</cite></a>.
-- 2025.
+<span class="bib-key">Bitcoin-Core</span><span class="bib-index">17</span>
+<cite class="bib-title"><a href="https://github.com/bitcoin/bitcoin" target="_blank" rel="noopener noreferrer">Bitcoin Core</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Developers, Bitcoin Core</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 08-2025</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-1"><a class="header" href="#summaryabstract-1">Summary/Abstract</a></h2>
-<div>Bitcoin Core is the reference implementation of the Bitcoin protocol. It is a full node implementation that validates all transactions and blocks according to the Bitcoin consensus rules.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">Bitcoin Core is the reference implementation of the Bitcoin protocol. It is a full node implementation that validates all transactions and blocks according to the Bitcoin consensus rules.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="BIP173">
 <details data-key="BIP173" class="ref">
 <summary class="citation">
-<a id="BIP173">[BIP173]</a>
-- Pieter Wuille, Greg Maxwell
-- <a href="https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki" target="_blank"><cite>Base32 address format for native v0-16 witness outputs</cite></a>.
-- 2017.
+<span class="bib-key">BIP173</span><span class="bib-index">19</span>
+<cite class="bib-title"><a href="https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki" target="_blank" rel="noopener noreferrer">Base32 address format for native v0-16 witness outputs</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Pieter Wuille, Greg Maxwell</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 03-2017</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-2"><a class="header" href="#summaryabstract-2">Summary/Abstract</a></h2>
-<div>This document proposes a checksummed base32 format, Bech32, and a standard for native segregated witness output addresses using it.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This document proposes a checksummed base32 format, "Bech32", and a standard for native segregated witness output addresses using it.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="BIP321">
 <details data-key="BIP321" class="ref">
 <summary class="citation">
-<a id="BIP321">[BIP321]</a>
-- Matt Corallo
-- <a href="https://github.com/bitcoin/bips/blob/master/bip-0321.mediawiki" target="_blank"><cite>URI Scheme</cite></a>.
-- 2024.
+<span class="bib-key">BIP321</span><span class="bib-index">16</span>
+<cite class="bib-title"><a href="https://github.com/bitcoin/bips/blob/master/bip-0321.mediawiki" target="_blank" rel="noopener noreferrer">URI Scheme</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Corallo, Matt</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 11-2024</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-3"><a class="header" href="#summaryabstract-3">Summary/Abstract</a></h2>
-<div>This document proposes a URI scheme for describing Bitcoin payment instructions.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This document proposes a URI scheme for describing Bitcoin payment instructions.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="BIP327">
 <details data-key="BIP327" class="ref">
 <summary class="citation">
-<a id="BIP327">[BIP327]</a>
-- Jonas Nick, Tim Ruffing, Elliott Jin
-- <a href="https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki" target="_blank"><cite>MuSig2 for BIP340-compatible Multi-Signatures</cite></a>.
-- 2022.
+<span class="bib-key">BIP327</span><span class="bib-index">8</span>
+<cite class="bib-title"><a href="https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki" target="_blank" rel="noopener noreferrer">MuSig2 for BIP340-compatible Multi-Signatures</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Jonas Nick, Elliott Jin, Tim Ruffing</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 03-2022</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-4"><a class="header" href="#summaryabstract-4">Summary/Abstract</a></h2>
-<div>This document proposes a standard for the MuSig2 multi-signature scheme. The standard is compatible with BIP340 public keys and signatures. It supports tweaking, which allows deriving BIP32 child keys from aggregate public keys and creating BIP341 Taproot outputs with key and script paths.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This document proposes a standard for the MuSig2 multi-signature scheme. The standard is compatible with BIP340 public keys and signatures. It supports tweaking, which allows deriving BIP32 child keys from aggregate public keys and creating BIP341 Taproot outputs with key and script paths.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="BIP340">
 <details data-key="BIP340" class="ref">
 <summary class="citation">
-<a id="BIP340">[BIP340]</a>
-- Pieter Wuille, Jonas Nick, Tim Ruffing
-- <a href="https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki" target="_blank"><cite>Schnorr Signatures for secp256k1</cite></a>.
-- 2020.
+<span class="bib-key">BIP340</span><span class="bib-index">13</span>
+<cite class="bib-title"><a href="https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki" target="_blank" rel="noopener noreferrer">Schnorr Signatures for secp256k1</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Pieter Wuille, Tim Ruffing, Jonas Nick</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 01-2020</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-5"><a class="header" href="#summaryabstract-5">Summary/Abstract</a></h2>
-<div>This document proposes a standard for 64-byte Schnorr signatures over the elliptic curve secp256k1.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This document proposes a standard for 64-byte Schnorr signatures over the elliptic curve secp256k1.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="BIP340-Cryptosuite">
 <details data-key="BIP340-Cryptosuite" class="ref">
 <summary class="citation">
-<a id="BIP340-Cryptosuite">[BIP340-Cryptosuite]</a>
-- Will Abramson
-- <a href="https://dcdpr.github.io/data-integrity-schnorr-secp256k1/" target="_blank"><cite>Data Integrity BIP340 Cryptosuites</cite></a>.
-- 2025.
+<span class="bib-key">BIP340-Cryptosuite</span><span class="bib-index">6</span>
+<cite class="bib-title"><a href="https://dcdpr.github.io/data-integrity-schnorr-secp256k1/" target="_blank" rel="noopener noreferrer">Data Integrity BIP340 Cryptosuites</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Abramson, Will</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 08-2025</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-6"><a class="header" href="#summaryabstract-6">Summary/Abstract</a></h2>
-<div>This specification describes Data Integrity cryptographic suites for use when creating or verifying a digital signature using the the secp256k1 instantiation of the Schnorr Signature Algorithm as defined in BIP340.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This specification describes Data Integrity cryptographic suites for use when creating or verifying a digital signature using the the secp256k1 instantiation of the Schnorr Signature Algorithm as defined in BIP340.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="BIP350">
 <details data-key="BIP350" class="ref">
 <summary class="citation">
-<a id="BIP350">[BIP350]</a>
-- Pieter Wuille
-- <a href="https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki" target="_blank"><cite>Bech32m format for v1+ witness addresses</cite></a>.
-- 2020.
+<span class="bib-key">BIP350</span><span class="bib-index">18</span>
+<cite class="bib-title"><a href="https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki" target="_blank" rel="noopener noreferrer">Bech32m format for v1+ witness addresses</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Wuille, Pieter</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 12-2020</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-7"><a class="header" href="#summaryabstract-7">Summary/Abstract</a></h2>
-<div>This document defines an improved variant of Bech32 called Bech32m, and amends BIP173 to use Bech32m for native segregated witness outputs of version 1 and later. Bech32 remains in use for segregated witness outputs of version 0.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This document defines an improved variant of Bech32 called Bech32m, and amends BIP173 to use Bech32m for native segregated witness outputs of version 1 and later. Bech32 remains in use for segregated witness outputs of version 0.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="CONTROLLED-IDENTIFIERS">
 <details data-key="CONTROLLED-IDENTIFIERS" class="ref">
 <summary class="citation">
-<a id="CONTROLLED-IDENTIFIERS">[CONTROLLED-IDENTIFIERS]</a>
-- Dave Longley, Manu Sporny, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen
-- <a href="https://www.w3.org/TR/cid-1.0/" target="_blank"><cite>Controlled Identifiers v1.0</cite></a>.
-- 2025.
+<span class="bib-key">CONTROLLED-IDENTIFIERS</span><span class="bib-index">14</span>
+<cite class="bib-title"><a href="https://www.w3.org/TR/cid-1.0/" target="_blank" rel="noopener noreferrer">Controlled Identifiers v1.0</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Dave Longley, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen, Manu Sporny</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 05-2025</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-8"><a class="header" href="#summaryabstract-8">Summary/Abstract</a></h2>
-<div>A controlled identifier document contains cryptographic material and lists service endpoints for the purposes of verifying cryptographic proofs from, and interacting with, the controller of an identifier.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">A controlled identifier document contains cryptographic material and lists service endpoints for the purposes of verifying cryptographic proofs from, and interacting with, the controller of an identifier.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="DID-CORE">
 <details data-key="DID-CORE" class="ref">
 <summary class="citation">
-<a id="DID-CORE">[DID-CORE]</a>
-- Manu Sporny, Dave Longley, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen
-- <a href="https://www.w3.org/TR/did-1.1/" target="_blank"><cite>Decentralized Identifiers (DIDs) v1.1</cite></a>.
-- 2026.
+<span class="bib-key">DID-CORE</span><span class="bib-index">2</span>
+<cite class="bib-title"><a href="https://www.w3.org/TR/did-1.1/" target="_blank" rel="noopener noreferrer">Decentralized Identifiers (DIDs) v1.1</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Manu Sporny, Markus Sabadello, Drummond Reed, Orie Steele, Christopher Allen, Dave Longley</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 03-2026</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-9"><a class="header" href="#summaryabstract-9">Summary/Abstract</a></h2>
-<div>Decentralized identifiers (DIDs) are a new type of identifier that enables verifiable, decentralized digital identity. A DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) as determined by the controller of the DID. In contrast to typical, federated identifiers, DIDs have been designed so that they may be decoupled from centralized registries, identity providers, and certificate authorities. Specifically, while other parties might be used to help enable the discovery of information related to a DID, the design enables the controller of a DID to prove control over it without requiring permission from any other party. DIDs are URIs that associate a DID subject with a DID document allowing trustable interactions associated with that subject.
-<p>Each DID document can express cryptographic material, verification methods, or services, which provide a set of mechanisms enabling a DID controller to prove control of the DID. Services enable trusted interactions associated with the DID subject. A DID might provide the means to return the DID subject itself, if the DID subject is an information resource such as a data model.</p>
-<p>This document specifies the DID syntax, a common data model, core properties, serialized representations, DID operations, and an explanation of the process of resolving DIDs to the resources that they represent.</div></p>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">Decentralized identifiers (DIDs) are a new type of identifier that enables verifiable, decentralized digital identity. A DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) as determined by the controller of the DID. In contrast to typical, federated identifiers, DIDs have been designed so that they may be decoupled from centralized registries, identity providers, and certificate authorities. Specifically, while other parties might be used to help enable the discovery of information related to a DID, the design enables the controller of a DID to prove control over it without requiring permission from any other party. DIDs are URIs that associate a DID subject with a DID document allowing trustable interactions associated with that subject. Each DID document can express cryptographic material, verification methods, or services, which provide a set of mechanisms enabling a DID controller to prove control of the DID. Services enable trusted interactions associated with the DID subject. A DID might provide the means to return the DID subject itself, if the DID subject is an information resource such as a data model. This document specifies the DID syntax, a common data model, core properties, serialized representations, DID operations, and an explanation of the process of resolving DIDs to the resources that they represent.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="DID-RESOLUTION">
 <details data-key="DID-RESOLUTION" class="ref">
 <summary class="citation">
-<a id="DID-RESOLUTION">[DID-RESOLUTION]</a>
-- Stephen Curran, Joe Andrieu
-- <a href="https://www.w3.org/TR/did-resolution-1.0/" target="_blank"><cite>Decentralized Identifier Resolution (DID Resolution) v1</cite></a>.
-- 2026.
+<span class="bib-key">DID-RESOLUTION</span><span class="bib-index">3</span>
+<cite class="bib-title"><a href="https://www.w3.org/TR/did-resolution-1.0/" target="_blank" rel="noopener noreferrer">Decentralized Identifier Resolution (DID Resolution) v1</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Stephen Curran, Joe Andrieu</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 08-2026</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-10"><a class="header" href="#summaryabstract-10">Summary/Abstract</a></h2>
-<div>Decentralized identifier (DID) resolution is the process of obtaining a DID document and accompanying metadata for a specific DID. The process takes a DID and a set of resolution options as its input and returns a DID document and associated metadata about the resolved document and the resolution request. A resolved DID document is a set of information which enables cryptographically verifiable interactions with the DID subject, including mechanisms such as cryptographic public keys. This specification covers the algorithms and guidelines to be used for DID resolution and relies on the core DID specification, Decentralized Identifiers (DIDs) v1.0, which describes the underlying DID architecture in full detail.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">Decentralized identifier (DID) resolution is the process of obtaining a DID document and accompanying metadata for a specific DID. The process takes a DID and a set of resolution options as its input and returns a DID document and associated metadata about the resolved document and the resolution request. A resolved DID document is a set of information which enables cryptographically verifiable interactions with the DID subject, including mechanisms such as cryptographic public keys. This specification covers the algorithms and guidelines to be used for DID resolution and relies on the core DID specification, Decentralized Identifiers (DIDs) v1.0, which describes the underlying DID architecture in full detail.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="ECMA-262">
 <details data-key="ECMA-262" class="ref">
 <summary class="citation">
-<a id="ECMA-262">[ECMA-262]</a>
-- Ecma International
-- <a href="https://262.ecma-international.org/16.0/index.html" target="_blank"><cite>ECMAScript 2025 Language Specification</cite></a>.
-- 2025.
+<span class="bib-key">ECMA-262</span><span class="bib-index">12</span>
+<cite class="bib-title"><a href="https://262.ecma-international.org/16.0/index.html" target="_blank" rel="noopener noreferrer">ECMAScript 2025 Language Specification</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">International, Ecma</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 06-2025</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-11"><a class="header" href="#summaryabstract-11">Summary/Abstract</a></h2>
-<div>ECMA-262, 16th Edition (ECMAScript 2025) defines the ECMAScript general-purpose programming language, including the URI handling functions encodeURIComponent() and decodeURIComponent() that escape and unescape components of Uniform Resource Identifiers.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">ECMA-262, 16th Edition (ECMAScript 2025) defines the ECMAScript general-purpose programming language, including the URI handling functions encodeURIComponent() and decodeURIComponent() that escape and unescape components of Uniform Resource Identifiers.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="JSON-LD">
 <details data-key="JSON-LD" class="ref">
 <summary class="citation">
-<a id="JSON-LD">[JSON-LD]</a>
-- Manu Sporny, Dave Longley, Gregg Kellogg, Markus Lanthaler, Pierre-Antoine Champin, Niklas Lindström
-- <a href="https://www.w3.org/TR/json-ld11/" target="_blank"><cite>JSON-LD 1.1</cite></a>.
-- 2020.
+<span class="bib-key">JSON-LD</span><span class="bib-index">9</span>
+<cite class="bib-title"><a href="https://www.w3.org/TR/json-ld11/" target="_blank" rel="noopener noreferrer">JSON-LD 1.1</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Manu Sporny, Gregg Kellogg, Markus Lanthaler, Pierre-Antoine Champin, Niklas Lindström, Dave Longley</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 07-2020</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-12"><a class="header" href="#summaryabstract-12">Summary/Abstract</a></h2>
-<div>JSON is a useful data serialization and messaging format. This specification defines JSON-LD 1.1, a JSON-based format to serialize Linked Data. The syntax is designed to easily integrate into deployed systems that already use JSON, and provides a smooth upgrade path from JSON to JSON-LD. It is primarily intended to be a way to use Linked Data in Web-based programming environments, to build interoperable Web services, and to store Linked Data in JSON-based storage engines.
-<p>This specification describes a superset of the features defined in JSON-LD 1.0 and, except where noted, documents created using the 1.0 version of this specification remain compatible with JSON-LD 1.1.</div></p>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">JSON is a useful data serialization and messaging format. This specification defines JSON-LD 1.1, a JSON-based format to serialize Linked Data. The syntax is designed to easily integrate into deployed systems that already use JSON, and provides a smooth upgrade path from JSON to JSON-LD. It is primarily intended to be a way to use Linked Data in Web-based programming environments, to build interoperable Web services, and to store Linked Data in JSON-based storage engines. This specification describes a superset of the features defined in JSON-LD 1.0 and, except where noted, documents created using the 1.0 version of this specification remain compatible with JSON-LD 1.1.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="RFC4648">
 <details data-key="RFC4648" class="ref">
 <summary class="citation">
-<a id="RFC4648">[RFC4648]</a>
-- Josefsson, S.
-- <a href="https://datatracker.ietf.org/doc/html/rfc4648" target="_blank"><cite>The Base16, Base32, and Base64 Data Encodings</cite></a>.
-- 2006.
+<span class="bib-key">RFC4648</span><span class="bib-index">11</span>
+<cite class="bib-title"><a href="https://datatracker.ietf.org/doc/html/rfc4648" target="_blank" rel="noopener noreferrer">The Base16, Base32, and Base64 Data Encodings</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Josefsson, S.</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 10-2006</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-13"><a class="header" href="#summaryabstract-13">Summary/Abstract</a></h2>
-<div>This document describes the commonly used base 64, base 32, and base 16 encoding schemes.  It also discusses the use of line-feeds in encoded data, use of padding in encoded data, use of non-alphabet characters in encoded data, use of different encoding alphabets, and canonical encodings.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This document describes the commonly used base 64, base 32, and base 16 encoding schemes. It also discusses the use of line-feeds in encoded data, use of padding in encoded data, use of non-alphabet characters in encoded data, use of different encoding alphabets, and canonical encodings.</div>
+
+</section>
+<section class="organization">
+<h1>Organization</h1>
+
+<div>Internet Engineering Task Force</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="RFC6902">
 <details data-key="RFC6902" class="ref">
 <summary class="citation">
-<a id="RFC6902">[RFC6902]</a>
-- Bryan, P. and Nottingham, M.
-- <a href="https://datatracker.ietf.org/doc/html/rfc6902" target="_blank"><cite>JavaScript Object Notation (JSON) Patch</cite></a>.
-- 2013.
+<span class="bib-key">RFC6902</span><span class="bib-index">4</span>
+<cite class="bib-title"><a href="https://datatracker.ietf.org/doc/html/rfc6902" target="_blank" rel="noopener noreferrer">JavaScript Object Notation (JSON) Patch</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Bryan, P.; Nottingham, M.</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 04-2013</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-14"><a class="header" href="#summaryabstract-14">Summary/Abstract</a></h2>
-<div>JSON Patch defines a JSON document structure for expressing a sequence of operations to apply to a JavaScript Object Notation (JSON) document; it is suitable for use with the HTTP PATCH method. The application/json-patch+json media type is used to identify such patch documents.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">JSON Patch defines a JSON document structure for expressing a sequence of operations to apply to a JavaScript Object Notation (JSON) document; it is suitable for use with the HTTP PATCH method. The "application/json-patch+json" media type is used to identify such patch documents.</div>
+
+</section>
+<section class="organization">
+<h1>Organization</h1>
+
+<div>Internet Engineering Task Force</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="RFC8785">
 <details data-key="RFC8785" class="ref">
 <summary class="citation">
-<a id="RFC8785">[RFC8785]</a>
-- Rundgren, A. and Jordan, B. and Erdtman, S.
-- <a href="https://datatracker.ietf.org/doc/html/rfc8785" target="_blank"><cite>JSON Canonicalization Scheme (JCS)</cite></a>.
-- 2020.
+<span class="bib-key">RFC8785</span><span class="bib-index">20</span>
+<cite class="bib-title"><a href="https://datatracker.ietf.org/doc/html/rfc8785" target="_blank" rel="noopener noreferrer">JSON Canonicalization Scheme (JCS)</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Rundgren, A.; Jordan, B.; Erdtman, S.</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 06-2020</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-15"><a class="header" href="#summaryabstract-15">Summary/Abstract</a></h2>
-<div>Cryptographic operations like hashing and signing need the data to be expressed in an invariant format so that the operations are reliably repeatable. One way to address this is to create a canonical representation of the data. Canonicalization also permits data to be exchanged in its original form on the wire while cryptographic operations performed on the canonicalized counterpart of the data in the producer and consumer endpoints generate consistent results.
-<p>This document describes the JSON Canonicalization Scheme (JCS). This specification defines how to create a canonical representation of JSON data by building on the strict serialization methods for JSON primitives defined by ECMAScript, constraining JSON data to the Internet JSON (I-JSON) subset, and by using deterministic property sorting.</div></p>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">Cryptographic operations like hashing and signing need the data to be expressed in an invariant format so that the operations are reliably repeatable. One way to address this is to create a canonical representation of the data. Canonicalization also permits data to be exchanged in its original form on the "wire" while cryptographic operations performed on the canonicalized counterpart of the data in the producer and consumer endpoints generate consistent results. This document describes the JSON Canonicalization Scheme (JCS). This specification defines how to create a canonical representation of JSON data by building on the strict serialization methods for JSON primitives defined by ECMAScript, constraining JSON data to the Internet JSON (I-JSON) subset, and by using deterministic property sorting.</div>
+
+</section>
+<section class="organization">
+<h1>Organization</h1>
+
+<div>Internet Engineering Task Force</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="SEC">
 <details data-key="SEC" class="ref">
 <summary class="citation">
-<a id="SEC">[SEC]</a>
-- Certicom Research and Daniel R. L. Brown
-- <a href="https://www.secg.org/sec1-v2.pdf" target="_blank"><cite>Standards for Efficient Cryptography 1 (SEC 1): Elliptic Curve Cryptography</cite></a>.
-- 2009.
+<span class="bib-key">SEC</span><span class="bib-index">7</span>
+<cite class="bib-title"><a href="https://www.secg.org/sec1-v2.pdf" target="_blank" rel="noopener noreferrer">Standards for Efficient Cryptography 1 (SEC 1): Elliptic Curve Cryptography</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Research, Certicom; Brown, Daniel R. L.</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 05-2009</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-16"><a class="header" href="#summaryabstract-16">Summary/Abstract</a></h2>
-<div>This document specifies public-key cryptographic schemes based on elliptic curve cryptography (ECC). In particular, it specifies:
-<ul>
-<li>signature schemes;</li>
-<li>encryption and key transport schemes; and</li>
-<li>key agreement schemes.</li>
-</ul>
-<p>It also describes cryptographic primitives which are used to construct the schemes, and ASN.1 syntax for identifying the schemes.</p>
-<p>The schemes are intended for general application within computer and communications systems.</div></p>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This document specifies public-key cryptographic schemes based on elliptic curve cryptography (ECC). In particular, it specifies: - signature schemes; - encryption and key transport schemes; and - key agreement schemes. It also describes cryptographic primitives which are used to construct the schemes, and ASN.1 syntax for identifying the schemes. The schemes are intended for general application within computer and communications systems.</div>
+
+</section>
+<section class="organization">
+<h1>Organization</h1>
+
+<div>Standards for Efficient Cryptography Group (SECG)</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="SHA256">
 <details data-key="SHA256" class="ref">
 <summary class="citation">
-<a id="SHA256">[SHA256]</a>
-- {National Institute of Standards and Technology}
-- <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf" target="_blank"><cite>Secure Hash Standard (SHS)</cite></a>.
-- 2015.
+<span class="bib-key">SHA256</span><span class="bib-index">10</span>
+<cite class="bib-title"><a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf" target="_blank" rel="noopener noreferrer">Secure Hash Standard (SHS)</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">National Institute of Standards and Technology</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 08-2015</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-17"><a class="header" href="#summaryabstract-17">Summary/Abstract</a></h2>
-<div>This standard specifies hash algorithms that can be used to generate digests of messages. The digests are used to detect whether messages have been changed since the digests were generated.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This standard specifies hash algorithms that can be used to generate digests of messages. The digests are used to detect whether messages have been changed since the digests were generated.</div>
+
+</section>
+<section class="organization">
+<h1>Organization</h1>
+
+<div>NIST</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="VC-DATA-INTEGRITY">
 <details data-key="VC-DATA-INTEGRITY" class="ref">
 <summary class="citation">
-<a id="VC-DATA-INTEGRITY">[VC-DATA-INTEGRITY]</a>
-- Dave Longley, Manu Sporny, Ivan Herman
-- <a href="https://www.w3.org/TR/vc-data-integrity/" target="_blank"><cite>Verifiable Credential Data Integrity 1.0</cite></a>.
-- 2025.
+<span class="bib-key">VC-DATA-INTEGRITY</span><span class="bib-index">5</span>
+<cite class="bib-title"><a href="https://www.w3.org/TR/vc-data-integrity/" target="_blank" rel="noopener noreferrer">Verifiable Credential Data Integrity 1.0</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Dave Longley, Ivan Herman, Manu Sporny</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 05-2025</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-18"><a class="header" href="#summaryabstract-18">Summary/Abstract</a></h2>
-<div>This specification describes mechanisms for ensuring the authenticity and integrity of verifiable credentials and similar types of constrained digital documents using cryptography, especially through the use of digital signatures and related mathematical proofs.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">This specification describes mechanisms for ensuring the authenticity and integrity of verifiable credentials and similar types of constrained digital documents using cryptography, especially through the use of digital signatures and related mathematical proofs.</div>
+
 </section>
 </details>
-</div>
-<br/>
-<div class="bib_div">
+</article>
+<article class="bib-entry" id="ZCAP-LD">
 <details data-key="ZCAP-LD" class="ref">
 <summary class="citation">
-<a id="ZCAP-LD">[ZCAP-LD]</a>
-- Christine Lemmer-Webber, Manu Sporny, Mark S. Miller
-- <a href="https://w3c-ccg.github.io/zcap-spec/" target="_blank"><cite>Authorization Capabilities for Linked Data v0.3</cite></a>.
-- 2025.
+<span class="bib-key">ZCAP-LD</span><span class="bib-index">15</span>
+<cite class="bib-title"><a href="https://w3c-ccg.github.io/zcap-spec/" target="_blank" rel="noopener noreferrer">Authorization Capabilities for Linked Data v0.3</a></cite>
+<div class="bib-meta">
+<span class="bib-meta-item bib-authors">Christine Lemmer-Webber, Mark S. Miller, Manu Sporny</span>
+<span class="bib-meta-item bib-date" style="white-space:nowrap">— 08-2025</span>
+<span class="bib-expand-hint"><span class="bib-expand-arrow">▼</span> Abstract</span>
+</div>
+
 </summary>
-<section class="abstract">
-<h2 id="summaryabstract-19"><a class="header" href="#summaryabstract-19">Summary/Abstract</a></h2>
-<div>Authorization Capabilities for Linked Data (ZCAP-LD for short) provides a secure way for linked data systems to grant and express authority utilizing the object capability model. Capabilities are represented as linked data objects which are signed with Linked Data Proofs. ZCAP-LD supports delegating authority to other entities on the network by chaining together capability documents. Caveats may be attached to capability documents which may be used to restrict the scope of their use, for example to restrict the actions which may be used or providing a mechanism by which the capability may be later revoked.</div>
-<hr>
+<section class="bib-abstract">
+<header class="bib-abstract-header">Abstract</header>
+<div class="bib-abstract-content">Authorization Capabilities for Linked Data (ZCAP-LD for short) provides a secure way for linked data systems to grant and express authority utilizing the object capability model. Capabilities are represented as linked data objects which are signed with Linked Data Proofs. ZCAP-LD supports delegating authority to other entities on the network by chaining together capability documents. "Caveats" may be attached to capability documents which may be used to restrict the scope of their use, for example to restrict the actions which may be used or providing a mechanism by which the capability may be later revoked.</div>
+
 </section>
 </details>
-</div>
-<br/>
+</article>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="appendix/optimized-smt.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
 
@@ -585,13 +881,18 @@ div.bib_div section.abstract {
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="appendix/optimized-smt.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -600,19 +901,18 @@ div.bib_div section.abstract {
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="src/assets/mermaid.min.js"></script>
-        <script src="src/assets/mermaid-init.js"></script>
-        <script src="src/assets/tabs.js"></script>
-        <script src="theme/pagetoc.js"></script>
+        <script src="src/assets/mermaid-eefea253.min.js"></script>
+        <script src="src/assets/mermaid-init-53b67c53.js"></script>
+        <script src="src/assets/tabs-4e6585f5.js"></script>
 
 
 
