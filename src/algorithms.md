@@ -67,14 +67,14 @@ Prefix the `method-specific-id` with the string `"did:btcr2:"` to produce the fi
 '
 Example input:
 
-* `version_number`: `1`
-* `network_name`: `bitcoin` (`network_value` = `0`)
-* `key_or_hash`: SEC encoded secp256k1 public key
-  `0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798`
+  * `version_number`: `1`
+  * `network_name`: `bitcoin` (`network_value` = `0`)
+  * `key_or_hash`: SEC encoded secp256k1 public key
+    `0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798`
 
 Example output:
 
-* `did`: `"did:btcr2:k1qqp8n0nx0muaewav2ksx99wwsu9swq5mlndjmn3gm9vl9q2mzmup0xqhmkf96"`' %}
+  * `did`: `"did:btcr2:k1qqp8n0nx0muaewav2ksx99wwsu9swq5mlndjmn3gm9vl9q2mzmup0xqhmkf96"`' %}
 
 {{ ui::show_example_tabs(
   group_id="identifier-encoding-example",
@@ -115,13 +115,13 @@ Decoding inverts encoding exactly: passing the `version_number`, `network_name`,
 '
 Example input:
 
-* `did`: `"did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"`
+  * `did`: `"did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"`
 
 Example output:
 
-* `version_number`: `1`
-* `network_name`: `mutinynet` (`network_value` = `5`)
-* `key_or_hash`: SHA-256 hash `e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8`' %}
+  * `version_number`: `1`
+  * `network_name`: `mutinynet` (`network_value` = `5`)
+  * `key_or_hash`: SHA-256 hash `e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8`' %}
 
 {{ ui::show_example_tabs(
   group_id="identifier-decoding-example",
@@ -142,16 +142,18 @@ Example output:
 
 To verify the inclusion or non-inclusion of a DID in the [SMT Proof], perform the following steps:
 
-Throughout this section, `hash()` denotes SHA-256 {{#cite SHA256}} over a byte array, and `concat()` (equivalently, the `+` operator) concatenates byte arrays, not strings. The `base64url` {{#cite RFC4648}} encoded fields of an [SMT Proof (data structure)] (`id`, `nonce`, `updateId`, `collapsed`, and the entries of `hashes`) MUST be decoded to their raw bytes before being used in any of these operations.
+Throughout this section, `hash()` denotes SHA-256 {{#cite SHA256}} over a byte sequence. The byte sequence has no length limit. `hash(did)` denotes `hash()` over the UTF-8 bytes of the DID string. `concat()` (equivalently, the `+` operator) concatenates two 32-byte values into one 64-byte value. `0` denotes 32 zero bytes.
 
-Construct a hashed-zero cache. Two zero leaves are hashed together by concatenating the value `0` with itself for the bottom level, and then hashed again with its next sibling, also itself, at each level up the tree. Each computed hash value can be cached in an array.
+`bitAt(i)` of a 32-byte value counts from left to right. `bitAt(0)` is the most significant bit of the first byte. `bitAt(255)` is the least significant bit of the last byte. The `base64url` {{#cite RFC4648}} encoded fields of an [SMT Proof (data structure)] (`id`, `nonce`, `updateId`, `collapsed`, and the entries of `hashes`) MUST be decoded to their raw bytes before being used in any of these operations.
+
+Construct a hashed-zero cache. `cachedZero[0]` is the value of an empty leaf and is equal to `hash(0 + 0)`. `cachedZero[n]` is the value of an empty subtree at height `n` and is equal to `hash(cachedZero[n-1] + cachedZero[n-1])`.
 
 {% set hide_text = `` %}
 {% set pseudocode_construct_hashed_zero_cache =
 `
 ~~~rust
 let cachedZero = [];
-let z = 0;
+let z = 0;  // 32 zero bytes
 
 for n in 0..=255 {
   z = hash(concat(z, z));
@@ -170,7 +172,22 @@ hide_label="Hide"
 ) }}
 
 
-The [SMT Proof (data structure)] is verified by walking the tree starting from the leaf node value --- given by `hash(hash(proof.nonce) + proof.updateId)` for update inclusion or `hash(hash(proof.nonce))` for non-inclusion --- to the root `proof.id`. Walking the tree means hashing sibling hashes from `proof.hashes` concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by `hash(did)`) informs the algorithm which side of the concatenation operation the sibling hash belongs on: 0 for left, 1 for right.
+The result of the algorithm MUST be `false` if any of the following conditions are true:
+
+* The proof has an `updateId`, and the decoded `updateId` is not 32 bytes.
+* The decoded `collapsed` is not 32 bytes.
+* A decoded entry of `hashes` is not 32 bytes.
+* The number of entries in `hashes` plus the number of `1` bits in `collapsed` is not `256`.
+* A `0` bit of `collapsed` selects an entry of `hashes` that is equal to the cached zero of that level.
+
+The OPTIONAL fields `nonce` and `updateId` of the [SMT Proof (data structure)] select the leaf value of the index of `did`. The DID controller selects the fields for each index and each [Beacon Signal]:
+
+* `nonce` and `updateId`: `hash(hash(nonce) + updateId)`. The [Beacon Signal] announces the update.
+* `nonce` only: `hash(hash(nonce))`. The [Beacon Signal] announces no update.
+* `updateId` only: `updateId`. The [Beacon Signal] announces the update.
+* No `nonce` and no `updateId`: `cachedZero[0]`, the value of an empty leaf. The [Beacon Signal] announces no update, and the index is empty.
+
+The [SMT Proof (data structure)] is verified by walking the tree starting from the leaf value to the root `proof.id`. Walking the tree means hashing sibling hashes from `proof.hashes` concatenated with a candidate hash to construct each node value. Each bit within the leaf node index (given by `hash(did)`) selects the side of the candidate hash: `0` for left, `1` for right. The sibling hash is on the other side. The walk starts at the leaf with `bitAt(255)` and stops at the root with `bitAt(0)`.
 
 The tree is "optimized" by collapsing empty nodes. (See [Appendix: Optimized Sparse Merkle Tree Implementation] for definition of "optimized".) Each bit within `proof.collapsed` informs the algorithm whether to take the next sibling hash from `proof.hashes` (0) or use a hashed zero from the current height of the tree (1).
 
@@ -180,21 +197,37 @@ The last step is asserting that the computed candidate hash is equivalent to `pr
 {% set pseudocode_smt_proof_verification =
 `
 ~~~rust
-let candidateHash = if let Some(updateId) = proof.updateId {
-  hash(concat(hash(proof.nonce), updateId))
-} else {
-  hash(hash(proof.nonce))
+if let Some(updateId) = proof.updateId {
+  if updateId.len() != 32 { return false; }
+}
+if proof.collapsed.len() != 32 { return false; }
+for siblingHash in &proof.hashes {
+  if siblingHash.len() != 32 { return false; }
+}
+if proof.hashes.len() + proof.collapsed.count_ones() != 256 {
+  return false;
+}
+
+let candidateHash = match (proof.nonce, proof.updateId) {
+  (Some(nonce), Some(updateId)) => hash(concat(hash(nonce), updateId)),  // update, private
+  (Some(nonce), None)           => hash(hash(nonce)),                    // no update, private
+  (None,        Some(updateId)) => updateId,                             // update, public
+  (None,        None)           => cachedZero[0],                        // empty index
 };
 
 let index = hash(did);
 
+// bitAt(i): bit i, counted from left to right over the 32 bytes.
+// n = 0 is the leaf level (i = 255), n = 255 is the root level (i = 0).
 for n in 0..=255 {
   let i = 255 - n;
 
   let siblingHash = if proof.collapsed.bitAt(i) == 1 {
     cachedZero[n]
   } else {
-    proof.hashes.pop_front()
+    let siblingHash = proof.hashes.pop_front();
+    if siblingHash == cachedZero[n] { return false; }
+    siblingHash
   };
 
   if index.bitAt(i) == 1 {

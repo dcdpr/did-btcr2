@@ -94,14 +94,14 @@ is `"ipfs://<stringified CIDv1>"`.
 '
 Example input:
 
-* file content: the 3-byte ASCII string `"abc"` (`0x61 0x62 0x63`)
+  * file content: the 3-byte ASCII string `"abc"` (`0x61 0x62 0x63`)
 
 Example output:
 
-* SHA-256 of the file: `ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`
-* CIDv1 bytes: `01551220ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`
-* stringified CIDv1 (multibase `base32`, prefix `b`): `"bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"`
-* final URL: `"ipfs://bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"`' %}
+  * SHA-256 of the file: `ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`
+  * CIDv1 bytes: `01551220ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad`
+  * stringified CIDv1 (multibase `base32`, prefix `b`): `"bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"`
+  * final URL: `"ipfs://bafkreif2pall7dybz7vecqka3zo24irdwabwdi4wc55jznaq75q7eaavvu"`' %}
 
 {{ ui::show_example_tabs(
   group_id="cidv1-construction-example",
