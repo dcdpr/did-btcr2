@@ -67,14 +67,14 @@ Prefix the `method-specific-id` with the string `"did:btcr2:"` to produce the fi
 '
 Example input:
 
-* `version_number`: `1`
-* `network_name`: `bitcoin` (`network_value` = `0`)
-* `key_or_hash`: SEC encoded secp256k1 public key
-  `0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798`
+  * `version_number`: `1`
+  * `network_name`: `bitcoin` (`network_value` = `0`)
+  * `key_or_hash`: SEC encoded secp256k1 public key
+    `0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798`
 
 Example output:
 
-* `did`: `"did:btcr2:k1qqp8n0nx0muaewav2ksx99wwsu9swq5mlndjmn3gm9vl9q2mzmup0xqhmkf96"`' %}
+  * `did`: `"did:btcr2:k1qqp8n0nx0muaewav2ksx99wwsu9swq5mlndjmn3gm9vl9q2mzmup0xqhmkf96"`' %}
 
 {{ ui::show_example_tabs(
   group_id="identifier-encoding-example",
@@ -115,13 +115,13 @@ Decoding inverts encoding exactly: passing the `version_number`, `network_name`,
 '
 Example input:
 
-* `did`: `"did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"`
+  * `did`: `"did:btcr2:x1qhjw6jnhwcyu5wau4x0cpwvz74c3g82c3uaehqpaf7lzfgmnwsd7spmmf54"`
 
 Example output:
 
-* `version_number`: `1`
-* `network_name`: `mutinynet` (`network_value` = `5`)
-* `key_or_hash`: SHA-256 hash `e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8`' %}
+  * `version_number`: `1`
+  * `network_name`: `mutinynet` (`network_value` = `5`)
+  * `key_or_hash`: SHA-256 hash `e4ed4a777609ca3bbca99f80b982f571141d588f3b9b803d4fbe24a373741be8`' %}
 
 {{ ui::show_example_tabs(
   group_id="identifier-decoding-example",
