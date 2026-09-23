@@ -33,14 +33,13 @@ jobs:
         uses: baptiste0928/cargo-install@v3
         with:
           crate: mdbook-mermaid
-          git: 'https://github.com/badboy/mdbook-mermaid'
-          rev: '25c2b56daed067db36fc224e1d93054c5ca6531c'
+          version: '=0.17.1'
 
       - name: Install mdbook-tera
         uses: baptiste0928/cargo-install@v3
         with:
           crate: mdbook-tera
-          git: 'https://github.com/stevecheckoway/mdbook-tera'
+          git: 'https://github.com/jintekc/mdbook-tera'
           rev: 'cdb9d902b714a5efa5a025a7d263e0924eb4d4d4'
 
       - name: Stamp the publication date
