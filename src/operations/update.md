@@ -129,6 +129,34 @@ Implementations SHOULD verify `update.proof` before they announce the update. Us
 A [BTCR2 Update Announcement] for a [Singleton Beacon] is the [BTCR2 Signed Update] hashed with the [JSON Document Hashing] algorithm. This 32-byte SHA-256 hash is used as the [Signal Bytes] when constructing a [Beacon Signal] Bitcoin transaction. The [Beacon Signal] is signed by the private key that controls the [Beacon Address] and broadcast to the Bitcoin network. To broadcast signed Bitcoin transactions, see the {{#cite Bitcoin-Core}} source code.
 
 
+#### Funding a Beacon Signal
+
+This section is non-normative. A full definition of the construction of a [Beacon Signal] is out of scope for this specification. This section shows a RECOMMENDED example.
+
+The [BTCR2 Signed Update] supplies only the [Signal Bytes]. The transaction also has inputs, a fee, and a change output. The inputs are [UTXOs][UTXO] that the caller selects. The three values are parameters of the RECOMMENDED example:
+
+```rust
+fn constructBeaconSignal(
+  signedUpdate,
+  prevouts,
+  feeRate,
+  changeAddress,
+) ->
+  unsignedBeaconSignal
+```
+
+Input arguments:
+
+- `signedUpdate`: The [BTCR2 Signed Update] that the [Beacon Signal] announces.
+- `prevouts`: The [UTXOs][UTXO] that the transaction spends, each with its value. One of them is a [UTXO] that the [Beacon Address] controls.
+- `feeRate`: The fee rate that the caller selects for the transaction.
+- `changeAddress`: The address that receives the total value of `prevouts` minus the fee.
+
+Outputs:
+
+- `unsignedBeaconSignal`: An [Unsigned Beacon Signal]
+
+
 ### Announcing to an Aggregate Beacon
 
 Aggregating and announcing updates for multiple **did:btcr2** identifiers is the responsibility of the [Aggregation Service].
