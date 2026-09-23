@@ -521,6 +521,7 @@ function verifyProof(proof: SmtProofDocument, did: string): boolean {
   for (let n = 0; n <= 255; n++) {
     const i = 255 - n;
     const sibling = bitAt(collapsed, i) === 1 ? CACHED_ZERO[n]! : hashes[next++]!;
+    if (bitAt(collapsed, i) === 0 && hashToBigInt(sibling) === hashToBigInt(CACHED_ZERO[n]!)) return false;
     candidate = bitAt(index, i) === 1 ? blockHash(sibling, candidate) : blockHash(candidate, sibling);
   }
   return hashToBase64Url(candidate) === proof.id;
