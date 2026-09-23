@@ -133,7 +133,7 @@ A [BTCR2 Update Announcement] for a [Singleton Beacon] is the [BTCR2 Signed Upda
 
 This section is non-normative. A full definition of the construction of a [Beacon Signal] is out of scope for this specification. This section shows a RECOMMENDED example.
 
-The [BTCR2 Signed Update] supplies only the [Signal Bytes]. The transaction also has inputs, a fee, and a change output. The inputs are [UTXOs][UTXO] that the caller selects, with a wallet or with other software. The three values are parameters of the RECOMMENDED example:
+The [BTCR2 Signed Update] supplies only the [Signal Bytes]. The transaction also has inputs, a fee, and a change output. The inputs are [UTXOs][UTXO] that the caller selects. The three values are parameters of the RECOMMENDED example:
 
 ```rust
 fn constructBeaconSignal(
@@ -155,8 +155,6 @@ Input arguments:
 Outputs:
 
 - `unsignedBeaconSignal`: An [Unsigned Beacon Signal]
-
-With these parameters, the implementation does not connect to the Bitcoin network and does not use a wallet.
 
 
 ### Announcing to an Aggregate Beacon
