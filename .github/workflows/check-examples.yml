@@ -1,0 +1,30 @@
+name: check-examples
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: bin
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.11'
+
+      - name: Install the generator packages
+        run: bun install --frozen-lockfile
+
+      - name: Check the example corpus
+        run: bun gen-examples.ts --check

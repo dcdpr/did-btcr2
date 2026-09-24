@@ -9,14 +9,8 @@
     "examples:check": "bun gen-examples.ts --check"
   },
   "devDependencies": {
-    "@did-btcr2/api": "0.19.2",
-    "@did-btcr2/bitcoin": "0.10.0",
-    "@did-btcr2/common": "9.3.0",
-    "@did-btcr2/keypair": "0.13.1",
-    "@did-btcr2/method": "0.58.0",
-    "@did-btcr2/smt": "0.3.0",
-    "@noble/curves": "1.9.7",
-    "@noble/hashes": "1.8.0",
-    "@scure/btc-signer": "1.8.1"
+    "@did-btcr2/api": "0.27.1",
+    "@did-btcr2/smt": "0.4.1",
+    "@noble/curves": "1.9.7"
   }
 }
