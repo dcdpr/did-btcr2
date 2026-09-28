@@ -1,0 +1,45 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
+    "id": "@id",
+    "type": "@type",
+    "deactivated": {
+      "@id": "https://btcr2.dev/ns#deactivated"
+    },
+    "SingletonBeacon": {
+      "@id": "https://btcr2.dev/ns#SingletonBeacon"
+    },
+    "CASBeacon": {
+      "@id": "https://btcr2.dev/ns#CASBeacon"
+    },
+    "SMTBeacon": {
+      "@id": "https://btcr2.dev/ns#SMTBeacon"
+    },
+    "sourceHash": {
+      "@id": "https://btcr2.dev/ns#sourceHash"
+    },
+    "targetHash": {
+      "@id": "https://btcr2.dev/ns#targetHash"
+    },
+    "targetVersionId": {
+      "@id": "https://btcr2.dev/ns#targetVersionId"
+    },
+    "genesisDocument": {
+      "@id": "https://btcr2.dev/ns#genesisDocument",
+      "@type": "@json"
+    },
+    "updates": {
+      "@id": "https://btcr2.dev/ns#updates",
+      "@type": "@json"
+    },
+    "casUpdates": {
+      "@id": "https://btcr2.dev/ns#casUpdates",
+      "@type": "@json"
+    },
+    "smtProofs": {
+      "@id": "https://btcr2.dev/ns#smtProofs",
+      "@type": "@json"
+    }
+  }
+}
