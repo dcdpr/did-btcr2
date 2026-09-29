@@ -27,8 +27,9 @@ specification.
   type `application/ld+json`, as `https://www.w3.org/ns/did/v1` is for DID Core.
 - It is RECOMMENDED that processors build the context in, compiled or loaded from a local
   copy, rather than dereference the URL at each use.
-- The content at this URL is not changed once published; changes are published at
-  `https://btcr2.dev/context/v2`.
+- Once version 1.0 of this specification is released, the content at this URL is not
+  changed; later changes are published at `https://btcr2.dev/context/v2`. Until then, the
+  context may change along with this specification, and so may its digest.
 - The SHA-256 digest of the context file, in hexadecimal, is
   `190722f2e7b5677107241fbed2f45f87b42de16f330a463d8de70d42f7683d4c`. This digest is
   informative: it lets an implementer check a built-in copy.
