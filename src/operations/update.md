@@ -14,7 +14,7 @@ The update operation has the following function signature:
 
 ```rust
 fn update(
-  didSourceDocument,
+  sourceDidDocument,
   jsonPatch,
   targetVersionId,
   verificationMethodId,
@@ -25,7 +25,7 @@ fn update(
 
 Input arguments:
 
-- `didSourceDocument`: The `didDocument` that DID resolution returns before the new [BTCR2 Signed Update] is applied.
+- `sourceDidDocument`: The `didDocument` that DID resolution returns before the new [BTCR2 Signed Update] is applied.
 - `jsonPatch`: A single JSON Patch document {{#cite RFC6902}} with the changes to be made to the source DID document. Its wire shape is defined by the `patch` property of the [BTCR2 Unsigned Update (data structure)].
 - `targetVersionId`: The `versionId` that will be returned in the [DID document metadata (data structure)] once the new [BTCR2 Signed Update] is applied.
 - `verificationMethodId`: The `verificationMethod` ID used for signing the [BTCR2 Update].
@@ -47,18 +47,18 @@ Constructing a [BTCR2 Signed Update] is a two-step process. First, a [BTCR2 Unsi
 
 This process constructs a [BTCR2 Unsigned Update (data structure)].
 
-Apply `jsonPatch` to `didSourceDocument` to create `didTargetDocument`. An [`INVALID_DID_UPDATE`] error MUST be raised if `jsonPatch` is malformed or fails to apply. JSON Patch {{#cite RFC6902}} operations are evaluated in order; the first operation that fails, including a failed `test` operation, fails the whole patch. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `didSourceDocument.id`.
+Apply `jsonPatch` to `sourceDidDocument` to create `didTargetDocument`. An [`INVALID_DID_UPDATE`] error MUST be raised if `jsonPatch` is malformed or fails to apply. JSON Patch {{#cite RFC6902}} operations are evaluated in order; the first operation that fails, including a failed `test` operation, fails the whole patch. `didTargetDocument` MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}. An [`INVALID_DID_UPDATE`] error MUST be raised if `didTargetDocument.id` is not equal to `sourceDidDocument.id`.
 
 Fill the [BTCR2 Unsigned Update (data structure)] template below with the required template variables.
 
 * `array-of-patches`: `jsonPatch` embedded as JSON.
-* `source-hash`: `didSourceDocument` hashed with the [JSON Document Hashing] algorithm.
+* `source-hash`: `sourceDidDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-hash`: `didTargetDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-version-id`: The value of `targetVersionId`.
 
 `targetVersionId` MUST be derived from the `versionId` returned in the [DID document metadata (data structure)] by a fresh resolution of the DID, rather than from a locally maintained count. Announcing a [BTCR2 Signed Update] whose `targetVersionId` is wrong in either direction can permanently prevent the DID from resolving.
 
-`didSourceDocument` MUST be the `didDocument` that the same fresh resolution returns.
+`sourceDidDocument` MUST be the `didDocument` that the same fresh resolution returns.
 
 A DID controller MUST NOT announce a [BTCR2 Signed Update] if it cannot resolve all previous [BTCR2 Updates][BTCR2 Update] of the DID. It cannot resolve them if the fresh resolution returns a `versionId` less than the highest announced `targetVersionId` for the DID. If this occurs, resolve the DID again after the [Beacon Signal] of the last announced update has `resolutionOptions.minConf` confirmations. A lower value decreases the time to wait, but increases the risk from block reorganizations (see [Find Beacon Signals](resolve.md#find-beacon-signals)).
 
@@ -87,16 +87,16 @@ resulting [BTCR2 Unsigned Update (data structure)] MUST be conformant to this sp
 
 This process constructs a [BTCR2 Signed Update (data structure)] from `update`, a [BTCR2 Unsigned Update (data structure)].
 
-An [`INVALID_DID_UPDATE`] error MUST be raised if no entry of the `didSourceDocument.capabilityInvocation` Set identifies `verificationMethodId`. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the `id` of the object is equal.
+An [`INVALID_DID_UPDATE`] error MUST be raised if no entry of the `sourceDidDocument.capabilityInvocation` Set identifies `verificationMethodId`. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the `id` of the object is equal.
 
-If that entry is a reference, find the verification method in the `didSourceDocument.verificationMethod` Set with an `id` that is equal to the reference. An [`INVALID_DID_UPDATE`] error MUST be raised if there is no verification method with that `id`.
+If that entry is a reference, find the verification method in the `sourceDidDocument.verificationMethod` Set with an `id` that is equal to the reference. An [`INVALID_DID_UPDATE`] error MUST be raised if there is no verification method with that `id`.
 
 Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `signer` as the signing interface and the `"bip340-jcs-2025"` cryptosuite.
 
 Fill the Data Integrity {{#cite VC-DATA-INTEGRITY}} template below with the required template variables.
 
 * `verification-method`: The value of `verificationMethodId`.
-* `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
+* `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(sourceDidDocument.id)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 
 {% set hide_text = `` %}
 {% set data_integrity_config_template =
