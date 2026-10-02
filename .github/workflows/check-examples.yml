@@ -23,8 +23,11 @@ jobs:
         with:
           bun-version: '1.3.11'
 
-      - name: Install the generator packages
+      - name: Install the bin packages
         run: bun install --frozen-lockfile
 
       - name: Check the example corpus
         run: bun gen-examples.ts --check
+
+      - name: Check the JSON-LD context
+        run: bun check-context.mjs

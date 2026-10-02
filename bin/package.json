@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Tooling for the did:btcr2 DID Method Specification. The specification itself is built with mdbook; this package only regenerates the example corpus in src/example-data.",
+  "description": "Tooling for the did:btcr2 DID Method Specification. The specification itself is built with mdbook; this package regenerates the example corpus in src/example-data and checks the examples against the JSON-LD context in src/context.",
   "scripts": {
     "examples": "bun gen-examples.ts",
     "examples:check": "bun gen-examples.ts --check"
@@ -11,6 +11,7 @@
   "devDependencies": {
     "@did-btcr2/api": "0.27.1",
     "@did-btcr2/smt": "0.4.1",
-    "@noble/curves": "1.9.7"
+    "@noble/curves": "1.9.7",
+    "jsonld": "9.0.0"
   }
 }
