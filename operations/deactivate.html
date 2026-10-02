@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6c046c03.js";
+            window.path_to_searchindex_js = "../searchindex-6dd063ea.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -185,7 +185,7 @@
 <p>To deactivate a <strong>did:btcr2</strong> identifier, the DID controller MUST add the property <code>deactivated</code> with the value <code>true</code> to the DID document. Once a <strong>did:btcr2</strong> identifier has been deactivated, this state is considered permanent and resolution MUST terminate.</p>
 <p>The deactivate operation has the following function signature:</p>
 <pre><code class="language-rust">fn deactivate(
-  didSourceDocument,
+  sourceDidDocument,
   targetVersionId,
   verificationMethodId,
   signer,
@@ -193,7 +193,7 @@
   signedUpdate</code></pre>
 <p>Input arguments:</p>
 <ul>
-<li><code>didSourceDocument</code>: The DID document being deactivated.</li>
+<li><code>sourceDidDocument</code>: The DID document being deactivated.</li>
 <li><code>targetVersionId</code>: The <code>versionId</code> that will be returned in the <a href="../data-structures.html#did-document-metadata">DID document metadata (data structure)</a> once the new <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Update</a> is applied.</li>
 <li><code>verificationMethodId</code>: The <code>verificationMethod</code> ID used for signing the <a href="../terminology.html#btcr2-update">BTCR2 Update</a>.</li>
 <li><code>signer</code>: A signing interface, as defined for the <a href="update.html">Update</a> operation.</li>

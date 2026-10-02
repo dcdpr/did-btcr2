@@ -40,7 +40,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-6c046c03.js";
+            window.path_to_searchindex_js = "searchindex-6dd063ea.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -2140,7 +2140,7 @@ Show Template
 <p>Any property in the DID document may be updated except the <code>id</code>. Doing so would invalidate the DID document.</p>
 <p>The update operation has the following function signature:</p>
 <pre><code class="language-rust">fn update(
-  didSourceDocument,
+  sourceDidDocument,
   jsonPatch,
   targetVersionId,
   verificationMethodId,
@@ -2149,7 +2149,7 @@ Show Template
   signedUpdate</code></pre>
 <p>Input arguments:</p>
 <ul>
-<li><code>didSourceDocument</code>: The source DID document.</li>
+<li><code>sourceDidDocument</code>: The <a href="#did-document">DID document (data structure)</a> that DID resolution returns before the new <a href="#btcr2-signed-update">BTCR2 Signed Update</a> is applied.</li>
 <li><code>jsonPatch</code>: A single JSON Patch document <a class="bib-cite" href="#RFC6902" title="JavaScript Object Notation (JSON) Patch">RFC6902</a> with the changes to be made to the source DID document. Its wire shape is defined by the <code>patch</code> property of the <a href="#btcr2-unsigned-update-1">BTCR2 Unsigned Update (data structure)</a>.</li>
 <li><code>targetVersionId</code>: The <code>versionId</code> that will be returned in the <a href="#did-document-metadata">DID document metadata (data structure)</a> once the new <a href="#btcr2-signed-update">BTCR2 Signed Update</a> is applied.</li>
 <li><code>verificationMethodId</code>: The <code>verificationMethod</code> ID used for signing the <a href="#btcr2-update">BTCR2 Update</a>.</li>
@@ -2164,15 +2164,17 @@ Show Template
 <p>Constructing a <a href="#btcr2-signed-update">BTCR2 Signed Update</a> is a two-step process. First, a <a href="#btcr2-unsigned-update">BTCR2 Unsigned Update</a> is constructed. Then the <code>signer</code> signs the update to construct the <a href="#btcr2-signed-update">BTCR2 Signed Update</a>.</p>
 <h2 id="construct-btcr2-unsigned-update"><a class="header" href="#construct-btcr2-unsigned-update">Construct BTCR2 Unsigned Update</a></h2>
 <p>This process constructs a <a href="#btcr2-unsigned-update-1">BTCR2 Unsigned Update (data structure)</a>.</p>
-<p>Apply <code>jsonPatch</code> to <code>didSourceDocument</code> to create <code>didTargetDocument</code>. An <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>jsonPatch</code> is malformed or fails to apply. JSON Patch <a class="bib-cite" href="#RFC6902" title="JavaScript Object Notation (JSON) Patch">RFC6902</a> operations are evaluated in order; the first operation that fails, including a failed <code>test</code> operation, fails the whole patch. <code>didTargetDocument</code> MUST be conformant to DID Core v1.1 <a class="bib-cite" href="#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>. An <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>didTargetDocument.id</code> is not equal to <code>didSourceDocument.id</code>.</p>
+<p>Apply <code>jsonPatch</code> to <code>sourceDidDocument</code> to create <code>targetDidDocument</code>. An <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>jsonPatch</code> is malformed or fails to apply. JSON Patch <a class="bib-cite" href="#RFC6902" title="JavaScript Object Notation (JSON) Patch">RFC6902</a> operations are evaluated in order; the first operation that fails, including a failed <code>test</code> operation, fails the whole patch. <code>targetDidDocument</code> MUST be conformant to DID Core v1.1 <a class="bib-cite" href="#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>. An <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if <code>targetDidDocument.id</code> is not equal to <code>sourceDidDocument.id</code>.</p>
 <p>Fill the <a href="#btcr2-unsigned-update-1">BTCR2 Unsigned Update (data structure)</a> template below with the required template variables.</p>
 <ul>
 <li><code>array-of-patches</code>: <code>jsonPatch</code> embedded as JSON.</li>
-<li><code>source-hash</code>: <code>didSourceDocument</code> hashed with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
-<li><code>target-hash</code>: <code>didTargetDocument</code> hashed with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+<li><code>source-hash</code>: <code>sourceDidDocument</code> hashed with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
+<li><code>target-hash</code>: <code>targetDidDocument</code> hashed with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm.</li>
 <li><code>target-version-id</code>: The value of <code>targetVersionId</code>.</li>
 </ul>
 <p><code>targetVersionId</code> MUST be derived from the <code>versionId</code> returned in the <a href="#did-document-metadata">DID document metadata (data structure)</a> by a fresh resolution of the DID, rather than from a locally maintained count. Announcing a <a href="#btcr2-signed-update">BTCR2 Signed Update</a> whose <code>targetVersionId</code> is wrong in either direction can permanently prevent the DID from resolving.</p>
+<p><code>sourceDidDocument</code> MUST be the <a href="#did-document">DID document (data structure)</a> that the same fresh resolution returns.</p>
+<p>A DID controller MUST NOT announce a <a href="#btcr2-signed-update">BTCR2 Signed Update</a> if it cannot resolve all previous <a href="#btcr2-update">BTCR2 Updates</a> of the DID. It cannot resolve them if the fresh resolution returns a <code>versionId</code> less than the highest <code>targetVersionId</code> that the DID controller announced for the DID. If this occurs, resolve the DID again after the <a href="#beacon-signal">Beacon Signal</a> of the last announced update has <code>resolutionOptions.minConf</code> confirmations. A lower <code>minConf</code> decreases the time to wait, but increases the risk from block reorganizations (see <a href="#find-beacon-signals">Find Beacon Signals</a>).</p>
 <div class="tabs" id="btcr2-unsigned-update-template">
   
 <div class="tablist" role="tablist" aria-label="btcr2-unsigned-update-template">
@@ -2209,13 +2211,13 @@ Show Template
 resulting <a href="#btcr2-unsigned-update-1">BTCR2 Unsigned Update (data structure)</a> MUST be conformant to this specification.</p>
 <h2 id="construct-btcr2-signed-update"><a class="header" href="#construct-btcr2-signed-update">Construct BTCR2 Signed Update</a></h2>
 <p>This process constructs a <a href="#btcr2-signed-update-1">BTCR2 Signed Update (data structure)</a> from <code>update</code>, a <a href="#btcr2-unsigned-update-1">BTCR2 Unsigned Update (data structure)</a>.</p>
-<p>An <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if no entry of the <code>didSourceDocument.capabilityInvocation</code> Set identifies <code>verificationMethodId</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal.</p>
-<p>If that entry is a reference, find the verification method in the <code>didSourceDocument.verificationMethod</code> Set with an <code>id</code> that is equal to the reference. An <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if there is no verification method with that <code>id</code>.</p>
+<p>An <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if no entry of the <code>sourceDidDocument.capabilityInvocation</code> Set identifies <code>verificationMethodId</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal.</p>
+<p>If that entry is a reference, find the verification method in the <code>sourceDidDocument.verificationMethod</code> Set with an <code>id</code> that is equal to the reference. An <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if there is no verification method with that <code>id</code>.</p>
 <p>Create <code>cryptosuite</code> as a BIP340 Cryptosuite <a class="bib-cite" href="#BIP340-Cryptosuite" title="Data Integrity BIP340 Cryptosuites">BIP340-Cryptosuite</a> instance with <code>signer</code> as the signing interface and the <code>"bip340-jcs-2025"</code> cryptosuite.</p>
 <p>Fill the Data Integrity <a class="bib-cite" href="#VC-DATA-INTEGRITY" title="Verifiable Credential Data Integrity 1.0">VC-DATA-INTEGRITY</a> template below with the required template variables.</p>
 <ul>
 <li><code>verification-method</code>: The value of <code>verificationMethodId</code>.</li>
-<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(didSourceDocument.id)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 <a class="bib-cite" href="#ECMA-262" title="ECMAScript 2025 Language Specification">ECMA-262</a>.</li>
+<li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(sourceDidDocument.id)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 <a class="bib-cite" href="#ECMA-262" title="ECMAScript 2025 Language Specification">ECMA-262</a>.</li>
 </ul>
 <div class="tabs" id="data-integrity-config-template">
   
@@ -2288,7 +2290,7 @@ The main responsibilities include establishing a protocol for one or more rounds
 <p>To deactivate a <strong>did:btcr2</strong> identifier, the DID controller MUST add the property <code>deactivated</code> with the value <code>true</code> to the DID document. Once a <strong>did:btcr2</strong> identifier has been deactivated, this state is considered permanent and resolution MUST terminate.</p>
 <p>The deactivate operation has the following function signature:</p>
 <pre><code class="language-rust">fn deactivate(
-  didSourceDocument,
+  sourceDidDocument,
   targetVersionId,
   verificationMethodId,
   signer,
@@ -2296,7 +2298,7 @@ The main responsibilities include establishing a protocol for one or more rounds
   signedUpdate</code></pre>
 <p>Input arguments:</p>
 <ul>
-<li><code>didSourceDocument</code>: The DID document being deactivated.</li>
+<li><code>sourceDidDocument</code>: The DID document being deactivated.</li>
 <li><code>targetVersionId</code>: The <code>versionId</code> that will be returned in the <a href="#did-document-metadata">DID document metadata (data structure)</a> once the new <a href="#btcr2-signed-update">BTCR2 Signed Update</a> is applied.</li>
 <li><code>verificationMethodId</code>: The <code>verificationMethod</code> ID used for signing the <a href="#btcr2-update">BTCR2 Update</a>.</li>
 <li><code>signer</code>: A signing interface, as defined for the <a href="#update">Update</a> operation.</li>
