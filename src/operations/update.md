@@ -58,7 +58,7 @@ Fill the [BTCR2 Unsigned Update (data structure)] template below with the requir
 
 `targetVersionId` MUST be derived from the `versionId` returned in the [DID document metadata (data structure)] by a fresh resolution of the DID, rather than from a locally maintained count. Announcing a [BTCR2 Signed Update] whose `targetVersionId` is wrong in either direction can permanently prevent the DID from resolving.
 
-`sourceDidDocument` MUST be the `didDocument` that the same fresh resolution returns.
+`sourceDidDocument` MUST be the [DID document (data structure)] that the same fresh resolution returns.
 
 A DID controller MUST NOT announce a [BTCR2 Signed Update] if it cannot resolve all previous [BTCR2 Updates][BTCR2 Update] of the DID. It cannot resolve them if the fresh resolution returns a `versionId` less than the highest `targetVersionId` that the DID controller announced for the DID. If this occurs, resolve the DID again after the [Beacon Signal] of the last announced update has `resolutionOptions.minConf` confirmations. A lower `minConf` decreases the time to wait, but increases the risk from block reorganizations (see [Find Beacon Signals](resolve.md#find-beacon-signals)).
 
