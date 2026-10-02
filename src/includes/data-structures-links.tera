@@ -12,3 +12,4 @@
 [DID document metadata (data structure)]: {{ root }}data-structures.md#did-document-metadata
 [CAS Announcement (data structure)]: {{ root }}data-structures.md#cas-announcement
 [Root Capability (data structure)]: {{ root }}data-structures.md#root-capability
+[BTCR2 Context]: {{ root }}data-structures.md#btcr2-context

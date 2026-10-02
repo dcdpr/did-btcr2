@@ -1,0 +1,100 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "id": "@id",
+    "type": "@type",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "label": {"@id": "rdfs:label", "@language": "en"},
+    "subClassOf": {"@id": "rdfs:subClassOf", "@type": "@id"},
+    "seeAlso": {"@id": "rdfs:seeAlso", "@type": "@id"},
+    "isDefinedBy": {"@id": "rdfs:isDefinedBy", "@type": "@id"}
+  },
+  "@graph": [
+    {
+      "id": "https://btcr2.dev/ns",
+      "label": "did:btcr2 vocabulary",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/"
+    },
+    {
+      "id": "https://btcr2.dev/ns#SingletonBeacon",
+      "type": "rdfs:Class",
+      "label": "Singleton Beacon",
+      "subClassOf": "https://www.w3.org/ns/did#Service",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/beacons.html#singleton-beacon"
+    },
+    {
+      "id": "https://btcr2.dev/ns#CASBeacon",
+      "type": "rdfs:Class",
+      "label": "CAS Beacon",
+      "subClassOf": "https://www.w3.org/ns/did#Service",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/beacons.html#cas-beacon"
+    },
+    {
+      "id": "https://btcr2.dev/ns#SMTBeacon",
+      "type": "rdfs:Class",
+      "label": "SMT Beacon",
+      "subClassOf": "https://www.w3.org/ns/did#Service",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/beacons.html#smt-beacon"
+    },
+    {
+      "id": "https://btcr2.dev/ns#deactivated",
+      "type": "rdf:Property",
+      "label": "deactivated",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/operations/deactivate.html"
+    },
+    {
+      "id": "https://btcr2.dev/ns#sourceHash",
+      "type": "rdf:Property",
+      "label": "source hash",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/data-structures.html#btcr2-unsigned-update"
+    },
+    {
+      "id": "https://btcr2.dev/ns#targetHash",
+      "type": "rdf:Property",
+      "label": "target hash",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/data-structures.html#btcr2-unsigned-update"
+    },
+    {
+      "id": "https://btcr2.dev/ns#targetVersionId",
+      "type": "rdf:Property",
+      "label": "target version ID",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/data-structures.html#btcr2-unsigned-update"
+    },
+    {
+      "id": "https://btcr2.dev/ns#genesisDocument",
+      "type": "rdf:Property",
+      "label": "genesis document",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/data-structures.html#sidecar-data"
+    },
+    {
+      "id": "https://btcr2.dev/ns#updates",
+      "type": "rdf:Property",
+      "label": "updates",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/data-structures.html#sidecar-data"
+    },
+    {
+      "id": "https://btcr2.dev/ns#casUpdates",
+      "type": "rdf:Property",
+      "label": "CAS updates",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/data-structures.html#sidecar-data"
+    },
+    {
+      "id": "https://btcr2.dev/ns#smtProofs",
+      "type": "rdf:Property",
+      "label": "SMT proofs",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/data-structures.html#sidecar-data"
+    }
+  ]
+}

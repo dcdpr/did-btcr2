@@ -15,6 +15,37 @@ All SHA-256 hashes {{#cite SHA256}} that appear in concrete representations of t
 MUST be encoded as a string using `"base64url"` {{#cite RFC4648}} encoding without padding.
 
 
+## BTCR2 Context { #btcr2-context }
+
+`https://btcr2.dev/context/v1` identifies the JSON-LD context {{#cite JSON-LD}} that
+defines the terms this specification adds to DID documents, [BTCR2 Updates][BTCR2
+Unsigned Update (data structure)] and [Sidecar Data][Sidecar Data (data structure)]. The
+context is the file [context/v1.jsonld](context/v1.jsonld) published with this
+specification.
+
+- The context is published at `https://btcr2.dev/context/v1` and served with the media
+  type `application/ld+json`, as `https://www.w3.org/ns/did/v1` is for DID Core.
+- It is RECOMMENDED that processors build the context in, compiled or loaded from a local
+  copy, rather than dereference the URL at each use.
+- Once version 1.0 of this specification is released, the content at this URL is not
+  changed; later changes are published at `https://btcr2.dev/context/v2`. Until then, the
+  context may change along with this specification, and so may its digest.
+- The SHA-256 digest of the context file, in hexadecimal, is
+  `190722f2e7b5677107241fbed2f45f87b42de16f330a463d8de70d42f7683d4c`. This digest is
+  informative: it lets an implementer check a built-in copy.
+
+The context defines terms in the namespace `https://btcr2.dev/ns#`, described by the
+vocabulary at `https://btcr2.dev/ns` ([context/ns.jsonld](context/ns.jsonld)). A term that
+already has an IRI keeps it: `serviceEndpoint` on a beacon service is defined by the DID
+v1.1 context.
+
+[Sidecar Data][Sidecar Data (data structure)] carries JSON documents that resolution
+checks against on-chain hashes. JSON-LD processing may rewrite a node value without changing
+its meaning, which changes its hash, so every Sidecar Data field (`genesisDocument`,
+`updates`, `casUpdates`, `smtProofs`) is a JSON literal (`@type: @json`), as DID v1.1 does
+for `publicKeyJwk`.
+
+
 ## DID Document { #did-document }
 
 A DID document is a map data structure defined by the DID core v1.1 specification {{#cite
@@ -24,7 +55,7 @@ The following properties MUST be included:
 
 - `@context`: A context array containing the following context URLs:
   - `"https://www.w3.org/ns/did/v1.1"`
-  - `"https://btcr2.dev/context/v1"`
+  - `"https://btcr2.dev/context/v1"` ([BTCR2 Context])
 - `id`: The `did`.
 
 It can optionally include one or more of the following properties:
@@ -106,7 +137,7 @@ SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced
   - `"https://w3id.org/json-ld-patch/v1"`
   - `"https://w3id.org/zcap/v1"`
   - `"https://w3id.org/security/data-integrity/v2"`
-  - `"https://btcr2.dev/context/v1"`
+  - `"https://btcr2.dev/context/v1"` ([BTCR2 Context])
 
   A change to the membership or the order of this array changes the hash that the [JSON Document Hashing] algorithm produces.
 - `patch`: A single JSON Patch {{#cite RFC6902}} document, i.e., one flat array of JSON Patch
@@ -228,7 +259,7 @@ This data structure is a Map data structure with the same properties as [Data In
 
 The [Sidecar Data] contains optional properties:
 
-- `@context`: The context string `"https://btcr2.dev/context/v1"`
+- `@context`: The context string `"https://btcr2.dev/context/v1"` ([BTCR2 Context])
 - `genesisDocument`: OPTIONAL [Genesis Document]. It is REQUIRED when resolving **did:btcr2**
   identifiers with `x` HRP.
 - `updates`: OPTIONAL array of [BTCR2 Signed Updates][BTCR2 Signed Update]. It is REQUIRED
