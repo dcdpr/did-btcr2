@@ -239,6 +239,7 @@ Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are not
 * `update.proof.proofPurpose` equals `"capabilityInvocation"`.
 * `update.proof.capabilityAction` equals `"Write"`.
 * `update.proof.capability` equals the `capability` URN that [Data Integrity Config (data structure)] specifies for `did`.
+* `update.proof.invocationTarget` equals `did`.
 
 Implementations MAY derive a [Root Capability (data structure)] from `update.proof` and invoke it according to Authorization Capabilities for Linked Data v0.3 {{#cite ZCAP-LD}}.
 
