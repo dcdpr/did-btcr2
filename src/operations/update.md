@@ -53,7 +53,7 @@ Fill the [BTCR2 Unsigned Update (data structure)] template below with the requir
 
 * `array-of-patches`: `jsonPatch` embedded as JSON.
 * `source-hash`: `sourceDidDocument` hashed with the [JSON Document Hashing] algorithm.
-* `target-hash`: `didTargetDocument` hashed with the [JSON Document Hashing] algorithm.
+* `target-hash`: `targetDidDocument` hashed with the [JSON Document Hashing] algorithm.
 * `target-version-id`: The value of `targetVersionId`.
 
 `targetVersionId` MUST be derived from the `versionId` returned in the [DID document metadata (data structure)] by a fresh resolution of the DID, rather than from a locally maintained count. Announcing a [BTCR2 Signed Update] whose `targetVersionId` is wrong in either direction can permanently prevent the DID from resolving.
