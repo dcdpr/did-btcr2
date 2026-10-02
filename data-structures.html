@@ -39,7 +39,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-3ea18c84.js";
+            window.path_to_searchindex_js = "searchindex-6c046c03.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -187,6 +187,32 @@ model defined by the DID core v1.1 specification <a class="bib-cite" href="bibli
 <p>Concrete representations of these data structures MUST conform to the JSON-LD 1.1 specification <a class="bib-cite" href="bibliography.html#JSON-LD" title="JSON-LD 1.1">JSON-LD</a>.</p>
 <p>All SHA-256 hashes <a class="bib-cite" href="bibliography.html#SHA256" title="Secure Hash Standard (SHS)">SHA256</a> that appear in concrete representations of these data structures
 MUST be encoded as a string using <code>"base64url"</code> <a class="bib-cite" href="bibliography.html#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> encoding without padding.</p>
+<h2 id="btcr2-context"><a class="header" href="#btcr2-context">BTCR2 Context</a></h2>
+<p><code>https://btcr2.dev/context/v1</code> identifies the JSON-LD context <a class="bib-cite" href="bibliography.html#JSON-LD" title="JSON-LD 1.1">JSON-LD</a> that
+defines the terms this specification adds to DID documents, <a href="./data-structures.html#btcr2-unsigned-update">BTCR2 Updates</a> and <a href="./data-structures.html#sidecar-data">Sidecar Data</a>. The
+context is the file <a href="context/v1.jsonld">context/v1.jsonld</a> published with this
+specification.</p>
+<ul>
+<li>The context is published at <code>https://btcr2.dev/context/v1</code> and served with the media
+type <code>application/ld+json</code>, as <code>https://www.w3.org/ns/did/v1</code> is for DID Core.</li>
+<li>It is RECOMMENDED that processors build the context in, compiled or loaded from a local
+copy, rather than dereference the URL at each use.</li>
+<li>Once version 1.0 of this specification is released, the content at this URL is not
+changed; later changes are published at <code>https://btcr2.dev/context/v2</code>. Until then, the
+context may change along with this specification, and so may its digest.</li>
+<li>The SHA-256 digest of the context file, in hexadecimal, is
+<code>190722f2e7b5677107241fbed2f45f87b42de16f330a463d8de70d42f7683d4c</code>. This digest is
+informative: it lets an implementer check a built-in copy.</li>
+</ul>
+<p>The context defines terms in the namespace <code>https://btcr2.dev/ns#</code>, described by the
+vocabulary at <code>https://btcr2.dev/ns</code> (<a href="context/ns.jsonld">context/ns.jsonld</a>). A term that
+already has an IRI keeps it: <code>serviceEndpoint</code> on a beacon service is defined by the DID
+v1.1 context.</p>
+<p><a href="./data-structures.html#sidecar-data">Sidecar Data</a> carries JSON documents that resolution
+checks against on-chain hashes. JSON-LD processing may rewrite a node value without changing
+its meaning, which changes its hash, so every Sidecar Data field (<code>genesisDocument</code>,
+<code>updates</code>, <code>casUpdates</code>, <code>smtProofs</code>) is a JSON literal (<code>@type: @json</code>), as DID v1.1 does
+for <code>publicKeyJwk</code>.</p>
 <h2 id="did-document"><a class="header" href="#did-document">DID Document</a></h2>
 <p>A DID document is a map data structure defined by the DID core v1.1 specification <a class="bib-cite" href="bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>.</p>
 <p>The following properties MUST be included:</p>
@@ -194,7 +220,7 @@ MUST be encoded as a string using <code>"base64url"</code> <a class="bib-cite" h
 <li><code>@context</code>: A context array containing the following context URLs:
 <ul>
 <li><code>"https://www.w3.org/ns/did/v1.1"</code></li>
-<li><code>"https://btcr2.dev/context/v1"</code></li>
+<li><code>"https://btcr2.dev/context/v1"</code> (<a href="./data-structures.html#btcr2-context">BTCR2 Context</a>)</li>
 </ul>
 </li>
 <li><code>id</code>: The <code>did</code>.</li>
@@ -355,7 +381,7 @@ Show Example
 <li><code>"https://w3id.org/json-ld-patch/v1"</code></li>
 <li><code>"https://w3id.org/zcap/v1"</code></li>
 <li><code>"https://w3id.org/security/data-integrity/v2"</code></li>
-<li><code>"https://btcr2.dev/context/v1"</code></li>
+<li><code>"https://btcr2.dev/context/v1"</code> (<a href="./data-structures.html#btcr2-context">BTCR2 Context</a>)</li>
 </ul>
 <p>A change to the membership or the order of this array changes the hash that the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm produces.</p>
 </li>
@@ -592,7 +618,7 @@ Show Example
 <h2 id="sidecar-data"><a class="header" href="#sidecar-data">Sidecar Data</a></h2>
 <p>The <a href="./terminology.html#sidecar-data">Sidecar Data</a> contains optional properties:</p>
 <ul>
-<li><code>@context</code>: The context string <code>"https://btcr2.dev/context/v1"</code></li>
+<li><code>@context</code>: The context string <code>"https://btcr2.dev/context/v1"</code> (<a href="./data-structures.html#btcr2-context">BTCR2 Context</a>)</li>
 <li><code>genesisDocument</code>: OPTIONAL <a href="./terminology.html#genesis-document">Genesis Document</a>. It is REQUIRED when resolving <strong>did:btcr2</strong>
 identifiers with <code>x</code> HRP.</li>
 <li><code>updates</code>: OPTIONAL array of <a href="./terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a>. It is REQUIRED
