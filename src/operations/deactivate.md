@@ -11,7 +11,7 @@ The deactivate operation has the following function signature:
 
 ```rust
 fn deactivate(
-  didSourceDocument,
+  sourceDidDocument,
   targetVersionId,
   verificationMethodId,
   signer,
@@ -21,7 +21,7 @@ fn deactivate(
 
 Input arguments:
 
-- `didSourceDocument`: The DID document being deactivated.
+- `sourceDidDocument`: The DID document being deactivated.
 - `targetVersionId`: The `versionId` that will be returned in the [DID document metadata (data structure)] once the new [BTCR2 Signed Update] is applied.
 - `verificationMethodId`: The `verificationMethod` ID used for signing the [BTCR2 Update].
 - `signer`: A signing interface, as defined for the [Update](update.md) operation.
