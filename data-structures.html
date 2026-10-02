@@ -39,7 +39,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-6dd063ea.js";
+            window.path_to_searchindex_js = "searchindex-d6957d7f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -1142,7 +1142,7 @@ Show Example
 <ul>
 <li><code>confirmations</code>: REQUIRED integer number of confirmations for the Bitcoin block that contains the most recently applied unique update for the resolved DID document. <code>0</code> when no <a href="./terminology.html#btcr2-update">BTCR2 Update</a> has been applied.</li>
 <li><code>deactivated</code>: REQUIRED boolean that represents whether the resolved DID document has been deactivated.</li>
-<li><code>updated</code>: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.</li>
+<li><code>updated</code>: OPTIONAL <code>mediantime</code> of the Bitcoin block that contains the <a href="./terminology.html#beacon-signal">Beacon Signal</a> of the last applied <a href="./terminology.html#btcr2-update">BTCR2 Update</a> in XML Datetime format normalized to UTC without sub-second decimal precision.</li>
 <li><code>versionId</code>: REQUIRED ASCII string representation of the version of the last Update operation for the resolved DID document. <code>"1"</code> when no <a href="./terminology.html#btcr2-update">BTCR2 Update</a> has been applied.</li>
 </ul>
 <div class="tabs" id="did-document-metadata-example">
