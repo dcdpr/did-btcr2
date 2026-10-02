@@ -25,7 +25,7 @@ fn update(
 
 Input arguments:
 
-- `sourceDidDocument`: The `didDocument` that DID resolution returns before the new [BTCR2 Signed Update] is applied.
+- `sourceDidDocument`: The [DID document (data structure)] that DID resolution returns before the new [BTCR2 Signed Update] is applied.
 - `jsonPatch`: A single JSON Patch document {{#cite RFC6902}} with the changes to be made to the source DID document. Its wire shape is defined by the `patch` property of the [BTCR2 Unsigned Update (data structure)].
 - `targetVersionId`: The `versionId` that will be returned in the [DID document metadata (data structure)] once the new [BTCR2 Signed Update] is applied.
 - `verificationMethodId`: The `verificationMethod` ID used for signing the [BTCR2 Update].
