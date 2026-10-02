@@ -36,6 +36,7 @@ Resolution maintains the following state while building the DID document:
 * `current_version_id`: the version number being processed (starts at `1`).
 * `update_hash_history`: a list of [BTCR2 Unsigned Update] hashes used to detect duplicates.
 * `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at `0`).
+* `block_mediantime`: the `mediantime` of the Bitcoin block that contains the most recently applied update.
 * `current_block_height`: the height of the Bitcoin block that contains the most recently applied update (starts at `0`).
 
 The resolver:
@@ -56,6 +57,8 @@ The resolver returns:
   * `deactivated`: `current_document.deactivated`.
 
 [^2]: The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. "Unique" refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations.
+
+If `current_version_id` is more than `1`, `didDocumentMetadata` also contains `updated`: `block_mediantime` as an XML Datetime.
 
 If `resolutionOptions` has no `versionId` and no `versionTime`, [Sidecar Data] that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a [Beacon Signal] has less than `minConf` confirmations, or the resolver reads a different chain. It can also show a problem with the [Sidecar Data], for example [Sidecar Data] that is not for `did`. Implementations MAY tell the caller which [Sidecar Data] they did not use.
 
@@ -225,7 +228,7 @@ Hash the patched `current_document` with the [JSON Document Hashing] algorithm. 
 
 Create `unsigned_update` by removing the `proof` property from `update`, hash it with the [JSON Document Hashing] algorithm, and append the hash to `update_hash_history`. 
 
-Set `block_confirmations` to the tuple's block confirmations. Set `current_block_height` to the tuple's block height.
+Set `block_confirmations` to the tuple's block confirmations. Set `block_mediantime` to the tuple's block `mediantime`. Set `current_block_height` to the tuple's block height.
 
 Increment `current_version_id`.
 

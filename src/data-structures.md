@@ -391,7 +391,7 @@ Document metadata contains the following properties:
 
 - `confirmations`: REQUIRED integer number of confirmations for the Bitcoin block that contains the most recently applied unique update for the resolved DID document. `0` when no [BTCR2 Update] has been applied.
 - `deactivated`: REQUIRED boolean that represents whether the resolved DID document has been deactivated.
-- `updated`: OPTIONAL XML Datetime normalized to UTC without sub-second decimal precision of the last Update operation for the resolved DID document.
+- `updated`: OPTIONAL `mediantime` of the Bitcoin block that contains the [Beacon Signal] of the last applied [BTCR2 Update] in XML Datetime format normalized to UTC without sub-second decimal precision.
 - `versionId`: REQUIRED ASCII string representation of the version of the last Update operation for the resolved DID document. `"1"` when no [BTCR2 Update] has been applied.
 
 {% set hide_text = `` %}
