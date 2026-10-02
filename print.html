@@ -40,7 +40,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-d6957d7f.js";
+            window.path_to_searchindex_js = "searchindex-37ba8f9f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -1107,6 +1107,7 @@ Show Example
 <li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(did)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 <a class="bib-cite" href="#ECMA-262" title="ECMAScript 2025 Language Specification">ECMA-262</a>.</li>
 <li><code>capabilityAction</code>: A string declaring the action required for the capability invocation. The
 string MUST be set to <code>"Write"</code>.</li>
+<li><code>invocationTarget</code>: MUST be the <code>did</code>.</li>
 </ul>
 <div class="tabs" id="data-integrity-config-example">
   
@@ -2101,6 +2102,7 @@ Show Template
 <li><code>update.proof.proofPurpose</code> equals <code>"capabilityInvocation"</code>.</li>
 <li><code>update.proof.capabilityAction</code> equals <code>"Write"</code>.</li>
 <li><code>update.proof.capability</code> equals the <code>capability</code> URN that <a href="#data-integrity-config">Data Integrity Config (data structure)</a> specifies for <code>did</code>.</li>
+<li><code>update.proof.invocationTarget</code> equals <code>did</code>.</li>
 </ul>
 <p>Implementations MAY derive a <a href="#root-capability">Root Capability (data structure)</a> from <code>update.proof</code> and invoke it according to Authorization Capabilities for Linked Data v0.3 <a class="bib-cite" href="#ZCAP-LD" title="Authorization Capabilities for Linked Data v0.3">ZCAP-LD</a>.</p>
 <p>The resolver MUST find the entry of <code>current_document.capabilityInvocation</code> that identifies <code>update.proof.verificationMethod</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal. Raise an <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if no entry identifies it.</p>
@@ -2220,6 +2222,7 @@ resulting <a href="#btcr2-unsigned-update-1">BTCR2 Unsigned Update (data structu
 <ul>
 <li><code>verification-method</code>: The value of <code>verificationMethodId</code>.</li>
 <li><code>capability</code>: A URN of the following format: <code>urn:zcap:root:${encodeURIComponent(sourceDidDocument.id)}</code>. The <code>encodeURIComponent()</code> function is defined by ECMA-262 <a class="bib-cite" href="#ECMA-262" title="ECMAScript 2025 Language Specification">ECMA-262</a>.</li>
+<li><code>invocation-target</code>: The value of <code>sourceDidDocument.id</code>.</li>
 </ul>
 <div class="tabs" id="data-integrity-config-template">
   
@@ -2249,7 +2252,8 @@ Show Template
   "verificationMethod": "{{ verification-method }}",
   "proofPurpose": "capabilityInvocation",
   "capability": "{{ capability }}",
-  "capabilityAction": "Write"
+  "capabilityAction": "Write",
+  "invocationTarget": "{{ invocation-target }}"
 }
 </code></pre>
   </section>

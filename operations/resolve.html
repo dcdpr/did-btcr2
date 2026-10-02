@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-d6957d7f.js";
+            window.path_to_searchindex_js = "../searchindex-37ba8f9f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -424,6 +424,7 @@ Show Template
 <li><code>update.proof.proofPurpose</code> equals <code>"capabilityInvocation"</code>.</li>
 <li><code>update.proof.capabilityAction</code> equals <code>"Write"</code>.</li>
 <li><code>update.proof.capability</code> equals the <code>capability</code> URN that <a href="../data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> specifies for <code>did</code>.</li>
+<li><code>update.proof.invocationTarget</code> equals <code>did</code>.</li>
 </ul>
 <p>Implementations MAY derive a <a href="../data-structures.html#root-capability">Root Capability (data structure)</a> from <code>update.proof</code> and invoke it according to Authorization Capabilities for Linked Data v0.3 <a class="bib-cite" href="../bibliography.html#ZCAP-LD" title="Authorization Capabilities for Linked Data v0.3">ZCAP-LD</a>.</p>
 <p>The resolver MUST find the entry of <code>current_document.capabilityInvocation</code> that identifies <code>update.proof.verificationMethod</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if no entry identifies it.</p>
