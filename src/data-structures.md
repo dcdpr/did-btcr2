@@ -210,6 +210,7 @@ The following properties MUST be included in the Data Integrity Config:
 - `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(did)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
 - `capabilityAction`: A string declaring the action required for the capability invocation. The
   string MUST be set to `"Write"`.
+- `invocationTarget`: MUST be the `did`.
 
 {% set hide_text = `` %}
 {% set ex_di_config =

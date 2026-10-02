@@ -97,6 +97,7 @@ Fill the Data Integrity {{#cite VC-DATA-INTEGRITY}} template below with the requ
 
 * `verification-method`: The value of `verificationMethodId`.
 * `capability`: A URN of the following format: `urn:zcap:root:${encodeURIComponent(sourceDidDocument.id)}`. The `encodeURIComponent()` function is defined by ECMA-262 {{#cite ECMA-262}}.
+* `invocation-target`: The value of `sourceDidDocument.id`.
 
 {% set hide_text = `` %}
 {% set data_integrity_config_template =
