@@ -140,6 +140,13 @@ SHA-256 hashes {{#cite SHA256}} (`targetHash` and `sourceHash`) MUST be produced
   - `"https://btcr2.dev/context/v1"` ([BTCR2 Context])
 
   A change to the membership or the order of this array changes the hash that the [JSON Document Hashing] algorithm produces.
+
+  `"https://w3id.org/json-ld-patch/v1"` identifies the context file
+  [contexts/json-ld-patch-v1.jsonld at web-payments.org commit `2faef4cf`](https://github.com/web-payments/web-payments.org/blob/2faef4cfaada1f5dbcadb27440e637186074eaf2/contexts/json-ld-patch-v1.jsonld).
+  Its SHA-256 digest, in hexadecimal, is
+  `6816e2fc63a8a345e979508d0bf5e719a5694d0c59fac01c5c216cf3b36b5a5e`. This digest is informative:
+  it lets an implementer check a built-in copy. It is RECOMMENDED that processors build this
+  context in rather than dereference the URL, which redirects to a host that might not serve it.
 - `patch`: A single JSON Patch {{#cite RFC6902}} document, i.e., one flat array of JSON Patch
   operation objects, that defines a set of transformations to be applied to a DID document. The
   result of applying the patch MUST be a conformant DID document according to the DID core v1.1
