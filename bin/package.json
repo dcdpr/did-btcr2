@@ -9,8 +9,7 @@
     "examples:check": "bun gen-examples.ts --check"
   },
   "devDependencies": {
-    "@did-btcr2/api": "0.27.1",
-    "@did-btcr2/smt": "0.4.1",
+    "@did-btcr2/api": "0.32.0",
     "@noble/curves": "1.9.7",
     "jsonld": "9.0.0"
   }

@@ -11,5 +11,6 @@
   "proofPurpose": "capabilityInvocation",
   "capability": "urn:zcap:root:did%3Abtcr2%3Ax1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
   "capabilityAction": "Write",
-  "proofValue": "z313jDDznRsbnr85HMnVFRrLYxsrbQFBnJ7sDgtiE23KVeiQjjUWCLekPSWqzDHtmsv7YYfJdgQ16o2dBXEABJuEJ"
+  "invocationTarget": "did:btcr2:x1qhm2yjspwgyeq7k8980n2twxmezmd0pzyd4qpwm7h7c23wgr6u3rj3gm8cg",
+  "proofValue": "z4HE7MDeXRtDhkYxBUUpWf9C6drqpNfMEBVHatfKix6AWHTXhzDkhUKUnbb1mZ4aPxpb1bLsH9mvCHcMx1w7UQGu2"
 }

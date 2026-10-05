@@ -185,6 +185,7 @@ const templateVars = {
   'data-integrity-config.hbs': {
     'verification-method': signed.proof.verificationMethod,
     'capability': signed.proof.capability,
+    'invocation-target': signed.proof.invocationTarget,
   },
   'key-based-initial-did-document-template.hbs': {
     'did': initial.id,

@@ -7,8 +7,8 @@
  *
  * Nothing in the corpus is hand-written, and every step the reference
  * implementation covers is performed by the reference implementation. The
- * @did-btcr2/api SDK is the entry point. @did-btcr2/smt builds the Sparse Merkle
- * Tree, which the SDK does not expose. Every proof is verified and every hash is
+ * @did-btcr2/api SDK is the entry point. It is the only did-btcr2-js package that
+ * the script uses. Every proof is verified and every hash is
  * recomputed before anything is written, so a run that succeeds has verified the corpus
  * rather than just serialized it. Where the implementation has not caught up to
  * the specification, the specification wins and the difference is marked GAP.
@@ -27,33 +27,11 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
 
-// The SDK facade has no offline call for the update operation: `DidMethodApi.update`
-// and `UpdateBuilder.execute` both broadcast a Bitcoin transaction, and this corpus
-// is not anchored to a chain. Thus the script uses the classes that the SDK
-// re-exports for the update, the Beacon Services, and the root capability.
+// `api.btcr2.update` broadcasts a Bitcoin transaction, and this corpus is not
+// anchored to a chain. Thus the script uses the offline steps of the `btcr2`
+// sub-facade for the update, the Beacon Services, and the root capability.
 import type { DidVerificationMethod, PatchOperation, SchnorrKeyPair, Signer, SigningScheme } from '@did-btcr2/api';
-import {
-  Appendix,
-  BeaconUtils,
-  buildGenesisDocument,
-  canonicalHash,
-  createApi,
-  DidDocument,
-  GenesisDocument,
-  IdentifierTypes,
-  JSONPatch,
-  Updater,
-} from '@did-btcr2/api';
-import {
-  base64UrlToHash,
-  didToIndex,
-  generateZeroHashProof,
-  hashToBase64Url,
-  leafValue,
-  serializeProof,
-  verifyProof,
-  zeroHashRoot,
-} from '@did-btcr2/smt';
+import { createApi } from '@did-btcr2/api';
 import { schnorr } from '@noble/curves/secp256k1';
 
 const EXAMPLES = new URL('../src/example-data/', import.meta.url).pathname;
@@ -103,6 +81,8 @@ const CONFIRMATIONS = 12;
 
 type Json = any;
 
+const base64url = (bytes: Uint8Array) => Buffer.from(bytes).toString('base64url');
+
 const sha256 = (text: string) => new Uint8Array(createHash('sha256').update(text, 'utf8').digest());
 
 const seedKey = (seed: string) => api.crypto.keypair.fromSecret(sha256(seed));
@@ -139,7 +119,7 @@ function render(templateFile: string, vars: Record<string, string>): Json {
  * BIP340 signature, which a reproducible corpus cannot use. `Signer` is the
  * published seam for exactly this: the update path depends on the interface and
  * never on secret key bytes, so a signer that pins `aux_rand` to a label drops
- * into `Updater.sign` with nothing else changed.
+ * into `api.btcr2.signUpdate` with nothing else changed.
  */
 class PinnedSigner implements Signer {
   readonly publicKey: Uint8Array;
@@ -176,7 +156,7 @@ const keys = Object.fromEntries(
  * The implementation builds the Genesis Document and derives each Beacon
  * address. Each aggregate Beacon has the address of a different aggregator key.
  */
-const builtGenesisDocument = buildGenesisDocument({
+const builtGenesisDocument = api.btcr2.buildGenesisDocument({
   network: NETWORK,
   verificationMethods: [
     { publicKey: keys.key0.publicKey.compressed, relationships: ['assertionMethod', 'capabilityInvocation'] },
@@ -194,13 +174,16 @@ const genesisDocument: Json = { '@context': genesisContext, ...genesisProperties
 agree('Genesis Document', builtGenesisDocument, genesisDocument);
 
 /** The implementation validates the Genesis Document and reduces it to genesis bytes. */
-const genesis = GenesisDocument.fromJSON(structuredClone(genesisDocument));
-const genesisBytes = GenesisDocument.toGenesisBytes(genesis);
-agree('genesis bytes', { hash: canonicalHash(genesisDocument) }, { hash: hashToBase64Url(genesisBytes) });
+const created = api.btcr2.createExternalFromDocument(structuredClone(genesisDocument), {
+  version: BTCR2_VERSION_NUMBER,
+  network: NETWORK,
+});
+const genesisBytes = created.genesisBytes;
+agree('genesis bytes', { hash: api.btcr2.hashDocument(genesisDocument) }, { hash: base64url(genesisBytes) });
 
 /** An `x` HRP identifier commits to the Genesis Document hash. */
 const did = api.did.encode(genesisBytes, {
-  idType: IdentifierTypes.EXTERNAL,
+  idType: 'EXTERNAL',
   version: BTCR2_VERSION_NUMBER,
   network: NETWORK,
 });
@@ -209,11 +192,11 @@ const did = api.did.encode(genesisBytes, {
 const initialDocument: Json = JSON.parse(
   JSON.stringify(genesisDocument).replaceAll(PLACEHOLDER, did),
 );
-agree('version 1 document', genesis.toDidDocument(did), initialDocument);
-DidDocument.isValid(initialDocument);
+agree('identifier', { did: created.did }, { did });
+agree('version 1 document', api.btcr2.getInitialDocument(did, genesisDocument), initialDocument);
 
 /** GAP 2 (property order). The specification lists `invocationTarget` before `controller`. */
-const derivedCapability = Appendix.deriveRootCapability(did);
+const derivedCapability = api.btcr2.rootCapability(did);
 const rootCapability = {
   '@context': derivedCapability['@context'],
   id: derivedCapability.id,
@@ -235,16 +218,11 @@ interface Update {
 }
 
 /**
- * Builds one update. `Updater.construct` applies the patch, validates the target
- * document, and computes both document hashes; `Updater.sign` checks the
- * verification method against the signing key and produces the Data Integrity
- * proof. The corpus files are rendered from the specification's own templates and
- * every field is compared against what the implementation produced.
- *
- * These two statics are what `@did-btcr2/api` calls. The api layer itself cannot
- * be used here: `DidMethodApi.update` and `UpdateBuilder.execute` broadcast a
- * Bitcoin transaction, and this corpus is not anchored to a chain. When an offline
- * update path lands, these are the only two lines that have to move.
+ * Builds one update. `api.btcr2.constructUpdate` applies the patch, validates the
+ * target document, and computes both document hashes; `api.btcr2.signUpdate`
+ * checks the verification method against the signing key and produces the Data
+ * Integrity proof. The corpus files are rendered from the specification's own
+ * templates and every field is compared against what the implementation produced.
  */
 function buildUpdate(
   controller: string,
@@ -255,8 +233,8 @@ function buildUpdate(
   verificationMethod: DidVerificationMethod,
   label: string,
 ): Update {
-  const constructed = Updater.construct(source, patch, sourceVersionId);
-  const target = JSONPatch.apply(source, patch);
+  const constructed = api.btcr2.constructUpdate({ document: source, versionId: sourceVersionId }, patch);
+  const target = api.btcr2.applyPatch(source, patch);
 
   const unsigned = render('btcr2-unsigned-update-template.hbs', {
     'array-of-patches': JSON.stringify(constructed.patch),
@@ -265,16 +243,17 @@ function buildUpdate(
     'target-version-id': String(constructed.targetVersionId),
   });
   agree(`update ${label}`, constructed, unsigned);
-  agree(`target document ${label}`, { hash: canonicalHash(target) }, { hash: unsigned.targetHash });
+  agree(`target document ${label}`, { hash: api.btcr2.hashDocument(target) }, { hash: unsigned.targetHash });
 
   const signer = new PinnedSigner(keyPair, label);
-  const produced = Updater.sign(controller, structuredClone(unsigned), verificationMethod, signer);
+  const produced = api.btcr2.signUpdate(controller, structuredClone(unsigned), verificationMethod, signer);
   const { proofValue, ...producedConfig } = produced.proof;
 
   /** GAP 2 (property order). The same proof configuration, in the order the specification documents. */
   const config = render('data-integrity-config.hbs', {
     'verification-method': verificationMethod.id,
     capability: `urn:zcap:root:${encodeURIComponent(controller)}`,
+    'invocation-target': controller,
   });
   agree(`proof config ${label}`, producedConfig, config);
 
@@ -287,7 +266,7 @@ function buildUpdate(
     throw new Error(`proof for ${label} failed verification`);
   }
 
-  return { unsigned, signed, config, hash: canonicalHash(signed), target };
+  return { unsigned, signed, config, hash: api.btcr2.hashDocument(signed), target };
 }
 
 const key0Method: DidVerificationMethod = {
@@ -299,15 +278,12 @@ const key0Method: DidVerificationMethod = {
 const key1Reference = `${did}#key-1`;
 
 /** The implementation derives the Singleton Beacon of key-1 from a key identifier of key-1. */
-const key1Beacon = BeaconUtils.createBeaconService(
-  api.did.encode(keys.key1.publicKey.compressed, {
-    idType: IdentifierTypes.KEY,
-    version: BTCR2_VERSION_NUMBER,
-    network: NETWORK,
-  }),
-  'p2wpkh',
-  'SingletonBeacon',
-);
+const key1Did = api.did.encode(keys.key1.publicKey.compressed, {
+  idType: 'KEY',
+  version: BTCR2_VERSION_NUMBER,
+  network: NETWORK,
+});
+const key1Beacon = api.btcr2.getInitialDocument(key1Did).service.find((s) => s.id === `${key1Did}#initialP2WPKH`)!;
 
 /** Update 2: add a second key. Announced by the Singleton Beacon. */
 const update2 = buildUpdate(
@@ -371,13 +347,13 @@ const update4 = buildUpdate(
 /** A key-based identifier and the document that is deterministically generated from it. */
 function keyBased(keyPair: SchnorrKeyPair) {
   const id = api.did.encode(keyPair.publicKey.compressed, {
-    idType: IdentifierTypes.KEY,
+    idType: 'KEY',
     version: BTCR2_VERSION_NUMBER,
     network: NETWORK,
   });
 
   // The implementation derives the three default Beacon Services of a `k` identifier.
-  const services = BeaconUtils.createBeaconServices(id, 'SingletonBeacon');
+  const services = api.btcr2.getInitialDocument(id).service;
   const document = render('key-based-initial-did-document-template.hbs', {
     did: id,
     'public-key-multikey': keyPair.publicKey.multibase.encoded,
@@ -386,7 +362,7 @@ function keyBased(keyPair: SchnorrKeyPair) {
     'p2tr-bitcoin-address': services[2].serviceEndpoint as string,
   });
   agree(`Beacon Services of ${id}`, services, document.service);
-  DidDocument.isValid(document);
+  agree(`initial document of ${id}`, api.btcr2.getInitialDocument(id), document);
 
   return { did: id, document };
 }
@@ -434,26 +410,23 @@ const nonces = Object.fromEntries(
   Object.entries(NONCE_SEEDS).map(([name, seed]) => [name, sha256(seed)]),
 ) as Record<keyof typeof NONCE_SEEDS, Uint8Array>;
 
-type Submission = { did: string; nonce?: Uint8Array; updateId?: Uint8Array };
+type Submission = { did: string; nonce?: Uint8Array; updateId?: string };
 
 /** Builds the tree for one signal and serializes the proof of `did`. */
 function smtProof(signal: Submission[], did: string) {
-  const leaves = signal
-    .filter((s) => s.nonce || s.updateId)
-    .map((s) => ({ index: didToIndex(s.did), leaf: leafValue(s.nonce, s.updateId) }));
-  const own = signal.find((s) => s.did === did);
-  const proof = serializeProof(
-    zeroHashRoot(leaves),
-    generateZeroHashProof(leaves, didToIndex(did)),
-    { nonce: own?.nonce, updateId: own?.updateId },
-  );
-  if (!verifyProof(proof, did)) throw new Error(`generated SMT proof for ${did} failed verification`);
+  const tree = api.smt.build(signal.map((s) => ({
+    did: s.did,
+    ...(s.nonce ? { nonce: base64url(s.nonce) } : {}),
+    ...(s.updateId ? { updateId: s.updateId } : {}),
+  })));
+  const proof = tree.proof(did);
+  if (!api.smt.verify(proof, did)) throw new Error(`generated SMT proof for ${did} failed verification`);
   return proof;
 }
 
 /** Signal A: update 4 for the primary identifier in nonce mode, nonce non-updates for the rest. */
 const signalA: Submission[] = [
-  { did, nonce: nonces.primary, updateId: base64UrlToHash(update4.hash) },
+  { did, nonce: nonces.primary, updateId: update4.hash },
   { did: cohortA.did, nonce: nonces.cohortA },
   { did: cohortB.did, nonce: nonces.cohortB },
 ];
@@ -465,7 +438,7 @@ const signalA: Submission[] = [
  * nonce non-update. Together the two signals exercise all four leaf arms.
  */
 const signalB: Submission[] = [
-  { did: cohortA.did, updateId: base64UrlToHash(cohortAUpdate.hash) },
+  { did: cohortA.did, updateId: cohortAUpdate.hash },
   { did: cohortB.did, nonce: nonces.cohortBSignalB },
 ];
 
@@ -542,10 +515,10 @@ function selfCheck(): void {
     { update: update4, source: update3.target },
   ];
   for (const { update, source } of chain) {
-    if (update.signed.sourceHash !== canonicalHash(source)) {
+    if (update.signed.sourceHash !== api.btcr2.hashDocument(source)) {
       throw new Error(`sourceHash mismatch on update ${update.signed.targetVersionId}`);
     }
-    if (update.signed.targetHash !== canonicalHash(update.target)) {
+    if (update.signed.targetHash !== api.btcr2.hashDocument(update.target)) {
       throw new Error(`targetHash mismatch on update ${update.signed.targetVersionId}`);
     }
     if (JSON.stringify(update.signed['@context']) !== JSON.stringify(context)) {
@@ -555,10 +528,10 @@ function selfCheck(): void {
       throw new Error(`proof @context mismatch on update ${update.signed.targetVersionId}`);
     }
   }
-  if (api.did.decode(did).idType !== IdentifierTypes.EXTERNAL) {
+  if (api.did.decode(did).idType !== 'EXTERNAL') {
     throw new Error('the primary identifier is not an external identifier');
   }
-  if (hashToBase64Url(api.did.decode(did).genesisBytes) !== canonicalHash(genesisDocument)) {
+  if (base64url(api.did.decode(did).genesisBytes) !== api.btcr2.hashDocument(genesisDocument)) {
     throw new Error('identifier does not commit to the Genesis Document');
   }
   if (casAnnouncement[did] !== update3.hash) {
