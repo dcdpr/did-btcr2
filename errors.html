@@ -39,7 +39,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-37ba8f9f.js";
+            window.path_to_searchindex_js = "searchindex-3f800ab3.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -184,14 +184,19 @@
                         <h1 id="errors"><a class="header" href="#errors">Errors</a></h1>
 <p>The algorithms described in this specification can raise the specific errors listed below. Additional error types defined in the Errors section of DID Resolution v1 <a class="bib-cite" href="bibliography.html#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a> may also be raised.</p>
 <p>These errors are assumed to be fatal and all <strong>did:btcr2</strong> operations must abort when one of these errors are raised.</p>
+<p>Each error below declares the DID Resolution error type that it refines, as the Errors section of DID Resolution v1 <a class="bib-cite" href="bibliography.html#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a> allows. A binding can use the declaration to decide how to convey the error. In the HTTP(S) binding, a resolver SHOULD send the HTTP status code of the error type that the error refines.</p>
 <h2 id="invalid_did_update"><a class="header" href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a></h2>
 <p>An error was found when creating or applying a <a href="./terminology.html#btcr2-update">BTCR2 Update</a>.</p>
+<p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT"><code>INVALID_DID_DOCUMENT</code></a>.</p>
 <h2 id="invalid_signal_data"><a class="header" href="#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a></h2>
 <p>The data for a <a href="./terminology.html#beacon-signal">Beacon Signal</a> does not agree with its <a href="./terminology.html#signal-bytes">Signal Bytes</a>. Example: an <a href="./terminology.html#smt-proof">SMT Proof</a> that does not verify against the <a href="./terminology.html#smt">SMT</a> root in the <a href="./terminology.html#beacon-signal">Beacon Signal</a>.</p>
+<p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a>.</p>
 <h2 id="late_publishing"><a class="header" href="#late_publishing"><code>LATE_PUBLISHING</code></a></h2>
 <p>An error was found when processing the full history of <a href="./terminology.html#btcr2-update">BTCR2 Updates</a> announced by all relevant <a href="./terminology.html#beacon-signal">Beacon Signals</a>. See <a href="./terminology.html#late-publishing">Late Publishing</a>.</p>
+<p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT"><code>INVALID_DID_DOCUMENT</code></a>.</p>
 <h2 id="missing_update_data"><a class="header" href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a></h2>
 <p>Data that is necessary to find what a <a href="./terminology.html#beacon-signal">Beacon Signal</a> announces for the DID is not in the <a href="./terminology.html#sidecar-data">Sidecar Data</a> and not in <a href="./terminology.html#cas">CAS</a>. This data includes <a href="./terminology.html#btcr2-update">BTCR2 Updates</a>, <a href="./data-structures.html#cas-announcement">CAS Announcements</a>, and <a href="./terminology.html#smt-proof">SMT Proofs</a>.</p>
+<p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a>.</p>
 
                     </main>
 

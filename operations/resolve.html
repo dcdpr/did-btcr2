@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-37ba8f9f.js";
+            window.path_to_searchindex_js = "../searchindex-3f800ab3.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -189,8 +189,8 @@
   (didResolutionMetadata, didDocument, didDocumentMetadata)</code></pre>
 <h2 id="process"><a class="header" href="#process">Process</a></h2>
 <p>Input values MUST first go through <a href="#decode-the-did">Decoding the DID</a> and <a href="#process-sidecar-data">Processing Sidecar Data</a>.</p>
-<p>Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_OPTIONS</code></a> error if <code>resolutionOptions</code> contains both <code>versionId</code> and <code>versionTime</code>. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></p>
-<p>When provided, <code>resolutionOptions.versionId</code> MUST be parsed as an integer and <code>resolutionOptions.versionTime</code> SHOULD be parsed as an XML Datetime. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_OPTIONS</code></a> error if either value does not parse.</p>
+<p>Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a> error if <code>resolutionOptions</code> contains both <code>versionId</code> and <code>versionTime</code>. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></p>
+<p>When provided, <code>resolutionOptions.versionId</code> MUST be parsed as an integer and <code>resolutionOptions.versionTime</code> SHOULD be parsed as an XML Datetime. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a> error if either value does not parse.</p>
 <p>Resolution maintains the following state while building the DID document:</p>
 <ul>
 <li><code>updates</code>: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations), a <a href="../terminology.html#beacon-address">Beacon Address</a>, and a <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a>.</li>
@@ -229,7 +229,7 @@
 <p>If <code>resolutionOptions</code> has no <code>versionId</code> and no <code>versionTime</code>, <a href="../terminology.html#sidecar-data">Sidecar Data</a> that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a <a href="../terminology.html#beacon-signal">Beacon Signal</a> has less than <code>minConf</code> confirmations, or the resolver reads a different chain. It can also show a problem with the <a href="../terminology.html#sidecar-data">Sidecar Data</a>, for example <a href="../terminology.html#sidecar-data">Sidecar Data</a> that is not for <code>did</code>. Implementations MAY tell the caller which <a href="../terminology.html#sidecar-data">Sidecar Data</a> they did not use.</p>
 <h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
 <p>The <code>did</code> MUST be parsed with the <a href="../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
-<code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
+<code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
 raised while decoding.</p>
 <h2 id="process-sidecar-data"><a class="header" href="#process-sidecar-data">Process Sidecar Data</a></h2>
 <p><code>resolutionOptions</code> contains a <code>sidecar</code> property (<a href="../data-structures.html#sidecar-data">Sidecar Data (data structure)</a>) which SHOULD be prepared as lookup tables:</p>
@@ -238,7 +238,7 @@ raised while decoding.</p>
 <li>Hash each <a href="../data-structures.html#cas-announcement">CAS Announcement (data structure)</a> in <code>sidecar.casUpdates</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm and build a map from hash to announcement (<code>cas_lookup_table</code>).</li>
 <li>Build a map from <code>sidecar.smtProofs</code> keyed by proof <code>id</code> (<code>smt_lookup_table</code>).</li>
 </ul>
-<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>genesis_bytes</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>. Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>NOT_FOUND</code></a> error if the <a href="../terminology.html#genesis-document">Genesis Document</a> cannot be retrieved. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>genesis_bytes</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>. Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> error if the <a href="../terminology.html#genesis-document">Genesis Document</a> cannot be retrieved. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
 <p>When data is not available in <a href="../terminology.html#sidecar-data">Sidecar Data</a>, implementations are RECOMMENDED to retrieve it from a <a href="../terminology.html#cas">Content Addressable Storage</a> (<a href="../terminology.html#cas">CAS</a>) service. To retrieve a document from <a href="../terminology.html#cas">CAS</a>, construct a CID from the document’s SHA-256 hash bytes as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</p>
 <h2 id="establish-current-document"><a class="header" href="#establish-current-document">Establish <code>current_document</code></a></h2>
 <p>Resolution begins by creating an <a href="../terminology.html#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="../terminology.html#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>
@@ -370,7 +370,7 @@ Show Template
 <li>If <code>resolutionOptions.versionId</code> is provided and <code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 <li>If <code>updates</code> is empty or <code>current_document.deactivated</code> is <code>true</code>:
 <ul>
-<li>Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#errors"><code>NOT_FOUND</code></a> error if <code>resolutionOptions.versionId</code> is provided.</li>
+<li>Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> error if <code>resolutionOptions.versionId</code> is provided.</li>
 <li>Otherwise, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 </ul>
 </li>
