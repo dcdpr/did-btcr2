@@ -39,7 +39,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-3f800ab3.js";
+            window.path_to_searchindex_js = "searchindex-96e03a09.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -384,6 +384,12 @@ Show Example
 <li><code>"https://btcr2.dev/context/v1"</code> (<a href="./data-structures.html#btcr2-context">BTCR2 Context</a>)</li>
 </ul>
 <p>A change to the membership or the order of this array changes the hash that the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm produces.</p>
+<p><code>"https://w3id.org/json-ld-patch/v1"</code> identifies the context file
+<a href="https://github.com/web-payments/web-payments.org/blob/2faef4cfaada1f5dbcadb27440e637186074eaf2/contexts/json-ld-patch-v1.jsonld">contexts/json-ld-patch-v1.jsonld at web-payments.org commit <code>2faef4cf</code></a>.
+Its SHA-256 digest, in hexadecimal, is
+<code>6816e2fc63a8a345e979508d0bf5e719a5694d0c59fac01c5c216cf3b36b5a5e</code>. This digest is informative:
+it lets an implementer check a built-in copy. It is RECOMMENDED that processors build this
+context in rather than dereference the URL, which redirects to a host that might not serve it.</p>
 </li>
 <li>
 <p><code>patch</code>: A single JSON Patch <a class="bib-cite" href="bibliography.html#RFC6902" title="JavaScript Object Notation (JSON) Patch">RFC6902</a> document, i.e., one flat array of JSON Patch
