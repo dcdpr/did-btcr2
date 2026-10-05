@@ -5,8 +5,7 @@
     "": {
       "name": "did-btcr2-spec",
       "devDependencies": {
-        "@did-btcr2/api": "0.27.1",
-        "@did-btcr2/smt": "0.4.1",
+        "@did-btcr2/api": "0.32.0",
         "@noble/curves": "1.9.7",
         "jsonld": "9.0.0",
       },
@@ -15,19 +14,19 @@
   "packages": {
     "@decentralized-identity/ion-sdk": ["@decentralized-identity/ion-sdk@1.0.4", "", { "dependencies": { "@noble/ed25519": "^2.0.0", "@noble/secp256k1": "^2.0.0", "canonicalize": "^2.0.0", "multiformats": "^12.1.3", "uri-js": "^4.4.1" } }, "sha512-pOWrlTH5ChxUKRHOgfG2ZeTioWEFJXADyErCQOJ0BqYNDKfP+CM09Vss+9ei6PNOABQlcDn0mEDFZtpO+DXl8A=="],
 
-    "@did-btcr2/api": ["@did-btcr2/api@0.27.1", "", { "dependencies": { "@did-btcr2/bitcoin": "^0.11.1", "@did-btcr2/common": "^9.7.0", "@did-btcr2/cryptosuite": "^10.0.0", "@did-btcr2/key-manager": "^0.7.0", "@did-btcr2/keypair": "^0.13.1", "@did-btcr2/method": "^0.66.1", "@web5/dids": "^1.2.0", "multiformats": "^13.3.1" } }, "sha512-PC0+htTrDiQ+J+29xNdbd/bMpLZX+K1NOy9NdUZw4+UvnU84WbUVUCxLuwIp0lZFcBy3FXi7V9zuIM09kYyouw=="],
+    "@did-btcr2/api": ["@did-btcr2/api@0.32.0", "", { "dependencies": { "@did-btcr2/bitcoin": "^0.11.4", "@did-btcr2/common": "^10.0.0", "@did-btcr2/cryptosuite": "^10.0.1", "@did-btcr2/key-manager": "^0.7.1", "@did-btcr2/keypair": "^0.13.2", "@did-btcr2/method": "^0.69.0", "@did-btcr2/smt": "^0.4.1", "@web5/dids": "^1.2.0", "multiformats": "^13.3.1" } }, "sha512-glhRMigzkhuovPB/S7pfKgxwHB3c0iscl0CEiLrslRxJ2XTrpicSKovwulisL+3epL80DfONTLayLZM4+9H0nA=="],
 
-    "@did-btcr2/bitcoin": ["@did-btcr2/bitcoin@0.11.2", "", { "dependencies": { "@did-btcr2/common": "^9.7.0", "@scure/btc-signer": "^1.8.1" } }, "sha512-agxr3ZmhIWcHVZ9apbtkxBSJgHqFQ8IESc/8ICT4QY0whLbGErYZHf2o0gka2S6N/TscXvczym3yzVnv1SvaFw=="],
+    "@did-btcr2/bitcoin": ["@did-btcr2/bitcoin@0.11.4", "", { "dependencies": { "@did-btcr2/common": "^10.0.0", "@scure/btc-signer": "^1.8.1" } }, "sha512-MP3/B1xpzuJ0oLD2nudVYHhZUqJHmVvUenwE37TPbB38JIH3PkmZ/RNoPiVdBydhXNPz7VelSYu2Z//4P7LATw=="],
 
-    "@did-btcr2/common": ["@did-btcr2/common@9.7.0", "", { "dependencies": { "@noble/hashes": "^1.7.1", "@scure/base": "^1.2.6", "fast-json-patch": "^3.1.1", "json-canonicalize": "^1.0.6" }, "peerDependencies": { "@scure/bip32": "^1.5.0" }, "optionalPeers": ["@scure/bip32"] }, "sha512-pgxA8tx79D/n7LC7uGQlohkg0PryGzadw0+6aPWvwOEja+gi58jzH8c1CwZXhVRtbiaK6hC8RaCpX6n250vO3Q=="],
+    "@did-btcr2/common": ["@did-btcr2/common@10.0.0", "", { "dependencies": { "@noble/hashes": "^1.7.1", "@scure/base": "^1.2.6", "fast-json-patch": "^3.1.1", "json-canonicalize": "^1.0.6" }, "peerDependencies": { "@scure/bip32": "^1.5.0" }, "optionalPeers": ["@scure/bip32"] }, "sha512-j2Ehc1dEoVsjdn45d30h7QCUnbL02/38wcIjXPTtDBhGNtcg0JwsF8jUI1ZEZE0NbArxKZCvIrsqzvPaCxSKvw=="],
 
-    "@did-btcr2/cryptosuite": ["@did-btcr2/cryptosuite@10.0.0", "", { "dependencies": { "@did-btcr2/common": "^9.3.0", "@did-btcr2/keypair": "^0.13.1", "@noble/curves": "^1.8.1", "@noble/hashes": "^1.7.1", "@web5/dids": "^1.2.0", "multiformats": "^13.3.2" } }, "sha512-jxnSzEokZ5DSToim489rKdgZdCTNmmuP0AOwKmqEDxn6f0sj2BMrWt5A/RpdMnZigoujUVVYpsvwRqBx/Xu9Sg=="],
+    "@did-btcr2/cryptosuite": ["@did-btcr2/cryptosuite@10.0.1", "", { "dependencies": { "@did-btcr2/common": "^10.0.0", "@did-btcr2/keypair": "^0.13.2", "@noble/curves": "^1.8.1", "@noble/hashes": "^1.7.1", "@web5/dids": "^1.2.0", "multiformats": "^13.3.2" } }, "sha512-XoCC191aZv6/L+ZAxCBy6AFTRgmAzz+xlU08RCSfqSvHWXuH8ezjoLfTz1h9EWynMwdDrlBTLvh6Y1uHmwqzyQ=="],
 
-    "@did-btcr2/key-manager": ["@did-btcr2/key-manager@0.7.0", "", { "dependencies": { "@did-btcr2/common": "^9.1.0", "@did-btcr2/keypair": "^0.13.1", "@noble/curves": "^2.0.1", "@noble/hashes": "^2.0.1", "@scure/btc-signer": "^1.8.1" } }, "sha512-TgW3gLi5I5YY22OlUpgpeTjznV9sEaBexG3CkekfIl1qd/cTOMzqbguYrNmpI4ChOjIqXhMrO15Hvci9m43BpQ=="],
+    "@did-btcr2/key-manager": ["@did-btcr2/key-manager@0.7.1", "", { "dependencies": { "@did-btcr2/common": "^10.0.0", "@did-btcr2/keypair": "^0.13.2", "@noble/curves": "^2.0.1", "@noble/hashes": "^2.0.1" } }, "sha512-dAs5BVyLwHNgWy8f8SuHRdjxah0bUMIv7/RXWq5zDt+R2q3cjQNcu/aqLJNzTWYcVAjNwmrp1h6lJoWp5sttEQ=="],
 
-    "@did-btcr2/keypair": ["@did-btcr2/keypair@0.13.1", "", { "dependencies": { "@did-btcr2/common": "^9.1.0", "@noble/curves": "^2.0.1", "@noble/hashes": "^1.7.1", "@scure/base": "^2.0.0", "@scure/btc-signer": "^1.8.1" } }, "sha512-1CefNuWLdnTCvrgK1AOBjjGg8w46PHuD37FZuFb9gQRvmX3qlO8q/15T+O3IXb2Hwy3Cgizbe3quP0+r4XeHXg=="],
+    "@did-btcr2/keypair": ["@did-btcr2/keypair@0.13.2", "", { "dependencies": { "@did-btcr2/common": "^10.0.0", "@noble/curves": "^2.0.1", "@noble/hashes": "^1.7.1", "@scure/base": "^2.0.0", "@scure/btc-signer": "^1.8.1" } }, "sha512-ZjEcCuTO6uStddhhm7hnCHwc2txcq+RPAuqBjUj/zqn+QK9ZNbeF3J1YJvO5W/wOnYShvO5Kbqm2zXobzh8phA=="],
 
-    "@did-btcr2/method": ["@did-btcr2/method@0.66.2", "", { "dependencies": { "@did-btcr2/bitcoin": "^0.11.2", "@did-btcr2/common": "^9.7.0", "@did-btcr2/cryptosuite": "^10.0.0", "@did-btcr2/keypair": "^0.13.1", "@did-btcr2/smt": "^0.4.1", "@noble/curves": "^1.9.7", "@noble/hashes": "^1.8.0", "@scure/base": "^1.2.6", "@scure/btc-signer": "^1.8.1", "@web5/dids": "^1.2.0" } }, "sha512-hhN6ugzKQaqNQzF//zc2zoj+/2Rgts19y8i/uOt5slGVowyJHktTX3VH2fEcT0s64OsN7vL3lJ/+aimoLloKYw=="],
+    "@did-btcr2/method": ["@did-btcr2/method@0.69.0", "", { "dependencies": { "@did-btcr2/bitcoin": "^0.11.4", "@did-btcr2/common": "^10.0.0", "@did-btcr2/cryptosuite": "^10.0.1", "@did-btcr2/keypair": "^0.13.2", "@did-btcr2/smt": "^0.4.1", "@noble/curves": "^1.9.7", "@noble/hashes": "^1.8.0", "@scure/base": "^1.2.6", "@scure/btc-signer": "^1.8.1", "@web5/dids": "^1.2.0" } }, "sha512-VaUZocNrHdOTcFCoRDLG2dBhR2QjuB/GlVTxY1JnxcAFXckpfO5RpHBf+jZir4EW9Nvx/E+lXa+6KXofE+Uqkw=="],
 
     "@did-btcr2/smt": ["@did-btcr2/smt@0.4.1", "", { "dependencies": { "@noble/curves": "^2.0.1", "@noble/hashes": "^1.7.1", "@scure/base": "^1.2.6" } }, "sha512-SYFbRmj/IJm8OJ71SQXPTEYPY27RnDiBgoNMx983sa8FAU6ZRYAYg4eBR85gKxuRjnzeuk5YuTVGj7ZDcRsRSQ=="],
 
