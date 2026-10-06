@@ -76,7 +76,9 @@ raised while decoding.
 
 - Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` with the [JSON Document Hashing] algorithm and build a map from hash to update (`update_lookup_table`).
 - Hash each [CAS Announcement (data structure)] in `sidecar.casUpdates` with the [JSON Document Hashing] algorithm and build a map from hash to announcement (`cas_lookup_table`).
-- Build a map from `sidecar.smtProofs` keyed by proof `id` (`smt_lookup_table`).
+- Build a map from `sidecar.smtProofs` keyed by the decoded bytes of proof `id` (`smt_lookup_table`).
+
+Whether or not it builds `smt_lookup_table`, the resolver MUST ignore a proof in `sidecar.smtProofs` whose `id` has non-zero pad bits ({{#cite RFC4648}} Section 3.5).
 
 If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. If `sidecar.genesisDocument` is not provided, retrieve it from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`NOT_FOUND`] error if the [Genesis Document] cannot be retrieved. Raise an [`INVALID_DID`] error if the computed hash does not match `genesis_bytes`.
 
@@ -164,14 +166,14 @@ For each transaction found:
 
 Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)]. If the [CAS Announcement (data structure)] is not in `cas_lookup_table`, retrieve it from [CAS] using `map_update_hash` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_UPDATE_DATA`] error if the announcement is not in `cas_lookup_table` and not available from [CAS]. The announcement is not available from [CAS] if the hash of the retrieved content is not equal to `map_update_hash` ([BTCR2 Update Data Distribution]).
 
-Read `update_hash` from the announcement entry keyed by `did`. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`.
+Read the decoded value of the announcement entry keyed by `did` as `update_hash`. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`.
 
 
 ### Process SMT Beacon { #process-smt-beacon }
 
-Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to retrieve an [SMT Proof (data structure)] as `smt_proof`. Raise a [`MISSING_UPDATE_DATA`] error if `smt_lookup_table` has no entry for `smt_root`. Raise an [`INVALID_SIGNAL_DATA`] error if the `id` of `smt_proof` is not equal to `smt_root`.
+Treat [Signal Bytes] as `smt_root`. Look up `smt_root` in `smt_lookup_table` to retrieve an [SMT Proof (data structure)] as `smt_proof`. Raise a [`MISSING_UPDATE_DATA`] error if `smt_lookup_table` has no entry for `smt_root`. Raise an [`INVALID_SIGNAL_DATA`] error if the decoded `id` of `smt_proof` is not equal to `smt_root`.
 
-Verify `smt_proof` with the [SMT Proof Verification] algorithm. Raise an [`INVALID_SIGNAL_DATA`] error if the result of the algorithm is `false`. If `smt_proof` has an `updateId`, use it as `update_hash`. If `smt_proof` has no `updateId`, the [Beacon Signal] announces no update for `did`.
+Verify `smt_proof` with the [SMT Proof Verification] algorithm. Raise an [`INVALID_SIGNAL_DATA`] error if the result of the algorithm is `false`. If `smt_proof` has an `updateId`, use the decoded `updateId` as `update_hash`. If `smt_proof` has no `updateId`, the [Beacon Signal] announces no update for `did`.
 
 
 ## Process Next Update { #process-next-update }
