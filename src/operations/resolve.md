@@ -237,12 +237,12 @@ Increment `current_version_id`.
 
 Raise an [`INVALID_DID_UPDATE`] error if the `@context` of `update` is not the array that the [BTCR2 Unsigned Update (data structure)] specifies. Raise an [`INVALID_DID_UPDATE`] error if the `@context` of `update.proof` is not equal to the `@context` of `update`. Two `@context` arrays are equal when they contain the same context URLs in the same order.
 
-Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are not true:
+Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true:
 
-* `update.proof.proofPurpose` equals `"capabilityInvocation"`.
-* `update.proof.capabilityAction` equals `"Write"`.
-* `update.proof.capability` equals the `capability` URN that [Data Integrity Config (data structure)] specifies for `did`.
-* `update.proof.invocationTarget` equals `did`.
+* `update.proof.proofPurpose` does not equal `"capabilityInvocation"`.
+* `update.proof.capabilityAction` does not equal `"Write"`.
+* `update.proof.capability` does not equal the `capability` URN that [Data Integrity Config (data structure)] specifies for `did`.
+* `update.proof.invocationTarget` does not equal `did`.
 
 Implementations MAY derive a [Root Capability (data structure)] from `update.proof` and invoke it according to Authorization Capabilities for Linked Data v0.3 {{#cite ZCAP-LD}}.
 
@@ -250,11 +250,11 @@ The resolver MUST find the entry of `current_document.capabilityInvocation` that
 
 Read `publicKeyMultibase` from that entry. When the entry is an embedded verification method object, read `publicKeyMultibase` from the object. When the entry is a reference, find the verification method in `current_document.verificationMethod` with an `id` that is equal to the reference. Read `publicKeyMultibase` from that verification method. Raise an [`INVALID_DID_UPDATE`] error if there is no verification method with that `id`.
 
-Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are not true of the embedded verification method object, or of the verification method that the reference names: [^6]
+Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true of the embedded verification method object, or of the verification method that the reference names: [^6]
 
-* `type` equals `"Multikey"`.
-* `controller` equals `did`.
-* `publicKeyMultibase` encodes a secp256k1 public key as the Multikey section of the BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} specifies.
+* `type` does not equal `"Multikey"`.
+* `controller` does not equal `did`.
+* `publicKeyMultibase` does not encode a secp256k1 public key as the Multikey section of the BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} specifies.
 
 [^6]: The BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} retrieves the key that verifies a proof with the Retrieve Verification Method algorithm of Controlled Identifiers v1.0 {{#cite CONTROLLED-IDENTIFIERS}}, which makes these checks. The resolver cannot dereference the verification method while it builds `current_document`, so it finds the method and makes the checks itself.
 

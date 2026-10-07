@@ -91,11 +91,11 @@ An [`INVALID_DID_UPDATE`] error MUST be raised if no entry of the `sourceDidDocu
 
 If that entry is a reference, find the verification method in the `sourceDidDocument.verificationMethod` Set with an `id` that is equal to the reference. An [`INVALID_DID_UPDATE`] error MUST be raised if there is no verification method with that `id`.
 
-An [`INVALID_DID_UPDATE`] error MUST be raised if any of the following conditions are not true of the embedded verification method object, or of the verification method that the reference names:
+An [`INVALID_DID_UPDATE`] error MUST be raised if any of the following conditions are true of the embedded verification method object, or of the verification method that the reference names:
 
-* `type` equals `"Multikey"`.
-* `controller` equals `sourceDidDocument.id`.
-* `publicKeyMultibase` encodes a secp256k1 public key as the Multikey section of the BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} specifies.
+* `type` does not equal `"Multikey"`.
+* `controller` does not equal `sourceDidDocument.id`.
+* `publicKeyMultibase` does not encode a secp256k1 public key as the Multikey section of the BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} specifies.
 
 Create `cryptosuite` as a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `signer` as the signing interface and the `"bip340-jcs-2025"` cryptosuite.
 
