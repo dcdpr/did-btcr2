@@ -237,12 +237,12 @@ Increment `current_version_id`.
 
 Raise an [`INVALID_DID_UPDATE`] error if the `@context` of `update` is not the array that the [BTCR2 Unsigned Update (data structure)] specifies. Raise an [`INVALID_DID_UPDATE`] error if the `@context` of `update.proof` is not equal to the `@context` of `update`. Two `@context` arrays are equal when they contain the same context URLs in the same order.
 
-Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are not true:
+Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true:
 
-* `update.proof.proofPurpose` equals `"capabilityInvocation"`.
-* `update.proof.capabilityAction` equals `"Write"`.
-* `update.proof.capability` equals the `capability` URN that [Data Integrity Config (data structure)] specifies for `did`.
-* `update.proof.invocationTarget` equals `did`.
+* `update.proof.proofPurpose` does not equal `"capabilityInvocation"`.
+* `update.proof.capabilityAction` does not equal `"Write"`.
+* `update.proof.capability` does not equal the `capability` URN that [Data Integrity Config (data structure)] specifies for `did`.
+* `update.proof.invocationTarget` does not equal `did`.
 
 Implementations MAY derive a [Root Capability (data structure)] from `update.proof` and invoke it according to Authorization Capabilities for Linked Data v0.3 {{#cite ZCAP-LD}}.
 
@@ -250,13 +250,21 @@ The resolver MUST find the entry of `current_document.capabilityInvocation` that
 
 Read `publicKeyMultibase` from that entry. When the entry is an embedded verification method object, read `publicKeyMultibase` from the object. When the entry is a reference, find the verification method in `current_document.verificationMethod` with an `id` that is equal to the reference. Read `publicKeyMultibase` from that verification method. Raise an [`INVALID_DID_UPDATE`] error if there is no verification method with that `id`.
 
-If `update.proof.created` or `update.proof.expires` is present, check each value against the Bitcoin block that contains the [Beacon Signal] that announced `update`. [^6] Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true:
+Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true of the embedded verification method object, or of the verification method that the reference names: [^6]
+
+* `type` does not equal `"Multikey"`.
+* `controller` does not equal `did`.
+* `publicKeyMultibase` does not encode a secp256k1 public key as the Multikey section of the BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} specifies.
+
+[^6]: The BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} retrieves the key that verifies a proof with the Retrieve Verification Method algorithm of Controlled Identifiers v1.0 {{#cite CONTROLLED-IDENTIFIERS}}, which makes these checks. The resolver cannot dereference the verification method while it builds `current_document`, so it finds the method and makes the checks itself.
+
+If `update.proof.created` or `update.proof.expires` is present, check each value against the Bitcoin block that contains the [Beacon Signal] that announced `update`. [^7] Raise an [`INVALID_DID_UPDATE`] error if any of the following conditions are true:
 
 * `update.proof.created` is after the timestamp in the block header.
 * `update.proof.expires` is before the block `mediantime` {{#cite Bitcoin-Core}}.
 * `update.proof.expires` is before `update.proof.created`, when both values are present.
 
-[^6]: In Data Integrity {{#cite VC-DATA-INTEGRITY}}, each method selects the time of interest for `created` and `expires`. On mainnet, the timestamp in the block header is approximately one hour later than `mediantime`. A controller signs a proof a short time before the block that contains it, so a check of `created` against `mediantime` rejects valid updates. For this reason, `created` uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change `mediantime`. The `expires` value limits the time between the signature and a replay of the update, so `expires` uses `mediantime`.
+[^7]: In Data Integrity {{#cite VC-DATA-INTEGRITY}}, each method selects the time of interest for `created` and `expires`. On mainnet, the timestamp in the block header is approximately one hour later than `mediantime`. A controller signs a proof a short time before the block that contains it, so a check of `created` against `mediantime` rejects valid updates. For this reason, `created` uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change `mediantime`. The `expires` value limits the time between the signature and a replay of the update, so `expires` uses `mediantime`.
 
 Use a BIP340 Cryptosuite {{#cite BIP340-Cryptosuite}} instance with `publicKeyMultibase` and the `"bip340-jcs-2025"` cryptosuite to verify `update`. Raise [`INVALID_DID_UPDATE`] if verification fails.
 
