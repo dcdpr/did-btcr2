@@ -28,8 +28,6 @@ Raise an [`INVALID_OPTIONS`] error if `resolutionOptions` contains both `version
 
 When provided, `resolutionOptions.versionId` MUST be parsed as an integer and `resolutionOptions.versionTime` SHOULD be parsed as an XML Datetime. Raise an [`INVALID_OPTIONS`] error if either value does not parse.
 
-Nothing bounds how late a conflicting [BTCR2 Update] (one with the `targetVersionId` of an applied update and a different [BTCR2 Unsigned Update] hash) can be announced. Whenever the resolver processes one, [Confirm Duplicate Update](#confirm-duplicate-update) raises [`LATE_PUBLISHING`], because the history is no longer canonical ([Non-Repudiation]). A resolution with `versionId` or `versionTime` therefore processes the same [Beacon Signals][Beacon Signal] as a resolution without them and raises every error that resolution raises. The resolver records the version that the option selects in `selected`. The resolver returns `selected` at [Process Next Update](#process-next-update) step 2, where a resolution without the option returns the current DID document.
-
 Resolution maintains the following state while building the DID document:
 
 * `updates`: a list of tuples, each containing Bitcoin block metadata (height, mediantime, confirmations), a [Beacon Address], and a [BTCR2 Signed Update (data structure)].
@@ -40,7 +38,7 @@ Resolution maintains the following state while building the DID document:
 * `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at `0`).
 * `block_mediantime`: the `mediantime` of the Bitcoin block that contains the most recently applied update.
 * `current_block_height`: the height of the Bitcoin block that contains the most recently applied update (starts at `0`).
-* `selected`: the `didDocument` and `didDocumentMetadata` that `resolutionOptions.versionId` or `resolutionOptions.versionTime` selects (starts empty).
+* `requested_state`: the state at the version that `resolutionOptions.versionId` or `resolutionOptions.versionTime` requests, a copy of `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime`. The resolver keeps these copies while it processes the rest of the updates (starts empty).
 
 The resolver:
 
@@ -53,7 +51,7 @@ The resolver:
 The resolver returns:
 
 * `didResolutionMetadata`: a [DID Resolution Metadata (data structure)] (MAY be empty).
-* `didDocument`: `current_document`, a [DID document (data structure)].
+* `didDocument`: the final [DID document (data structure)].
 * `didDocumentMetadata`: a [DID document metadata (data structure)] with REQUIRED fields:
   * `versionId`: `current_version_id` as an ASCII string.
   * `confirmations`: `block_confirmations` as an integer. [^2]
@@ -62,8 +60,6 @@ The resolver returns:
 [^2]: The number of confirmations for the Bitcoin block that contains the most recently applied unique update that yielded the resolved DID document. "Unique" refers to handling duplicated updates. When deduplicating, use the lowest block height to determine confirmations.
 
 If `current_version_id` is more than `1`, `didDocumentMetadata` also contains `updated`: `block_mediantime` as an XML Datetime.
-
-When `selected` is not empty, `didDocument` and `didDocumentMetadata` are the values in `selected`. [Process Next Update](#process-next-update) step 1 or step 5 sets `selected` before the resolver applies any later update.
 
 [Sidecar Data] that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a [Beacon Signal] has less than `minConf` confirmations, or the resolver reads a different chain. It can also show a problem with the [Sidecar Data], for example [Sidecar Data] that is not for `did`. Implementations MAY tell the caller which [Sidecar Data] they did not use.
 
@@ -181,18 +177,18 @@ Verify `smt_proof` with the [SMT Proof Verification] algorithm. Raise an [`INVAL
 
 ## Process Next Update { #process-next-update }
 
-1. Set `selected` to the `didDocument` and `didDocumentMetadata` that the resolver returns for the current state if all of the following conditions are true:
-    * `selected` is empty.
+1. Copy `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to `requested_state` if all of the following conditions are true:
+    * `requested_state` is empty.
     * `resolutionOptions.versionId` is provided.
     * `current_version_id` is equal to the parsed `resolutionOptions.versionId`.
 2. If `updates` is empty or `current_document.deactivated` is `true`:
-    * If `selected` is not empty, resolve the `didDocument` and `didDocumentMetadata` in `selected`.
+    * If `requested_state` is not empty, set `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to the values in `requested_state`, and resolve `current_document` as `didDocument`.
     * Otherwise, raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
     * Otherwise, resolve `current_document` as `didDocument`.
 3. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Remove the first tuple from `updates`.
 4. If `current_document` has no [BTCR2 Beacon] with the tuple's [Beacon Address], ignore the tuple. Continue with the next tuple.
-5. Set `selected` to the `didDocument` and `didDocumentMetadata` that the resolver returns for the current state if all of the following conditions are true:
-    * `selected` is empty.
+5. Copy `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to `requested_state` if all of the following conditions are true:
+    * `requested_state` is empty.
     * The tuple's `targetVersionId` is more than `current_version_id`. [^4]
     * `resolutionOptions.versionTime` is provided.
     * The tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`. [^5]
