@@ -38,7 +38,7 @@ Resolution maintains the following state while building the DID document:
 * `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at `0`).
 * `block_mediantime`: the `mediantime` of the Bitcoin block that contains the most recently applied update.
 * `current_block_height`: the height of the Bitcoin block that contains the most recently applied update (starts at `0`).
-* `requested_state`: the state at the version that `resolutionOptions.versionId` or `resolutionOptions.versionTime` requests, a copy of `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime`. The resolver keeps these copies while it processes the rest of the updates (starts empty).
+* `requested_state`: the state at the version that `resolutionOptions.versionId` or `resolutionOptions.versionTime` requests, a copy of `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime`, the values `didDocumentMetadata` is built from. The resolver keeps these copies while it processes the rest of the updates (starts empty).
 
 The resolver:
 
