@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-ec7cc70b.js";
+            window.path_to_searchindex_js = "../searchindex-4e88fefe.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -419,17 +419,23 @@ Show Template
 <p>Increment <code>current_version_id</code>.</p>
 <h3 id="check-update-proof"><a class="header" href="#check-update-proof">Check <code>update.proof</code></a></h3>
 <p>Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the <code>@context</code> of <code>update</code> is not the array that the <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a> specifies. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the <code>@context</code> of <code>update.proof</code> is not equal to the <code>@context</code> of <code>update</code>. Two <code>@context</code> arrays are equal when they contain the same context URLs in the same order.</p>
-<p>Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are not true:</p>
+<p>Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are true:</p>
 <ul>
-<li><code>update.proof.proofPurpose</code> equals <code>"capabilityInvocation"</code>.</li>
-<li><code>update.proof.capabilityAction</code> equals <code>"Write"</code>.</li>
-<li><code>update.proof.capability</code> equals the <code>capability</code> URN that <a href="../data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> specifies for <code>did</code>.</li>
-<li><code>update.proof.invocationTarget</code> equals <code>did</code>.</li>
+<li><code>update.proof.proofPurpose</code> does not equal <code>"capabilityInvocation"</code>.</li>
+<li><code>update.proof.capabilityAction</code> does not equal <code>"Write"</code>.</li>
+<li><code>update.proof.capability</code> does not equal the <code>capability</code> URN that <a href="../data-structures.html#data-integrity-config">Data Integrity Config (data structure)</a> specifies for <code>did</code>.</li>
+<li><code>update.proof.invocationTarget</code> does not equal <code>did</code>.</li>
 </ul>
 <p>Implementations MAY derive a <a href="../data-structures.html#root-capability">Root Capability (data structure)</a> from <code>update.proof</code> and invoke it according to Authorization Capabilities for Linked Data v0.3 <a class="bib-cite" href="../bibliography.html#ZCAP-LD" title="Authorization Capabilities for Linked Data v0.3">ZCAP-LD</a>.</p>
 <p>The resolver MUST find the entry of <code>current_document.capabilityInvocation</code> that identifies <code>update.proof.verificationMethod</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if no entry identifies it.</p>
 <p>Read <code>publicKeyMultibase</code> from that entry. When the entry is an embedded verification method object, read <code>publicKeyMultibase</code> from the object. When the entry is a reference, find the verification method in <code>current_document.verificationMethod</code> with an <code>id</code> that is equal to the reference. Read <code>publicKeyMultibase</code> from that verification method. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if there is no verification method with that <code>id</code>.</p>
-<p>If <code>update.proof.created</code> or <code>update.proof.expires</code> is present, check each value against the Bitcoin block that contains the <a href="../terminology.html#beacon-signal">Beacon Signal</a> that announced <code>update</code>. <sup class="footnote-reference" id="fr-6-1"><a href="#footnote-6">6</a></sup> Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are true:</p>
+<p>Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are true of the embedded verification method object, or of the verification method that the reference names: <sup class="footnote-reference" id="fr-6-1"><a href="#footnote-6">6</a></sup></p>
+<ul>
+<li><code>type</code> does not equal <code>"Multikey"</code>.</li>
+<li><code>controller</code> does not equal <code>did</code>.</li>
+<li><code>publicKeyMultibase</code> does not encode a secp256k1 public key as the Multikey section of the BIP340 Cryptosuite <a class="bib-cite" href="../bibliography.html#BIP340-Cryptosuite" title="Data Integrity BIP340 Cryptosuites">BIP340-Cryptosuite</a> specifies.</li>
+</ul>
+<p>If <code>update.proof.created</code> or <code>update.proof.expires</code> is present, check each value against the Bitcoin block that contains the <a href="../terminology.html#beacon-signal">Beacon Signal</a> that announced <code>update</code>. <sup class="footnote-reference" id="fr-7-1"><a href="#footnote-7">7</a></sup> Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if any of the following conditions are true:</p>
 <ul>
 <li><code>update.proof.created</code> is after the timestamp in the block header.</li>
 <li><code>update.proof.expires</code> is before the block <code>mediantime</code> <a class="bib-cite" href="../bibliography.html#Bitcoin-Core" title="Bitcoin Core">Bitcoin-Core</a>.</li>
@@ -457,7 +463,10 @@ Show Template
 <p>The resolver applies an update whose block <code>mediantime</code> is equal to <code>versionTime</code>. The comparison has no tolerance. <code>mediantime</code> does not decrease from one block to the next. Each resolver reads the same value from the block chain, so each resolver selects the same version. <a href="#fr-5-1">↩</a></p>
 </li>
 <li id="footnote-6">
-<p>In Data Integrity <a class="bib-cite" href="../bibliography.html#VC-DATA-INTEGRITY" title="Verifiable Credential Data Integrity 1.0">VC-DATA-INTEGRITY</a>, each method selects the time of interest for <code>created</code> and <code>expires</code>. On mainnet, the timestamp in the block header is approximately one hour later than <code>mediantime</code>. A controller signs a proof a short time before the block that contains it, so a check of <code>created</code> against <code>mediantime</code> rejects valid updates. For this reason, <code>created</code> uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change <code>mediantime</code>. The <code>expires</code> value limits the time between the signature and a replay of the update, so <code>expires</code> uses <code>mediantime</code>. <a href="#fr-6-1">↩</a></p>
+<p>The BIP340 Cryptosuite <a class="bib-cite" href="../bibliography.html#BIP340-Cryptosuite" title="Data Integrity BIP340 Cryptosuites">BIP340-Cryptosuite</a> retrieves the key that verifies a proof with the Retrieve Verification Method algorithm of Controlled Identifiers v1.0 <a class="bib-cite" href="../bibliography.html#CONTROLLED-IDENTIFIERS" title="Controlled Identifiers v1.0">CONTROLLED-IDENTIFIERS</a>, which makes these checks. The resolver cannot dereference the verification method while it builds <code>current_document</code>, so it finds the method and makes the checks itself. <a href="#fr-6-1">↩</a></p>
+</li>
+<li id="footnote-7">
+<p>In Data Integrity <a class="bib-cite" href="../bibliography.html#VC-DATA-INTEGRITY" title="Verifiable Credential Data Integrity 1.0">VC-DATA-INTEGRITY</a>, each method selects the time of interest for <code>created</code> and <code>expires</code>. On mainnet, the timestamp in the block header is approximately one hour later than <code>mediantime</code>. A controller signs a proof a short time before the block that contains it, so a check of <code>created</code> against <code>mediantime</code> rejects valid updates. For this reason, <code>created</code> uses the timestamp in the block header. A miner sets the timestamp in the header of its own block and can increase that value, but a single miner cannot change <code>mediantime</code>. The <code>expires</code> value limits the time between the signature and a replay of the update, so <code>expires</code> uses <code>mediantime</code>. <a href="#fr-7-1">↩</a></p>
 </li>
 </ol>
 

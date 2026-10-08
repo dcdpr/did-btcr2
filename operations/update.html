@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-ec7cc70b.js";
+            window.path_to_searchindex_js = "../searchindex-4e88fefe.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -259,6 +259,12 @@ resulting <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned
 <p>This process constructs a <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> from <code>update</code>, a <a href="../data-structures.html#btcr2-unsigned-update">BTCR2 Unsigned Update (data structure)</a>.</p>
 <p>An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if no entry of the <code>sourceDidDocument.capabilityInvocation</code> Set identifies <code>verificationMethodId</code>. A reference entry identifies it when the two values are equal. An embedded verification method object identifies it when the <code>id</code> of the object is equal.</p>
 <p>If that entry is a reference, find the verification method in the <code>sourceDidDocument.verificationMethod</code> Set with an <code>id</code> that is equal to the reference. An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if there is no verification method with that <code>id</code>.</p>
+<p>An <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error MUST be raised if any of the following conditions are true of the embedded verification method object, or of the verification method that the reference names:</p>
+<ul>
+<li><code>type</code> does not equal <code>"Multikey"</code>.</li>
+<li><code>controller</code> does not equal <code>sourceDidDocument.id</code>.</li>
+<li><code>publicKeyMultibase</code> does not encode a secp256k1 public key as the Multikey section of the BIP340 Cryptosuite <a class="bib-cite" href="../bibliography.html#BIP340-Cryptosuite" title="Data Integrity BIP340 Cryptosuites">BIP340-Cryptosuite</a> specifies.</li>
+</ul>
 <p>Create <code>cryptosuite</code> as a BIP340 Cryptosuite <a class="bib-cite" href="../bibliography.html#BIP340-Cryptosuite" title="Data Integrity BIP340 Cryptosuites">BIP340-Cryptosuite</a> instance with <code>signer</code> as the signing interface and the <code>"bip340-jcs-2025"</code> cryptosuite.</p>
 <p>Fill the Data Integrity <a class="bib-cite" href="../bibliography.html#VC-DATA-INTEGRITY" title="Verifiable Credential Data Integrity 1.0">VC-DATA-INTEGRITY</a> template below with the required template variables.</p>
 <ul>
