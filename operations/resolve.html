@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-42f56841.js";
+            window.path_to_searchindex_js = "../searchindex-42edb3dc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -245,7 +245,7 @@ raised while decoding.</p>
 <p>Resolution begins by creating an <a href="../terminology.html#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="../terminology.html#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>
 <p>Choose how to establish <code>current_document</code> based on the type of <code>genesis_bytes</code> retrieved from the decoded <code>did</code>:</p>
 <h3 id="if-genesis_bytes-is-a-sha-256-hash"><a class="header" href="#if-genesis_bytes-is-a-sha-256-hash">If <code>genesis_bytes</code> is a SHA-256 Hash</a></h3>
-<p>Process the <a href="../terminology.html#genesis-document">Genesis Document</a> provided in <code>sidecar.genesisDocument</code> by replacing the identifier placeholder (<code>"did:btcr2:_"</code>) with the <code>did</code>. A simple string replacement is sufficient. Parse the result as JSON to form <code>current_document</code>. The resulting <a href="../data-structures.html#did-document">DID Document (data structure)</a> MUST be conformant to DID Core v1.1 <a class="bib-cite" href="../bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>.</p>
+<p>Serialize the <a href="../terminology.html#genesis-document">Genesis Document</a>, from <code>sidecar.genesisDocument</code> or from <a href="../terminology.html#cas">CAS</a>, with JCS <a class="bib-cite" href="../bibliography.html#RFC8785" title="JSON Canonicalization Scheme (JCS)">RFC8785</a>, and replace every occurrence of <code>did:btcr2:_</code> in the result with <code>did</code>. Parse the result as JSON to form <code>current_document</code>. The resulting <a href="../data-structures.html#did-document">DID Document (data structure)</a> MUST be conformant to DID Core v1.1 <a class="bib-cite" href="../bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>.</p>
 <h3 id="if-genesis_bytes-is-a-secp256k1-public-key"><a class="header" href="#if-genesis_bytes-is-a-secp256k1-public-key">If <code>genesis_bytes</code> is a secp256k1 Public Key</a></h3>
 <p>Render the <a href="../terminology.html#initial-did-document">Initial DID Document</a> template with these values (Bitcoin addresses MUST use the Bitcoin URI Scheme <a class="bib-cite" href="../bibliography.html#BIP321" title="URI Scheme">BIP321</a>):</p>
 <ul>
