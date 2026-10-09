@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-4e88fefe.js";
+            window.path_to_searchindex_js = "../searchindex-42f56841.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -201,6 +201,7 @@
 <li><code>block_confirmations</code>: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at <code>0</code>).</li>
 <li><code>block_mediantime</code>: the <code>mediantime</code> of the Bitcoin block that contains the most recently applied update.</li>
 <li><code>current_block_height</code>: the height of the Bitcoin block that contains the most recently applied update (starts at <code>0</code>).</li>
+<li><code>requested_state</code>: the state at the version that <code>resolutionOptions.versionId</code> or <code>resolutionOptions.versionTime</code> requests, a copy of <code>current_document</code>, <code>current_version_id</code>, <code>block_confirmations</code> and <code>block_mediantime</code>, the values <code>didDocumentMetadata</code> is built from. The resolver keeps these copies while it processes the rest of the updates (starts empty).</li>
 </ul>
 <p>The resolver:</p>
 <ol>
@@ -226,7 +227,7 @@
 </li>
 </ul>
 <p>If <code>current_version_id</code> is more than <code>1</code>, <code>didDocumentMetadata</code> also contains <code>updated</code>: <code>block_mediantime</code> as an XML Datetime.</p>
-<p>If <code>resolutionOptions</code> has no <code>versionId</code> and no <code>versionTime</code>, <a href="../terminology.html#sidecar-data">Sidecar Data</a> that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a <a href="../terminology.html#beacon-signal">Beacon Signal</a> has less than <code>minConf</code> confirmations, or the resolver reads a different chain. It can also show a problem with the <a href="../terminology.html#sidecar-data">Sidecar Data</a>, for example <a href="../terminology.html#sidecar-data">Sidecar Data</a> that is not for <code>did</code>. Implementations MAY tell the caller which <a href="../terminology.html#sidecar-data">Sidecar Data</a> they did not use.</p>
+<p><a href="../terminology.html#sidecar-data">Sidecar Data</a> that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a <a href="../terminology.html#beacon-signal">Beacon Signal</a> has less than <code>minConf</code> confirmations, or the resolver reads a different chain. It can also show a problem with the <a href="../terminology.html#sidecar-data">Sidecar Data</a>, for example <a href="../terminology.html#sidecar-data">Sidecar Data</a> that is not for <code>did</code>. Implementations MAY tell the caller which <a href="../terminology.html#sidecar-data">Sidecar Data</a> they did not use.</p>
 <h2 id="decode-the-did"><a class="header" href="#decode-the-did">Decode the DID</a></h2>
 <p>The <code>did</code> MUST be parsed with the <a href="../algorithms.html#did-btcr2-identifier-decoding">DID-BTCR2 Identifier Decoding</a> algorithm to retrieve <code>version</code>,
 <code>network</code>, and <code>genesis_bytes</code>. An <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID"><code>INVALID_DID</code></a> error MUST be raised in response to any errors
@@ -367,17 +368,25 @@ Show Template
 <p>Verify <code>smt_proof</code> with the <a href="../algorithms.html#smt-proof-verification">SMT Proof Verification</a> algorithm. Raise an <a href="../errors.html#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the result of the algorithm is <code>false</code>. If <code>smt_proof</code> has an <code>updateId</code>, use it as <code>update_hash</code>. If <code>smt_proof</code> has no <code>updateId</code>, the <a href="../terminology.html#beacon-signal">Beacon Signal</a> announces no update for <code>did</code>.</p>
 <h2 id="process-next-update"><a class="header" href="#process-next-update">Process Next Update</a></h2>
 <ol>
-<li>If <code>resolutionOptions.versionId</code> is provided and <code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>, resolve <code>current_document</code> as <code>didDocument</code>.</li>
+<li>Copy <code>current_document</code>, <code>current_version_id</code>, <code>block_confirmations</code> and <code>block_mediantime</code> to <code>requested_state</code> if all of the following conditions are true:
+<ul>
+<li><code>requested_state</code> is empty.</li>
+<li><code>resolutionOptions.versionId</code> is provided.</li>
+<li><code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>.</li>
+</ul>
+</li>
 <li>If <code>updates</code> is empty or <code>current_document.deactivated</code> is <code>true</code>:
 <ul>
-<li>Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> error if <code>resolutionOptions.versionId</code> is provided.</li>
+<li>If <code>requested_state</code> is not empty, set <code>current_document</code>, <code>current_version_id</code>, <code>block_confirmations</code> and <code>block_mediantime</code> to the values in <code>requested_state</code>, and resolve <code>current_document</code> as <code>didDocument</code>.</li>
+<li>Otherwise, raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> error if <code>resolutionOptions.versionId</code> is provided.</li>
 <li>Otherwise, resolve <code>current_document</code> as <code>didDocument</code>.</li>
 </ul>
 </li>
 <li>Sort <code>updates</code> by <a href="../data-structures.html#btcr2-signed-update">BTCR2 Signed Update (data structure)</a> <code>targetVersionId</code> (ascending) with the tuple’s block height as a tiebreaker. Remove the first tuple from <code>updates</code>.</li>
 <li>If <code>current_document</code> has no <a href="../terminology.html#btcr2-beacon">BTCR2 Beacon</a> with the tuple’s <a href="../terminology.html#beacon-address">Beacon Address</a>, ignore the tuple. Continue with the next tuple.</li>
-<li>Resolve <code>current_document</code> as <code>didDocument</code> if all of the following conditions are true:
+<li>Copy <code>current_document</code>, <code>current_version_id</code>, <code>block_confirmations</code> and <code>block_mediantime</code> to <code>requested_state</code> if all of the following conditions are true:
 <ul>
+<li><code>requested_state</code> is empty.</li>
 <li>The tuple’s <code>targetVersionId</code> is more than <code>current_version_id</code>. <sup class="footnote-reference" id="fr-4-1"><a href="#footnote-4">4</a></sup></li>
 <li><code>resolutionOptions.versionTime</code> is provided.</li>
 <li>The tuple’s block <code>mediantime</code> <a class="bib-cite" href="../bibliography.html#Bitcoin-Core" title="Bitcoin Core">Bitcoin-Core</a> is after <code>resolutionOptions.versionTime</code>. <sup class="footnote-reference" id="fr-5-1"><a href="#footnote-5">5</a></sup></li>
@@ -457,7 +466,7 @@ Show Template
 <p>Six confirmations is the widely accepted industry standard for treating a Bitcoin transaction as settled. Resolution requests can raise or lower <code>minConf</code> to match their own threat and security model; lowering it increases exposure to Bitcoin block reorganizations, which consumers can evaluate from the returned <code>confirmations</code> metadata. <a href="#fr-3-1">↩</a></p>
 </li>
 <li id="footnote-4">
-<p>This condition is necessary because the resolver accepts a duplicate update (<a href="#confirm-duplicate-update">Confirm Duplicate Update</a>). The block of a duplicate can be after <code>versionTime</code> while the block of a subsequent version is before <code>versionTime</code>. Without this condition, the resolver stops at the duplicate and does not apply the subsequent version. <a href="#fr-4-1">↩</a></p>
+<p>This condition is necessary because the resolver accepts a duplicate update (<a href="#confirm-duplicate-update">Confirm Duplicate Update</a>). The block of a duplicate can be after <code>versionTime</code> while the block of a subsequent version is before <code>versionTime</code>. Without this condition, the resolver selects the document at the duplicate, before it applies the subsequent version. <a href="#fr-4-1">↩</a></p>
 </li>
 <li id="footnote-5">
 <p>The resolver applies an update whose block <code>mediantime</code> is equal to <code>versionTime</code>. The comparison has no tolerance. <code>mediantime</code> does not decrease from one block to the next. Each resolver reads the same value from the block chain, so each resolver selects the same version. <a href="#fr-5-1">↩</a></p>
