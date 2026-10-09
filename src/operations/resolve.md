@@ -93,7 +93,7 @@ Choose how to establish `current_document` based on the type of `genesis_bytes` 
 
 ### If `genesis_bytes` is a SHA-256 Hash
 
-Process the [Genesis Document] provided in `sidecar.genesisDocument` by replacing the identifier placeholder (`"did:btcr2:_"`) with the `did`. A simple string replacement is sufficient. Parse the result as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
+Serialize the [Genesis Document], from `sidecar.genesisDocument` or from [CAS], with JCS {{#cite RFC8785}}, and replace every occurrence of `did:btcr2:_` in the result with `did`. Parse the result as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
 
 
 ### If `genesis_bytes` is a secp256k1 Public Key
