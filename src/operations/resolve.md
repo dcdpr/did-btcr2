@@ -38,6 +38,7 @@ Resolution maintains the following state while building the DID document:
 * `block_confirmations`: confirmations for the Bitcoin block that contains the most recently applied unique update (starts at `0`).
 * `block_mediantime`: the `mediantime` of the Bitcoin block that contains the most recently applied update.
 * `current_block_height`: the height of the Bitcoin block that contains the most recently applied update (starts at `0`).
+* `requested_state`: the state at the version that `resolutionOptions.versionId` or `resolutionOptions.versionTime` requests, a copy of `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime`, the values `didDocumentMetadata` is built from. The resolver keeps these copies while it processes the rest of the updates (starts empty).
 
 The resolver:
 
@@ -60,7 +61,7 @@ The resolver returns:
 
 If `current_version_id` is more than `1`, `didDocumentMetadata` also contains `updated`: `block_mediantime` as an XML Datetime.
 
-If `resolutionOptions` has no `versionId` and no `versionTime`, [Sidecar Data] that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a [Beacon Signal] has less than `minConf` confirmations, or the resolver reads a different chain. It can also show a problem with the [Sidecar Data], for example [Sidecar Data] that is not for `did`. Implementations MAY tell the caller which [Sidecar Data] they did not use.
+[Sidecar Data] that the resolver did not use has no effect on the result. It can show that the resolver and the DID controller do not read the same Bitcoin blocks. Examples: a [Beacon Signal] has less than `minConf` confirmations, or the resolver reads a different chain. It can also show a problem with the [Sidecar Data], for example [Sidecar Data] that is not for `did`. Implementations MAY tell the caller which [Sidecar Data] they did not use.
 
 
 ## Decode the DID { #decode-the-did }
@@ -176,19 +177,24 @@ Verify `smt_proof` with the [SMT Proof Verification] algorithm. Raise an [`INVAL
 
 ## Process Next Update { #process-next-update }
 
-1. If `resolutionOptions.versionId` is provided and `current_version_id` is equal to the parsed `resolutionOptions.versionId`, resolve `current_document` as `didDocument`.
+1. Copy `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to `requested_state` if all of the following conditions are true:
+    * `requested_state` is empty.
+    * `resolutionOptions.versionId` is provided.
+    * `current_version_id` is equal to the parsed `resolutionOptions.versionId`.
 2. If `updates` is empty or `current_document.deactivated` is `true`:
-    * Raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
+    * If `requested_state` is not empty, set `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to the values in `requested_state`, and resolve `current_document` as `didDocument`.
+    * Otherwise, raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
     * Otherwise, resolve `current_document` as `didDocument`.
 3. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Remove the first tuple from `updates`.
 4. If `current_document` has no [BTCR2 Beacon] with the tuple's [Beacon Address], ignore the tuple. Continue with the next tuple.
-5. Resolve `current_document` as `didDocument` if all of the following conditions are true:
+5. Copy `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to `requested_state` if all of the following conditions are true:
+    * `requested_state` is empty.
     * The tuple's `targetVersionId` is more than `current_version_id`. [^4]
     * `resolutionOptions.versionTime` is provided.
     * The tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`. [^5]
 6. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 
-[^4]: This condition is necessary because the resolver accepts a duplicate update ([Confirm Duplicate Update](#confirm-duplicate-update)). The block of a duplicate can be after `versionTime` while the block of a subsequent version is before `versionTime`. Without this condition, the resolver stops at the duplicate and does not apply the subsequent version.
+[^4]: This condition is necessary because the resolver accepts a duplicate update ([Confirm Duplicate Update](#confirm-duplicate-update)). The block of a duplicate can be after `versionTime` while the block of a subsequent version is before `versionTime`. Without this condition, the resolver selects the document at the duplicate, before it applies the subsequent version.
 
 [^5]: The resolver applies an update whose block `mediantime` is equal to `versionTime`. The comparison has no tolerance. `mediantime` does not decrease from one block to the next. Each resolver reads the same value from the block chain, so each resolver selects the same version.
 
