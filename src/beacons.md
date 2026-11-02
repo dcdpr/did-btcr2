@@ -37,6 +37,11 @@ All **did:btcr2** DID resolvers MUST support the [Beacon Types][Beacon Type] def
 | `"SMTBeacon"`       | [SMT Beacon]       |
 
 
+## Beacon Services { #beacon-services }
+
+A service whose `type` is a value in [Table 1](#beacon-types), or is a set that contains one, is a beacon service. The `type` of a beacon service MUST be a single string. Its `serviceEndpoint` MUST be a single string that is a Bitcoin URI {{#cite BIP321}} with a non-empty `bitcoinaddress` and no query (`?`) component. That address is the [Beacon Address] of the service.
+
+
 ## Singleton Beacon
 
 A [Singleton Beacon] is a [BTCR2 Beacon] that can be used to announce commitments to a single [BTCR2 Update] targeting a single DID document. It creates a [Beacon Signal] that commits to a single [BTCR2 Update Announcement]. This is typically done directly by the DID controller, as there is no [Aggregation Cohort].

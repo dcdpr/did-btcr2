@@ -26,7 +26,7 @@ Raise an [`INVALID_OPTIONS`] error if `resolutionOptions` contains both `version
 
 [^1]: DID Resolution v1 {{#cite DID-RESOLUTION}} defines the two options as mutually exclusive.
 
-When provided, `resolutionOptions.versionId` MUST be parsed as an integer and `resolutionOptions.versionTime` SHOULD be parsed as an XML Datetime. Raise an [`INVALID_OPTIONS`] error if either value does not parse.
+When provided, `resolutionOptions.versionId` MUST be a string of one or more ASCII digits (`0` to `9`), the first of which is not `0`; the resolver parses it as a decimal integer, which MUST be no more than `9007199254740991` (2^53 − 1; I-JSON {{#cite RFC7493}} says a receiver might not treat a larger integer as an exact value). `resolutionOptions.versionTime` MUST be an XML Datetime in the form `YYYY-MM-DDThh:mm:ssZ`: UTC with the `Z` designator, no fractional seconds, and `hh` no more than `23`. `resolutionOptions.minConf` MUST be an integer from `1` to `9007199254740991`, and when it is a string, as in an HTTP(S) query parameter, it MUST follow the rule for `versionId`. Raise an [`INVALID_OPTIONS`] error if a provided value breaks its rule.
 
 Resolution maintains the following state while building the DID document:
 
@@ -73,6 +73,8 @@ raised while decoding.
 
 ## Process Sidecar Data { #process-sidecar-data }
 
+Raise an [`INVALID_OPTIONS`] error if `resolutionOptions.sidecar` is not a JSON object, or if `sidecar.updates`, `sidecar.casUpdates` or `sidecar.smtProofs` is present and is not an array.
+
 `resolutionOptions` contains a `sidecar` property ([Sidecar Data (data structure)]) which SHOULD be prepared as lookup tables:
 
 - Hash each [BTCR2 Signed Update (data structure)] in `sidecar.updates` with the [JSON Document Hashing] algorithm and build a map from hash to update (`update_lookup_table`).
@@ -83,8 +85,8 @@ Whether or not it builds `smt_lookup_table`, the resolver MUST ignore a proof in
 
 If `genesis_bytes` is a SHA-256 hash:
 
-* If `sidecar.genesisDocument` is provided, hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_OPTIONS`] error if the hash is not equal to `genesis_bytes`.
-* Otherwise, retrieve the [Genesis Document] from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_GENESIS_DOCUMENT`] error if it is not available from [CAS]. Hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is not equal to `genesis_bytes`.
+* If `sidecar.genesisDocument` is provided, hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_OPTIONS`] error if the hash is not equal to `genesis_bytes`. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is equal and `sidecar.genesisDocument` is not a JSON object.
+* Otherwise, retrieve the [Genesis Document] from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_GENESIS_DOCUMENT`] error if it is not available from [CAS]. Raise an [`INVALID_DID_DOCUMENT`] error if it is not a JSON object. Hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is not equal to `genesis_bytes`.
 
 When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
@@ -98,7 +100,7 @@ Choose how to establish `current_document` based on the type of `genesis_bytes` 
 
 ### If `genesis_bytes` is a SHA-256 Hash
 
-Serialize the [Genesis Document], from `sidecar.genesisDocument` or from [CAS], with JCS {{#cite RFC8785}}, and replace every occurrence of `did:btcr2:_` in the result with `did`. Parse the result as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
+Serialize the [Genesis Document], from `sidecar.genesisDocument` or from [CAS], with JCS {{#cite RFC8785}}, and replace every occurrence of `did:btcr2:_` in the result with `did`. Parse the result as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}, `current_document.id` MUST equal `did`, and each beacon service MUST follow the rules in [Beacon Services]. Otherwise raise an [`INVALID_DID_DOCUMENT`] error.
 
 
 ### If `genesis_bytes` is a secp256k1 Public Key
@@ -133,7 +135,7 @@ Parse the rendered template as JSON to form `current_document`. The resulting [D
 
 ## Find Beacon Signals { #find-beacon-signals }
 
-Scan the `service` entries in `current_document` ([DID Document (data structure)]) and identify [BTCR2 Beacons][BTCR2 Beacon] by matching service `type` to [Beacons Table 1: Beacon Types]. Parse each beacon `serviceEndpoint` as a [Beacon Address].
+Scan the `service` entries in `current_document` ([DID Document (data structure)]) and identify [BTCR2 Beacons][BTCR2 Beacon] by matching service `type` to [Beacons Table 1: Beacon Types]. Read the [Beacon Address] of each from its `serviceEndpoint` ([Beacon Services]).
 
 For each [Beacon Address] that is not in `scanned_beacons`:
 
@@ -162,6 +164,7 @@ For each transaction found:
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
     * If the update is not in `update_lookup_table`, retrieve it from [CAS] using `update_hash` as described in [BTCR2 Update Data Distribution].
     * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
+    * Raise an [`INVALID_DID_UPDATE`] error if the update is not a JSON object.
     * The resolver MUST hash the update with the [JSON Document Hashing] algorithm. The resolver MUST compare the hash to `update_hash`. Raise an [`INVALID_DID_UPDATE`] error if the two hashes are not equal.
 * Append the tuple to `updates`.
 
@@ -170,7 +173,7 @@ For each transaction found:
 
 Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)]. If the [CAS Announcement (data structure)] is not in `cas_lookup_table`, retrieve it from [CAS] using `map_update_hash` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_UPDATE_DATA`] error if the announcement is not in `cas_lookup_table` and not available from [CAS]. The announcement is not available from [CAS] if the hash of the retrieved content is not equal to `map_update_hash` ([BTCR2 Update Data Distribution]).
 
-Read the decoded value of the announcement entry keyed by `did` as `update_hash`. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`.
+Raise an [`INVALID_DID_DOCUMENT`] error if the announcement is not a JSON object, or if its entry keyed by `did` is not a string that decodes from `base64url` {{#cite RFC4648}} without padding to 32 bytes. Read the decoded value of that entry as `update_hash`. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`.
 
 
 ### Process SMT Beacon { #process-smt-beacon }
@@ -234,7 +237,7 @@ Hash `current_document` with the [JSON Document Hashing] algorithm. Raise an [`I
 
 Apply the `update.patch` JSON Patch {{#cite RFC6902}} to `current_document`. Raise an [`INVALID_DID_UPDATE`] error if `update.patch` is malformed or fails to apply. JSON Patch operations are evaluated in order; the first operation that fails, including a failed `test` operation, fails the whole patch.
 
-Verify that `current_document` conforms to DID Core v1.1 {{#cite DID-CORE}} and that `current_document.id` equals `did`. Otherwise raise [`INVALID_DID_UPDATE`].
+Verify that `current_document` conforms to DID Core v1.1 {{#cite DID-CORE}}, that `current_document.id` equals `did`, and that each beacon service follows the rules in [Beacon Services]. Otherwise raise [`INVALID_DID_UPDATE`].
 
 Hash the patched `current_document` with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_UPDATE`] error if the result does not match the decoded `update.targetHash`.
 
