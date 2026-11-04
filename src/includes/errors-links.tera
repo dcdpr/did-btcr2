@@ -1,3 +1,4 @@
+[`INTERNAL_ERROR`]: https://www.w3.org/TR/did-resolution-1.0/#INTERNAL_ERROR
 [`INVALID_DID`]: https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID
 [`INVALID_DID_DOCUMENT`]: https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT
 [`INVALID_DID_UPDATE`]: {{ root }}errors.md#invalid_did_update
