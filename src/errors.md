@@ -26,12 +26,12 @@ Refines [`INVALID_OPTIONS`].
 
 ## `LATE_PUBLISHING` { #late_publishing }
 
-An error was found when processing the full history of [BTCR2 Updates][BTCR2 Update] announced by all relevant [Beacon Signals][Beacon Signal]. See [Late Publishing].
+An error was found when processing the full history of [BTCR2 Updates][BTCR2 Update] announced by all relevant [Beacon Signals][Beacon Signal]. See [Late Publishing]. The error for an update whose `targetVersionId` skips a version ([Check `update.targetVersionId`](operations/resolve.md#check-update-version)) clears once a [Beacon Signal] announces the skipped version.
 
 Refines [`INVALID_DID_DOCUMENT`].
 
 ## `MISSING_UPDATE_DATA` { #missing_update_data }
 
-Data that is necessary to find what a [Beacon Signal] announces for the DID is not in the [Sidecar Data] and not in [CAS]. This data includes [BTCR2 Updates][BTCR2 Update], [CAS Announcements][CAS Announcement (data structure)], and [SMT Proofs][SMT Proof].
+Data that is necessary to resolve the DID is not available: the [Genesis Document], or data that a [Beacon Signal] announces for the DID. The [Genesis Document], a [BTCR2 Update] or a [CAS Announcement][CAS Announcement (data structure)] is not available when it is not in the [Sidecar Data] and not in [CAS]. An [SMT Proof] is not available when it is not in the [Sidecar Data].
 
 Refines [`NOT_FOUND`].

@@ -21,6 +21,11 @@ All documents used for resolution are JSON documents, identified by their SHA-25
 cryptographic hash calculated after first canonicalizing the document according 
 to the [JSON Document Hashing] algorithm.
 
+[SMT Proofs][SMT Proof] are the exception. A resolver looks up an [SMT Proof] by the 
+root of its [Sparse Merkle Tree], which is not a hash of the proof, so it cannot 
+retrieve the proof from [CAS]. A DID controller provides [SMT Proofs][SMT Proof] in 
+[Sidecar Data].
+
 As a resolver goes through the resolution process, it encounters one or more document 
 hashes, which it uses to identify the files of interest. See [Process Sidecar Data](./operations/resolve.html#process-sidecar-data).
 
