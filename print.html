@@ -40,7 +40,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-fd828a10.js";
+            window.path_to_searchindex_js = "searchindex-e6f79456.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -232,7 +232,7 @@
 </table>
 </div>
 <h2 id="publication-date"><a class="header" href="#publication-date">Publication Date</a></h2>
-<p>9 October 2026</p>
+<p>4 November 2026</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p><a href="https://github.com/dcdpr/did-btcr2/blob/main/LICENSE">Mozilla Public License Version 2.0</a></p>
 <h2 id="copyright"><a class="header" href="#copyright">Copyright</a></h2>
@@ -2047,7 +2047,7 @@ Show Template
 <ul>
 <li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="#cas">CAS</a> using <code>update_hash</code> as described in <a href="#btcr2-update-data-distribution">BTCR2 Update Data Distribution</a>.</li>
 <li>Raise a <a href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the update is not available from either source.</li>
-<li>The resolver MUST hash the update with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm. The resolver MUST compare the hash to <code>update_hash</code>. Raise an <a href="#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the two hashes are not equal.</li>
+<li>The resolver MUST hash the update with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm. The resolver MUST compare the hash to <code>update_hash</code>. Raise an <a href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the two hashes are not equal.</li>
 </ul>
 </li>
 </ul>
@@ -2625,8 +2625,9 @@ return candidateHash == proof.id;</code></pre>
 <p>The algorithms described in this specification can raise the specific errors listed below. Additional error types defined in the Errors section of DID Resolution v1 <a class="bib-cite" href="#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a> may also be raised.</p>
 <p>These errors are assumed to be fatal and all <strong>did:btcr2</strong> operations must abort when one of these errors are raised.</p>
 <p>Each error below declares the DID Resolution error type that it refines, as the Errors section of DID Resolution v1 <a class="bib-cite" href="#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a> allows. A binding can use the declaration to decide how to convey the error. In the HTTP(S) binding, a resolver SHOULD send the HTTP status code of the error type that the error refines.</p>
+<p>A resolver that cannot reach a service it uses, such as a Bitcoin RPC service or a <a href="#cas">CAS</a> service, SHOULD raise <a href="https://www.w3.org/TR/did-resolution-1.0/#INTERNAL_ERROR"><code>INTERNAL_ERROR</code></a>. It MUST NOT raise <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> or <a href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> for data that it could not look for because the service was unreachable.</p>
 <h2 id="invalid_did_update"><a class="header" href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a></h2>
-<p>An error was found when creating or applying a <a href="#btcr2-update">BTCR2 Update</a>.</p>
+<p>An error was found in a <a href="#btcr2-update">BTCR2 Update</a>, or when creating or applying one.</p>
 <p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT"><code>INVALID_DID_DOCUMENT</code></a>.</p>
 <h2 id="invalid_signal_data"><a class="header" href="#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a></h2>
 <p>The data for a <a href="#beacon-signal">Beacon Signal</a> does not agree with its <a href="#signal-bytes">Signal Bytes</a>. Example: an <a href="#smt-proof">SMT Proof</a> that does not verify against the <a href="#smt">SMT</a> root in the <a href="#beacon-signal">Beacon Signal</a>.</p>
@@ -2636,7 +2637,7 @@ return candidateHash == proof.id;</code></pre>
 <p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT"><code>INVALID_DID_DOCUMENT</code></a>.</p>
 <h2 id="missing_update_data"><a class="header" href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a></h2>
 <p>Data that is necessary to find what a <a href="#beacon-signal">Beacon Signal</a> announces for the DID is not in the <a href="#sidecar-data">Sidecar Data</a> and not in <a href="#cas">CAS</a>. This data includes <a href="#btcr2-update">BTCR2 Updates</a>, <a href="#cas-announcement">CAS Announcements</a>, and <a href="#smt-proof">SMT Proofs</a>.</p>
-<p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a>.</p>
+<p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="appendix"><a class="header" href="#appendix">Appendix</a></h1>
 <p>The appendix contains privacy and security considerations made by the developers of this specification. This section is designed to complement the main specification and provide additional rationale, edge-case analyses, and guidance intended to help implementers understand subtle aspects of the BTCR2 design.</p>

@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-fd828a10.js";
+            window.path_to_searchindex_js = "../searchindex-e6f79456.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -354,7 +354,7 @@ Show Template
 <ul>
 <li>If the update is not in <code>update_lookup_table</code>, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>update_hash</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</li>
 <li>Raise a <a href="../errors.html#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> error if the update is not available from either source.</li>
-<li>The resolver MUST hash the update with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. The resolver MUST compare the hash to <code>update_hash</code>. Raise an <a href="../errors.html#invalid_signal_data"><code>INVALID_SIGNAL_DATA</code></a> error if the two hashes are not equal.</li>
+<li>The resolver MUST hash the update with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. The resolver MUST compare the hash to <code>update_hash</code>. Raise an <a href="../errors.html#invalid_did_update"><code>INVALID_DID_UPDATE</code></a> error if the two hashes are not equal.</li>
 </ul>
 </li>
 </ul>
