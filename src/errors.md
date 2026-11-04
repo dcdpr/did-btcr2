@@ -26,7 +26,7 @@ Refines [`INVALID_OPTIONS`].
 
 ## `LATE_PUBLISHING` { #late_publishing }
 
-An error was found when processing the full history of [BTCR2 Updates][BTCR2 Update] announced by all relevant [Beacon Signals][Beacon Signal]. See [Late Publishing]. The error for an update whose `targetVersionId` skips a version ([Check `update.targetVersionId`](operations/resolve.md#check-update-version)) clears once a [Beacon Signal] announces the skipped version.
+An error was found when processing the full history of [BTCR2 Updates][BTCR2 Update] announced by all relevant [Beacon Signals][Beacon Signal]. See [Late Publishing]. The error raised when `update.targetVersionId` is more than `current_version_id + 1` ([Check `update.targetVersionId`](operations/resolve.md#check-update-version)) clears once [Beacon Signals][Beacon Signal] announce the updates for the versions in between.
 
 Refines [`INVALID_DID_DOCUMENT`].
 
