@@ -51,6 +51,8 @@ for `publicKeyJwk`.
 A DID document is a map data structure defined by the DID core v1.1 specification {{#cite
 DID-CORE}}.
 
+For this specification, a DID document's conformance to DID Core v1.1 {{#cite DID-CORE}} does not include checking the verification material of a verification method against the definition of its `type`. DID Core v1.1 takes verification methods from Controlled Identifiers v1.0 {{#cite CONTROLLED-IDENTIFIERS}}, which leaves the format of that material to the specification of each type. A resolver checks the material only of the verification method that signs a [BTCR2 Signed Update] ([Check `update.proof`](operations/resolve.md#check-update-proof)).
+
 The following properties MUST be included:
 
 - `@context`: A context array containing the following context URLs:
@@ -76,8 +78,6 @@ A resolver parses only one URL in a DID document. That URL is the `serviceEndpoi
 [^1]: When an implementation resolves a relative DID URL against a DID base, the result cannot contain an authority component. The result therefore cannot contain a host. See DID Core v1.1 {{#cite DID-CORE}} for the resolution algorithm and for the components that a relative DID URL can contain.
 
 [^2]: A DID document can contain a URL with a host. Examples are an `alsoKnownAs` value, a service `id`, and the `serviceEndpoint` of a service that is not a [BTCR2 Beacon]. A resolver does not use these values when it builds the update history. A [Beacon Address] is a Bitcoin address and has no host. A resolver that conforms to this specification therefore does not parse a host and does not need IDNA tables. This rule applies to the resolver, and does not change the requirements of DID Core v1.1 {{#cite DID-CORE}} or of a JSON-LD processor {{#cite JSON-LD}}.
-
-A resolver reads verification material only from the verification method that signs a [BTCR2 Signed Update] ([Check `update.proof`](operations/resolve.md#check-update-proof)). When it checks that a DID document conforms to DID Core v1.1 {{#cite DID-CORE}}, it does not check the verification material of any other verification method against the definition of that method's `type`.
 
 In order for this DID document to be updatable, controllers must include at least one
 verification method with a capability invocation verification relationship and at least one
