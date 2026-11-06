@@ -24,9 +24,10 @@
  * template, rendered with the corpus's own values; and a DID document with
  * "deactivated": true, which no example carries. The vocabulary in
  * src/context/ns.jsonld must expand, convert to RDF in the default graph, and
- * describe every term the context mints. No btcr2 term may share a name with a
- * term of another pinned context, including terms in its scoped contexts at any
- * depth. Negative controls remove one term from the
+ * describe every term the context mints and every error in src/errors.md, with
+ * the error's title as its label, and no other ns# IRI. No btcr2 term may
+ * share a name with a term of another pinned context, including terms in its
+ * scoped contexts at any depth. Negative controls remove one term from the
  * context and require expansion to fail with an error that names that term.
  *
  * Safe mode cannot see inside @json literals (patch and the four Sidecar Data
@@ -90,6 +91,7 @@ const example = file => readJson(join(EXAMPLES, file));
 const sha256 = path => createHash('sha256').update(readFileSync(path)).digest('hex');
 const CONTEXT_FILE = fromHere('../src/context/v1.jsonld');
 const SPEC_FILE = fromHere('../src/data-structures.md');
+const ERRORS_FILE = fromHere('../src/errors.md');
 
 const contexts = {
   ...Object.fromEntries(PINNED.map(p => [p.url, readJson(fromHere(`contexts/${p.file}`))])),
@@ -234,19 +236,39 @@ for (const [url, ctx] of Object.entries(contexts)) {
   for (const t of btcr2Terms) if (theirs.has(t)) fail(`${t} is already defined by ${url}`);
 }
 
+// Each error in src/errors.md is a "## `CODE`" section with "- Type: `URL`" and
+// "- Title: text" lines. Its type URL is the code in the ns# namespace.
+const errors = readFileSync(ERRORS_FILE, 'utf8').split(/^## /m).slice(1).map(section => ({
+  code: section.match(/^`(\w+)`/)?.[1],
+  type: section.match(/^- Type: `([^`]+)`$/m)?.[1],
+  title: section.match(/^- Title: (.+)$/m)?.[1],
+}));
+for (const e of errors) {
+  if (e.code === undefined) fail(`src/errors.md: a section heading is not an error code`);
+  else if (e.type !== NS + e.code) fail(`src/errors.md ${e.code}: type ${e.type ?? 'missing'}, expected ${NS}${e.code}`);
+  else if (e.title === undefined) fail(`src/errors.md ${e.code}: no title`);
+}
+
 try {
   const quads = await jsonld.toRDF(vocab, options(contexts));
   const named = quads.filter(q => q.graph.termType !== 'DefaultGraph');
   if (named.length) fail(`vocabulary: ${named.length} triple(s) in a named graph`);
   else ok(`vocabulary converts to RDF in the default graph (${quads.length} triples)`);
-  const described = new Set((await expand(vocab)).map(node => node['@id']));
+  const nodes = new Map((await expand(vocab)).map(node => [node['@id'], node]));
   const minted = btcr2Terms.map(t => contexts[BTCR2]['@context'][t]['@id']).filter(i => i.startsWith(NS));
-  const missing = minted.filter(i => !described.has(i));
-  const extra = [...described].filter(i => i.startsWith(NS) && !minted.includes(i));
+  const expected = [...minted, ...errors.map(e => NS + e.code)];
+  const missing = expected.filter(i => !nodes.has(i));
+  const extra = [...nodes.keys()].filter(i => i.startsWith(NS) && !expected.includes(i));
   if (missing.length || extra.length) {
     fail(`vocabulary: missing ${missing.join(', ') || 'none'}; extra ${extra.join(', ') || 'none'}`);
   } else {
-    ok(`vocabulary describes all ${minted.length} terms the context mints`);
+    ok(`vocabulary describes all ${minted.length} terms the context mints and the ${errors.length} errors in src/errors.md`);
+  }
+  for (const e of errors) {
+    const label = nodes.get(NS + e.code)?.['http://www.w3.org/2000/01/rdf-schema#label']?.[0]?.['@value'];
+    if (e.title !== undefined && nodes.has(NS + e.code) && label !== e.title) {
+      fail(`vocabulary: ${e.code} has label ${text(label)}, src/errors.md title ${text(e.title)}`);
+    }
   }
 } catch (e) {
   fail(`vocabulary: ${why(e)}`);

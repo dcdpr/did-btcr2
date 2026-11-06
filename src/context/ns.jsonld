@@ -95,6 +95,41 @@
       "label": "SMT proofs",
       "isDefinedBy": "https://btcr2.dev/ns",
       "seeAlso": "https://dcdpr.github.io/did-btcr2/data-structures.html#sidecar-data"
+    },
+    {
+      "id": "https://btcr2.dev/ns#INVALID_DID_UPDATE",
+      "type": "rdfs:Class",
+      "label": "Invalid BTCR2 Update",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/errors.html#invalid_did_update"
+    },
+    {
+      "id": "https://btcr2.dev/ns#INVALID_SIGNAL_DATA",
+      "type": "rdfs:Class",
+      "label": "Invalid Beacon Signal Data",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/errors.html#invalid_signal_data"
+    },
+    {
+      "id": "https://btcr2.dev/ns#LATE_PUBLISHING",
+      "type": "rdfs:Class",
+      "label": "Late Publishing",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/errors.html#late_publishing"
+    },
+    {
+      "id": "https://btcr2.dev/ns#MISSING_GENESIS_DOCUMENT",
+      "type": "rdfs:Class",
+      "label": "Missing Genesis Document",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/errors.html#missing_genesis_document"
+    },
+    {
+      "id": "https://btcr2.dev/ns#MISSING_UPDATE_DATA",
+      "type": "rdfs:Class",
+      "label": "Missing Update Data",
+      "isDefinedBy": "https://btcr2.dev/ns",
+      "seeAlso": "https://dcdpr.github.io/did-btcr2/errors.html#missing_update_data"
     }
   ]
 }
