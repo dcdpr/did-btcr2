@@ -81,7 +81,10 @@ raised while decoding.
 
 Whether or not it builds `smt_lookup_table`, the resolver MUST ignore a proof in `sidecar.smtProofs` whose `id` has non-zero pad bits ({{#cite RFC4648}} Section 3.5).
 
-If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. If `sidecar.genesisDocument` is not provided, retrieve it from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`NOT_FOUND`] error if the [Genesis Document] cannot be retrieved. Raise an [`INVALID_DID`] error if the computed hash does not match `genesis_bytes`.
+If `genesis_bytes` is a SHA-256 hash:
+
+* If `sidecar.genesisDocument` is provided, hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_OPTIONS`] error if the hash is not equal to `genesis_bytes`.
+* Otherwise, retrieve the [Genesis Document] from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_GENESIS_DOCUMENT`] error if it is not available from [CAS]. Hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is not equal to `genesis_bytes`.
 
 When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
