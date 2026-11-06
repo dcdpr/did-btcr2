@@ -11,7 +11,7 @@ These errors are assumed to be fatal and all **did:btcr2** operations must abort
 
 Each error below declares the DID Resolution error type that it refines, as the Errors section of DID Resolution v1 {{#cite DID-RESOLUTION}} allows. A binding can use the declaration to decide how to convey the error. In the HTTP(S) binding, a resolver SHOULD send the HTTP status code of the error type that the error refines.
 
-A resolver that cannot reach a service it uses, such as a Bitcoin RPC service or a [CAS] service, SHOULD raise [`INTERNAL_ERROR`]. It MUST NOT raise [`NOT_FOUND`], [`MISSING_GENESIS_DOCUMENT`] or [`MISSING_UPDATE_DATA`] for data that it could not look for because the service was unreachable. A [CAS] service that takes the request was reachable, even if it finds no copy of the content or the request times out.
+A resolver that cannot reach a service it uses, such as a Bitcoin RPC service or a [CAS] service, SHOULD raise [`INTERNAL_ERROR`]. It MUST NOT raise [`NOT_FOUND`], [`MISSING_GENESIS_DOCUMENT`] or [`MISSING_UPDATE_DATA`] for data that it could not look for because the service was unreachable. A [CAS] service that takes the request was reachable, even if it finds no copy of the content or the request times out, unless it reports that it is unavailable.
 
 
 ## `INVALID_DID_UPDATE` { #invalid_did_update }
