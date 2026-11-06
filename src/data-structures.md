@@ -51,7 +51,7 @@ for `publicKeyJwk`.
 A DID document is a map data structure defined by the DID core v1.1 specification {{#cite
 DID-CORE}}.
 
-For this specification, a DID document's conformance to DID Core v1.1 {{#cite DID-CORE}} does not include checking the verification material of a verification method against the definition of its `type`. DID Core v1.1 takes verification methods from Controlled Identifiers v1.0 {{#cite CONTROLLED-IDENTIFIERS}}, which leaves the format of that material to the specification of each type. A resolver checks the material only of the verification method that signs a [BTCR2 Signed Update] ([Check `update.proof`](operations/resolve.md#check-update-proof)).
+For this specification, a DID document's conformance to DID Core v1.1 {{#cite DID-CORE}} does not include checking a verification method or a service against the definition of its `type`. DID Core v1.1 takes both from Controlled Identifiers v1.0 {{#cite CONTROLLED-IDENTIFIERS}}, which leaves the material of a verification method to the specification of its type and lets each service type add its own properties. A resolver checks the material only of the verification method that signs a [BTCR2 Signed Update] ([Check `update.proof`](operations/resolve.md#check-update-proof)), and applies this specification's own rules to its beacon services ([Find Beacon Signals](operations/resolve.md#find-beacon-signals)).
 
 The following properties MUST be included:
 
