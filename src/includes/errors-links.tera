@@ -5,5 +5,6 @@
 [`INVALID_OPTIONS`]: https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS
 [`INVALID_SIGNAL_DATA`]: {{ root }}errors.md#invalid_signal_data
 [`LATE_PUBLISHING`]: {{ root }}errors.md#late_publishing
+[`METHOD_NOT_SUPPORTED`]: https://www.w3.org/TR/did-resolution-1.0/#METHOD_NOT_SUPPORTED
 [`MISSING_UPDATE_DATA`]: {{ root }}errors.md#missing_update_data
 [`NOT_FOUND`]: https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND
