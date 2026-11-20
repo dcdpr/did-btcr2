@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-e6f79456.js";
+            window.path_to_searchindex_js = "../searchindex-e265b74f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -240,7 +240,11 @@ raised while decoding.</p>
 <li>Build a map from <code>sidecar.smtProofs</code> keyed by the decoded bytes of proof <code>id</code> (<code>smt_lookup_table</code>).</li>
 </ul>
 <p>Whether or not it builds <code>smt_lookup_table</code>, the resolver MUST ignore a proof in <code>sidecar.smtProofs</code> whose <code>id</code> has non-zero pad bits (<a class="bib-cite" href="../bibliography.html#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> Section 3.5).</p>
-<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="../terminology.html#cas">CAS</a> using <code>genesis_bytes</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>. Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> error if the <a href="../terminology.html#genesis-document">Genesis Document</a> cannot be retrieved. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<p>If <code>genesis_bytes</code> is a SHA-256 hash:</p>
+<ul>
+<li>If <code>sidecar.genesisDocument</code> is provided, hash it with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a> error if the hash is not equal to <code>genesis_bytes</code>.</li>
+<li>Otherwise, retrieve the <a href="../terminology.html#genesis-document">Genesis Document</a> from <a href="../terminology.html#cas">CAS</a> using <code>genesis_bytes</code> as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>. Raise a <a href="../errors.html#missing_genesis_document"><code>MISSING_GENESIS_DOCUMENT</code></a> error if it is not available from <a href="../terminology.html#cas">CAS</a>. Hash it with the <a href="../algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT"><code>INVALID_DID_DOCUMENT</code></a> error if the hash is not equal to <code>genesis_bytes</code>.</li>
+</ul>
 <p>When data is not available in <a href="../terminology.html#sidecar-data">Sidecar Data</a>, implementations are RECOMMENDED to retrieve it from a <a href="../terminology.html#cas">Content Addressable Storage</a> (<a href="../terminology.html#cas">CAS</a>) service. To retrieve a document from <a href="../terminology.html#cas">CAS</a>, construct a CID from the document’s SHA-256 hash bytes as described in <a href="../update-data-distribution.html">BTCR2 Update Data Distribution</a>.</p>
 <h2 id="establish-current-document"><a class="header" href="#establish-current-document">Establish <code>current_document</code></a></h2>
 <p>Resolution begins by creating an <a href="../terminology.html#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="../terminology.html#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="../terminology.html#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="../terminology.html#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>

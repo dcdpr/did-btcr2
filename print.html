@@ -40,7 +40,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-e6f79456.js";
+            window.path_to_searchindex_js = "searchindex-e265b74f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -232,7 +232,7 @@
 </table>
 </div>
 <h2 id="publication-date"><a class="header" href="#publication-date">Publication Date</a></h2>
-<p>4 November 2026</p>
+<p>20 November 2026</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p><a href="https://github.com/dcdpr/did-btcr2/blob/main/LICENSE">Mozilla Public License Version 2.0</a></p>
 <h2 id="copyright"><a class="header" href="#copyright">Copyright</a></h2>
@@ -488,11 +488,14 @@ secured by cryptographic hash:</p>
 <p>All <a href="#btcr2-update">BTCR2 Update</a> data must be made available to the resolver to enable full
 resolution of the DID document. Cryptographic hashes and signatures ensure the
 integrity and authenticity of data shared from controller to resolver.</p>
-<p>All documents used for resolution are JSON documents, identified by their SHA-256
-cryptographic hash calculated after first canonicalizing the document according
-to the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm.</p>
+<p>All documents used for resolution are JSON documents. Except for <a href="#smt-proof">SMT Proofs</a>,
+each is identified by its SHA-256 cryptographic hash calculated after first
+canonicalizing the document according to the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm.</p>
 <p>As a resolver goes through the resolution process, it encounters one or more document
 hashes, which it uses to identify the files of interest. See <a href="#process-sidecar-data">Process Sidecar Data</a>.</p>
+<p>A resolver finds an <a href="#smt-proof">SMT Proof</a> by the <a href="#smt">SMT</a> root in a <a href="#beacon-signal">Beacon Signal</a>, which is not a
+hash of the proof, so <a href="#cas">CAS</a> cannot supply it. The DID controller provides
+<a href="#smt-proof">SMT Proofs</a> in <a href="#sidecar-data">Sidecar Data</a>.</p>
 <p>While it’s possible for a single <strong>did:btcr2</strong> identifier to mix the two distribution
 mechanisms, it is NOT RECOMMENDED. Instead, it is RECOMMENDED that controllers pick
 one distribution mechanism and use it throughout the lifetime of a given DID.</p>
@@ -1933,7 +1936,11 @@ raised while decoding.</p>
 <li>Build a map from <code>sidecar.smtProofs</code> keyed by the decoded bytes of proof <code>id</code> (<code>smt_lookup_table</code>).</li>
 </ul>
 <p>Whether or not it builds <code>smt_lookup_table</code>, the resolver MUST ignore a proof in <code>sidecar.smtProofs</code> whose <code>id</code> has non-zero pad bits (<a class="bib-cite" href="#RFC4648" title="The Base16, Base32, and Base64 Data Encodings">RFC4648</a> Section 3.5).</p>
-<p>If <code>genesis_bytes</code> is a SHA-256 hash, hash <code>sidecar.genesisDocument</code> with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm. If <code>sidecar.genesisDocument</code> is not provided, retrieve it from <a href="#cas">CAS</a> using <code>genesis_bytes</code> as described in <a href="#btcr2-update-data-distribution">BTCR2 Update Data Distribution</a>. Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> error if the <a href="#genesis-document">Genesis Document</a> cannot be retrieved. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID"><code>INVALID_DID</code></a> error if the computed hash does not match <code>genesis_bytes</code>.</p>
+<p>If <code>genesis_bytes</code> is a SHA-256 hash:</p>
+<ul>
+<li>If <code>sidecar.genesisDocument</code> is provided, hash it with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a> error if the hash is not equal to <code>genesis_bytes</code>.</li>
+<li>Otherwise, retrieve the <a href="#genesis-document">Genesis Document</a> from <a href="#cas">CAS</a> using <code>genesis_bytes</code> as described in <a href="#btcr2-update-data-distribution">BTCR2 Update Data Distribution</a>. Raise a <a href="#missing_genesis_document"><code>MISSING_GENESIS_DOCUMENT</code></a> error if it is not available from <a href="#cas">CAS</a>. Hash it with the <a href="#json-document-hashing">JSON Document Hashing</a> algorithm. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT"><code>INVALID_DID_DOCUMENT</code></a> error if the hash is not equal to <code>genesis_bytes</code>.</li>
+</ul>
 <p>When data is not available in <a href="#sidecar-data">Sidecar Data</a>, implementations are RECOMMENDED to retrieve it from a <a href="#cas">Content Addressable Storage</a> (<a href="#cas">CAS</a>) service. To retrieve a document from <a href="#cas">CAS</a>, construct a CID from the document’s SHA-256 hash bytes as described in <a href="#btcr2-update-data-distribution">BTCR2 Update Data Distribution</a>.</p>
 <h2 id="establish-current-document"><a class="header" href="#establish-current-document">Establish <code>current_document</code></a></h2>
 <p>Resolution begins by creating an <a href="#initial-did-document">Initial Did Document</a> called <code>current_document</code> (<a href="#current-did-document">Current DID Document</a>). The <code>current_document</code> is iteratively patched with <a href="#btcr2-signed-update">BTCR2 Signed Updates</a> announced by <a href="#authorized-beacon-signal">Authorized Beacon Signals</a>.</p>
@@ -2625,7 +2632,7 @@ return candidateHash == proof.id;</code></pre>
 <p>The algorithms described in this specification can raise the specific errors listed below. Additional error types defined in the Errors section of DID Resolution v1 <a class="bib-cite" href="#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a> may also be raised.</p>
 <p>These errors are assumed to be fatal and all <strong>did:btcr2</strong> operations must abort when one of these errors are raised.</p>
 <p>Each error below declares the DID Resolution error type that it refines, as the Errors section of DID Resolution v1 <a class="bib-cite" href="#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a> allows. A binding can use the declaration to decide how to convey the error. In the HTTP(S) binding, a resolver SHOULD send the HTTP status code of the error type that the error refines.</p>
-<p>A resolver that cannot reach a service it uses, such as a Bitcoin RPC service or a <a href="#cas">CAS</a> service, SHOULD raise <a href="https://www.w3.org/TR/did-resolution-1.0/#INTERNAL_ERROR"><code>INTERNAL_ERROR</code></a>. It MUST NOT raise <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> or <a href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> for data that it could not look for because the service was unreachable.</p>
+<p>A resolver that cannot reach a service it uses, such as a Bitcoin RPC service or a <a href="#cas">CAS</a> service, SHOULD raise <a href="https://www.w3.org/TR/did-resolution-1.0/#INTERNAL_ERROR"><code>INTERNAL_ERROR</code></a>. It MUST NOT raise <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a>, <a href="#missing_genesis_document"><code>MISSING_GENESIS_DOCUMENT</code></a> or <a href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a> for data that it could not look for because the service was unreachable. A <a href="#cas">CAS</a> service that takes the request was reachable, even if it finds no copy of the content or the request times out, unless it reports that it is unavailable.</p>
 <h2 id="invalid_did_update"><a class="header" href="#invalid_did_update"><code>INVALID_DID_UPDATE</code></a></h2>
 <p>An error was found in a <a href="#btcr2-update">BTCR2 Update</a>, or when creating or applying one.</p>
 <p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT"><code>INVALID_DID_DOCUMENT</code></a>.</p>
@@ -2635,8 +2642,11 @@ return candidateHash == proof.id;</code></pre>
 <h2 id="late_publishing"><a class="header" href="#late_publishing"><code>LATE_PUBLISHING</code></a></h2>
 <p>An error was found when processing the full history of <a href="#btcr2-update">BTCR2 Updates</a> announced by all relevant <a href="#beacon-signal">Beacon Signals</a>. See <a href="#late-publishing-1">Late Publishing</a>.</p>
 <p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID_DOCUMENT"><code>INVALID_DID_DOCUMENT</code></a>.</p>
+<h2 id="missing_genesis_document"><a class="header" href="#missing_genesis_document"><code>MISSING_GENESIS_DOCUMENT</code></a></h2>
+<p>The <a href="#genesis-document">Genesis Document</a> is not in the <a href="#sidecar-data">Sidecar Data</a> and not available from <a href="#cas">CAS</a>.</p>
+<p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a>.</p>
 <h2 id="missing_update_data"><a class="header" href="#missing_update_data"><code>MISSING_UPDATE_DATA</code></a></h2>
-<p>Data that is necessary to find what a <a href="#beacon-signal">Beacon Signal</a> announces for the DID is not in the <a href="#sidecar-data">Sidecar Data</a> and not in <a href="#cas">CAS</a>. This data includes <a href="#btcr2-update">BTCR2 Updates</a>, <a href="#cas-announcement">CAS Announcements</a>, and <a href="#smt-proof">SMT Proofs</a>.</p>
+<p>A <a href="#btcr2-update">BTCR2 Update</a> or <a href="#cas-announcement">CAS Announcement</a> that resolution needs is not in the <a href="#sidecar-data">Sidecar Data</a> and not available from <a href="#cas">CAS</a>, or an <a href="#smt-proof">SMT Proof</a> that resolution needs is not in the <a href="#sidecar-data">Sidecar Data</a>.</p>
 <p>Refines <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="appendix"><a class="header" href="#appendix">Appendix</a></h1>

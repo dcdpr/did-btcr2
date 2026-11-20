@@ -39,7 +39,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-e6f79456.js";
+            window.path_to_searchindex_js = "searchindex-e265b74f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -192,11 +192,14 @@ secured by cryptographic hash:</p>
 <p>All <a href="./terminology.html#btcr2-update">BTCR2 Update</a> data must be made available to the resolver to enable full
 resolution of the DID document. Cryptographic hashes and signatures ensure the
 integrity and authenticity of data shared from controller to resolver.</p>
-<p>All documents used for resolution are JSON documents, identified by their SHA-256
-cryptographic hash calculated after first canonicalizing the document according
-to the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</p>
+<p>All documents used for resolution are JSON documents. Except for <a href="./terminology.html#smt-proof">SMT Proofs</a>,
+each is identified by its SHA-256 cryptographic hash calculated after first
+canonicalizing the document according to the <a href="./algorithms.html#json-document-hashing">JSON Document Hashing</a> algorithm.</p>
 <p>As a resolver goes through the resolution process, it encounters one or more document
 hashes, which it uses to identify the files of interest. See <a href="./operations/resolve.html#process-sidecar-data">Process Sidecar Data</a>.</p>
+<p>A resolver finds an <a href="./terminology.html#smt-proof">SMT Proof</a> by the <a href="./terminology.html#smt">SMT</a> root in a <a href="./terminology.html#beacon-signal">Beacon Signal</a>, which is not a
+hash of the proof, so <a href="./terminology.html#cas">CAS</a> cannot supply it. The DID controller provides
+<a href="./terminology.html#smt-proof">SMT Proofs</a> in <a href="./terminology.html#sidecar-data">Sidecar Data</a>.</p>
 <p>While it’s possible for a single <strong>did:btcr2</strong> identifier to mix the two distribution
 mechanisms, it is NOT RECOMMENDED. Instead, it is RECOMMENDED that controllers pick
 one distribution mechanism and use it throughout the lifetime of a given DID.</p>
