@@ -17,12 +17,16 @@ All [BTCR2 Update] data must be made available to the resolver to enable full
 resolution of the DID document. Cryptographic hashes and signatures ensure the 
 integrity and authenticity of data shared from controller to resolver.
 
-All documents used for resolution are JSON documents, identified by their SHA-256 
-cryptographic hash calculated after first canonicalizing the document according 
-to the [JSON Document Hashing] algorithm.
+All documents used for resolution are JSON documents. Except for [SMT Proofs][SMT Proof],
+each is identified by its SHA-256 cryptographic hash calculated after first
+canonicalizing the document according to the [JSON Document Hashing] algorithm.
 
 As a resolver goes through the resolution process, it encounters one or more document 
 hashes, which it uses to identify the files of interest. See [Process Sidecar Data](./operations/resolve.html#process-sidecar-data).
+
+A resolver finds an [SMT Proof] by the [SMT] root in a [Beacon Signal], which is not a
+hash of the proof, so [CAS] cannot supply it. The DID controller provides
+[SMT Proofs][SMT Proof] in [Sidecar Data].
 
 While it's possible for a single **did:btcr2** identifier to mix the two distribution 
 mechanisms, it is NOT RECOMMENDED. Instead, it is RECOMMENDED that controllers pick 
