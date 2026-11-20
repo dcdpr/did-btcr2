@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-72a275bf.js";
+            window.path_to_searchindex_js = "../searchindex-fc7867fb.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -188,7 +188,7 @@
 <pre><code class="language-rust">fn resolve(did, resolutionOptions) -&gt;
   (didResolutionMetadata, didDocument, didDocumentMetadata)</code></pre>
 <h2 id="process"><a class="header" href="#process">Process</a></h2>
-<p>Input values MUST first go through <a href="#decode-the-did">Decoding the DID</a> and <a href="#process-sidecar-data">Processing Sidecar Data</a>.</p>
+<p>The resolver MUST first check <code>did</code> as the DID Resolution algorithm does <a class="bib-cite" href="../bibliography.html#DID-RESOLUTION" title="Decentralized Identifier Resolution (DID Resolution) v1">DID-RESOLUTION</a>. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_DID"><code>INVALID_DID</code></a> error if <code>did</code> does not conform to the <code>did</code> rule of the DID syntax <a class="bib-cite" href="../bibliography.html#DID-CORE" title="Decentralized Identifiers (DIDs) v1.1">DID-CORE</a>. Raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#METHOD_NOT_SUPPORTED"><code>METHOD_NOT_SUPPORTED</code></a> error if its method name is not <code>btcr2</code>. Input values MUST then go through <a href="#decode-the-did">Decoding the DID</a> and <a href="#process-sidecar-data">Processing Sidecar Data</a>.</p>
 <p>Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a> error if <code>resolutionOptions</code> contains both <code>versionId</code> and <code>versionTime</code>. <sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></p>
 <p>When provided, <code>resolutionOptions.versionId</code> MUST be parsed as an integer and <code>resolutionOptions.versionTime</code> SHOULD be parsed as an XML Datetime. Raise an <a href="https://www.w3.org/TR/did-resolution-1.0/#INVALID_OPTIONS"><code>INVALID_OPTIONS</code></a> error if either value does not parse.</p>
 <p>Resolution maintains the following state while building the DID document:</p>
