@@ -5,7 +5,7 @@
 
 # Deactivate
 
-To deactivate a **did:btcr2** identifier, the DID controller MUST add the property `deactivated` with the value `true` to the DID document. Once a **did:btcr2** identifier has been deactivated, this state is considered permanent and resolution MUST terminate.
+To deactivate a **did:btcr2** identifier, the DID controller MUST add the property `deactivated` with the value `true` to the DID document. Once a **did:btcr2** identifier has been deactivated, this state is considered permanent: a resolver MUST NOT apply a [BTCR2 Update] to a deactivated DID document.
 
 The deactivate operation has the following function signature:
 
