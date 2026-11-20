@@ -20,7 +20,7 @@ fn resolve(did, resolutionOptions) ->
 
 ## Process
 
-Input values MUST first go through [Decoding the DID](#decode-the-did) and [Processing Sidecar Data](#process-sidecar-data).
+The resolver MUST first check `did` as the DID Resolution algorithm does {{#cite DID-RESOLUTION}}. Raise an [`INVALID_DID`] error if `did` does not conform to the `did` rule of the DID syntax {{#cite DID-CORE}}. Raise a [`METHOD_NOT_SUPPORTED`] error if its method name is not `btcr2`. Input values MUST then go through [Decoding the DID](#decode-the-did) and [Processing Sidecar Data](#process-sidecar-data).
 
 Raise an [`INVALID_OPTIONS`] error if `resolutionOptions` contains both `versionId` and `versionTime`. [^1]
 
