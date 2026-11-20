@@ -39,7 +39,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-e265b74f.js";
+            window.path_to_searchindex_js = "../searchindex-72a275bf.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-222e76be.js"></script>
@@ -380,7 +380,8 @@ Show Template
 <li><code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>.</li>
 </ul>
 </li>
-<li>If <code>updates</code> is empty or <code>current_document.deactivated</code> is <code>true</code>:
+<li>If <code>current_document.deactivated</code> is <code>true</code>, remove from <code>updates</code> each tuple whose <code>targetVersionId</code> is more than <code>current_version_id</code>.</li>
+<li>If <code>updates</code> is empty:
 <ul>
 <li>If <code>requested_state</code> is not empty, set <code>current_document</code>, <code>current_version_id</code>, <code>block_confirmations</code> and <code>block_mediantime</code> to the values in <code>requested_state</code>, and resolve <code>current_document</code> as <code>didDocument</code>.</li>
 <li>Otherwise, raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> error if <code>resolutionOptions.versionId</code> is provided.</li>

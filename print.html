@@ -40,7 +40,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-e265b74f.js";
+            window.path_to_searchindex_js = "searchindex-72a275bf.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-222e76be.js"></script>
@@ -2076,7 +2076,8 @@ Show Template
 <li><code>current_version_id</code> is equal to the parsed <code>resolutionOptions.versionId</code>.</li>
 </ul>
 </li>
-<li>If <code>updates</code> is empty or <code>current_document.deactivated</code> is <code>true</code>:
+<li>If <code>current_document.deactivated</code> is <code>true</code>, remove from <code>updates</code> each tuple whose <code>targetVersionId</code> is more than <code>current_version_id</code>.</li>
+<li>If <code>updates</code> is empty:
 <ul>
 <li>If <code>requested_state</code> is not empty, set <code>current_document</code>, <code>current_version_id</code>, <code>block_confirmations</code> and <code>block_mediantime</code> to the values in <code>requested_state</code>, and resolve <code>current_document</code> as <code>didDocument</code>.</li>
 <li>Otherwise, raise a <a href="https://www.w3.org/TR/did-resolution-1.0/#NOT_FOUND"><code>NOT_FOUND</code></a> error if <code>resolutionOptions.versionId</code> is provided.</li>
@@ -2340,7 +2341,7 @@ resulting <a href="#data-integrity-config">Data Integrity Config (data structure
 The main responsibilities include establishing a protocol for one or more rounds of secure group communications amongst <a href="#aggregation-participant">Aggregation Participants</a>, advertising available <a href="#aggregation-cohort">Aggregation Cohorts</a> to <a href="#aggregation-participant">Aggregation Participants</a> including the creation, management, timing and scheduling of those <a href="#aggregation-cohort">Aggregation Cohorts</a>, and broadcasting a Bitcoin transaction to the Bitcoin network that includes signatures from all <a href="#aggregation-participant">Aggregation Participants</a> in a given <a href="#aggregation-cohort">Aggregation Cohort</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="deactivate"><a class="header" href="#deactivate">Deactivate</a></h1>
-<p>To deactivate a <strong>did:btcr2</strong> identifier, the DID controller MUST add the property <code>deactivated</code> with the value <code>true</code> to the DID document. Once a <strong>did:btcr2</strong> identifier has been deactivated, this state is considered permanent and resolution MUST terminate.</p>
+<p>To deactivate a <strong>did:btcr2</strong> identifier, the DID controller MUST add the property <code>deactivated</code> with the value <code>true</code> to the DID document. Once a <strong>did:btcr2</strong> identifier has been deactivated, this state is considered permanent: a resolver MUST NOT apply a <a href="#btcr2-update">BTCR2 Update</a> to a deactivated DID document.</p>
 <p>The deactivate operation has the following function signature:</p>
 <pre><code class="language-rust">fn deactivate(
   sourceDidDocument,
