@@ -81,7 +81,10 @@ raised while decoding.
 
 Whether or not it builds `smt_lookup_table`, the resolver MUST ignore a proof in `sidecar.smtProofs` whose `id` has non-zero pad bits ({{#cite RFC4648}} Section 3.5).
 
-If `genesis_bytes` is a SHA-256 hash, hash `sidecar.genesisDocument` with the [JSON Document Hashing] algorithm. If `sidecar.genesisDocument` is not provided, retrieve it from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`NOT_FOUND`] error if the [Genesis Document] cannot be retrieved. Raise an [`INVALID_DID`] error if the computed hash does not match `genesis_bytes`.
+If `genesis_bytes` is a SHA-256 hash:
+
+* If `sidecar.genesisDocument` is provided, hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_OPTIONS`] error if the hash is not equal to `genesis_bytes`.
+* Otherwise, retrieve the [Genesis Document] from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_GENESIS_DOCUMENT`] error if it is not available from [CAS]. Hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is not equal to `genesis_bytes`.
 
 When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
@@ -183,18 +186,19 @@ Verify `smt_proof` with the [SMT Proof Verification] algorithm. Raise an [`INVAL
     * `requested_state` is empty.
     * `resolutionOptions.versionId` is provided.
     * `current_version_id` is equal to the parsed `resolutionOptions.versionId`.
-2. If `updates` is empty or `current_document.deactivated` is `true`:
+2. If `current_document.deactivated` is `true`, remove from `updates` each tuple whose `targetVersionId` is more than `current_version_id`.
+3. If `updates` is empty:
     * If `requested_state` is not empty, set `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to the values in `requested_state`, and resolve `current_document` as `didDocument`.
     * Otherwise, raise a [`NOT_FOUND`] error if `resolutionOptions.versionId` is provided.
     * Otherwise, resolve `current_document` as `didDocument`.
-3. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Remove the first tuple from `updates`.
-4. If `current_document` has no [BTCR2 Beacon] with the tuple's [Beacon Address], ignore the tuple. Continue with the next tuple.
-5. Copy `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to `requested_state` if all of the following conditions are true:
+4. Sort `updates` by [BTCR2 Signed Update (data structure)] `targetVersionId` (ascending) with the tuple's block height as a tiebreaker. Remove the first tuple from `updates`.
+5. If `current_document` has no [BTCR2 Beacon] with the tuple's [Beacon Address], ignore the tuple. Continue with the next tuple.
+6. Copy `current_document`, `current_version_id`, `block_confirmations` and `block_mediantime` to `requested_state` if all of the following conditions are true:
     * `requested_state` is empty.
     * The tuple's `targetVersionId` is more than `current_version_id`. [^4]
     * `resolutionOptions.versionTime` is provided.
     * The tuple's block `mediantime` {{#cite Bitcoin-Core}} is after `resolutionOptions.versionTime`. [^5]
-6. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
+7. Set `update` to the tuple's [BTCR2 Signed Update (data structure)] and [check `update.targetVersionId`](#check-update-version).
 
 [^4]: This condition is necessary because the resolver accepts a duplicate update ([Confirm Duplicate Update](#confirm-duplicate-update)). The block of a duplicate can be after `versionTime` while the block of a subsequent version is before `versionTime`. Without this condition, the resolver selects the document at the duplicate, before it applies the subsequent version.
 
