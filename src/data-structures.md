@@ -37,7 +37,8 @@ specification.
 The context defines terms in the namespace `https://btcr2.dev/ns#`, described by the
 vocabulary at `https://btcr2.dev/ns` ([context/ns.jsonld](context/ns.jsonld)). A term that
 already has an IRI keeps it: `serviceEndpoint` on a beacon service is defined by the DID
-v1.1 context.
+v1.1 context. The type URLs of the [errors](errors.md) are in the same namespace, and the
+vocabulary describes them too.
 
 [Sidecar Data][Sidecar Data (data structure)] carries JSON documents that resolution
 checks against on-chain hashes. JSON-LD processing may rewrite a node value without changing
