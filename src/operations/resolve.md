@@ -171,7 +171,7 @@ For each transaction found:
 
 Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)]. If the [CAS Announcement (data structure)] is not in `cas_lookup_table`, retrieve it from [CAS] using `map_update_hash` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_UPDATE_DATA`] error if the announcement is not in `cas_lookup_table` and not available from [CAS]. The announcement is not available from [CAS] if the hash of the retrieved content is not equal to `map_update_hash` ([BTCR2 Update Data Distribution]).
 
-Read the decoded value of the announcement entry keyed by `did` as `update_hash`. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`.
+Raise an [`INVALID_DID_UPDATE`] error if the announcement is not a JSON object. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`. Otherwise raise an [`INVALID_DID_UPDATE`] error if the entry is not a string that decodes from `base64url` {{#cite RFC4648}} without padding to 32 bytes, and read the decoded value as `update_hash`.
 
 
 ### Process SMT Beacon { #process-smt-beacon }

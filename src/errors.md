@@ -16,7 +16,7 @@ A resolver that cannot reach a service it uses, such as a Bitcoin RPC service or
 
 ## `INVALID_DID_UPDATE` { #invalid_did_update }
 
-An error was found in a [BTCR2 Update], or when creating or applying one.
+An error was found in a [BTCR2 Update] or in a [CAS Announcement][CAS Announcement (data structure)], or when creating or applying a [BTCR2 Update].
 
 Refines [`INVALID_DID_DOCUMENT`].
 
