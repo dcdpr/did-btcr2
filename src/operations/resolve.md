@@ -83,8 +83,8 @@ Whether or not it builds `smt_lookup_table`, the resolver MUST ignore a proof in
 
 If `genesis_bytes` is a SHA-256 hash:
 
-* If `sidecar.genesisDocument` is provided, hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_OPTIONS`] error if the hash is not equal to `genesis_bytes`.
-* Otherwise, retrieve the [Genesis Document] from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_GENESIS_DOCUMENT`] error if it is not available from [CAS]. Hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is not equal to `genesis_bytes`.
+* If `sidecar.genesisDocument` is provided, hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_OPTIONS`] error if the hash is not equal to `genesis_bytes`. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is equal and `sidecar.genesisDocument` is not a JSON object.
+* Otherwise, retrieve the [Genesis Document] from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_GENESIS_DOCUMENT`] error if it is not available from [CAS]. Raise an [`INVALID_DID_DOCUMENT`] error if it is not a JSON object. Hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is not equal to `genesis_bytes`.
 
 When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
@@ -98,7 +98,7 @@ Choose how to establish `current_document` based on the type of `genesis_bytes` 
 
 ### If `genesis_bytes` is a SHA-256 Hash
 
-Serialize the [Genesis Document], from `sidecar.genesisDocument` or from [CAS], with JCS {{#cite RFC8785}}, and replace every occurrence of `did:btcr2:_` in the result with `did`. Parse the result as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}.
+Serialize the [Genesis Document], from `sidecar.genesisDocument` or from [CAS], with JCS {{#cite RFC8785}}, and replace every occurrence of `did:btcr2:_` in the result with `did`. Parse the result as JSON to form `current_document`. The resulting [DID Document (data structure)] MUST be conformant to DID Core v1.1 {{#cite DID-CORE}}, and `current_document.id` MUST equal `did`. Otherwise raise an [`INVALID_DID_DOCUMENT`] error.
 
 
 ### If `genesis_bytes` is a secp256k1 Public Key
@@ -162,6 +162,7 @@ For each transaction found:
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
     * If the update is not in `update_lookup_table`, retrieve it from [CAS] using `update_hash` as described in [BTCR2 Update Data Distribution].
     * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
+    * Raise an [`INVALID_DID_UPDATE`] error if the update is not a JSON object.
     * The resolver MUST hash the update with the [JSON Document Hashing] algorithm. The resolver MUST compare the hash to `update_hash`. Raise an [`INVALID_DID_UPDATE`] error if the two hashes are not equal.
 * Append the tuple to `updates`.
 
@@ -170,7 +171,7 @@ For each transaction found:
 
 Treat [Signal Bytes] as `map_update_hash`. Look up `map_update_hash` in `cas_lookup_table` to retrieve a [CAS Announcement (data structure)]. If the [CAS Announcement (data structure)] is not in `cas_lookup_table`, retrieve it from [CAS] using `map_update_hash` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_UPDATE_DATA`] error if the announcement is not in `cas_lookup_table` and not available from [CAS]. The announcement is not available from [CAS] if the hash of the retrieved content is not equal to `map_update_hash` ([BTCR2 Update Data Distribution]).
 
-Read the decoded value of the announcement entry keyed by `did` as `update_hash`. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`.
+Raise an [`INVALID_DID_UPDATE`] error if the announcement is not a JSON object. If the announcement has no entry for `did`, the [Beacon Signal] announces no update for `did`. Otherwise raise an [`INVALID_DID_UPDATE`] error if the entry is not a string that decodes from `base64url` {{#cite RFC4648}} without padding to 32 bytes, and read the decoded value as `update_hash`.
 
 
 ### Process SMT Beacon { #process-smt-beacon }
