@@ -57,8 +57,8 @@ Any [CAS] that provides a deterministic mapping from a SHA-256 hash of a file ma
 used, and a resolver SHOULD be informed of the specific [CAS] mechanism so that it 
 can retrieve documents associated with a **did:btcr2** identifier efficiently. If 
 the [CAS] mechanism is not provided, the resolver MAY iterate through all supported
-[CAS] mechanisms to find the files or it MAY return with an error indicating that 
-the [CAS] mechanism is required.
+[CAS] mechanisms to find the files or it MAY treat the files as not available from
+[CAS].
 
 At this time, the Interplanetary File System (IPFS) is the only known [CAS] to provide 
 a deterministic mapping from a SHA-256 hash.
