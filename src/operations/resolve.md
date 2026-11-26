@@ -26,7 +26,7 @@ Raise an [`INVALID_OPTIONS`] error if `resolutionOptions` contains both `version
 
 [^1]: DID Resolution v1 {{#cite DID-RESOLUTION}} defines the two options as mutually exclusive.
 
-When provided, `resolutionOptions.versionId` MUST be parsed as an integer and `resolutionOptions.versionTime` SHOULD be parsed as an XML Datetime. Raise an [`INVALID_OPTIONS`] error if either value does not parse.
+Raise an [`INVALID_OPTIONS`] error if a provided option does not follow its entry in [Resolution options (data structure)].
 
 Resolution maintains the following state while building the DID document:
 
