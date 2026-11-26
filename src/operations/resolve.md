@@ -83,8 +83,8 @@ Whether or not it builds `smt_lookup_table`, the resolver MUST ignore a proof in
 
 If `genesis_bytes` is a SHA-256 hash:
 
-* If `sidecar.genesisDocument` is provided, hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_OPTIONS`] error if the hash is not equal to `genesis_bytes`.
-* Otherwise, retrieve the [Genesis Document] from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_GENESIS_DOCUMENT`] error if it is not available from [CAS]. Hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is not equal to `genesis_bytes`.
+* If `sidecar.genesisDocument` is provided, hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_OPTIONS`] error if the hash is not equal to `genesis_bytes`. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is equal and `sidecar.genesisDocument` is not a JSON object.
+* Otherwise, retrieve the [Genesis Document] from [CAS] using `genesis_bytes` as described in [BTCR2 Update Data Distribution]. Raise a [`MISSING_GENESIS_DOCUMENT`] error if it is not available from [CAS]. Raise an [`INVALID_DID_DOCUMENT`] error if it is not a JSON object. Hash it with the [JSON Document Hashing] algorithm. Raise an [`INVALID_DID_DOCUMENT`] error if the hash is not equal to `genesis_bytes`.
 
 When data is not available in [Sidecar Data], implementations are RECOMMENDED to retrieve it from a [Content Addressable Storage][CAS] ([CAS]) service. To retrieve a document from [CAS], construct a CID from the document's SHA-256 hash bytes as described in [BTCR2 Update Data Distribution].
 
@@ -162,6 +162,7 @@ For each transaction found:
   * The [BTCR2 Signed Update (data structure)] retrieved from `update_lookup_table[update_hash]`.
     * If the update is not in `update_lookup_table`, retrieve it from [CAS] using `update_hash` as described in [BTCR2 Update Data Distribution].
     * Raise a [`MISSING_UPDATE_DATA`] error if the update is not available from either source.
+    * Raise an [`INVALID_DID_UPDATE`] error if the update is not a JSON object.
     * The resolver MUST hash the update with the [JSON Document Hashing] algorithm. The resolver MUST compare the hash to `update_hash`. Raise an [`INVALID_DID_UPDATE`] error if the two hashes are not equal.
 * Append the tuple to `updates`.
 
